@@ -1,0 +1,939 @@
+package de.jave.jave;
+
+import de.jave.asciimation.action.OpenAnimationAction;
+import de.jave.core.NLS;
+import de.jave.gui.StatusBar;
+import de.jave.gui.dialog.disposeanimation.AbstractDialogDisposeContext;
+import de.jave.gui.dialog.disposeanimation.DialogDisposeRectangleAnimator;
+import de.jave.gui.io.AcceptAllFileFilter;
+import de.jave.gui.io.CompositeExtensionFileFilter;
+import de.jave.gui.io.ExtensionFileFilters;
+import de.jave.gui.io.FileChooserUtilities;
+import de.jave.gui.io.FileSelection;
+import de.jave.gui.io.IFileChooserConfiguration;
+import de.jave.gui.io.SmartFileFilter;
+import de.jave.gui.splash.IStartupMonitor;
+import de.jave.jave.actions.JaveActions;
+import de.jave.jave.actions.JaveMenuBar;
+import de.jave.jave.actions.JaveTopToolbar;
+import de.jave.jave.actions.ResizeDocumentAction;
+import de.jave.jave.actions.ShowVtViewerAction;
+import de.jave.jave.actions.ToolBar;
+import de.jave.jave.actions.UndoRedoModel;
+import de.jave.jave.actions.performers.IDocumentSaveListener;
+import de.jave.jave.actions.performers.SavePerformer;
+import de.jave.jave.actions.preferences.JavePreferencesAction;
+import de.jave.jave.algorithm.gradient.AsciiGradientConfiguration;
+import de.jave.jave.algorithm.rectangle.RectangleStyle;
+import de.jave.jave.application.JaveStatusBar;
+import de.jave.jave.application.about.JaveAboutDialog;
+import de.jave.jave.application.startup.ConfigurationList;
+import de.jave.jave.ascii3d.Render3DTool;
+import de.jave.jave.browser.AsciiThumbnailBrowser;
+import de.jave.jave.browser.JaveFileType;
+import de.jave.jave.filter.Filter;
+import de.jave.jave.icon.JaveIcons;
+import de.jave.jave.open.JaveDropFileOpener;
+import de.jave.jave.open.OpenImageFilePerformer;
+import de.jave.jave.plate.AnimationDocumentEditor;
+import de.jave.jave.plate.DocumentEditorTitleFactory;
+import de.jave.jave.plate.GameDocumentEditor;
+import de.jave.jave.plate.IDocumentEditor;
+import de.jave.jave.plate.JaveMainPanel;
+import de.jave.jave.plate.MouseCharacterModel;
+import de.jave.jave.plate.TextDocumentEditor;
+import de.jave.jave.preferences.AnimationExportPreferences;
+import de.jave.jave.preferences.ColorScheme;
+import de.jave.jave.preferences.JaveApplicationPreferences;
+import de.jave.jave.preferences.PlatePreferences;
+import de.jave.jave.tool.dialog.ToolOptionsDialog;
+import de.jave.jave.tool.text.TextTool;
+import de.jave.jave.version.JaveTitleProvider;
+import de.jave.jave.watermark.WatermarkImageFile;
+import de.jave.javeplayer.JaveAnimationFile;
+import de.jave.lib.CharacterPlate;
+import de.jave.lib.gui.GuiUtilities;
+import de.jave.lib.gui.IStatusDisplay;
+import de.jave.maxosx.IMacOsXApplicationCallbacks;
+import de.jave.preferences.JavePreferences;
+import de.jave.undo.UndoState;
+import de.jave.util.RecentFileOpenListener;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import net.disy.commons.core.io.FileModel;
+import net.disy.commons.core.message.IMessage;
+import net.disy.commons.core.message.Message;
+import net.disy.commons.core.message.MessageType;
+import net.disy.commons.core.model.BooleanModel;
+import net.disy.commons.core.model.listener.IChangeListener;
+import net.disy.commons.core.util.Ensure;
+import net.disy.commons.swing.action.SmartToggleAction;
+import net.disy.commons.swing.dialog.message.MessageDialogFactory;
+import net.disy.commons.swing.dialog.message.MessageDialogUtilities;
+import net.disy.commons.swing.dialog.message.YesNoCancel;
+import net.disy.commons.swing.mousecursor.CursorId;
+import net.disy.commons.swing.mousecursor.CursorProvider;
+
+public class JavEApplication implements RecentFileOpenListener, IToolManager {
+   private final JaveMainPanel mainPanel;
+   private final DocumentManager documentManager;
+   private final ToolBar toolBar;
+   private ToolOptionsDialog optionsDialog;
+   private TextboxDialog textboxDialog;
+   private ReplaceCharacterDialog replaceCharacterDialog;
+   private AsciiThumbnailBrowser thumbnailBrowser;
+   private final JaveActions actions;
+   private JaveMenuBar menuBar;
+   private final StatusBar status;
+   private final JFrame frame;
+   private final JavePreferences javePreferences;
+   private final JaveApplicationPreferences applicationPreferences;
+   private final JaveTopToolbar topToolbar;
+   private final BooleanModel toolOptionsDialogVisibilityModel;
+   private final PlatePreferences platePreferences;
+   private final ConfigurationList configurationList;
+   private final CharacterSets characterSets;
+   private final UndoRedoModel undoRedoModel;
+   private final JaveStatusBar statusBar;
+
+   public JavEApplication(ConfigurationList configurationList) {
+      Ensure.ensureArgumentNotNull(configurationList);
+      this.configurationList = configurationList;
+      CharSetsConfiguration charSetsConfiguration = configurationList.getRequired(CharSetsConfiguration.class);
+      this.characterSets = new CharacterSets(charSetsConfiguration);
+      this.frame = new JFrame();
+      this.frame.setTitle(JaveTitleProvider.TITLE);
+      this.status = new StatusBar();
+      this.frame.setIconImages(JaveIcons.JAVE_ICON_IMAGES);
+      this.javePreferences = new JavePreferences();
+      this.applicationPreferences = new JaveApplicationPreferences(this.javePreferences);
+      FileModel currectDirectoryModel = this.applicationPreferences.getCurrectDirectoryModel();
+      this.toolOptionsDialogVisibilityModel = new BooleanModel();
+      this.toolOptionsDialogVisibilityModel.setValue(true);
+      this.documentManager = new DocumentManager(currectDirectoryModel, this.applicationPreferences.getDefaultColorSchemeModel());
+      this.platePreferences = new PlatePreferences(this.javePreferences);
+      MouseCharacterModel mouseCharacterModel = new MouseCharacterModel();
+      this.mainPanel = new JaveMainPanel(this, this.status, mouseCharacterModel);
+      this.undoRedoModel = new UndoRedoModel(this.mainPanel);
+      this.mainPanel.getActiveEditorModel().addChangeListener(new IChangeListener() {
+         @Override
+         public void stateChanged() {
+            JavEApplication.this.updateFrameTitle();
+         }
+      });
+      this.actions = new JaveActions(
+         this,
+         configurationList,
+         this.javePreferences,
+         this.toolOptionsDialogVisibilityModel,
+         this.platePreferences,
+         this.applicationPreferences.getDisplayFontModel(),
+         this.applicationPreferences.getDefaultColorSchemeModel()
+      );
+      ResizeDocumentAction resizeAction = this.actions.getResizeAction();
+      SmartToggleAction toolOptionsDialogToggleAction = this.actions.getToolOptionsDialogToggleAction();
+      this.statusBar = new JaveStatusBar(
+         this,
+         this.applicationPreferences.getDisplayFontModel(),
+         this.mainPanel.getActiveEditorModel(),
+         this.status,
+         resizeAction,
+         toolOptionsDialogToggleAction
+      );
+      DialogDisposeRectangleAnimator.attachTo(this.toolOptionsDialogVisibilityModel, new AbstractDialogDisposeContext() {
+         @Override
+         public JFrame getParentFrame() {
+            return JavEApplication.this.frame;
+         }
+
+         @Override
+         public Rectangle getTargetAreaOnScreen() {
+            return this.getAreaOnScreen(JavEApplication.this.statusBar.getToggleOptionsDialogButton());
+         }
+
+         @Override
+         public Rectangle getDialogAreaOnScreen() {
+            return this.getAreaOnScreen(JavEApplication.this.optionsDialog.getWindow());
+         }
+      });
+      this.topToolbar = new JaveTopToolbar(this, this.actions, this.undoRedoModel);
+      this.toolBar = new ToolBar(this, this.applicationPreferences, configurationList, this.platePreferences);
+      JaveDropFileOpener.attachTo(this, this.mainPanel.getContent());
+      JComponent bottomPanel = this.statusBar.getContent();
+      this.frame.getContentPane().setLayout(new BorderLayout());
+      this.frame.getContentPane().add(this.topToolbar.getContent(), "North");
+      this.frame.getContentPane().add(this.toolBar.getContent(), "West");
+      this.frame.getContentPane().add(this.mainPanel.getContent(), "Center");
+      this.frame.getContentPane().add(bottomPanel, "South");
+      this.frame.pack();
+   }
+
+   public JaveActions getActions() {
+      return this.actions;
+   }
+
+   public void performSetColorScheme(ColorScheme colorScheme) {
+      PlateDocument doc = this.mainPanel.getDocument();
+      if (doc != null) {
+         ColorScheme old = doc.getColorScheme();
+         if (old != colorScheme) {
+            doc.setColorScheme(colorScheme);
+            this.mainPanel.saveCurrentState(JaveMessages.Action_ChangeColor_UndoName);
+         }
+      }
+
+      this.mainPanel.repaint();
+   }
+
+   public boolean startupRecovery(IStartupMonitor startupMonitor) {
+      if (!JaveStatusFile.exists()) {
+         return false;
+      } else {
+         String[] statusData = JaveStatusFile.load();
+         if (statusData != null && !statusData[1].equals("0")) {
+            int fileCount = Integer.parseInt(statusData[1]);
+            String date = statusData[0];
+            String question;
+            if (fileCount == 1) {
+               question = NLS.bind(JaveMessages.CrashRecovery_OneDocumentOpenMessageText, date);
+            } else {
+               question = NLS.bind(JaveMessages.CrashRecovery_MultipleDocumentsOpenMessageText, date, fileCount);
+            }
+
+            Component parentComponent = null;
+            IMessage message = new Message(JaveMessages.CrashRecovery_DialogTitle, question, MessageType.WARNING);
+            startupMonitor.dispose();
+            YesNoCancel result = MessageDialogUtilities.showYesNoCancelDialog(parentComponent, message);
+            if (result == YesNoCancel.CANCEL) {
+               System.exit(0);
+            }
+
+            if (result == YesNoCancel.NO) {
+               return false;
+            } else {
+               this.switchToSelectonTool();
+               PlateDocument doc = null;
+
+               for (int i = 2; i < statusData.length; i += 2) {
+                  doc = this.documentManager.createNew(this.applicationPreferences.getDefaultDocumentSize());
+                  doc.setModified(true);
+                  if (statusData[i] != null && statusData[i].length() > 0) {
+                     doc.setFile(new File(statusData[i]));
+                  }
+
+                  CompressedDocumentState[] docStates = JaveLogFileParser.load(new File(statusData[i + 1]));
+                  ColorScheme colorScheme = docStates.length > 0
+                     ? docStates[0].getColorScheme()
+                     : this.applicationPreferences.getDefaultColorSchemeModel().getValue();
+                  TextDocumentEditor editor = new TextDocumentEditor(
+                     DocumentDefaultTitleFactory.createDefaultDocumentTitle(),
+                     doc,
+                     this,
+                     this.platePreferences,
+                     this.mainPanel.getToolManager(),
+                     this.applicationPreferences.getDisplayFontModel(),
+                     colorScheme,
+                     this.characterSets
+                  );
+                  this.mainPanel.addEditor(editor);
+                  if (docStates != null && docStates.length > 0) {
+                     for (int j = 0; j < docStates.length; j++) {
+                        doc.getUndoManager().saveCurrentState(docStates[j]);
+                     }
+
+                     doc.setDocumentState(docStates[docStates.length - 1]);
+                  }
+               }
+
+               this.updateStatusFile();
+               return true;
+            }
+         } else {
+            return false;
+         }
+      }
+   }
+
+   public void startupMenuBar() {
+      this.menuBar = new JaveMenuBar(
+         this,
+         this.configurationList,
+         this.javePreferences,
+         this.mainPanel,
+         this.actions,
+         this.applicationPreferences.getRecentFileList(),
+         this.applicationPreferences,
+         this.platePreferences,
+         this.characterSets,
+         this.undoRedoModel
+      );
+      this.frame.setJMenuBar(this.menuBar);
+      this.updateUndoRedo();
+      this.updateSelectionMenu();
+   }
+
+   public void startupFinish2() {
+      this.frame.setDefaultCloseOperation(0);
+      this.frame.addWindowListener(new WindowAdapter() {
+         @Override
+         public void windowClosing(WindowEvent e) {
+            JavEApplication.this.performExit(JavEApplication.this.frame);
+         }
+      });
+      this.frame.setBounds(this.applicationPreferences.getApplicationFrameBounds());
+      this.frame.setExtendedState(this.applicationPreferences.getApplicationFrameState());
+      this.frame.setVisible(true);
+   }
+
+   public void startupFinish3() {
+      this.applicationPreferences.getRecentFileList().setRecentFileOpenListener(this);
+   }
+
+   public void startupOptionsDialog() {
+      boolean smallOptionsDialog = this.applicationPreferences.isSmallOptionsDialog();
+      this.optionsDialog = new ToolOptionsDialog(this, smallOptionsDialog, this.toolOptionsDialogVisibilityModel);
+      this.optionsDialog.setTool(this.mainPanel.getCurrentTool());
+      this.optionsDialog.pack();
+      this.optionsDialog.setLocation(this.applicationPreferences.getToolDialogLocation());
+      this.optionsDialog.show();
+      this.optionsDialog.toFront();
+   }
+
+   public void updateSelectionMenu() {
+      if (this.menuBar != null) {
+         this.menuBar.updateSelectionMenu(this.mainPanel.hasSelection());
+      }
+   }
+
+   public void updateFrameTitle() {
+      this.mainPanel.updateAllDocumentTitles();
+      IDocumentEditor activeEditor = this.mainPanel.getActiveEditorModel().getActiveEditor();
+      if (activeEditor == null) {
+         this.frame.setTitle(JaveTitleProvider.TITLE);
+      } else {
+         String title = DocumentEditorTitleFactory.createEditorFrameTitle(activeEditor);
+         this.frame.setTitle(JaveTitleProvider.TITLE + " - " + title);
+      }
+   }
+
+   public void updateSizeLabelToDocumentSize() {
+      this.statusBar.updateSizeLabelToDocumentSize();
+   }
+
+   public void packOptionsDialog() {
+      this.optionsDialog.pack();
+   }
+
+   public void hideToolOptionsDialog() {
+      this.optionsDialog.setVisible(false);
+   }
+
+   public void showToolOptionsDialog() {
+      this.optionsDialog.setVisible(true);
+   }
+
+   public void doSelectionDelete() {
+      if (!this.mainPanel.hasSelection()) {
+         this.mainPanel.selectAll();
+      }
+
+      this.mainPanel.getCurrentTool().setCursor(CursorProvider.getInstance().getCursor(CursorId.CROSSHAIR_SELECTION));
+      this.mainPanel.unselect();
+      this.mainPanel.saveCurrentState(JaveMessages.Edit_Delete_UndoName);
+   }
+
+   public void doSelectionShrink() {
+      if (!this.mainPanel.hasSelection()) {
+         this.mainPanel.selectAll();
+      }
+
+      this.mainPanel.shrinkSelection();
+      this.mainPanel.saveCurrentState(JaveMessages.Edit_ShrinkSelection_UndoName);
+   }
+
+   public void doSelectionExpand() {
+      if (this.mainPanel.hasSelection()) {
+         this.mainPanel.expandSelection();
+         this.mainPanel.saveCurrentState(JaveMessages.Edit_ExpandSelection_UndoName);
+      }
+   }
+
+   public void doSelectionToBrush() {
+      if (this.mainPanel.hasSelection()) {
+         CharacterPlate cp = this.mainPanel.getContentOfInterest().getContent();
+         if (cp.getWidth() <= 12 && cp.getHeight() <= 12 && cp.getHeight() * cp.getWidth() <= 100) {
+            this.setTool(14);
+            ((BrushTool)this.mainPanel.getCurrentTool()).setBrush(cp);
+         } else {
+            MessageDialogFactory.showMessageDialog(
+               this.frame, new Message(JaveMessages.JavE, JaveMessages.Tool_Brush_SelectionTooBigText, MessageType.INFORMATION)
+            );
+         }
+      }
+   }
+
+   public void doReplaceCharacter() {
+      if (this.replaceCharacterDialog == null) {
+         this.replaceCharacterDialog = new ReplaceCharacterDialog(this.mainPanel, this.frame);
+         GuiUtilities.centerOnScreen(this.replaceCharacterDialog.getDialog());
+      }
+
+      this.replaceCharacterDialog.show();
+   }
+
+   public boolean performExit(Component parentComponent) {
+      boolean success = this.doCloseAll(parentComponent);
+      if (!success) {
+         return false;
+      } else {
+         if (!JaveStatusFile.delete()) {
+            System.err.println("Unable to delete Status-File!");
+         }
+
+         JaveStatusFile.deleteAllLogFiles();
+         this.applicationPreferences.setApplicationFrameState(this.frame.getExtendedState(), this.frame.getBounds());
+         this.applicationPreferences.setToolDialogLocation(this.optionsDialog.getLocation());
+         this.javePreferences.flush();
+         this.applicationPreferences.flush();
+         this.platePreferences.flush();
+         this.applicationPreferences.getRecentFileList().flush();
+         this.dispose();
+         System.exit(0);
+         return true;
+      }
+   }
+
+   public void doNew() {
+      PlateDocument doc = this.documentManager.createNew(this.applicationPreferences.getDefaultDocumentSize());
+      TextDocumentEditor editor = new TextDocumentEditor(
+         DocumentDefaultTitleFactory.createDefaultDocumentTitle(),
+         doc,
+         this,
+         this.platePreferences,
+         this.mainPanel.getToolManager(),
+         this.applicationPreferences.getDisplayFontModel(),
+         this.applicationPreferences.getDefaultColorSchemeModel().getValue(),
+         this.characterSets
+      );
+      this.mainPanel.addEditor(editor);
+      this.setCurrentDocument(this.documentManager.getCurrentDocumentIndex());
+      this.updateStatusFile();
+   }
+
+   public void updateStatusFile() {
+      JaveStatusFile.saveLog(this.documentManager);
+   }
+
+   public boolean doClose(Component parentComponent) {
+      IDocumentEditor editor = this.mainPanel.getEditor();
+      if (!editor.isModified()) {
+         this.documentManager.closeCurrentDocument();
+         this.mainPanel.closeCurrentEditor();
+         this.updateStatusFile();
+         return true;
+      } else {
+         boolean success = SavePerformer.performSaveBeforeClose(
+            parentComponent,
+            editor,
+            this.applicationPreferences.getRecentFileList(),
+            this.documentManager.getCurrentDirectoryModel(),
+            this.status,
+            this.getDocumentSaveListener()
+         );
+         return success ? this.doClose(parentComponent) : false;
+      }
+   }
+
+   public boolean doCloseAll(Component parentComponent) {
+      boolean success = true;
+
+      while (this.mainPanel.getEditor() != null && success) {
+         success = this.doClose(parentComponent);
+         if (!success) {
+            return false;
+         }
+      }
+
+      return success;
+   }
+
+   public void close(PlateDocument doc) {
+      int index = this.documentManager.getIndexOf(doc);
+      if (index >= 0) {
+         this.documentManager.closeDocument(index);
+         this.setCurrentDocument(this.documentManager.getCurrentDocumentIndex());
+         this.updateStatusFile();
+      }
+   }
+
+   @Override
+   public void openRecentFile(Component parentComponent, File file) {
+      this.open(parentComponent, file);
+   }
+
+   public void editTextBox(String content, Point location, RectangleStyle textboxStyle) {
+      if (this.textboxDialog == null) {
+         this.textboxDialog = new TextboxDialog(this, content, location);
+         GuiUtilities.centerOnScreen(this.textboxDialog.getDialog());
+      } else {
+         this.textboxDialog.setContent(content);
+         this.textboxDialog.setLocation(location);
+      }
+
+      this.textboxDialog.setTextboxStyle(textboxStyle);
+      this.textboxDialog.show();
+   }
+
+   public void showAboutDialog() {
+      JaveAboutDialog.showAboutDialog(this.frame);
+   }
+
+   public void updateUndoRedo() {
+      this.undoRedoModel.fireChangeEvent();
+   }
+
+   public void doRedo() {
+      this.mainPanel.redo();
+      this.updateUndoRedo();
+      this.updateSelectionMenu();
+      this.mainPanel.requestFocus();
+   }
+
+   public void doUndo() {
+      this.mainPanel.undo();
+      this.updateUndoRedo();
+      this.updateSelectionMenu();
+      this.mainPanel.requestFocus();
+   }
+
+   public void doDoc2Watermark() {
+      if (this.mainPanel.hasSelection()) {
+         this.mainPanel.dropSelection();
+      }
+
+      CharacterPlate cp = this.mainPanel.getContentOfInterest().getContent();
+      Font font = this.mainPanel.getPlate().getFont();
+      ColorScheme colorScheme = this.mainPanel.getPlate().getDocument().getColorScheme();
+      BufferedImage image = AsciiToThumbnailConverter.convert(
+         cp, font.getSize(), font, colorScheme.getColorPlateBackground(), colorScheme.getColorText(), this.isConnectedLinesView()
+      );
+      cp.clear();
+      this.mainPanel.setContentOfInterest(cp);
+      this.mainPanel.saveCurrentState(JaveMessages.Action_ClearContent_UndoName);
+      this.setWatermarkImage(new WatermarkImageFile(image));
+   }
+
+   public void setWatermarkImage(WatermarkImageFile imageFile) {
+      this.setTool(19);
+      WatermarkTool tool = (WatermarkTool)this.mainPanel.getToolManager().getTool(19);
+      tool.setImage(imageFile);
+      tool.fit();
+      this.toolBar.setWatermarkVisible(true);
+   }
+
+   public void doLoadWatermark() {
+      this.setTool(19);
+      this.toolBar.setWatermarkVisible(true);
+      WatermarkTool tool = (WatermarkTool)this.mainPanel.getToolManager().getTool(19);
+      tool.performLoadImage(this.frame);
+   }
+
+   public boolean isConnectedLinesView() {
+      return this.platePreferences.getConnectedLinesViewModel().getValue();
+   }
+
+   public IDocumentSaveListener getDocumentSaveListener() {
+      return new IDocumentSaveListener() {
+         @Override
+         public void savePerformed() {
+            JavEApplication.this.menuBar.setRevertEnabled(JavEApplication.this.mainPanel.getDocument().hasFile());
+            JavEApplication.this.updateFrameTitle();
+         }
+      };
+   }
+
+   public void doBrowse() {
+      if (this.thumbnailBrowser != null) {
+         this.thumbnailBrowser.setVisible(true);
+      } else {
+         this.thumbnailBrowser = new AsciiThumbnailBrowser(this.frame, this, this.getDocumentManager().getCurrentDirectoryModel());
+         this.thumbnailBrowser.show();
+      }
+   }
+
+   public void doRevert(Component parentComponent) {
+      PlateDocument doc = this.documentManager.getCurrentDocument();
+      boolean ok = MessageDialogUtilities.showOkCancelDialog(
+         parentComponent, new Message(JaveMessages.JavE, JaveMessages.Action_Revert_LoseAllChanges_QuestionText, MessageType.QUESTION)
+      );
+      if (ok) {
+         doc.setModified(false);
+         File file = doc.getFile();
+         this.doClose(parentComponent);
+         this.open(parentComponent, file);
+      }
+   }
+
+   public void doOpen(Component parentComponent) {
+      FileSelection fileSelection = FileChooserUtilities.performOpenFileChooser(
+         parentComponent,
+         new IFileChooserConfiguration() {
+            @Override
+            public FileModel getCurrentDirectoryModel() {
+               return JavEApplication.this.documentManager.getCurrentDirectoryModel();
+            }
+
+            @Override
+            public String getSaveDialogTitle() {
+               return null;
+            }
+
+            @Override
+            public String getOpenDialogTitle() {
+               return JaveMessages.OpenDialog_Title;
+            }
+
+            @Override
+            public SmartFileFilter[] getFileFilters() {
+               return new SmartFileFilter[]{
+                  new CompositeExtensionFileFilter(
+                     JaveMessages.FileFormat_All,
+                     ExtensionFileFilters.TXT,
+                     ExtensionFileFilters.SUPPORTED_IMAGES,
+                     ExtensionFileFilters.JMOV,
+                     ExtensionFileFilters.VT
+                  ),
+                  ExtensionFileFilters.TXT,
+                  ExtensionFileFilters.SUPPORTED_IMAGES,
+                  ExtensionFileFilters.JMOV,
+                  ExtensionFileFilters.VT,
+                  new AcceptAllFileFilter()
+               };
+            }
+
+            @Override
+            public String getFileNameSuggestion() {
+               return null;
+            }
+
+            @Override
+            public boolean isMultipleOpenFileSelectionAllowed() {
+               return false;
+            }
+         }
+      );
+      if (!fileSelection.isEmpty()) {
+         this.open(parentComponent, fileSelection.getFile());
+      }
+   }
+
+   public void open(Component parentComponent, File file) {
+      JaveFileType fileType = JaveFileType.guessType(file);
+      if (fileType == JaveFileType.ANIMATION) {
+         JaveAnimationFile animationFile = OpenAnimationAction.open(file, parentComponent);
+         if (animationFile != null) {
+            this.applicationPreferences.getRecentFileList().add(file);
+            this.openJaveAnimation(animationFile);
+         }
+      } else if (fileType == JaveFileType.VT) {
+         ShowVtViewerAction action = new ShowVtViewerAction(this.applicationPreferences.getCurrectDirectoryModel());
+         action.execute(parentComponent, file);
+      } else if (fileType == JaveFileType.RASTER_IMAGE) {
+         OpenImageFilePerformer.performOpenImageFile(parentComponent, file, this, this.actions, this.mainPanel.getToolManager());
+      } else if (this.documentManager.isAlreadyOpen(file)) {
+         MessageDialogFactory.showMessageDialog(
+            parentComponent, new Message(JaveMessages.JavE, JaveMessages.Action_Open_SelectedFileAlreadyOpen_MessageText, MessageType.INFORMATION)
+         );
+      } else {
+         try {
+            PlateDocument doc = this.documentManager.load(file, this.applicationPreferences.getRecentFileList());
+            TextDocumentEditor editor = new TextDocumentEditor(
+               DocumentDefaultTitleFactory.createDefaultDocumentTitle(file.getName()),
+               doc,
+               this,
+               this.platePreferences,
+               this.mainPanel.getToolManager(),
+               this.applicationPreferences.getDisplayFontModel(),
+               this.applicationPreferences.getDefaultColorSchemeModel().getValue(),
+               this.characterSets
+            );
+            this.mainPanel.addEditor(editor);
+            this.setCurrentDocument(this.documentManager.getCurrentDocumentIndex());
+            doc.getUndoManager().getLogFile().append(this.mainPanel.getDocumentState(null));
+            this.updateStatusFile();
+            this.status.showStatus(JaveMessages.Action_Open_FileLoaded_StatusMessage);
+         } catch (IOException var6) {
+            MessageDialogFactory.showMessageDialog(
+               parentComponent,
+               new Message(JaveMessages.JavE, NLS.bind(JaveMessages.Action_Open_ErrorLoadingFile_MessageText, var6.toString()), MessageType.ERROR, var6)
+            );
+         } catch (OutOfMemoryError var7) {
+            MessageDialogFactory.showMessageDialog(
+               parentComponent, new Message(JaveMessages.JavE, JaveMessages.Action_Open_ErrorLoadingFile_TooBig_MessageText, MessageType.ERROR)
+            );
+         }
+      }
+   }
+
+   public void openJaveAnimation(JaveAnimationFile animationFile) {
+      PlateDocument document = this.documentManager.createNew(this.applicationPreferences.getDefaultAnimationSize());
+      String stopGapName = DocumentDefaultTitleFactory.createDefaultDocumentTitle(animationFile.getFile());
+      AnimationDocumentEditor editor = new AnimationDocumentEditor(
+         stopGapName,
+         animationFile,
+         this,
+         document,
+         this.platePreferences,
+         this.applicationPreferences,
+         this.mainPanel.getToolManager(),
+         new AnimationExportPreferences(this.javePreferences),
+         this.applicationPreferences.getCurrectDirectoryModel(),
+         this.characterSets
+      );
+      this.mainPanel.addEditor(editor);
+      this.setCurrentDocument(this.documentManager.getCurrentDocumentIndex());
+      this.updateStatusFile();
+   }
+
+   public void doFractal() {
+      Filter filter = this.configurationList.getRequired(Filter.class);
+      FractalTool dt = new FractalTool(this, this.applicationPreferences, filter);
+      dt.show();
+   }
+
+   public void doRender3D() {
+      AsciiGradientConfiguration gradientConfiguration = this.configurationList.getRequired(AsciiGradientConfiguration.class);
+      Filter filter = this.configurationList.getRequired(Filter.class);
+      Render3DTool dt = new Render3DTool(this, this.applicationPreferences, gradientConfiguration, filter);
+      dt.show();
+   }
+
+   public void doFunctionPlotter() {
+      Filter filter = this.configurationList.getRequired(Filter.class);
+      FunctionPlotTool dt = new FunctionPlotTool(this, this.applicationPreferences, filter);
+      dt.show();
+   }
+
+   public void doPreviousDocument() {
+      int index = this.documentManager.getCurrentDocumentIndex() - 1;
+      if (index < 0) {
+         index = this.documentManager.getSize() - 1;
+      }
+
+      this.setCurrentDocument(index);
+   }
+
+   public void doNextDocument() {
+      int index = this.documentManager.getCurrentDocumentIndex() + 1;
+      if (index >= this.documentManager.getSize()) {
+         index = 0;
+      }
+
+      this.setCurrentDocument(index);
+   }
+
+   public void setCurrentDocument(int index) {
+      PlateDocument d = this.mainPanel.getDocument();
+      if (d != null) {
+         d.documentHiding();
+      }
+
+      if (index >= 0 && index < this.documentManager.getSize()) {
+         this.documentManager.setCurrentDocument(index);
+         PlateDocument currentDoc = this.documentManager.getCurrentDocument();
+         this.mainPanel.setCurrentEditor(index);
+         this.updateUndoRedo();
+         this.mainPanel.repaint();
+         currentDoc.documentShowing();
+      } else {
+         this.updateUndoRedo();
+      }
+   }
+
+   public void selectAll() {
+      this.mainPanel.selectAll();
+      this.switchToSelectonTool();
+      this.mainPanel.saveCurrentState(JaveMessages.Edit_SelectAll_UndoName);
+   }
+
+   public void switchToSelectonTool() {
+      this.setTool(12);
+      ((SelectionTool)this.mainPanel.getCurrentTool()).synchronizeToSelection();
+   }
+
+   @Override
+   public void switchToTextTool(int x, int y) {
+      this.setTool(10);
+      ((TextTool)this.mainPanel.getCurrentTool()).setCursorLocation(x, y);
+   }
+
+   public void switchToTextTool(char ch, int x, int y) {
+      this.setTool(10);
+      TextTool textTool = (TextTool)this.mainPanel.getCurrentTool();
+      textTool.setCursorLocation(x, y);
+      textTool.checkSize();
+      textTool.charEntered(ch);
+   }
+
+   public void switchToTextTool() {
+      this.setTool(10);
+   }
+
+   public SelectionTool getSelectionTool() {
+      return (SelectionTool)this.mainPanel.getToolManager().getTool(12);
+   }
+
+   public void setTool(int toolIndex) {
+      if (this.mainPanel.getToolManager().getCurrentToolIndex() != toolIndex) {
+         Tool newTool = this.mainPanel.getToolManager().getTool(toolIndex);
+         if (this.optionsDialog != null) {
+            this.optionsDialog.setTool(newTool);
+         }
+
+         this.toolBar.selectToolButton(toolIndex);
+         this.mainPanel.setCurrentTool(newTool);
+         this.updateSelectionMenu();
+      }
+   }
+
+   public Plate pasteAsNewDocument(CharacterPlate content) {
+      return this.pasteAsNewDocument(content, null);
+   }
+
+   public Plate pasteAsNewDocument(CharacterPlate content, String documentName) {
+      PlateDocument doc = this.documentManager.createNew(this.applicationPreferences.getDefaultDocumentSize());
+      String stopGapName = DocumentDefaultTitleFactory.createDefaultDocumentTitle(documentName);
+      doc.setContent(content);
+      TextDocumentEditor editor = new TextDocumentEditor(
+         stopGapName,
+         doc,
+         this,
+         this.platePreferences,
+         this.mainPanel.getToolManager(),
+         this.applicationPreferences.getDisplayFontModel(),
+         this.applicationPreferences.getDefaultColorSchemeModel().getValue(),
+         this.characterSets
+      );
+      this.mainPanel.addEditor(editor);
+      this.setCurrentDocument(this.documentManager.getCurrentDocumentIndex());
+      this.updateStatusFile();
+      return editor.getPlate();
+   }
+
+   public Plate pasteAsNewGameDocument(CharacterPlate content, String documentName) {
+      PlateDocument doc = this.documentManager.createNew(this.applicationPreferences.getDefaultDocumentSize());
+      doc.setContent(content);
+      GameDocumentEditor editor = new GameDocumentEditor(
+         DocumentDefaultTitleFactory.createDefaultDocumentTitle(documentName),
+         doc,
+         this,
+         this.platePreferences,
+         this.mainPanel.getToolManager(),
+         this.applicationPreferences.getDisplayFontModel(),
+         this.applicationPreferences.getDefaultColorSchemeModel(),
+         this.characterSets
+      );
+      this.mainPanel.addEditor(editor);
+      this.setCurrentDocument(this.documentManager.getCurrentDocumentIndex());
+      this.updateStatusFile();
+      return editor.getPlate();
+   }
+
+   public void pasteAsNewSelection(CharacterPlate content, int x, int y) {
+      this.pasteAsNewSelection(content, new Point(x, y));
+   }
+
+   public void pasteAsNewSelection(CharacterPlate content, Point location) {
+      if (this.mainPanel.getDocument() == null) {
+         this.pasteAsNewDocument(content);
+      } else {
+         this.mainPanel.pasteAsNewSelection(content, location);
+         this.switchToSelectonTool();
+         this.updateSelectionMenu();
+         this.mainPanel.saveCurrentState(JaveMessages.Edit_Paste_UndoName);
+      }
+   }
+
+   public void pasteAsNewSelection(CharacterPlate content) {
+      this.pasteAsNewSelection(content, this.mainPanel.getPasteLocation());
+   }
+
+   public void toggleInsert() {
+      boolean insert = !Tool.isInsert();
+      this.statusBar.setInsert(insert);
+      this.mainPanel.getCurrentTool().setInsert(insert);
+      this.mainPanel.repaintCursor();
+   }
+
+   public void showTextboxDialog() {
+      if (this.textboxDialog == null) {
+         this.textboxDialog = new TextboxDialog(this);
+         GuiUtilities.centerOnScreen(this.textboxDialog.getDialog());
+      }
+
+      this.textboxDialog.show();
+   }
+
+   public void dispose() {
+      this.frame.dispose();
+   }
+
+   public JFrame getFrame() {
+      return this.frame;
+   }
+
+   public void toFront() {
+      this.frame.toFront();
+   }
+
+   public DocumentManager getDocumentManager() {
+      return this.documentManager;
+   }
+
+   public ToolBar getToolBar() {
+      return this.toolBar;
+   }
+
+   public JaveMainPanel getMainPanel() {
+      return this.mainPanel;
+   }
+
+   public JaveApplicationPreferences getApplicationPreferences() {
+      return this.applicationPreferences;
+   }
+
+   public IStatusDisplay getStatusDisplay() {
+      return this.status;
+   }
+
+   public IMacOsXApplicationCallbacks getMaxOsXApplicationCallbacks() {
+      return new IMacOsXApplicationCallbacks() {
+         @Override
+         public void performShowPreferencesDialog() {
+            JavePreferencesAction.performShowPreferencesDialog(
+               JavEApplication.this.frame, JavEApplication.this.applicationPreferences, JavEApplication.this.platePreferences
+            );
+         }
+
+         @Override
+         public boolean performShowExitDialog() {
+            return JavEApplication.this.performExit(JavEApplication.this.frame);
+         }
+
+         @Override
+         public void performShowAboutDialog() {
+            JaveAboutDialog.showAboutDialog(JavEApplication.this.frame);
+         }
+      };
+   }
+}

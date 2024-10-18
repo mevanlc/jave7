@@ -1,0 +1,31 @@
+package de.jave.lib;
+
+import net.disy.commons.core.util.Ensure;
+
+public class CharacterMergeRulesConfiguration {
+   public static CharacterMergeRulesConfiguration INSTANCE;
+   private final char[] mixCharacters1;
+   private final char[] mixCharacters2;
+   private final char[] mixResults;
+
+   public CharacterMergeRulesConfiguration(char[] mixCharacters1, char[] mixCharacters2, char[] mixResults) {
+      Ensure.ensureArgumentNotNull(mixCharacters1);
+      Ensure.ensureArgumentNotNull(mixCharacters2);
+      Ensure.ensureArgumentNotNull(mixResults);
+      this.mixCharacters1 = mixCharacters1;
+      this.mixCharacters2 = mixCharacters2;
+      this.mixResults = mixResults;
+      INSTANCE = this;
+   }
+
+   public char getMergeResult(char previousCharacter, char newCharacter) {
+      for (int i = 0; i < this.mixCharacters1.length; i++) {
+         if (this.mixCharacters1[i] == previousCharacter && this.mixCharacters2[i] == newCharacter
+            || this.mixCharacters2[i] == previousCharacter && this.mixCharacters1[i] == newCharacter) {
+            return this.mixResults[i];
+         }
+      }
+
+      return newCharacter;
+   }
+}

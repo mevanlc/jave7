@@ -1,0 +1,37 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+group = 'de.jave'
+version = '7.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.apache.ant:ant:1.8.4'
+    implementation 'junit:junit:4.13.1'
+}
+
+sourceSets {
+    main {
+        // Include all non-*.java files from src/main/java as resources
+        resources {
+            srcDir 'src/main/java'
+            include '**/*.*'     // Include all files
+            exclude '**/*.java'  // Exclude Java files
+        }
+    }
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+
+    jar {
+        // Ensures the resources are included in the jar
+        from sourceSets.main.output
+    }
+}

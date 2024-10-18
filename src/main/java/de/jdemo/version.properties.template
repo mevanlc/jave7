@@ -1,0 +1,3 @@
+# version properties, automatically replaced when running the ant build script
+Version.version=%BUILD_VERSION%
+Version.buildDate=%BUILD_DATE%
