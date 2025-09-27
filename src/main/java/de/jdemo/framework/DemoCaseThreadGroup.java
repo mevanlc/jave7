@@ -6,21 +6,21 @@ package de.jdemo.framework;
  */
 public class DemoCaseThreadGroup extends ThreadGroup {
 
-  private IDemoCaseRunnable runner;
+    private IDemoCaseRunnable runner;
 
-  public DemoCaseThreadGroup(IDemoCaseRunnable runner) {
-    super(runner.getDemo().getIdentifier().getIdentifierName());
-    this.runner = runner;
-  }
-
-  public void uncaughtException(Thread t, Throwable error) {
-    if (error instanceof ThreadDeath) {
-      System.err.println("Demo thread stopped ("+error+")"); //$NON-NLS-1$ //$NON-NLS-2$
-    }else
-    if (!(error instanceof ThreadDeath)) {
-      runner.demoCrashed(error);
-    } else {
-      super.uncaughtException(t, error);
+    public DemoCaseThreadGroup(IDemoCaseRunnable runner) {
+        super(runner.getDemo().getIdentifier().getIdentifierName());
+        this.runner = runner;
     }
-  }
+
+    @SuppressWarnings({"removal", "RedundantSuppression"})
+    public void uncaughtException(Thread t, Throwable error) {
+        if (error instanceof ThreadDeath) {
+            System.err.println("Demo thread stopped (" + error + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+        } else if (runner != null) {
+            runner.demoCrashed(error);
+        } else {
+            super.uncaughtException(t, error);
+        }
+    }
 }

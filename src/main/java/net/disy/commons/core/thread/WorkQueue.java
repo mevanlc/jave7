@@ -7,6 +7,7 @@ import net.disy.commons.core.model.listener.ListenerList;
 import net.disy.commons.core.util.Ensure;
 import net.disy.commons.core.util.IClosure;
 
+@SuppressWarnings("removal")
 public class WorkQueue implements IWorkQueue {
    private final ILogger logger;
    private static final String SHUTDOWN_MESSAGE = "Shutting down, will not accept any more work.";
@@ -140,7 +141,7 @@ public class WorkQueue implements IWorkQueue {
    private class PoolWorker extends Thread {
       private PoolWorker(ThreadGroup threadGroup, String threadName) {
          super(threadGroup, threadName);
-         @SuppressWarnings("removal") boolean asDeamon = threadGroup.isDaemon();
+         boolean asDeamon = threadGroup.isDaemon();
          this.setDaemon(asDeamon);
       }
 

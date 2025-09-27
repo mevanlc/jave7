@@ -75,7 +75,7 @@ public final class SearchFontBySampleAction extends SmartAction {
                   Collections.sort(rankedItems);
 
                   for (RankedItem<String> item : rankedItems) {
-                     System.err.println(item.getRank() + " " + item.getValue());
+                     System.err.println(item.rank() + " " + item.value());
                   }
 
                   long time1 = System.currentTimeMillis();

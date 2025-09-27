@@ -11,7 +11,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.apache.ant:ant:1.8.4'
+    implementation 'org.apache.ant:ant:1.10.11'
     implementation 'junit:junit:4.13.1'
 }
 
@@ -27,8 +27,8 @@ sourceSets {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 
     jar {
         // Ensures the resources are included in the jar
