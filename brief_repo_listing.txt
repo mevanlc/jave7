@@ -1,0 +1,450 @@
+# `(rg --files --maxdepth 7 | rg -v '\.properties|gif|/jdemo' && rg --files '-g**/{javeicon16.gif,gradle.properties,build.properties}' && tree -d --charset ascii --prune -L6)` :
+
+gradlew.bat
+truncated_overview.txt
+build.gradle
+gradlew
+src/main/java/de/jave/asciimation/AnimationOutputOptionsConfiguration.java
+src/main/java/de/jave/asciimation/JmovFileChooserConfiguration.java
+src/main/java/de/jave/javeicon64.png
+src/main/java/de/jave/util/QuickByteSerializable.java
+src/main/java/de/jave/util/RecentFileOpenListener.java
+src/main/java/de/jave/util/RelativeTimeClock.java
+src/main/java/de/jave/util/Queue.java
+src/main/java/de/jave/util/RecentFileList.java
+src/main/java/de/jave/undo/UndoManager.java
+src/main/java/de/jave/undo/LogFileManagerEntry.java
+src/main/java/de/jave/undo/LogFileManager.java
+src/main/java/de/jave/undo/DefaultUndoState.java
+src/main/java/de/jave/undo/LogFile.java
+src/main/java/de/jave/undo/UndoItem.java
+src/main/java/de/jave/undo/UndoState.java
+src/main/java/de/jave/maxosx/IMacOsXApplicationCallbacks.java
+src/main/java/de/jave/maxosx/MacOsXInitializer.java
+src/main/java/de/jave/gfx/GfxUtilities.java
+src/main/java/de/jave/gfx/DepthComparable.java
+src/main/java/de/jave/gfx/GfxTools.java
+src/main/java/de/jave/preferences/SmartPreferences.java
+src/main/java/de/jave/preferences/JavePreferences.java
+src/main/java/de/jave/core/NLS.java
+src/main/java/de/jave/io/IOTools.java
+src/main/java/de/jave/vi/ViViewerApplication.java
+src/main/java/de/jave/vi/ViPlayMode.java
+src/main/java/de/jave/vi/IViOutput.java
+src/main/java/de/jave/vi/VIViewer.java
+src/main/java/de/jave/vi/ViAnimator.java
+src/main/java/de/jave/ascii/IAsciiGuiConstants.java
+src/main/java/de/jave/javeplayer/JavePlayerResources.java
+src/main/java/de/jave/javeplayer/AnimationProperties.java
+src/main/java/de/jave/figlet/Figlet.java
+src/main/java/de/jave/javeplayer/IPlayerControlBar.java
+src/main/java/de/jave/javeplayer/JavePlayerActions.java
+src/main/java/de/jave/javeplayer/AnimationMetaData.java
+src/main/java/de/jave/image/ImageLoader.java
+src/main/java/de/jave/image/GImage.java
+src/main/java/de/jave/javeplayer/JavePlayerUtilities.java
+src/main/java/de/jave/javeplayer/JavePlayerConfiguration.java
+src/main/java/de/jave/javeplayer/JavePlate.java
+src/main/java/de/jave/javeplayer/ZIPTool.java
+src/main/java/de/jave/javeplayer/JavePlayer.java
+src/main/java/de/jave/javeplayer/PlayerControlBar.java
+src/main/java/de/jave/image/ImageUtilities.java
+src/main/java/de/jave/figlet/IFontCategorySelectionListener.java
+src/main/java/de/jave/figlet/IFontSelectionListener.java
+src/main/java/de/jave/braille/BrailleEditorApplet.java
+src/main/java/de/jave/javeplayer/JavePlayerApplet.java
+src/main/java/de/jave/javeplayer/JaveAnimationFile.java
+src/main/java/de/jave/javeplayer/JaveAnimationFrame.java
+src/main/java/de/jave/javeplayer/NullControlBar.java
+src/main/java/de/jave/braille/BrailleDisplay.java
+src/main/java/de/jave/braille/BrailleEditor.java
+src/main/java/de/jave/image/IValueRaster.java
+src/main/java/de/jave/image/Rotation.java
+src/main/java/de/jave/figlet/IFigLayoutListener.java
+src/main/java/de/jave/image2ascii/DynamicalGreyScaleTableProvider.java
+src/main/java/de/jave/image2ascii/AsciiGreyscaleTableConfiguration.java
+src/main/java/de/jave/image2ascii/AsciiGreyscaleTableReader.java
+src/main/java/de/jave/image2ascii/RotationUi.java
+src/main/java/de/jave/internet/SwingBrowserLauncher.java
+src/main/java/de/jave/jave/TextboxDialog.java
+src/main/java/de/jave/jave/Ascii.java
+src/main/java/de/jave/jave/LineAlgorithm.java
+src/main/java/de/jave/javesplash.png
+src/main/java/de/jave/jave/DocumentManager.java
+src/main/java/de/jave/jave/CharSetsConfiguration.java
+src/main/java/de/jave/jave/PanTool.java
+src/main/java/de/jave/image2ascii/UmkehrTabellenBuilder.java
+src/main/java/de/jave/image2ascii/ConversionJob.java
+src/main/java/de/jave/image2ascii/AbstractImage2AsciiAlgorithm.java
+src/main/java/de/jave/image2ascii/IImage2AsciiAlgorithmItem.java
+src/main/java/de/jave/image2ascii/ProxyProgressMonitor.java
+src/main/java/de/jave/image2ascii/DitheringListCellRenderer.java
+src/main/java/de/jave/image2ascii/AsciiGreyscaleTableWriter.java
+src/main/java/de/jave/image2ascii/DefaultSettingsAction.java
+src/main/java/de/jave/image2ascii/Image2AsciiIcons.java
+src/main/java/de/jave/text/QuickString.java
+src/main/java/de/jave/image2ascii/IImage2AsciiAlgorithm.java
+src/main/java/de/jave/image2ascii/BatchConversionThread.java
+src/main/java/de/jave/jave/FreehandToolGeneric.java
+src/main/java/de/jave/jave/JaveGame.java
+src/main/java/de/jave/jave/AsciiToThumbnailConverter.java
+src/main/java/de/jave/image2ascii/SharedImage2AsciiOptions.java
+src/main/java/de/jave/image2ascii/Image2AsciiAlgorithmFactory.java
+src/main/java/de/jave/image2ascii/AsciiGreyscaleTableConfigurationInitializable.java
+src/main/java/de/jave/image2ascii/Image2Texter.java
+src/main/java/de/jave/image2ascii/DynamicalGreyScaleTableCreator.java
+src/main/java/de/jave/image2ascii/AsciiGreyScaleTableItem.java
+src/main/java/de/jave/text/QuickStringIndexOutOfBoundsException.java
+src/main/java/de/jave/calculus/CalculusTool.java
+src/main/java/de/jave/text/TextTools.java
+src/main/java/de/jave/jave/RectangleToolGeneric.java
+src/main/java/de/jave/jave/ReplaceCharacterDialog.java
+src/main/java/de/jave/jave/MoveResizeRectangle.java
+src/main/java/de/jave/jave/JaveGlobalRessources.java
+src/main/java/de/jave/jave/GenericTool.java
+src/main/java/de/jave/image2ascii/Image2AsciiAlgorithmItemUi.java
+src/main/java/de/jave/image2ascii/ConversionException.java
+src/main/java/de/jave/image2ascii/IImage2AsciiResultTaker.java
+src/main/java/de/jave/image2ascii/BatchConversionAction.java
+src/main/java/de/jave/image2ascii/Converter.java
+src/main/java/de/jave/gui/GSliderArrangement.java
+src/main/java/de/jave/lib/CharacterMergeRulesConfiguration.java
+src/main/java/de/jave/jave/JaveSelection.java
+src/main/java/de/jave/jave/Selection.java
+src/main/java/de/jave/jave/EraserTool.java
+src/main/java/de/jave/jave/CommandLineJave.java
+src/main/java/de/jave/jave/PlateDocument.java
+src/main/java/de/jave/jave/IToolManager.java
+src/main/java/de/jave/jave/JavEApplication.java
+src/main/java/de/jave/jave/AbstractDialogTool.java
+src/main/java/de/jave/gui/SmallFrameRightBorder.java
+src/main/java/de/jave/gui/CharField.java
+src/main/java/de/jave/gui/FilenameTextField.java
+src/main/java/de/jave/image2ascii/ImageConversionException.java
+src/main/java/de/jave/image2ascii/AsciiGreyscaleTable.java
+src/main/java/de/jave/gui/GStatusLabel.java
+src/main/java/de/jave/gui/GHyperlink.java
+src/main/java/de/jave/gui/GuiTools.java
+src/main/java/de/jave/gui/NullMouseClickHandler.java
+src/main/java/de/jave/gui/GCheckbox.java
+src/main/java/de/jave/gui/SmallFrameTitleBar.java
+src/main/java/de/jave/gui/SmallFrameLeftBorder.java
+src/main/java/de/jave/gui/CharacterModel.java
+src/main/java/de/jave/gui/GSlider.java
+src/main/java/de/jave/gui/SmallFrameBottomBorder.java
+src/main/java/de/jave/gui/IMouseClickHandler.java
+src/main/java/de/jave/gui/SmallFrame.java
+src/main/java/de/jave/gui/StatusBar.java
+src/main/java/de/jave/lib/CodeBaseTool.java
+src/main/java/de/jave/lib/CharacterMergeRulesConfigurationInitializable.java
+src/main/java/de/jave/lib/CharacterPlate.java
+src/main/java/de/jave/jave/FunctionPlotTool.java
+src/main/java/de/jave/jave/Point2d.java
+src/main/java/de/jave/jave/JaveLogFileParser.java
+src/main/java/de/jave/lib/IPublicCloneable.java
+src/main/java/de/jave/lib/Toolbox.java
+src/main/java/de/jave/lib/LocatedCharacterPlate.java
+src/main/java/de/jave/jave/FormulaEditorDialogPage.java
+src/main/java/de/jave/jave/Image2AsciiDialog.java
+src/main/java/de/jave/lib/ICharacterPlateSettable.java
+src/main/java/de/jave/jave/FractalTool.java
+src/main/java/de/jave/jave/JaveLaunchMessages.java
+src/main/java/de/jave/jave/EllipseAlgorithm.java
+src/main/java/de/jave/jave/WatermarkTool.java
+src/main/java/de/jave/jave/DocumentListener.java
+src/main/java/de/jave/jave/BezierAlgorithm.java
+src/main/java/de/jave/jave/ArcAgorithm.java
+src/main/java/de/jave/jave/Tool.java
+src/main/java/de/jave/jave/JavELauncher.java
+src/main/java/de/jave/jave/EllipseToolGeneric.java
+src/main/java/de/jave/jave/AsciiGradientComboBoxFactory.java
+src/main/java/de/jave/jave/RectangleAlgorithm.java
+src/main/java/de/jave/jave/LineToolGeneric.java
+src/main/java/de/jave/jave/AbstractPencilTool.java
+src/main/java/de/jave/jave/ICharacterDrawable.java
+src/main/java/de/jave/jave/CharSetsConfigurationInitializable.java
+src/main/java/de/jave/jave/DocumentDefaultTitleFactory.java
+src/main/java/de/jave/jave/ZoomableFontModel.java
+src/main/java/de/jave/jave/JaveMessages.java
+src/main/java/de/jave/jave/Labyrinth.java
+src/main/java/de/jave/jave/FreehandSelectionTool.java
+src/main/java/de/jave/jave/JaveConfigurationFileLoader.java
+src/main/java/de/jave/jave/JaveStatusFile.java
+src/main/java/de/jave/jave/CompressedDocumentState.java
+src/main/java/de/jave/jave/CharacterSets.java
+src/main/java/de/jave/jave/CloneTool.java
+src/main/java/de/jave/jave/JaveOptionsAlgorithmDialog.java
+src/main/java/de/jave/jave/AsciiGraphics.java
+src/main/java/de/jave/jave/MergeCharactersPanel.java
+src/main/java/de/jave/jave/Plate.java
+src/main/java/de/jave/jave/Jave.java
+src/main/java/de/jave/jave/SelectionTool.java
+src/main/java/de/jave/jave/ColorScreenSaver.java
+src/main/java/de/jave/jave/BezierToolGeneric.java
+src/main/java/de/jave/jave/BrushTool.java
+src/main/java/de/jave/jave/ScreenSaver.java
+src/main/java/de/jave/jave/ArcToolGeneric.java
+src/main/java/de/jave/javeicon16.gif
+.
+|-- bin
+|   `-- main
+|       |-- de
+|       |   `-- jave
+|       |       |-- animation
+|       |       |-- ascii
+|       |       |   |-- font
+|       |       |   `-- plate
+|       |       |-- asciimation
+|       |       |   |-- action
+|       |       |   |-- editor
+|       |       |   `-- export
+|       |       |-- awt
+|       |       |   `-- clipboard
+|       |       |-- braille
+|       |       |   `-- table
+|       |       |-- calculus
+|       |       |   `-- parser
+|       |       |-- color
+|       |       |-- core
+|       |       |   |-- collections
+|       |       |   |-- io
+|       |       |   `-- suite
+|       |       |-- figlet
+|       |       |   |-- ant
+|       |       |   |-- applet
+|       |       |   |-- engine
+|       |       |   |-- file
+|       |       |   |-- io
+|       |       |   |-- suite
+|       |       |   |-- swing
+|       |       |   `-- util
+|       |       |-- filetypes
+|       |       |-- formula
+|       |       |   |-- algorithm
+|       |       |   |-- applet
+|       |       |   `-- parser
+|       |       |-- gfx
+|       |       |-- gradient
+|       |       |-- gui
+|       |       |   |-- dialog
+|       |       |   |-- io
+|       |       |   |-- layout
+|       |       |   |-- listpanel
+|       |       |   |-- splash
+|       |       |   |-- suite
+|       |       |   `-- xor
+|       |       |-- image
+|       |       |   |-- greyscale
+|       |       |   |-- gui
+|       |       |   |-- monochrome
+|       |       |   |-- suite
+|       |       |   `-- swing
+|       |       |-- image2ascii
+|       |       |   |-- algorithm
+|       |       |   |-- commandline
+|       |       |   |-- dialog
+|       |       |   `-- model
+|       |       |-- internet
+|       |       |-- io
+|       |       |-- jave
+|       |       |   |-- actions
+|       |       |   |-- algorithm
+|       |       |   |-- application
+|       |       |   |-- ascii3d
+|       |       |   |-- brace
+|       |       |   |-- browser
+|       |       |   |-- clipart
+|       |       |   |-- configuration
+|       |       |   |-- core
+|       |       |   |-- export
+|       |       |   |-- figlet
+|       |       |   |-- filter
+|       |       |   |-- games
+|       |       |   |-- help
+|       |       |   |-- icon
+|       |       |   |-- open
+|       |       |   |-- pattern
+|       |       |   |-- pixelplate
+|       |       |   |-- plate
+|       |       |   |-- preferences
+|       |       |   |-- rectangle
+|       |       |   |-- rendering
+|       |       |   |-- suite
+|       |       |   |-- swing
+|       |       |   |-- tool
+|       |       |   |-- version
+|       |       |   `-- watermark
+|       |       |-- javeplayer
+|       |       |   |-- persistence
+|       |       |   `-- suite
+|       |       |-- jmov
+|       |       |   `-- player
+|       |       |-- lib
+|       |       |   |-- area
+|       |       |   |-- collections
+|       |       |   |-- gui
+|       |       |   |-- io
+|       |       |   |-- job
+|       |       |   |-- net
+|       |       |   `-- tree
+|       |       |-- maxosx
+|       |       |   `-- internal
+|       |       |-- menu
+|       |       |-- navigate
+|       |       |-- pencil
+|       |       |-- preferences
+|       |       |-- quickstart
+|       |       |-- text
+|       |       |-- textcursor
+|       |       |-- tool
+|       |       |-- undo
+|       |       |-- util
+|       |       `-- vi
+|       `-- net
+|           |-- disy
+|           |   `-- commons
+|           |       |-- animatedinterpolation
+|           |       |-- core
+|           |       `-- swing
+|           `-- jmge
+|               `-- gif
+|                   |-- encode
+|                   `-- facade
+|-- build
+|   |-- classes
+|   |   `-- java
+|   |       `-- main
+|   |           |-- de
+|   |           |   |-- jave
+|   |           |   `-- jdemo
+|   |           `-- net
+|   |               |-- disy
+|   |               `-- jmge
+|   |-- generated
+|   |   `-- sources
+|   |       |-- annotationProcessor
+|   |       |   `-- java
+|   |       |       `-- main
+|   |       `-- headers
+|   |           `-- java
+|   |               `-- main
+|   |-- libs
+|   |-- reports
+|   |   `-- problems
+|   |-- resources
+|   |   `-- main
+|   |       |-- de
+|   |       |   |-- jave
+|   |       |   |   |-- animation
+|   |       |   |   |-- ascii
+|   |       |   |   |-- asciimation
+|   |       |   |   |-- awt
+|   |       |   |   |-- braille
+|   |       |   |   |-- calculus
+|   |       |   |   |-- color
+|   |       |   |   |-- core
+|   |       |   |   |-- figlet
+|   |       |   |   |-- filetypes
+|   |       |   |   |-- formula
+|   |       |   |   |-- gfx
+|   |       |   |   |-- gradient
+|   |       |   |   |-- gui
+|   |       |   |   |-- image
+|   |       |   |   |-- image2ascii
+|   |       |   |   |-- internet
+|   |       |   |   |-- io
+|   |       |   |   |-- jave
+|   |       |   |   |-- javeplayer
+|   |       |   |   |-- jmov
+|   |       |   |   |-- lib
+|   |       |   |   |-- maxosx
+|   |       |   |   |-- menu
+|   |       |   |   |-- navigate
+|   |       |   |   |-- pencil
+|   |       |   |   |-- preferences
+|   |       |   |   |-- quickstart
+|   |       |   |   |-- testing
+|   |       |   |   |-- text
+|   |       |   |   |-- textcursor
+|   |       |   |   |-- tool
+|   |       |   |   |-- undo
+|   |       |   |   |-- util
+|   |       |   |   `-- vi
+|   |       |   `-- jdemo
+|   |       |       |-- annotation
+|   |       |       |-- capture
+|   |       |       |-- extensions
+|   |       |       |-- framework
+|   |       |       |-- junit
+|   |       |       |-- runner
+|   |       |       |-- suite
+|   |       |       `-- util
+|   |       `-- net
+|   |           |-- disy
+|   |           |   `-- commons
+|   |           `-- jmge
+|   |               `-- gif
+|   `-- tmp
+|       |-- compileJava
+|       |   `-- compileTransaction
+|       |       |-- backup-dir
+|       |       `-- stash-dir
+|       `-- jar
+|-- gradle
+|   `-- wrapper
+`-- src
+    `-- main
+        `-- java
+            |-- de
+            |   |-- jave
+            |   |   |-- animation
+            |   |   |-- ascii
+            |   |   |-- asciimation
+            |   |   |-- awt
+            |   |   |-- braille
+            |   |   |-- calculus
+            |   |   |-- color
+            |   |   |-- core
+            |   |   |-- figlet
+            |   |   |-- filetypes
+            |   |   |-- formula
+            |   |   |-- gfx
+            |   |   |-- gradient
+            |   |   |-- gui
+            |   |   |-- image
+            |   |   |-- image2ascii
+            |   |   |-- internet
+            |   |   |-- io
+            |   |   |-- jave
+            |   |   |-- javeplayer
+            |   |   |-- jmov
+            |   |   |-- lib
+            |   |   |-- maxosx
+            |   |   |-- menu
+            |   |   |-- navigate
+            |   |   |-- pencil
+            |   |   |-- preferences
+            |   |   |-- quickstart
+            |   |   |-- testing
+            |   |   |-- text
+            |   |   |-- textcursor
+            |   |   |-- tool
+            |   |   |-- undo
+            |   |   |-- util
+            |   |   `-- vi
+            |   `-- jdemo
+            |       |-- annotation
+            |       |-- capture
+            |       |-- extensions
+            |       |-- framework
+            |       |-- junit
+            |       |-- runner
+            |       |-- suite
+            |       `-- util
+            `-- net
+                |-- disy
+                |   `-- commons
+                `-- jmge
+                    `-- gif
+
+261 directories
