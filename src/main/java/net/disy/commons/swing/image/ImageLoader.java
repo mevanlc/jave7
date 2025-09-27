@@ -20,7 +20,7 @@ public class ImageLoader {
       try {
          return createMemoryImage(readImage(inputStream));
       } catch (ImageLoader.LoadingException var2) {
-         throw new IOException("Loading: " + var2.getMessage());
+         throw new IOException("Loading: " + var2.getMessage(), var2);
       }
    }
 
