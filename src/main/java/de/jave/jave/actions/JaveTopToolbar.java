@@ -1,8 +1,11 @@
 package de.jave.jave.actions;
 
 import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveMessages;
 import javax.swing.JComponent;
+import javax.swing.JToggleButton;
 import net.disy.commons.core.util.Ensure;
+import net.disy.commons.swing.action.ActionWidgetFactory;
 
 public class JaveTopToolbar {
    private final JComponent content;
@@ -38,6 +41,16 @@ public class JaveTopToolbar {
       builder.addSeparator();
       builder.add(new ZoomOutAction(application.getMainPanel()));
       builder.add(new ZoomInAction(application.getMainPanel()));
+      builder.addSeparator();
+      JToggleButton gridToggle = ActionWidgetFactory.createToggleButton(actions.getGridToggleAction());
+      gridToggle.setToolTipText(JaveMessages.ToolCheckBox_Grid_Tooltip);
+      builder.add(gridToggle);
+      JToggleButton markIllegalToggle = ActionWidgetFactory.createToggleButton(actions.getMarkIllegalToggleAction());
+      markIllegalToggle.setToolTipText(JaveMessages.ToolCheckBox_MarkIllegal_Tooltip);
+      builder.add(markIllegalToggle);
+      JToggleButton connectedLinesToggle = ActionWidgetFactory.createToggleButton(actions.getConnectedLinesViewToggleAction());
+      connectedLinesToggle.setToolTipText(JaveMessages.ToolCheckBox_ConnectedLinesView_Tooltip);
+      builder.add(connectedLinesToggle);
       builder.addSeparator();
       builder.add(actions.getAboutAction());
       this.content = builder.createPanel();
