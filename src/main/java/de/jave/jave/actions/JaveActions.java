@@ -147,6 +147,7 @@ public class JaveActions {
       };
       this.newAnimationAction = new NewAnimationAction(jave);
       this.toolOptionsDialogToggleAction = new SmartToggleAction(toolOptionsDialogVisibilityModel, "Tool Options Dialog", JaveIcons.TOOL_DIALOG_VISIBLE_ICON);
+      this.toolOptionsDialogToggleAction.setAcceleratorKey(JaveKeyBindings.TOGGLE_TOOL_OPTIONS_DIALOG);
       this.toolOptionsDialogToggleAction.setToolTipText("Show/Hide Tool Options Dialog");
       this.gridToggleAction = new SmartToggleAction(plateViewOptions.getGridVisibilityModel(), "Grid", JaveIcons.GRID_VISIBLE_ICON);
       this.gridToggleAction.setAcceleratorKey(JaveKeyBindings.TOGGLE_GRID);
