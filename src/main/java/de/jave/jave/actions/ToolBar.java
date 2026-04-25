@@ -111,20 +111,13 @@ public class ToolBar {
       panel.add(this.btn(13));
       panel.add(this.createHorizontalLine(6), fourColumnsData);
 
-      // Brush group: tools 14,15,16,17,18 — row(14,15,16,17) + row(18,gap,gap,gap)
+      // Brush group: tools 14,15,16,17,18,20 — row(14,15,16,17) + row(18,20,gap,gap)
       panel.add(this.btn(14));
       panel.add(this.btn(15));
       panel.add(this.btn(16));
       panel.add(this.btn(17));
       panel.add(this.btn(18));
-      panel.add(new Gap());
-      panel.add(new Gap());
-      panel.add(new Gap());
-      panel.add(this.createHorizontalLine(6), fourColumnsData);
-
-      // AuxLines: tool 20
       panel.add(this.btn(20));
-      panel.add(new Gap());
       panel.add(new Gap());
       panel.add(new Gap());
 
