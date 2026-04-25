@@ -69,6 +69,8 @@ public class ToolBar {
    private final JCheckBox cbWatermark;
    private final JCheckBox cbAuxLines;
    private Tool[] tools;
+   private int[] buttonIndexToToolIndex;
+   private int[] toolIndexToButtonIndex;
    private final JaveApplicationPreferences preferences;
    private final JComponent content;
    private final ConfigurationList configurationList;
@@ -181,8 +183,14 @@ public class ToolBar {
       this.cbAuxLines.setSelected(what);
    }
 
-   public void selectToolButton(int index) {
-      this.buttonGroup.setSelectedIndex(index);
+   public void selectToolButton(int toolIndex) {
+      if (toolIndex < 0 || toolIndex >= this.toolIndexToButtonIndex.length) {
+         return;
+      }
+      int buttonIndex = this.toolIndexToButtonIndex[toolIndex];
+      if (buttonIndex >= 0) {
+         this.buttonGroup.setSelectedIndex(buttonIndex);
+      }
    }
 
    protected void createTools() {
@@ -216,20 +224,37 @@ public class ToolBar {
       mainPanel.getToolManager().setTools(this.tools);
       mainPanel.setCurrentTool(this.tools[0]);
 
-      for (int i = 0; i < 21; i++) {
-         SmartAction action = new SmartAction(this.tools[i].getIcon()) {
+      this.buttonIndexToToolIndex = createToolIndicesWithButtons();
+      this.toolIndexToButtonIndex = new int[this.tools.length];
+      java.util.Arrays.fill(this.toolIndexToButtonIndex, -1);
+      for (int b = 0; b < this.buttonIndexToToolIndex.length; b++) {
+         this.toolIndexToButtonIndex[this.buttonIndexToToolIndex[b]] = b;
+      }
+
+      for (int b = 0; b < this.buttonIndexToToolIndex.length; b++) {
+         final int toolIdx = this.buttonIndexToToolIndex[b];
+         SmartAction action = new SmartAction(this.tools[toolIdx].getIcon()) {
             @Override
             protected void execute(Component parentComponent) {
-               ToolBar.this.application.setTool(ToolBar.this.buttonGroup.getSelectedIndex());
+               int sel = ToolBar.this.buttonGroup.getSelectedIndex();
+               ToolBar.this.application.setTool(ToolBar.this.buttonIndexToToolIndex[sel]);
                ToolBar.this.application.getMainPanel().requestFocus();
             }
          };
-         action.setToolTipText(this.tools[i].getName());
+         action.setToolTipText(this.tools[toolIdx].getName());
          JToggleButton button = RolloverButtonFactory.createToggleButton(action);
          button.setPreferredSize(new Dimension(24, 23));
-         button.setSelected(i == this.application.getMainPanel().getToolManager().getCurrentToolIndex());
+         button.setSelected(toolIdx == this.application.getMainPanel().getToolManager().getCurrentToolIndex());
          this.buttonGroup.add(button);
       }
+   }
+
+   private static int[] createToolIndicesWithButtons() {
+      int[] indices = new int[TOOL_COUNT];
+      for (int i = 0; i < indices.length; i++) {
+         indices[i] = i;
+      }
+      return indices;
    }
 
    public JComponent getContent() {
