@@ -183,7 +183,12 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
          }
       });
       this.topToolbar = new JaveTopToolbar(this, this.actions, this.undoRedoModel);
-      this.toolBar = new ToolBar(this, this.applicationPreferences, configurationList, this.platePreferences);
+      FallbackInlineOptionsPanel fallback = new FallbackInlineOptionsPanel();
+      int hostWidth = InlineOptionsWidthMeasurer.measureMaxWidth(
+         java.util.Collections.<JComponent>singletonList(fallback.getContent()));
+      this.toolSelectorBarOptionsHost = new ToolSelectorBarOptionsHost(fallback);
+      this.toolSelectorBarOptionsHost.setMinWidth(hostWidth);
+      this.toolBar = new ToolBar(this, this.applicationPreferences, configurationList, this.platePreferences, this.toolSelectorBarOptionsHost);
       this.watermarkVisibilityModel.addChangeListener(new IChangeListener() {
          @Override
          public void stateChanged() {
@@ -200,11 +205,6 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
             JavEApplication.this.mainPanel.repaint();
          }
       });
-      FallbackInlineOptionsPanel fallback = new FallbackInlineOptionsPanel();
-      int hostWidth = InlineOptionsWidthMeasurer.measureMaxWidth(
-         java.util.Collections.<JComponent>singletonList(fallback.getContent()));
-      this.toolSelectorBarOptionsHost = new ToolSelectorBarOptionsHost(fallback);
-      this.toolSelectorBarOptionsHost.setMinWidth(hostWidth);
       this.toolSelectorBarOptionsHost.setTool(this.mainPanel.getCurrentTool());
       JaveDropFileOpener.attachTo(this, this.mainPanel.getContent());
       JComponent bottomPanel = this.statusBar.getContent();
