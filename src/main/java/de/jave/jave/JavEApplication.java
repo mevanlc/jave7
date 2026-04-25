@@ -119,7 +119,14 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
       this.applicationPreferences = new JaveApplicationPreferences(this.javePreferences);
       FileModel currectDirectoryModel = this.applicationPreferences.getCurrectDirectoryModel();
       this.toolOptionsDialogVisibilityModel = new BooleanModel();
-      this.toolOptionsDialogVisibilityModel.setValue(true);
+      this.toolOptionsDialogVisibilityModel.setValue(this.applicationPreferences.getToolOptionsDialogVisible());
+      this.toolOptionsDialogVisibilityModel.addChangeListener(new IChangeListener() {
+         @Override
+         public void stateChanged() {
+            JavEApplication.this.applicationPreferences.setToolOptionsDialogVisible(
+                  JavEApplication.this.toolOptionsDialogVisibilityModel.getValue());
+         }
+      });
       this.documentManager = new DocumentManager(currectDirectoryModel, this.applicationPreferences.getDefaultColorSchemeModel());
       this.platePreferences = new PlatePreferences(this.javePreferences);
       MouseCharacterModel mouseCharacterModel = new MouseCharacterModel();

@@ -29,6 +29,7 @@ public class JaveApplicationPreferences extends SmartPreferences {
    private static final String KEY_FRAME_STATE = "frameState";
    private static final String KEY_TOOL_DIALOG_LOCATION_X = "toolDialogLocationX";
    private static final String KEY_TOOL_DIALOG_LOCATION_Y = "toolDialogLocationY";
+   private static final String KEY_TOOL_OPTIONS_DIALOG_VISIBLE = "toolOptionsDialogVisible";
    private static final String KEY_ANIMATION_WIDTH = "animationWidth";
    private static final String KEY_ANIMATION_HEIGHT = "animationHeight";
    private static final String KEY_DOCUMENT_WIDTH = "documentWidth";
@@ -151,6 +152,14 @@ public class JaveApplicationPreferences extends SmartPreferences {
    public void setToolDialogLocation(Point location) {
       this.put("toolDialogLocationX", location.x);
       this.put("toolDialogLocationY", location.y);
+   }
+
+   public boolean getToolOptionsDialogVisible() {
+      return this.getBoolean(KEY_TOOL_OPTIONS_DIALOG_VISIBLE, false);
+   }
+
+   public void setToolOptionsDialogVisible(boolean visible) {
+      this.put(KEY_TOOL_OPTIONS_DIALOG_VISIBLE, visible);
    }
 
    public RecentFileList getRecentFileList() {
