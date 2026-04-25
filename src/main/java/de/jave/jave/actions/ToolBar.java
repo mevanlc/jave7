@@ -86,7 +86,7 @@ public class ToolBar {
       JPanel panel = new JPanel(new GridDialogLayout(4, true, 0, 0));
       // Top padding aligns the first tool button with the bottom of the
       // document tab bar in the main panel.
-      panel.add(new Gap(1, 60), fourColumnsData);
+      panel.add(new Gap(1, 30), fourColumnsData);
 
       // Generic group: tools 0,2,4,6,8,9 — row(0,2,4,6) + row(8,9,gap,gap)
       panel.add(this.btn(0));
