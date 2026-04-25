@@ -46,6 +46,7 @@ import de.jave.jave.preferences.AnimationExportPreferences;
 import de.jave.jave.preferences.ColorScheme;
 import de.jave.jave.preferences.JaveApplicationPreferences;
 import de.jave.jave.preferences.PlatePreferences;
+import de.jave.gui.layout.InlineOptionsWidthMeasurer;
 import de.jave.jave.tool.dialog.FallbackInlineOptionsPanel;
 import de.jave.jave.tool.dialog.ToolOptionsDialog;
 import de.jave.jave.tool.dialog.ToolSelectorBarOptionsHost;
@@ -199,7 +200,11 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
             JavEApplication.this.mainPanel.repaint();
          }
       });
-      this.toolSelectorBarOptionsHost = new ToolSelectorBarOptionsHost(new FallbackInlineOptionsPanel());
+      FallbackInlineOptionsPanel fallback = new FallbackInlineOptionsPanel();
+      int hostWidth = InlineOptionsWidthMeasurer.measureMaxWidth(
+         java.util.Collections.<JComponent>singletonList(fallback.getContent()));
+      this.toolSelectorBarOptionsHost = new ToolSelectorBarOptionsHost(fallback);
+      this.toolSelectorBarOptionsHost.setMinWidth(hostWidth);
       this.toolSelectorBarOptionsHost.setTool(this.mainPanel.getCurrentTool());
       JaveDropFileOpener.attachTo(this, this.mainPanel.getContent());
       JComponent bottomPanel = this.statusBar.getContent();

@@ -2,6 +2,7 @@ package de.jave.jave.tool.dialog;
 
 import de.jave.jave.Tool;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
@@ -16,10 +17,22 @@ public class ToolSelectorBarOptionsHost {
    private final JPanel panel;
    private final IInlineToolOptions fallback;
    private IInlineToolOptions current;
+   private int minWidth;
 
    public ToolSelectorBarOptionsHost(IInlineToolOptions fallback) {
       this.fallback = fallback;
-      this.panel = new JPanel(new BorderLayout());
+      this.panel = new JPanel(new BorderLayout()) {
+         @Override
+         public Dimension getPreferredSize() {
+            Dimension d = super.getPreferredSize();
+            return new Dimension(Math.max(d.width, ToolSelectorBarOptionsHost.this.minWidth), d.height);
+         }
+      };
+   }
+
+   public void setMinWidth(int width) {
+      this.minWidth = width;
+      this.panel.revalidate();
    }
 
    public JComponent getContent() {
