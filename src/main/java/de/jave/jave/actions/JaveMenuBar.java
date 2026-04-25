@@ -352,6 +352,16 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
       this.menuView.add(ActionWidgetFactory.createToggleMenuItem(actions.getGridToggleAction()));
       this.menuView.add(ActionWidgetFactory.createToggleMenuItem(actions.getMarkIllegalToggleAction()));
       this.menuView.add(ActionWidgetFactory.createToggleMenuItem(actions.getConnectedLinesViewToggleAction()));
+      this.menuView.add(ActionWidgetFactory.createToggleMenuItem(actions.getWatermarkVisibilityToggleAction()));
+      this.menuView.add(ActionWidgetFactory.createToggleMenuItem(actions.getAuxLinesVisibilityToggleAction()));
+      this.menuView.add(new SmartAction("Edit Watermark…") {
+         @Override
+         protected void execute(Component parentComponent) {
+            application.setTool(19);
+            application.getWatermarkVisibilityModel().setValue(true);
+            application.showToolOptionsDialog();
+         }
+      });
       if (this.menuCharacterSets != null) {
          this.menuView.add(this.menuCharacterSets);
       }
