@@ -20,7 +20,6 @@ import de.jave.jave.watermark.WatermarkImageFile;
 import de.jave.lib.CharacterPlate;
 import de.jave.preferences.JavePreferences;
 import java.awt.Component;
-import javax.swing.KeyStroke;
 import net.disy.commons.core.io.FileModel;
 import net.disy.commons.core.model.BooleanModel;
 import net.disy.commons.core.model.ObjectModel;
@@ -90,7 +89,7 @@ public class JaveActions {
          }
       };
       this.newDocumentAction.setToolTipText("Create a new Document");
-      this.newDocumentAction.setAcceleratorKey(KeyStroke.getKeyStroke(78, 128));
+      this.newDocumentAction.setAcceleratorKey(JaveKeyBindings.NEW_DOCUMENT);
       AsciiGradientConfiguration gradientConfiguration = configurationList.getRequired(AsciiGradientConfiguration.class);
       AsciiGreyscaleTableConfiguration greyscaleTableConfiguration = configurationList.getRequired(AsciiGreyscaleTableConfiguration.class);
       IImage2AsciiResultTaker resultTaker = new IImage2AsciiResultTaker() {
@@ -123,7 +122,7 @@ public class JaveActions {
          }
       };
       this.browseAction.setToolTipText("Browse ASCII Files");
-      this.browseAction.setAcceleratorKey(KeyStroke.getKeyStroke(66, 128));
+      this.browseAction.setAcceleratorKey(JaveKeyBindings.BROWSE);
       this.openAction = new SmartAction("Open...", JaveIcons.OPEN_ICON) {
          @Override
          protected void execute(Component parentComponent) {
@@ -131,7 +130,7 @@ public class JaveActions {
          }
       };
       this.openAction.setToolTipText("Open an ASCII File");
-      this.openAction.setAcceleratorKey(KeyStroke.getKeyStroke(79, 128));
+      this.openAction.setAcceleratorKey(JaveKeyBindings.OPEN);
       this.aboutAction = new SmartAction("About JavE", JaveIcons.JAVE_ICON) {
          @Override
          protected void execute(Component parentComponent) {
@@ -150,7 +149,7 @@ public class JaveActions {
       this.toolOptionsDialogToggleAction = new SmartToggleAction(toolOptionsDialogVisibilityModel, "Tool Options Dialog", JaveIcons.TOOL_DIALOG_VISIBLE_ICON);
       this.toolOptionsDialogToggleAction.setToolTipText("Show/Hide Tool Options Dialog");
       this.gridToggleAction = new SmartToggleAction(plateViewOptions.getGridVisibilityModel(), "Grid", JaveIcons.GRID_VISIBLE_ICON);
-      this.gridToggleAction.setAcceleratorKey(KeyStroke.getKeyStroke(71, 128));
+      this.gridToggleAction.setAcceleratorKey(JaveKeyBindings.TOGGLE_GRID);
       this.markIllegalToggleAction = new SmartToggleAction(plateViewOptions.getMarkIllegalModel(), "Mark illegal characters", JaveIcons.PURE_ASCII_ICON);
       this.connectedLinesViewToggleAction = new SmartToggleAction(
          plateViewOptions.getConnectedLinesViewModel(), "Connected Lines View", JaveIcons.CONNECTED_LINES_VIEW_ICON

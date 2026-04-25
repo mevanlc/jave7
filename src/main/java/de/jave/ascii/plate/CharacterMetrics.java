@@ -5,6 +5,10 @@ import java.awt.FontMetrics;
 import javax.swing.JOptionPane;
 
 public class CharacterMetrics {
+   private static volatile CellScalingMode currentMode = CellScalingMode.LINE;
+   private static volatile float widthScale = 1.0F;
+   private static volatile float heightScale = 1.0F;
+
    private final int width;
    private final int height;
    private final int ascent;
@@ -27,10 +31,33 @@ public class CharacterMetrics {
       return this.height;
    }
 
+   public static void setMode(CellScalingMode mode) {
+      currentMode = (mode == null) ? CellScalingMode.LINE : mode;
+   }
+
+   public static CellScalingMode getMode() {
+      return currentMode;
+   }
+
+   public static void setScale(float widthScale, float heightScale) {
+      CharacterMetrics.widthScale = widthScale;
+      CharacterMetrics.heightScale = heightScale;
+   }
+
+   public static float getWidthScale() {
+      return widthScale;
+   }
+
+   public static float getHeightScale() {
+      return heightScale;
+   }
+
    public static CharacterMetrics createCharacterMetrics(Font font) {
       FontMetrics fontMetrics = JOptionPane.getRootFrame().getFontMetrics(font);
-      int charWidth = fontMetrics.stringWidth("#");
-      int charHeight = (int)Math.round(-0.14 * (double)font.getSize() * (double)font.getSize() + 4.56 * (double)font.getSize() - 19.3);
-      return new CharacterMetrics(charWidth, charHeight, charHeight - fontMetrics.getDescent());
+      CellScalingMode mode = currentMode;
+      int charWidth = Math.max(1, mode.width(font, fontMetrics));
+      int charHeight = Math.max(1, mode.height(font, fontMetrics));
+      int charAscent = mode.ascent(font, fontMetrics);
+      return new CharacterMetrics(charWidth, charHeight, charAscent);
    }
 }

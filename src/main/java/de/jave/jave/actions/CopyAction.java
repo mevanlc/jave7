@@ -8,13 +8,12 @@ import de.jave.jave.actions.enablestrategy.IJaveDocumentEditorActionEnabledStrat
 import de.jave.jave.plate.IDocumentEditor;
 import de.jave.jave.plate.JaveMainPanel;
 import java.awt.Component;
-import javax.swing.KeyStroke;
 import net.disy.commons.swing.resources.DisyCommonsSwingIconResources;
 
 public class CopyAction extends AbstractJaveAction {
    public CopyAction(JaveMainPanel mainPanel) {
       super(mainPanel, "Copy", DisyCommonsSwingIconResources.COPY);
-      this.setAcceleratorKey(KeyStroke.getKeyStroke(67, 128));
+      this.setAcceleratorKey(JaveKeyBindings.COPY);
       this.setToolTipText("Copy");
    }
 

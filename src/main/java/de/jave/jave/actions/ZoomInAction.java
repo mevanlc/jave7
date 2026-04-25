@@ -10,6 +10,7 @@ import java.awt.Component;
 public final class ZoomInAction extends AbstractJaveAction {
    public ZoomInAction(JaveMainPanel mainPanel) {
       super(mainPanel, "Zoom in", JaveIcons.ZOOM_PLUS_ICON);
+      this.setAcceleratorKey(JaveKeyBindings.ZOOM_IN);
       this.setToolTipText("Zoom in");
    }
 

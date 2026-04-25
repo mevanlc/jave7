@@ -17,7 +17,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Rectangle;
-import javax.swing.KeyStroke;
 import net.disy.commons.core.message.Message;
 import net.disy.commons.core.message.MessageType;
 import net.disy.commons.swing.dialog.message.MessageDialogFactory;
@@ -28,7 +27,7 @@ public class CropAction extends AbstractJaveAction {
    public CropAction(IToolManager toolManager, JaveMainPanel mainPanel) {
       super(mainPanel, "Crop", null);
       this.toolManager = toolManager;
-      this.setAcceleratorKey(KeyStroke.getKeyStroke(82, 128));
+      this.setAcceleratorKey(JaveKeyBindings.CROP);
    }
 
    @Override

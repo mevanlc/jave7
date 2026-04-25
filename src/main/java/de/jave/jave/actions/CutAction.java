@@ -9,7 +9,6 @@ import de.jave.jave.actions.enablestrategy.TextAndAnimationEditorEnabledStrategy
 import de.jave.jave.plate.IDocumentEditor;
 import de.jave.jave.plate.JaveMainPanel;
 import java.awt.Component;
-import javax.swing.KeyStroke;
 import net.disy.commons.swing.mousecursor.CursorId;
 import net.disy.commons.swing.mousecursor.CursorProvider;
 import net.disy.commons.swing.resources.DisyCommonsSwingIconResources;
@@ -17,7 +16,7 @@ import net.disy.commons.swing.resources.DisyCommonsSwingIconResources;
 public class CutAction extends AbstractJaveAction {
    public CutAction(JaveMainPanel mainPanel) {
       super(mainPanel, "Cut", DisyCommonsSwingIconResources.CUT);
-      this.setAcceleratorKey(KeyStroke.getKeyStroke(88, 128));
+      this.setAcceleratorKey(JaveKeyBindings.CUT);
       this.setToolTipText("Cut");
    }
 

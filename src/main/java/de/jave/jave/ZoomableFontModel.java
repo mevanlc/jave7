@@ -8,7 +8,7 @@ import net.disy.commons.swing.fontchooser.model.FontModel;
 
 public class ZoomableFontModel extends AbstractChangeableModel {
    private static final int MIN_FONT_SIZE = 6;
-   private static final int MAX_FONT_SIZE = 16;
+   private static final int MAX_FONT_SIZE = 512;
    private final FontModel fontModel;
    private int sizeDelta = 0;
    private final IChangeListener fontModelChangeListener;
@@ -28,10 +28,10 @@ public class ZoomableFontModel extends AbstractChangeableModel {
 
    private void assureSizeDeltaIsInRangeAndFireChangeEvent() {
       int currentSize = this.fontModel.getFontSize() + this.sizeDelta;
-      if (currentSize < 6) {
-         this.sizeDelta = 6 - this.fontModel.getFontSize();
-      } else if (currentSize > 16) {
-         this.sizeDelta = 16 - this.fontModel.getFontSize();
+      if (currentSize < MIN_FONT_SIZE) {
+         this.sizeDelta = MIN_FONT_SIZE - this.fontModel.getFontSize();
+      } else if (currentSize > MAX_FONT_SIZE) {
+         this.sizeDelta = MAX_FONT_SIZE - this.fontModel.getFontSize();
       }
 
       this.fireChangeEvent();

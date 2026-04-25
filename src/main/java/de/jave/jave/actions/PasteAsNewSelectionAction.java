@@ -9,7 +9,6 @@ import de.jave.jave.plate.IDocumentEditor;
 import de.jave.jave.plate.JaveMainPanel;
 import java.awt.Component;
 import java.awt.Point;
-import javax.swing.KeyStroke;
 import net.disy.commons.core.util.Ensure;
 import net.disy.commons.swing.resources.DisyCommonsSwingIconResources;
 
@@ -18,7 +17,7 @@ public class PasteAsNewSelectionAction extends AbstractJaveAction {
 
    public PasteAsNewSelectionAction(JaveMainPanel mainPanel, JavEApplication jave) {
       super(mainPanel, "Paste As New Selection", DisyCommonsSwingIconResources.PASTE);
-      this.setAcceleratorKey(KeyStroke.getKeyStroke(86, 128));
+      this.setAcceleratorKey(JaveKeyBindings.PASTE_AS_NEW_SELECTION);
       this.setToolTipText("Paste As New Selection");
       Ensure.ensureArgumentNotNull(jave);
       this.jave = jave;

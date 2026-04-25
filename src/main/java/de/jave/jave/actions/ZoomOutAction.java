@@ -10,6 +10,7 @@ import java.awt.Component;
 public final class ZoomOutAction extends AbstractJaveAction {
    public ZoomOutAction(JaveMainPanel mainPanel) {
       super(mainPanel, "Zoom out", JaveIcons.ZOOM_MINUS_ICON);
+      this.setAcceleratorKey(JaveKeyBindings.ZOOM_OUT);
       this.setToolTipText("Zoom out");
    }
 

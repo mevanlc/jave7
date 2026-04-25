@@ -78,6 +78,12 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
       }
    };
    private final IChangeListener updateRulerPropertiesListener;
+   private final IChangeListener updateOnCellScalingChangedListener = new IChangeListener() {
+      @Override
+      public void stateChanged() {
+         Plate.this.updateToNewFont();
+      }
+   };
    private final RulerComponent verticalRulerComponent;
    private final RulerComponent horizontalRulerComponent;
 
@@ -126,6 +132,9 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
       platePreferences.getGridVisibilityModel().addChangeListener(this.repaintChangeListener);
       platePreferences.getMarkIllegalModel().addChangeListener(this.repaintChangeListener);
       platePreferences.getConnectedLinesViewModel().addChangeListener(this.repaintChangeListener);
+      platePreferences.getCellScalingModeModel().addChangeListener(this.updateOnCellScalingChangedListener);
+      platePreferences.getCellScalingWidthModel().addChangeListener(this.updateOnCellScalingChangedListener);
+      platePreferences.getCellScalingHeightModel().addChangeListener(this.updateOnCellScalingChangedListener);
       this.document = document;
       this.selection = document.getSelection();
       this.selection.setPlate(this);
@@ -150,6 +159,9 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
       this.platePreferences.getGridVisibilityModel().removeChangeListener(this.repaintChangeListener);
       this.platePreferences.getMarkIllegalModel().removeChangeListener(this.repaintChangeListener);
       this.platePreferences.getConnectedLinesViewModel().removeChangeListener(this.repaintChangeListener);
+      this.platePreferences.getCellScalingModeModel().removeChangeListener(this.updateOnCellScalingChangedListener);
+      this.platePreferences.getCellScalingWidthModel().removeChangeListener(this.updateOnCellScalingChangedListener);
+      this.platePreferences.getCellScalingHeightModel().removeChangeListener(this.updateOnCellScalingChangedListener);
       this.platePreferences.getRulerModel().removeChangeListener(this.updateRulerPropertiesListener);
       this.horizontalRulerComponent.dispose();
       this.verticalRulerComponent.dispose();

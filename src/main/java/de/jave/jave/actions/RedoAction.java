@@ -2,7 +2,6 @@ package de.jave.jave.actions;
 
 import de.jave.jave.JavEApplication;
 import java.awt.Component;
-import javax.swing.KeyStroke;
 import net.disy.commons.core.model.listener.IChangeListener;
 import net.disy.commons.core.util.Ensure;
 import net.disy.commons.swing.action.SmartAction;
@@ -20,7 +19,7 @@ public class RedoAction extends SmartAction {
       this.application = application;
       this.model = model;
       this.nameIsToolTip = nameIsToolTip;
-      this.setAcceleratorKey(KeyStroke.getKeyStroke(89, 128));
+      this.setAcceleratorKey(JaveKeyBindings.REDO);
       model.addChangeListener(new IChangeListener() {
          @Override
          public void stateChanged() {

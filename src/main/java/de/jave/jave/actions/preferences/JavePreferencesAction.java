@@ -1,5 +1,6 @@
 package de.jave.jave.actions.preferences;
 
+import de.jave.jave.actions.JaveKeyBindings;
 import de.jave.jave.preferences.JaveApplicationPreferences;
 import de.jave.jave.preferences.PlatePreferences;
 import java.awt.Component;
@@ -35,6 +36,7 @@ public final class JavePreferencesAction extends SmartAction {
       Ensure.ensureArgumentNotNull(platePreferences);
       this.preferences = preferences;
       this.platePreferences = platePreferences;
+      this.setAcceleratorKey(JaveKeyBindings.PREFERENCES);
    }
 
    @Override
@@ -46,6 +48,7 @@ public final class JavePreferencesAction extends SmartAction {
       final IJavePreferencesPanel[] panels = new IJavePreferencesPanel[]{
          new GeneralPreferencesPanel(preferences),
          new AuthorPreferencesPanel(preferences),
+         new DisplayPreferencesPanel(platePreferences),
          new TextEditorPreferencesPanel(preferences, platePreferences),
          new AnimationEditorPreferencesPanel(preferences, platePreferences),
          new TextToolPreferencesPanel(preferences),
@@ -108,6 +111,10 @@ public final class JavePreferencesAction extends SmartAction {
 
          preferences.flush();
          platePreferences.flush();
+      } else {
+         for (IJavePreferencesPanel panel : panels) {
+            panel.revert();
+         }
       }
    }
 }

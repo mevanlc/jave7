@@ -8,4 +8,11 @@ public interface IJavePreferencesPanel {
    JComponent getContent();
 
    void savePreferences();
+
+   /**
+    * Undo any in-flight (live-preview) state mutations performed while the
+    * dialog was open. Called when the user cancels the dialog.
+    */
+   default void revert() {
+   }
 }

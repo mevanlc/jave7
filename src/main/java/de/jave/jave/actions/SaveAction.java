@@ -8,7 +8,6 @@ import de.jave.jave.icon.JaveIcons;
 import de.jave.jave.plate.IDocumentEditor;
 import de.jave.jave.plate.JaveMainPanel;
 import java.awt.Component;
-import javax.swing.KeyStroke;
 
 public class SaveAction extends AbstractJaveAction {
    private final JavEApplication jave;
@@ -17,7 +16,7 @@ public class SaveAction extends AbstractJaveAction {
       super(mainPanel, "Save", JaveIcons.SAVE_EDIT_ICON);
       this.jave = jave;
       this.setToolTipText("Save File");
-      this.setAcceleratorKey(KeyStroke.getKeyStroke(83, 128));
+      this.setAcceleratorKey(JaveKeyBindings.SAVE);
    }
 
    @Override

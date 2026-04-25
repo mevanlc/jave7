@@ -21,9 +21,7 @@ public class MacOsXInitializer {
    }
 
    public static void setMnemonic(JMenu menu, char mnemonicChar) {
-      if (!isMacOs()) {
-         menu.setMnemonic(mnemonicChar);
-      }
+      menu.setMnemonic(mnemonicChar);
    }
 
    public static boolean isMacOs() {

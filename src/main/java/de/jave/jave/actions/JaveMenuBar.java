@@ -78,7 +78,6 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.KeyStroke;
 import net.disy.commons.core.message.IBasicMessage;
 import net.disy.commons.core.model.listener.IChangeListener;
 import net.disy.commons.core.util.Ensure;
@@ -151,7 +150,7 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
       this.application = application;
       this.miRevert = this.createMenuItem("Revert");
       this.miClose = this.createMenuItem("Close");
-      this.miClose.setAccelerator(KeyStroke.getKeyStroke(87, 128));
+      this.miClose.setAccelerator(JaveKeyBindings.CLOSE);
       this.miCloseAll = this.createMenuItem("Close All");
       SmartAction exitAction = new SmartAction("Exit") {
          @Override
@@ -205,11 +204,11 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
       animationMenu.addSeparator();
       animationMenu.add(new AnimationEditorPropertiesAction(mainPanel));
       this.miSelectAll = this.createMenuItem("Select All");
-      this.miSelectAll.setAccelerator(KeyStroke.getKeyStroke(65, 128));
+      this.miSelectAll.setAccelerator(JaveKeyBindings.SELECT_ALL);
       FontModel displayFontModel = preferences.getDisplayFontModel();
       this.miClear = this.createMenuItem(mainPanel, new Clear(), displayFontModel);
       this.miReplace = this.createMenuItem("Replace...");
-      this.miReplace.setAccelerator(KeyStroke.getKeyStroke(72, 128));
+      this.miReplace.setAccelerator(JaveKeyBindings.REPLACE);
       JMenu menuEdit = new SmartMenu(JaveMessages.Menu_Edit);
       menuEdit.add(new UndoAction(application, undoRedoModel, false));
       menuEdit.add(new RedoAction(application, undoRedoModel, false));
