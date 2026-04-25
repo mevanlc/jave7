@@ -49,6 +49,7 @@ import de.jave.jave.preferences.PlatePreferences;
 import de.jave.jave.tool.dialog.ToolOptionsDialog;
 import de.jave.jave.tool.text.TextTool;
 import de.jave.jave.version.JaveTitleProvider;
+import de.jave.jave.watermark.IWatermarkPainter;
 import de.jave.jave.watermark.WatermarkImageFile;
 import de.jave.javeplayer.JaveAnimationFile;
 import de.jave.lib.CharacterPlate;
@@ -100,6 +101,8 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
    private final JaveApplicationPreferences applicationPreferences;
    private final JaveTopToolbar topToolbar;
    private final BooleanModel toolOptionsDialogVisibilityModel;
+   private final BooleanModel watermarkVisibilityModel;
+   private final BooleanModel auxLinesVisibilityModel;
    private final PlatePreferences platePreferences;
    private final ConfigurationList configurationList;
    private final CharacterSets characterSets;
@@ -127,6 +130,8 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
                   JavEApplication.this.toolOptionsDialogVisibilityModel.getValue());
          }
       });
+      this.watermarkVisibilityModel = new BooleanModel();
+      this.auxLinesVisibilityModel = new BooleanModel();
       this.documentManager = new DocumentManager(currectDirectoryModel, this.applicationPreferences.getDefaultColorSchemeModel());
       this.platePreferences = new PlatePreferences(this.javePreferences);
       MouseCharacterModel mouseCharacterModel = new MouseCharacterModel();
@@ -175,6 +180,22 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
       });
       this.topToolbar = new JaveTopToolbar(this, this.actions, this.undoRedoModel);
       this.toolBar = new ToolBar(this, this.applicationPreferences, configurationList, this.platePreferences);
+      this.watermarkVisibilityModel.addChangeListener(new IChangeListener() {
+         @Override
+         public void stateChanged() {
+            boolean v = JavEApplication.this.watermarkVisibilityModel.getValue();
+            ((IWatermarkPainter) JavEApplication.this.mainPanel.getToolManager().getTool(19)).setEnabled(v);
+            JavEApplication.this.mainPanel.repaint();
+         }
+      });
+      this.auxLinesVisibilityModel.addChangeListener(new IChangeListener() {
+         @Override
+         public void stateChanged() {
+            boolean v = JavEApplication.this.auxLinesVisibilityModel.getValue();
+            ((IWatermarkPainter) JavEApplication.this.mainPanel.getToolManager().getTool(20)).setEnabled(v);
+            JavEApplication.this.mainPanel.repaint();
+         }
+      });
       JaveDropFileOpener.attachTo(this, this.mainPanel.getContent());
       JComponent bottomPanel = this.statusBar.getContent();
       this.frame.getContentPane().setLayout(new BorderLayout());
@@ -909,6 +930,14 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
 
    public ToolBar getToolBar() {
       return this.toolBar;
+   }
+
+   public BooleanModel getWatermarkVisibilityModel() {
+      return this.watermarkVisibilityModel;
+   }
+
+   public BooleanModel getAuxLinesVisibilityModel() {
+      return this.auxLinesVisibilityModel;
    }
 
    public JaveMainPanel getMainPanel() {

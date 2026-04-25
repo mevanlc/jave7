@@ -35,7 +35,7 @@ import de.jave.jave.tool.freehandalgorrithmic.FreehandAlgorithmicTool;
 import de.jave.jave.tool.linealgorithmic.LineAlgorithmicTool;
 import de.jave.jave.tool.rectanglealgorithmic.RectangleAlgorithmicTool;
 import de.jave.jave.tool.text.TextTool;
-import de.jave.jave.watermark.IWatermarkPainter;
+import net.disy.commons.core.model.listener.IChangeListener;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
@@ -83,24 +83,34 @@ public class ToolBar {
       this.application = application;
       this.preferences = preferences;
       this.createTools();
-      this.cbWatermark = new JCheckBox((String)null, false);
+      this.cbWatermark = new JCheckBox((String)null, application.getWatermarkVisibilityModel().getValue());
       this.cbWatermark.setToolTipText(JaveMessages.ToolCheckBox_Watermark_Tooltip);
       this.cbWatermark.addItemListener(new ItemListener() {
          @Override
          public void itemStateChanged(ItemEvent e) {
-            ((IWatermarkPainter)ToolBar.this.tools[19]).setEnabled(ToolBar.this.cbWatermark.isSelected());
-            application.getMainPanel().repaint();
+            application.getWatermarkVisibilityModel().setValue(ToolBar.this.cbWatermark.isSelected());
             application.getMainPanel().requestFocus();
          }
       });
-      this.cbAuxLines = new JCheckBox((String)null, false);
+      application.getWatermarkVisibilityModel().addChangeListener(new IChangeListener() {
+         @Override
+         public void stateChanged() {
+            ToolBar.this.cbWatermark.setSelected(application.getWatermarkVisibilityModel().getValue());
+         }
+      });
+      this.cbAuxLines = new JCheckBox((String)null, application.getAuxLinesVisibilityModel().getValue());
       this.cbAuxLines.setToolTipText(JaveMessages.ToolCheckBox_AuxLines_Tooltip);
       this.cbAuxLines.addItemListener(new ItemListener() {
          @Override
          public void itemStateChanged(ItemEvent e) {
-            ((IWatermarkPainter)ToolBar.this.tools[20]).setEnabled(ToolBar.this.cbAuxLines.isSelected());
-            application.getMainPanel().repaint();
+            application.getAuxLinesVisibilityModel().setValue(ToolBar.this.cbAuxLines.isSelected());
             application.getMainPanel().requestFocus();
+         }
+      });
+      application.getAuxLinesVisibilityModel().addChangeListener(new IChangeListener() {
+         @Override
+         public void stateChanged() {
+            ToolBar.this.cbAuxLines.setSelected(application.getAuxLinesVisibilityModel().getValue());
          }
       });
       GCheckbox cbGrid = new GCheckbox(plateViewOptions.getGridVisibilityModel(), JaveIcons.GRID_VISIBLE_ICON);
@@ -174,13 +184,11 @@ public class ToolBar {
    }
 
    public void setWatermarkVisible(boolean what) {
-      ((IWatermarkPainter)this.tools[19]).setEnabled(what);
-      this.cbWatermark.setSelected(what);
+      this.application.getWatermarkVisibilityModel().setValue(what);
    }
 
    public void setAuxiliaryLinesVisible(boolean what) {
-      ((IWatermarkPainter)this.tools[20]).setEnabled(what);
-      this.cbAuxLines.setSelected(what);
+      this.application.getAuxLinesVisibilityModel().setValue(what);
    }
 
    public void selectToolButton(int toolIndex) {
