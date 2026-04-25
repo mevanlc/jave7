@@ -42,6 +42,8 @@ public class JaveActions {
    private final SmartToggleAction markIllegalToggleAction;
    private final SmartToggleAction connectedLinesViewToggleAction;
    private final SmartToggleAction rulerToggleAction;
+   private final SmartToggleAction watermarkVisibilityToggleAction;
+   private final SmartToggleAction auxLinesVisibilityToggleAction;
    private final ShowFigletEditorAction figletAction;
    private final ResizeDocumentAction resizeAction;
    private final ClipartLibraryAction clipartLibraryAction;
@@ -156,6 +158,12 @@ public class JaveActions {
          plateViewOptions.getConnectedLinesViewModel(), "Connected Lines View", JaveIcons.CONNECTED_LINES_VIEW_ICON
       );
       this.rulerToggleAction = new SmartToggleAction(plateViewOptions.getRulerModel(), "Rulers", JaveIcons.RULER_ICON);
+      this.watermarkVisibilityToggleAction = new SmartToggleAction(
+         jave.getWatermarkVisibilityModel(), "Show Watermark", JaveIcons.TOOL_WATERMARK_ICON
+      );
+      this.auxLinesVisibilityToggleAction = new SmartToggleAction(
+         jave.getAuxLinesVisibilityModel(), "Show Auxiliary Lines", JaveIcons.TOOL_AUXILIARY_LINES_ICON
+      );
       this.clipartLibraryAction = new ClipartLibraryAction(jave, mainPanel);
       this.mathematicalExpressionsAction = new MathematicalExpressionsAction(jave, mainPanel);
       this.textBoxAction = new TextBoxAction(jave, mainPanel);
@@ -209,6 +217,14 @@ public class JaveActions {
 
    public SmartToggleAction getConnectedLinesViewToggleAction() {
       return this.connectedLinesViewToggleAction;
+   }
+
+   public SmartToggleAction getWatermarkVisibilityToggleAction() {
+      return this.watermarkVisibilityToggleAction;
+   }
+
+   public SmartToggleAction getAuxLinesVisibilityToggleAction() {
+      return this.auxLinesVisibilityToggleAction;
    }
 
    public SmartToggleAction getRulerToggleAction() {

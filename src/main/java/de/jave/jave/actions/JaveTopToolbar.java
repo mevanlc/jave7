@@ -51,6 +51,12 @@ public class JaveTopToolbar {
       JToggleButton connectedLinesToggle = ActionWidgetFactory.createToggleButton(actions.getConnectedLinesViewToggleAction());
       connectedLinesToggle.setToolTipText(JaveMessages.ToolCheckBox_ConnectedLinesView_Tooltip);
       builder.add(connectedLinesToggle);
+      JToggleButton watermarkToggle = ActionWidgetFactory.createToggleButton(actions.getWatermarkVisibilityToggleAction());
+      watermarkToggle.setToolTipText(JaveMessages.ToolCheckBox_Watermark_Tooltip);
+      builder.add(watermarkToggle);
+      JToggleButton auxLinesToggle = ActionWidgetFactory.createToggleButton(actions.getAuxLinesVisibilityToggleAction());
+      auxLinesToggle.setToolTipText(JaveMessages.ToolCheckBox_AuxLines_Tooltip);
+      builder.add(auxLinesToggle);
       builder.addSeparator();
       builder.add(actions.getAboutAction());
       this.content = builder.createPanel();
