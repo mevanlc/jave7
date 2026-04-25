@@ -6,6 +6,7 @@ import de.jave.jave.plate.IDocumentEditor;
 import de.jave.jave.plate.JaveMainPanel;
 import de.jave.jave.plate.MouseCharacterModel;
 import de.jave.jave.preferences.ColorScheme;
+import de.jave.jave.tool.dialog.IInlineToolOptions;
 import de.jave.lib.Toolbox;
 import java.awt.Cursor;
 import java.awt.Graphics2D;
@@ -358,6 +359,16 @@ public abstract class Tool implements ItemListener, ActionListener {
       }
 
       return this.optionsComponent;
+   }
+
+   /**
+    * Returns this tool's inline options panel for rendering in the tool
+    * selector bar. Default returns {@code null}, meaning the tool has no
+    * inline panel and the host renders the fallback. Tools migrated to
+    * the inline-options contract override this.
+    */
+   public IInlineToolOptions getInlineOptionsPanel() {
+      return null;
    }
 
    protected void showStatus(String text) {

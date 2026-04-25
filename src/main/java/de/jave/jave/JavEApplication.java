@@ -46,7 +46,9 @@ import de.jave.jave.preferences.AnimationExportPreferences;
 import de.jave.jave.preferences.ColorScheme;
 import de.jave.jave.preferences.JaveApplicationPreferences;
 import de.jave.jave.preferences.PlatePreferences;
+import de.jave.jave.tool.dialog.FallbackInlineOptionsPanel;
 import de.jave.jave.tool.dialog.ToolOptionsDialog;
+import de.jave.jave.tool.dialog.ToolSelectorBarOptionsHost;
 import de.jave.jave.tool.text.TextTool;
 import de.jave.jave.version.JaveTitleProvider;
 import de.jave.jave.watermark.IWatermarkPainter;
@@ -100,6 +102,7 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
    private final JavePreferences javePreferences;
    private final JaveApplicationPreferences applicationPreferences;
    private final JaveTopToolbar topToolbar;
+   private ToolSelectorBarOptionsHost toolSelectorBarOptionsHost;
    private final BooleanModel toolOptionsDialogVisibilityModel;
    private final BooleanModel watermarkVisibilityModel;
    private final BooleanModel auxLinesVisibilityModel;
@@ -196,6 +199,8 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
             JavEApplication.this.mainPanel.repaint();
          }
       });
+      this.toolSelectorBarOptionsHost = new ToolSelectorBarOptionsHost(new FallbackInlineOptionsPanel());
+      this.toolSelectorBarOptionsHost.setTool(this.mainPanel.getCurrentTool());
       JaveDropFileOpener.attachTo(this, this.mainPanel.getContent());
       JComponent bottomPanel = this.statusBar.getContent();
       this.frame.getContentPane().setLayout(new BorderLayout());
@@ -826,6 +831,10 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
          Tool newTool = this.mainPanel.getToolManager().getTool(toolIndex);
          if (this.optionsDialog != null) {
             this.optionsDialog.setTool(newTool);
+         }
+
+         if (this.toolSelectorBarOptionsHost != null) {
+            this.toolSelectorBarOptionsHost.setTool(newTool);
          }
 
          this.toolBar.selectToolButton(toolIndex);
