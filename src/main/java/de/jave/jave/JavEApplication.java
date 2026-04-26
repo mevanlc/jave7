@@ -186,11 +186,17 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
       });
       this.topToolbar = new JaveTopToolbar(this, this.actions, this.undoRedoModel);
       FallbackInlineOptionsPanel fallback = new FallbackInlineOptionsPanel();
-      int hostWidth = InlineOptionsWidthMeasurer.measureMaxWidth(
-         java.util.Collections.<JComponent>singletonList(fallback.getContent()));
       this.toolSelectorBarOptionsHost = new ToolSelectorBarOptionsHost(fallback);
-      this.toolSelectorBarOptionsHost.setMinWidth(hostWidth);
       this.toolBar = new ToolBar(this, this.applicationPreferences, configurationList, this.platePreferences, this.toolSelectorBarOptionsHost);
+      java.util.List<JComponent> measuredPanels = new java.util.ArrayList<>();
+      measuredPanels.add(fallback.getContent());
+      for (Tool tool : this.mainPanel.getToolManager().getTools()) {
+         de.jave.jave.tool.dialog.IInlineToolOptions inline = tool.getInlineOptionsPanel();
+         if (inline != null) {
+            measuredPanels.add(inline.getContent());
+         }
+      }
+      this.toolSelectorBarOptionsHost.setMinWidth(InlineOptionsWidthMeasurer.measureMaxWidth(measuredPanels));
       this.watermarkVisibilityModel.addChangeListener(new IChangeListener() {
          @Override
          public void stateChanged() {
