@@ -5,12 +5,12 @@ import de.jave.jave.filter.Filter;
 import de.jave.jave.icon.JaveIcons;
 import de.jave.jave.plate.JaveMainPanel;
 import de.jave.jave.preferences.ColorScheme;
+import de.jave.jave.tool.dialog.IInlineToolOptions;
 import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import javax.swing.Icon;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 import net.disy.commons.core.message.Message;
 import net.disy.commons.core.message.MessageType;
@@ -23,18 +23,21 @@ public class CloneTool extends EraserTool {
    private int dy;
    private Point cloneLocation;
    private boolean positionLocked = false;
+   private IInlineToolOptions cloneInlineOptions;
 
    public CloneTool(JaveMainPanel plate, JavEApplication application, Filter filter) {
       super(plate, application, filter);
    }
 
    @Override
-   protected JComponent createOptionsComponent() {
-      JPanel optionsPanel = (JPanel)super.createOptionsComponent();
-      JPanel panel = new JPanel(new GridDialogLayout(1, false));
-      panel.add(optionsPanel);
-      panel.add(new MergeCharactersPanel(this.getMixCharactersModel()).getContent());
-      return panel;
+   public IInlineToolOptions getInlineOptionsPanel() {
+      if (this.cloneInlineOptions == null) {
+         JPanel panel = new JPanel(new GridDialogLayout(1, false));
+         panel.add(this.buildEraserOptionsContent());
+         panel.add(new MergeCharactersPanel(this.getMixCharactersModel()).getContent());
+         this.cloneInlineOptions = new EraserOptionsPanel(panel);
+      }
+      return this.cloneInlineOptions;
    }
 
    @Override

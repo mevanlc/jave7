@@ -3,6 +3,7 @@ package de.jave.jave;
 import de.jave.jave.filter.Filter;
 import de.jave.jave.icon.JaveIcons;
 import de.jave.jave.plate.JaveMainPanel;
+import de.jave.jave.tool.dialog.IInlineToolOptions;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import javax.swing.Icon;
@@ -121,6 +122,7 @@ public class EraserTool extends AbstractPencilTool {
       }
    };
    private SpinnerNumberModel sizeModel;
+   private IInlineToolOptions inlineOptions;
 
    public EraserTool(JaveMainPanel plate, JavEApplication application, Filter filter) {
       super(plate, application, filter);
@@ -142,7 +144,14 @@ public class EraserTool extends AbstractPencilTool {
    }
 
    @Override
-   protected JComponent createOptionsComponent() {
+   public IInlineToolOptions getInlineOptionsPanel() {
+      if (this.inlineOptions == null) {
+         this.inlineOptions = new EraserOptionsPanel(this.buildEraserOptionsContent());
+      }
+      return this.inlineOptions;
+   }
+
+   protected JComponent buildEraserOptionsContent() {
       this.chStyle = new JComboBox<>(STYLE_STR);
       this.chStyle.setSelectedIndex(0);
       this.sizeModel = new SpinnerNumberModel(DEFAULT_SIZE, 1, 6, 1);
