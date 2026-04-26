@@ -1,8 +1,14 @@
 # Tool Options Rework — PHASE1: First Tool Migrations
 
-> **Status:** ready for implementation. Builds on landed PHASE0
-> infrastructure (`IInlineToolOptions`, `ToolSelectorBarOptionsHost`,
-> `InlineOptionsWidthMeasurer`, `ToolOptionsDialog` hint-label branch).
+> **Status:** complete. All 10 tools migrated; legacy
+> `PixelPlateOptionsPanel` deleted; bar width measurement in place.
+> Notable PHASE1 discovery captured separately at
+> `aidocs/NOTES-disy-swing-layouts.md` (the `equalColumns=true` ×
+> span-cell quirk in disy GridDialogLayout that inflated the bar).
+>
+> Builds on landed PHASE0 infrastructure (`IInlineToolOptions`,
+> `ToolSelectorBarOptionsHost`, `InlineOptionsWidthMeasurer`,
+> `ToolOptionsDialog` hint-label branch).
 >
 > **Master plan:** `aidocs/PLAN-TOOL-OPTIONS-REWORK.md`
 > **Prerequisite phase:** `aidocs/PLAN-TOOL-OPTIONS-REWORK-PHASE0.md` (landed)
