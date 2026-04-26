@@ -184,12 +184,8 @@ public class AuxiliaryLinesTool extends Tool implements IWatermarkPainter {
       if (this.popupObject != null) {
          this.popupObject = null;
          this.repaintCursor();
-      } else if (evt.isMetaDown() && this.selectedObject != null && this.selectedObject instanceof Line2d) {
-         this.popupObject = (Line2d)this.selectedObject;
-         this.selectedObject = null;
-         this.setCursor(CursorProvider.getInstance().getCursor(CursorId.CROSSHAIR_SELECTION));
-         JPopupMenu menu = this.createPopupMenu();
-         menu.show(this.getPlate(), point.x, point.y);
+      } else if (this.tryShowPopup(point, evt)) {
+         // popup shown
       } else if (this.selectedObject != null) {
          Point2d pp1 = this.getPlate().getRealLocationForScreenPoint(point);
          this.lastPoint = pp1;
@@ -201,6 +197,13 @@ public class AuxiliaryLinesTool extends Tool implements IWatermarkPainter {
 
    @Override
    public void mouseReleased(Point point, Point location, MouseEvent evt) {
+      if (evt.isPopupTrigger()) {
+         // Windows/Linux fire popup trigger on release; cancel any in-progress
+         // line stub from the matching press so a right-click doesn't draw.
+         this.newLine = null;
+         this.tryShowPopup(point, evt);
+         return;
+      }
       if (this.newLine != null) {
          if (this.newLine.length() > 2.0) {
             if (!this.enabled) {
@@ -214,6 +217,21 @@ public class AuxiliaryLinesTool extends Tool implements IWatermarkPainter {
 
          this.newLine = null;
       }
+   }
+
+   private boolean tryShowPopup(Point point, MouseEvent evt) {
+      if (!evt.isPopupTrigger()) {
+         return false;
+      }
+      if (!(this.selectedObject instanceof Line2d)) {
+         return false;
+      }
+      this.popupObject = (Line2d)this.selectedObject;
+      this.selectedObject = null;
+      this.setCursor(CursorProvider.getInstance().getCursor(CursorId.CROSSHAIR_SELECTION));
+      JPopupMenu menu = this.createPopupMenu();
+      menu.show(this.getPlate(), point.x, point.y);
+      return true;
    }
 
    @Override
@@ -249,7 +267,23 @@ public class AuxiliaryLinesTool extends Tool implements IWatermarkPainter {
    }
 
    private void performDelete() {
-      this.model.remove(this.popupObject);
+      Line2d toRemove = null;
+      if (this.popupObject != null) {
+         toRemove = this.popupObject;
+      } else if (this.selectedObject instanceof Line2d) {
+         toRemove = (Line2d)this.selectedObject;
+      } else if (this.selectedObject instanceof Point2d) {
+         Point2d endpoint = (Point2d)this.selectedObject;
+         for (Line2d line : this.model.getLines()) {
+            if (line.getStartPoint() == endpoint || line.getEndPoint() == endpoint) {
+               toRemove = line;
+               break;
+            }
+         }
+      }
+      if (toRemove != null) {
+         this.model.remove(toRemove);
+      }
       this.popupObject = null;
       this.selectedObject = null;
       this.setCursor(CursorProvider.getInstance().getCursor(CursorId.CROSSHAIR_SELECTION));
