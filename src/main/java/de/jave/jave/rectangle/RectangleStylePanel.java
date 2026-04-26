@@ -47,7 +47,7 @@ public class RectangleStylePanel implements ItemListener, ItemSelectable {
       this.chMode = new JComboBox<>(items);
       this.chMode.setSelectedIndex(0);
       this.chMode.addItemListener(this);
-      JPanel p1 = new JPanel(new GridDialogLayout(2, false));
+      JPanel p1 = new JPanel(new GridDialogLayout(1, false));
       p1.add(new JLabel("Style:"));
       p1.add(this.chMode, GridDialogLayoutData.FILL_HORIZONTAL);
       char[] chars = RectangleAlgorithm.getCharsForStyle(((RectangleStylePanel.RectangleStyleItem)this.chMode.getSelectedItem()).getStyle());

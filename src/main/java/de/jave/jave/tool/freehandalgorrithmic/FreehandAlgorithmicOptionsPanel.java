@@ -38,13 +38,11 @@ public class FreehandAlgorithmicOptionsPanel implements IInlineToolOptions {
          }
       });
       this.updateMouseCharactersPanelEnabled(mouseCharacterPanel);
-      JPanel optionsPanel = new JPanel(new GridDialogLayout(2, false));
-      optionsPanel.add(new JLabel("Style:"), GridDialogLayoutData.RIGHT);
-      optionsPanel.add(chMode);
-      GridDialogLayoutData data = new GridDialogLayoutData(GridDialogLayoutData.FILL_HORIZONTAL);
-      data.setHorizontalSpan(2);
-      optionsPanel.add(mouseCharacterPanel.getContent(), data);
-      optionsPanel.add(new MergeCharactersPanel(mixCharactersModel).getContent(), data);
+      JPanel optionsPanel = new JPanel(new GridDialogLayout(1, false));
+      optionsPanel.add(new JLabel("Style:"));
+      optionsPanel.add(chMode, GridDialogLayoutData.FILL_HORIZONTAL);
+      optionsPanel.add(mouseCharacterPanel.getContent(), GridDialogLayoutData.FILL_HORIZONTAL);
+      optionsPanel.add(new MergeCharactersPanel(mixCharactersModel).getContent(), GridDialogLayoutData.FILL_HORIZONTAL);
       this.content = optionsPanel;
    }
 

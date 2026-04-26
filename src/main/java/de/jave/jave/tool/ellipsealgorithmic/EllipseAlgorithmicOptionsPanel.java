@@ -35,13 +35,11 @@ public class EllipseAlgorithmicOptionsPanel implements IInlineToolOptions {
       });
       this.updateMouseCharacterPanelEnabled(mouseCharacterPanel);
       MergeCharactersPanel mixCharactersPanel = new MergeCharactersPanel(mixCharactersModel);
-      JPanel panel = new JPanel(new GridDialogLayout(2, false));
+      JPanel panel = new JPanel(new GridDialogLayout(1, false));
       panel.add(new JLabel(JaveMessages.Tool_EllipseAlgorithmic_StyleLabel));
-      panel.add(chMode);
-      GridDialogLayoutData data = new GridDialogLayoutData();
-      data.setHorizontalSpan(2);
-      panel.add(mouseCharacterPanel.getContent(), data);
-      panel.add(mixCharactersPanel.getContent(), data);
+      panel.add(chMode, GridDialogLayoutData.FILL_HORIZONTAL);
+      panel.add(mouseCharacterPanel.getContent(), GridDialogLayoutData.FILL_HORIZONTAL);
+      panel.add(mixCharactersPanel.getContent(), GridDialogLayoutData.FILL_HORIZONTAL);
       this.content = panel;
    }
 

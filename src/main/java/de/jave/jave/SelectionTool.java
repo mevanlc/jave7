@@ -107,12 +107,12 @@ public class SelectionTool extends Tool {
          this.chSelectionLayer.setSelectedIndex(1);
          this.cbCollision = new JCheckBox("Collision", false);
          mergeCharactersPanel.setEnabled(this.chSelectionLayer.getSelectedIndex() == 2);
-         final JPanel optionsPanel = new JPanel(new GridDialogLayout(2, false));
-         optionsPanel.add(new JLabel("Paste mode:"), GridDialogLayoutData.RIGHT);
-         optionsPanel.add(this.chSelectionLayer);
+         final JPanel optionsPanel = new JPanel(new GridDialogLayout(1, false));
+         optionsPanel.add(new JLabel("Paste mode:"));
+         optionsPanel.add(this.chSelectionLayer, GridDialogLayoutData.FILL_HORIZONTAL);
          optionsPanel.add(this.cbCollision);
          optionsPanel.add(this.cb3d);
-         optionsPanel.add(mergeCharactersPanel.getContent(), new GridDialogLayoutData(GridDialogLayoutData.FILL_HORIZONTAL).setHorizontalSpan(2));
+         optionsPanel.add(mergeCharactersPanel.getContent(), GridDialogLayoutData.FILL_HORIZONTAL);
          this.inlineOptions = () -> optionsPanel;
       }
       return this.inlineOptions;

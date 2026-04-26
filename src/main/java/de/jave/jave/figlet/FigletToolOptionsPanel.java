@@ -3,21 +3,17 @@ package de.jave.jave.figlet;
 import de.jave.figlet.engine.IFigDriver;
 import de.jave.figlet.engine.primitives.FigFont;
 import de.jave.figlet.file.IFigFontCategory;
-import de.jave.figlet.swing.action.FontInfoAction;
 import de.jave.figlet.swing.fontchooser.FixedIconListCellRenderer;
 import de.jave.figlet.swing.ui.FigletIcons;
 import de.jave.figlet.swing.ui.FontCategoriesListCellRenderer;
 import de.jave.figlet.util.FigException;
-import de.jave.gui.layout.Gap;
 import de.jave.jave.MergeCharactersPanel;
-import de.jave.jave.actions.ButtonToolbarBuilder;
 import de.jave.jave.tool.dialog.IInlineToolOptions;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -45,12 +41,6 @@ public class FigletToolOptionsPanel implements IInlineToolOptions {
       this.chCategory.setRenderer(new FontCategoriesListCellRenderer());
       this.chFont = new JComboBox();
       this.chFont.setRenderer(new FixedIconListCellRenderer(FigletIcons.FONT_ICON));
-      JButton bFontInfo = ButtonToolbarBuilder.createToolbarButton(new FontInfoAction(figDriver) {
-         @Override
-         protected String getSelectedFont() {
-            return FigletToolOptionsPanel.this.fontModel.getFont().getName();
-         }
-      });
       this.chCategory.setSelectedItem(figDriver.getFileLibrary().getFontCategorization().getDefaultCategory());
       this.chCategory.addItemListener(new ItemListener() {
          @Override
@@ -67,14 +57,11 @@ public class FigletToolOptionsPanel implements IInlineToolOptions {
          }
       });
       this.updateFont();
-      JPanel optionsPanel = new JPanel(new GridDialogLayout(3, false));
-      optionsPanel.add(new JLabel("Font Category:"), GridDialogLayoutData.RIGHT);
+      JPanel optionsPanel = new JPanel(new GridDialogLayout(1, false));
+      optionsPanel.add(new JLabel("Font Category:"));
       optionsPanel.add(this.chCategory, GridDialogLayoutData.FILL_HORIZONTAL);
-      optionsPanel.add(new Gap());
-      optionsPanel.add(new JLabel("Font:"), GridDialogLayoutData.RIGHT);
+      optionsPanel.add(new JLabel("Font:"));
       optionsPanel.add(this.chFont, GridDialogLayoutData.FILL_HORIZONTAL);
-      optionsPanel.add(bFontInfo);
-      optionsPanel.add(new Gap());
       optionsPanel.add(new MergeCharactersPanel(mixCharactersModel).getContent());
       this.content = optionsPanel;
    }

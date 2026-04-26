@@ -91,10 +91,10 @@ public class TextTool extends Tool {
                TextTool.this.mainPanel.requestFocus();
             }
          });
-         final JPanel panel = new JPanel(new GridDialogLayout(2, false));
-         panel.add(new JLabel(JaveMessages.Tool_Text_CursorMovement), GridDialogLayoutData.RIGHT);
-         panel.add(this.chMovement);
-         panel.add(this.mergeCharactersPanel.getContent(), new GridDialogLayoutData().setHorizontalSpan(2));
+         final JPanel panel = new JPanel(new GridDialogLayout(1, false));
+         panel.add(new JLabel(JaveMessages.Tool_Text_CursorMovement));
+         panel.add(this.chMovement, GridDialogLayoutData.FILL_HORIZONTAL);
+         panel.add(this.mergeCharactersPanel.getContent());
          this.inlineOptions = () -> panel;
       }
       return this.inlineOptions;
