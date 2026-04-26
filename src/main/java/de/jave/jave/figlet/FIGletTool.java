@@ -13,6 +13,7 @@ import de.jave.jave.Tool;
 import de.jave.jave.filter.Filter;
 import de.jave.jave.plate.JaveMainPanel;
 import de.jave.jave.preferences.ColorScheme;
+import de.jave.jave.tool.dialog.IInlineToolOptions;
 import de.jave.lib.CharacterPlate;
 import de.jave.lib.job.IResultConsumer;
 import de.jave.lib.job.NullWarningCollector;
@@ -25,7 +26,6 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import javax.swing.Icon;
-import javax.swing.JComponent;
 import net.disy.commons.core.asynchronous.AsynchronousDroppingJobProcessor;
 import net.disy.commons.core.exception.PrintStackTraceExceptionHandler;
 import net.disy.commons.core.model.listener.IChangeListener;
@@ -62,25 +62,27 @@ public class FIGletTool extends Tool implements IResultConsumer {
    }
 
    @Override
-   protected JComponent createOptionsComponent() {
-      FigConversionJobProcessor figThread = new FigConversionJobProcessor(this.figDriver, this, new NullWarningCollector());
-      this.processor = new AsynchronousDroppingJobProcessor<>(figThread, new PrintStackTraceExceptionHandler());
-      this.panel = new FigletToolOptionsPanel(this.figDriver, this.getMixCharactersModel());
-      this.getMixCharactersModel().addChangeListener(new IChangeListener() {
-         @Override
-         public void stateChanged() {
-            FIGletTool.this.fontChanged();
-         }
-      });
-      this.fontModel = this.panel.getFontModel();
-      this.fontModel.addChangeListener(new IChangeListener() {
-         @Override
-         public void stateChanged() {
-            FIGletTool.this.fontChanged();
-         }
-      });
-      this.fontChanged();
-      return this.panel.getContent();
+   public IInlineToolOptions getInlineOptionsPanel() {
+      if (this.panel == null) {
+         FigConversionJobProcessor figThread = new FigConversionJobProcessor(this.figDriver, this, new NullWarningCollector());
+         this.processor = new AsynchronousDroppingJobProcessor<>(figThread, new PrintStackTraceExceptionHandler());
+         this.panel = new FigletToolOptionsPanel(this.figDriver, this.getMixCharactersModel());
+         this.getMixCharactersModel().addChangeListener(new IChangeListener() {
+            @Override
+            public void stateChanged() {
+               FIGletTool.this.fontChanged();
+            }
+         });
+         this.fontModel = this.panel.getFontModel();
+         this.fontModel.addChangeListener(new IChangeListener() {
+            @Override
+            public void stateChanged() {
+               FIGletTool.this.fontChanged();
+            }
+         });
+         this.fontChanged();
+      }
+      return this.panel;
    }
 
    @Override

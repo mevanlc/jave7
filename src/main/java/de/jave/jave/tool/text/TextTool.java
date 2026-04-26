@@ -10,6 +10,7 @@ import de.jave.jave.icon.JaveIcons;
 import de.jave.jave.plate.JaveMainPanel;
 import de.jave.jave.preferences.BooleanPreferenceModel;
 import de.jave.jave.preferences.ColorScheme;
+import de.jave.jave.tool.dialog.IInlineToolOptions;
 import de.jave.lib.CharacterPlate;
 import de.jave.lib.Toolbox;
 import de.jave.text.TextTools;
@@ -40,6 +41,7 @@ public class TextTool extends Tool {
    private Rectangle selectionRegion;
    private JComboBox chMovement;
    private Direction lastDirection = Direction.RIGHT;
+   private IInlineToolOptions inlineOptions;
 
    public TextTool(JaveMainPanel mainPanel, JavEApplication application, BooleanPreferenceModel cursorBlockStyle, Filter filter) {
       super(mainPanel, application, filter);
@@ -76,23 +78,26 @@ public class TextTool extends Tool {
    }
 
    @Override
-   protected JComponent createOptionsComponent() {
-      this.chMovement = new JComboBox<>(CursorMovement.values());
-      this.chMovement.setRenderer(new ObjectUiListCellRenderer(new CursorMovementUi()));
-      this.chMovement.setSelectedIndex(0);
-      this.chMovement.addItemListener(this);
-      this.mergeCharactersPanel.setEnabled(!isInsert());
-      this.mergeCharactersModel.addChangeListener(new IChangeListener() {
-         @Override
-         public void stateChanged() {
-            TextTool.this.mainPanel.requestFocus();
-         }
-      });
-      JPanel panel = new JPanel(new GridDialogLayout(2, false));
-      panel.add(new JLabel(JaveMessages.Tool_Text_CursorMovement), GridDialogLayoutData.RIGHT);
-      panel.add(this.chMovement);
-      panel.add(this.mergeCharactersPanel.getContent(), new GridDialogLayoutData().setHorizontalSpan(2));
-      return panel;
+   public IInlineToolOptions getInlineOptionsPanel() {
+      if (this.inlineOptions == null) {
+         this.chMovement = new JComboBox<>(CursorMovement.values());
+         this.chMovement.setRenderer(new ObjectUiListCellRenderer(new CursorMovementUi()));
+         this.chMovement.setSelectedIndex(0);
+         this.chMovement.addItemListener(this);
+         this.mergeCharactersPanel.setEnabled(!isInsert());
+         this.mergeCharactersModel.addChangeListener(new IChangeListener() {
+            @Override
+            public void stateChanged() {
+               TextTool.this.mainPanel.requestFocus();
+            }
+         });
+         final JPanel panel = new JPanel(new GridDialogLayout(2, false));
+         panel.add(new JLabel(JaveMessages.Tool_Text_CursorMovement), GridDialogLayoutData.RIGHT);
+         panel.add(this.chMovement);
+         panel.add(this.mergeCharactersPanel.getContent(), new GridDialogLayoutData().setHorizontalSpan(2));
+         this.inlineOptions = () -> panel;
+      }
+      return this.inlineOptions;
    }
 
    @Override

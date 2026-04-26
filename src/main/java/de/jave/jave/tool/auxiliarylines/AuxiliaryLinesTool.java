@@ -7,6 +7,7 @@ import de.jave.jave.filter.Filter;
 import de.jave.jave.icon.JaveIcons;
 import de.jave.jave.plate.JaveMainPanel;
 import de.jave.jave.preferences.ColorScheme;
+import de.jave.jave.tool.dialog.IInlineToolOptions;
 import de.jave.jave.watermark.IWatermarkPainter;
 import java.awt.Color;
 import java.awt.Component;
@@ -18,7 +19,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import javax.swing.Icon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 import net.disy.commons.core.model.listener.IChangeListener;
 import net.disy.commons.swing.action.SmartAction;
@@ -32,6 +32,7 @@ public class AuxiliaryLinesTool extends Tool implements IWatermarkPainter {
    private Object selectedObject;
    private Line2d popupObject;
    private boolean enabled = false;
+   private IInlineToolOptions inlineOptions;
 
    public AuxiliaryLinesTool(JaveMainPanel mainPanel, JavEApplication application, Filter filter) {
       super(mainPanel, application, filter);
@@ -66,21 +67,25 @@ public class AuxiliaryLinesTool extends Tool implements IWatermarkPainter {
    }
 
    @Override
-   protected JComponent createOptionsComponent() {
-      final SmartAction clearAction = new SmartAction("Clear") {
-         @Override
-         protected void execute(Component parentComponent) {
-            AuxiliaryLinesTool.this.model.removeAll();
-         }
-      };
-      this.model.addChangeListener(new IChangeListener() {
-         @Override
-         public void stateChanged() {
-            AuxiliaryLinesTool.this.updateClearActionEnabled(clearAction);
-         }
-      });
-      this.updateClearActionEnabled(clearAction);
-      return new JButton(clearAction);
+   public IInlineToolOptions getInlineOptionsPanel() {
+      if (this.inlineOptions == null) {
+         final SmartAction clearAction = new SmartAction("Clear") {
+            @Override
+            protected void execute(Component parentComponent) {
+               AuxiliaryLinesTool.this.model.removeAll();
+            }
+         };
+         this.model.addChangeListener(new IChangeListener() {
+            @Override
+            public void stateChanged() {
+               AuxiliaryLinesTool.this.updateClearActionEnabled(clearAction);
+            }
+         });
+         this.updateClearActionEnabled(clearAction);
+         final JButton button = new JButton(clearAction);
+         this.inlineOptions = () -> button;
+      }
+      return this.inlineOptions;
    }
 
    private void updateClearActionEnabled(SmartAction clearAction) {

@@ -6,6 +6,7 @@ import de.jave.jave.icon.JaveIcons;
 import de.jave.jave.plate.JaveMainPanel;
 import de.jave.jave.plate.selection.SelectionAlgorithms;
 import de.jave.jave.preferences.ColorScheme;
+import de.jave.jave.tool.dialog.IInlineToolOptions;
 import de.jave.lib.CharacterPlate;
 import de.jave.text.TextTools;
 import java.awt.Cursor;
@@ -71,6 +72,7 @@ public class SelectionTool extends Tool {
    private int dy;
    private int gdx;
    private int gdy;
+   private IInlineToolOptions inlineOptions;
 
    public SelectionTool(JaveMainPanel mainPanel, JavEApplication application, Filter filter) {
       super(mainPanel, application, filter);
@@ -83,34 +85,37 @@ public class SelectionTool extends Tool {
    }
 
    @Override
-   protected JComponent createOptionsComponent() {
-      this.cb3d = new JCheckBox("3D View", true);
-      this.cb3d.addItemListener(this);
-      final MergeCharactersPanel mergeCharactersPanel = new MergeCharactersPanel(this.mergeCharactersModel);
-      this.mergeCharactersModel.addChangeListener(new IChangeListener() {
-         @Override
-         public void stateChanged() {
-            SelectionTool.this.setMixMode(SelectionTool.this.mergeCharactersModel.getValue());
-         }
-      });
-      this.chSelectionLayer = new JComboBox<>(Selection.STR_LAYER);
-      this.chSelectionLayer.addItemListener(this);
-      this.chSelectionLayer.addItemListener(new ItemListener() {
-         @Override
-         public void itemStateChanged(ItemEvent e) {
-            mergeCharactersPanel.setEnabled(SelectionTool.this.chSelectionLayer.getSelectedIndex() == 2);
-         }
-      });
-      this.chSelectionLayer.setSelectedIndex(1);
-      this.cbCollision = new JCheckBox("Collision", false);
-      mergeCharactersPanel.setEnabled(this.chSelectionLayer.getSelectedIndex() == 2);
-      JPanel optionsPanel = new JPanel(new GridDialogLayout(2, false));
-      optionsPanel.add(new JLabel("Paste mode:"), GridDialogLayoutData.RIGHT);
-      optionsPanel.add(this.chSelectionLayer);
-      optionsPanel.add(this.cbCollision);
-      optionsPanel.add(this.cb3d);
-      optionsPanel.add(mergeCharactersPanel.getContent(), new GridDialogLayoutData(GridDialogLayoutData.FILL_HORIZONTAL).setHorizontalSpan(2));
-      return optionsPanel;
+   public IInlineToolOptions getInlineOptionsPanel() {
+      if (this.inlineOptions == null) {
+         this.cb3d = new JCheckBox("3D View", true);
+         this.cb3d.addItemListener(this);
+         final MergeCharactersPanel mergeCharactersPanel = new MergeCharactersPanel(this.mergeCharactersModel);
+         this.mergeCharactersModel.addChangeListener(new IChangeListener() {
+            @Override
+            public void stateChanged() {
+               SelectionTool.this.setMixMode(SelectionTool.this.mergeCharactersModel.getValue());
+            }
+         });
+         this.chSelectionLayer = new JComboBox<>(Selection.STR_LAYER);
+         this.chSelectionLayer.addItemListener(this);
+         this.chSelectionLayer.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+               mergeCharactersPanel.setEnabled(SelectionTool.this.chSelectionLayer.getSelectedIndex() == 2);
+            }
+         });
+         this.chSelectionLayer.setSelectedIndex(1);
+         this.cbCollision = new JCheckBox("Collision", false);
+         mergeCharactersPanel.setEnabled(this.chSelectionLayer.getSelectedIndex() == 2);
+         final JPanel optionsPanel = new JPanel(new GridDialogLayout(2, false));
+         optionsPanel.add(new JLabel("Paste mode:"), GridDialogLayoutData.RIGHT);
+         optionsPanel.add(this.chSelectionLayer);
+         optionsPanel.add(this.cbCollision);
+         optionsPanel.add(this.cb3d);
+         optionsPanel.add(mergeCharactersPanel.getContent(), new GridDialogLayoutData(GridDialogLayoutData.FILL_HORIZONTAL).setHorizontalSpan(2));
+         this.inlineOptions = () -> optionsPanel;
+      }
+      return this.inlineOptions;
    }
 
    @Override

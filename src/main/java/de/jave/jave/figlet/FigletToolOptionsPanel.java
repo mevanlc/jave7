@@ -11,6 +11,7 @@ import de.jave.figlet.util.FigException;
 import de.jave.gui.layout.Gap;
 import de.jave.jave.MergeCharactersPanel;
 import de.jave.jave.actions.ButtonToolbarBuilder;
+import de.jave.jave.tool.dialog.IInlineToolOptions;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -26,7 +27,7 @@ import net.disy.commons.core.util.Ensure;
 import net.disy.commons.swing.layout.grid.GridDialogLayout;
 import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
 
-public class FigletToolOptionsPanel {
+public class FigletToolOptionsPanel implements IInlineToolOptions {
    private final JComboBox chCategory;
    private final JComboBox chFont;
    private final JComponent content;
@@ -103,6 +104,7 @@ public class FigletToolOptionsPanel {
       return this.fontModel;
    }
 
+   @Override
    public JComponent getContent() {
       return this.content;
    }
