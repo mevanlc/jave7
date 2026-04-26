@@ -64,7 +64,7 @@ public final class PixelPlateOptionsView {
       sizeLinker.addButton(bs2, PencilSize.THICK2);
       sizeLinker.addButton(bs3, PencilSize.THICK3);
       sizeLinker.addButton(bs4, PencilSize.THICK4);
-      JPanel sizePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 2));
+      JPanel sizePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 2));
       sizePanel.add(bs0);
       sizePanel.add(new VerticalLine());
       sizePanel.add(bs1);
@@ -72,7 +72,7 @@ public final class PixelPlateOptionsView {
       sizePanel.add(bs3);
       sizePanel.add(bs4);
 
-      JPanel feltpenStylePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 2));
+      JPanel feltpenStylePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 2));
       ButtonGroupLinker<Character> styleLinker = new ButtonGroupLinker<>(feltPenStyleModel);
       for (char character : PixelPlate.FELTPEN_CHARS) {
          JToggleButton button = createCharacterButton(character);
@@ -85,7 +85,7 @@ public final class PixelPlateOptionsView {
       ButtonGroupLinker<LineStyle> lineStyleLinker = new ButtonGroupLinker<>(lineStyleModel);
       lineStyleLinker.addButton(bl0, LineStyle.LINE);
       lineStyleLinker.addButton(bl1, LineStyle.DOT);
-      JPanel lineStylePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 2));
+      JPanel lineStylePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 2));
       lineStylePanel.add(bl0);
       lineStylePanel.add(bl1);
 

@@ -25,7 +25,7 @@ import net.disy.commons.swing.layout.util.LayoutUtilities;
  * needed if observed.
  */
 public final class InlineOptionsWidthMeasurer {
-   private static final int PADDING_PX = 8;
+   private static final int PADDING_PX = 4;
 
    private InlineOptionsWidthMeasurer() {}
 

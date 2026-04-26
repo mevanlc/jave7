@@ -86,7 +86,7 @@ public class ToolBar {
 
       GridDialogLayoutData fourColumnsData = new GridDialogLayoutData(GridDialogLayoutData.FILL_HORIZONTAL);
       fourColumnsData.setHorizontalSpan(4);
-      JPanel panel = new JPanel(new GridDialogLayout(4, true, 0, 0));
+      JPanel panel = new JPanel(new GridDialogLayout(4, false, 0, 0));
       // Top padding aligns the first tool button with the bottom of the
       // document tab bar in the main panel.
       panel.add(new Gap(1, 30), fourColumnsData);
