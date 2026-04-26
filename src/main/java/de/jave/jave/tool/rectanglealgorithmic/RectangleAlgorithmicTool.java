@@ -13,6 +13,7 @@ import de.jave.jave.plate.JaveMainPanel;
 import de.jave.jave.preferences.ColorScheme;
 import de.jave.jave.rectangle.RectangleStylePanel;
 import de.jave.jave.rendering.PixelPlateRenderer;
+import de.jave.jave.tool.dialog.IInlineToolOptions;
 import de.jave.lib.LocatedCharacterPlate;
 import java.awt.BorderLayout;
 import java.awt.Graphics2D;
@@ -30,6 +31,7 @@ public class RectangleAlgorithmicTool extends Tool {
    private Point clickLocation;
    private Point dragLocation;
    private RectangleStylePanel rectangleStylePanel;
+   private IInlineToolOptions inlineOptions;
 
    public RectangleAlgorithmicTool(JaveMainPanel plate, JavEApplication application, Filter filter) {
       super(plate, application, filter);
@@ -46,13 +48,16 @@ public class RectangleAlgorithmicTool extends Tool {
    }
 
    @Override
-   protected JComponent createOptionsComponent() {
-      this.rectangleStylePanel = new RectangleStylePanel(this.getMouseCharacterModel());
-      this.rectangleStylePanel.addItemListener(this);
-      JPanel optionsPanel = new JPanel(new BorderLayout(2, 3));
-      optionsPanel.add(this.rectangleStylePanel.getContent(), "Center");
-      optionsPanel.add(new MergeCharactersPanel(this.getMixCharactersModel()).getContent(), "South");
-      return optionsPanel;
+   public IInlineToolOptions getInlineOptionsPanel() {
+      if (this.inlineOptions == null) {
+         this.rectangleStylePanel = new RectangleStylePanel(this.getMouseCharacterModel());
+         this.rectangleStylePanel.addItemListener(this);
+         JPanel panel = new JPanel(new BorderLayout(2, 3));
+         panel.add(this.rectangleStylePanel.getContent(), BorderLayout.CENTER);
+         panel.add(new MergeCharactersPanel(this.getMixCharactersModel()).getContent(), BorderLayout.SOUTH);
+         this.inlineOptions = () -> panel;
+      }
+      return this.inlineOptions;
    }
 
    @Override
