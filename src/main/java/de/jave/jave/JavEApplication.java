@@ -199,6 +199,9 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
       if (System.getProperty("jave.dump.tool_option_widths") != null) {
          this.dumpToolOptionWidthsAndExit(fallback);
       }
+      // Defense-in-depth: even if a future jave.dump.* path doesn't exit
+      // here, isDumpModeActive() suppresses interactive prompts downstream
+      // (e.g. crash-recovery in startupRecovery).
       this.toolSelectorBarOptionsHost.setMinWidth(InlineOptionsWidthMeasurer.measureMaxWidth(measuredPanels));
       this.watermarkVisibilityModel.addChangeListener(new IChangeListener() {
          @Override
@@ -245,6 +248,9 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
    }
 
    public boolean startupRecovery(IStartupMonitor startupMonitor) {
+      if (isDumpModeActive()) {
+         return false;
+      }
       if (!JaveStatusFile.exists()) {
          return false;
       } else {
@@ -1000,6 +1006,22 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
             JaveAboutDialog.showAboutDialog(JavEApplication.this.frame);
          }
       };
+   }
+
+   /**
+    * True when the JVM is running in any "dump mode" — any system
+    * property whose name starts with {@code jave.dump.} is set.
+    * Code paths that would otherwise pop interactive dialogs at startup
+    * (crash recovery, quick-start, etc.) should short-circuit when this
+    * is true so the dump can run unattended.
+    */
+   public static boolean isDumpModeActive() {
+      for (String name : System.getProperties().stringPropertyNames()) {
+         if (name.startsWith("jave.dump.")) {
+            return true;
+         }
+      }
+      return false;
    }
 
    private void dumpToolOptionWidthsAndExit(FallbackInlineOptionsPanel fallback) {

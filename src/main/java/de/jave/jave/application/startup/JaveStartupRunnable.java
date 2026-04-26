@@ -60,7 +60,7 @@ public class JaveStartupRunnable implements IStartupRunnable {
          if (!recovered) {
             JaveApplicationPreferences applicationPreferences = jave.getApplicationPreferences();
             boolean showQuickStartOnStartup = applicationPreferences.isShowQuickStartOnStartup();
-            if (showQuickStartOnStartup) {
+            if (showQuickStartOnStartup && !JavEApplication.isDumpModeActive()) {
                monitor.dispose();
                QuickStartAction quickStartAction = new QuickStartAction(jave);
                quickStartAction.performQuickStart(jave.getFrame());
