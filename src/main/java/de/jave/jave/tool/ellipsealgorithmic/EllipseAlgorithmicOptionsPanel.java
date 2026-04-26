@@ -4,6 +4,7 @@ import de.jave.jave.JaveMessages;
 import de.jave.jave.MergeCharactersPanel;
 import de.jave.jave.plate.MouseCharacterModel;
 import de.jave.jave.plate.MouseCharacterPanel;
+import de.jave.jave.tool.dialog.IInlineToolOptions;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import javax.swing.JComboBox;
@@ -15,7 +16,7 @@ import net.disy.commons.swing.layout.grid.GridDialogLayout;
 import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
 import net.disy.commons.swing.ui.ObjectUiListCellRenderer;
 
-public class EllipseAlgorithmicOptionsPanel {
+public class EllipseAlgorithmicOptionsPanel implements IInlineToolOptions {
    private final JComponent content;
    private final EllipseAlgorithmicOptions options;
 
@@ -48,6 +49,7 @@ public class EllipseAlgorithmicOptionsPanel {
       mouseCharacterPanel.setEnabled(this.options.getStyle() == AlgorithmicEllipseStyle.CHARACTERS);
    }
 
+   @Override
    public JComponent getContent() {
       return this.content;
    }

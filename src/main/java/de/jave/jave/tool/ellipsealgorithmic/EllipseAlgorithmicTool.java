@@ -15,6 +15,7 @@ import de.jave.jave.pixelplate.PixelPlateMode;
 import de.jave.jave.plate.JaveMainPanel;
 import de.jave.jave.preferences.ColorScheme;
 import de.jave.jave.rendering.PixelPlateRenderer;
+import de.jave.jave.tool.dialog.IInlineToolOptions;
 import de.jave.lib.LocatedCharacterPlate;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -22,7 +23,6 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import javax.swing.Icon;
-import javax.swing.JComponent;
 import net.disy.commons.core.util.Ensure;
 import net.disy.commons.swing.mousecursor.CursorId;
 import net.disy.commons.swing.mousecursor.CursorProvider;
@@ -32,6 +32,7 @@ public class EllipseAlgorithmicTool extends Tool {
    private final Filter filter;
    private Point clickLocation;
    private Point dragLocation;
+   private IInlineToolOptions inlineOptions;
 
    public EllipseAlgorithmicTool(JaveMainPanel plate, JavEApplication application, Filter filter) {
       super(plate, application, filter);
@@ -50,8 +51,11 @@ public class EllipseAlgorithmicTool extends Tool {
    }
 
    @Override
-   protected JComponent createOptionsComponent() {
-      return new EllipseAlgorithmicOptionsPanel(this.options, this.getMixCharactersModel(), this.getMouseCharacterModel()).getContent();
+   public IInlineToolOptions getInlineOptionsPanel() {
+      if (this.inlineOptions == null) {
+         this.inlineOptions = new EllipseAlgorithmicOptionsPanel(this.options, this.getMixCharactersModel(), this.getMouseCharacterModel());
+      }
+      return this.inlineOptions;
    }
 
    @Override
