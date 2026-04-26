@@ -11,13 +11,13 @@ import de.jave.jave.pixelplate.PixelPlateMode;
 import de.jave.jave.plate.JaveMainPanel;
 import de.jave.jave.preferences.ColorScheme;
 import de.jave.jave.rendering.PixelPlateRenderer;
+import de.jave.jave.tool.dialog.IInlineToolOptions;
 import de.jave.lib.LocatedCharacterPlate;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import javax.swing.Icon;
-import javax.swing.JComponent;
 import net.disy.commons.swing.mousecursor.CursorId;
 import net.disy.commons.swing.mousecursor.CursorProvider;
 
@@ -25,6 +25,7 @@ public class FreehandAlgorithmicTool extends Tool {
    private Point lastMouseLocation;
    private final FreehandAlgorithmicOptions options = new FreehandAlgorithmicOptions();
    private final Filter filter;
+   private IInlineToolOptions inlineOptions;
 
    public FreehandAlgorithmicTool(JaveMainPanel plate, JavEApplication application, Filter filter) {
       super(plate, application, filter);
@@ -42,8 +43,11 @@ public class FreehandAlgorithmicTool extends Tool {
    }
 
    @Override
-   protected JComponent createOptionsComponent() {
-      return new FreehandAlgorithmicOptionsPanel(this.options, this.getMouseCharacterModel(), this.getMixCharactersModel()).getContent();
+   public IInlineToolOptions getInlineOptionsPanel() {
+      if (this.inlineOptions == null) {
+         this.inlineOptions = new FreehandAlgorithmicOptionsPanel(this.options, this.getMouseCharacterModel(), this.getMixCharactersModel());
+      }
+      return this.inlineOptions;
    }
 
    @Override

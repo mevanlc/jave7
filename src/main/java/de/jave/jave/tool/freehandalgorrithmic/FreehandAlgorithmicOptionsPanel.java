@@ -4,6 +4,7 @@ import de.jave.jave.MergeCharactersPanel;
 import de.jave.jave.algorithm.freehandalgorithmic.FreehandAlgorithmicMode;
 import de.jave.jave.plate.MouseCharacterModel;
 import de.jave.jave.plate.MouseCharacterPanel;
+import de.jave.jave.tool.dialog.IInlineToolOptions;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JComboBox;
@@ -16,7 +17,7 @@ import net.disy.commons.swing.layout.grid.GridDialogLayout;
 import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
 import net.disy.commons.swing.ui.ObjectUiListCellRenderer;
 
-public class FreehandAlgorithmicOptionsPanel {
+public class FreehandAlgorithmicOptionsPanel implements IInlineToolOptions {
    private final JComponent content;
    private final FreehandAlgorithmicOptions options;
 
@@ -51,6 +52,7 @@ public class FreehandAlgorithmicOptionsPanel {
       mouseCharacterPanel.setEnabled(this.options.getMode() == FreehandAlgorithmicMode.CHARACTERS);
    }
 
+   @Override
    public JComponent getContent() {
       return this.content;
    }
