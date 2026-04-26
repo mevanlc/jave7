@@ -196,6 +196,9 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
             measuredPanels.add(inline.getContent());
          }
       }
+      if (System.getProperty("jave.dump.tool_option_widths") != null) {
+         this.dumpToolOptionWidthsAndExit(fallback);
+      }
       this.toolSelectorBarOptionsHost.setMinWidth(InlineOptionsWidthMeasurer.measureMaxWidth(measuredPanels));
       this.watermarkVisibilityModel.addChangeListener(new IChangeListener() {
          @Override
@@ -997,5 +1000,46 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
             JaveAboutDialog.showAboutDialog(JavEApplication.this.frame);
          }
       };
+   }
+
+   private void dumpToolOptionWidthsAndExit(FallbackInlineOptionsPanel fallback) {
+      java.util.List<String> names = new java.util.ArrayList<>();
+      java.util.List<Integer> widths = new java.util.ArrayList<>();
+      names.add("(fallback)");
+      widths.add(InlineOptionsWidthMeasurer.measureWidth(fallback.getContent()));
+      for (Tool tool : this.mainPanel.getToolManager().getTools()) {
+         de.jave.jave.tool.dialog.IInlineToolOptions inline = tool.getInlineOptionsPanel();
+         if (inline == null) {
+            names.add(tool.getName() + " (no inline panel)");
+            widths.add(-1);
+         } else {
+            names.add(tool.getName());
+            widths.add(InlineOptionsWidthMeasurer.measureWidth(inline.getContent()));
+         }
+      }
+      Integer[] order = new Integer[names.size()];
+      for (int i = 0; i < order.length; i++) {
+         order[i] = i;
+      }
+      java.util.Arrays.sort(order, (a, b) -> Integer.compare(widths.get(b), widths.get(a)));
+      int max = 0;
+      for (int w : widths) {
+         if (w > max) {
+            max = w;
+         }
+      }
+      int padding = InlineOptionsWidthMeasurer.getPaddingPx();
+      System.out.println("Inline tool-options panel widths (sorted desc):");
+      for (int idx : order) {
+         int w = widths.get(idx);
+         String wStr = w < 0 ? "    -" : String.format("%5dpx", w);
+         System.out.println("  " + wStr + "  " + names.get(idx));
+      }
+      System.out.println("---");
+      System.out.println("  widest measured  : " + max + "px");
+      System.out.println("  padding          : " + padding + "px");
+      System.out.println("  resulting bar    : " + (max + padding) + "px");
+      System.out.flush();
+      System.exit(0);
    }
 }

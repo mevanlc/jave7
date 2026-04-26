@@ -32,17 +32,27 @@ public final class InlineOptionsWidthMeasurer {
    public static int measureMaxWidth(List<JComponent> panels) {
       int max = 0;
       for (JComponent p : panels) {
-         JFrame f = new JFrame();
-         f.setUndecorated(true);
-         f.add(p);
-         f.pack();
-         Dimension d = p.getPreferredSize();
-         if (d != null && d.width > max) {
-            max = d.width;
+         int w = measureWidth(p);
+         if (w > max) {
+            max = w;
          }
-         f.remove(p);
-         f.dispose();
       }
       return max + LayoutUtilities.getDpiAdjusted(PADDING_PX);
+   }
+
+   /** Measure a single panel's natural preferred width (no padding). */
+   public static int measureWidth(JComponent panel) {
+      JFrame f = new JFrame();
+      f.setUndecorated(true);
+      f.add(panel);
+      f.pack();
+      Dimension d = panel.getPreferredSize();
+      f.remove(panel);
+      f.dispose();
+      return d == null ? 0 : d.width;
+   }
+
+   public static int getPaddingPx() {
+      return LayoutUtilities.getDpiAdjusted(PADDING_PX);
    }
 }
