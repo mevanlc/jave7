@@ -4,10 +4,13 @@ import de.jave.jave.algorithm.fill.FillAlgorithm;
 import de.jave.jave.algorithm.fill.FillMatchMode;
 import de.jave.jave.filter.Filter;
 import de.jave.jave.icon.JaveIcons;
+import de.jave.jave.pixelplate.PixelPlateOptionsView;
 import de.jave.jave.plate.JaveMainPanel;
 import de.jave.jave.preferences.ColorScheme;
 import de.jave.jave.rendering.PixelPlateRenderer;
+import de.jave.jave.tool.dialog.IInlineToolOptions;
 import de.jave.lib.LocatedCharacterPlate;
+import java.awt.BorderLayout;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
@@ -15,6 +18,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.Icon;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import net.disy.commons.swing.mousecursor.CursorId;
 import net.disy.commons.swing.mousecursor.CursorProvider;
 
@@ -38,12 +42,13 @@ public class EllipseToolGeneric extends GenericTool {
    }
 
    @Override
-   public JComponent getAdditionalOptionsComponent() {
-      if (this.cbFill == null) {
-         this.cbFill = new JCheckBox("Fill", false);
-      }
-
-      return this.cbFill;
+   protected IInlineToolOptions buildInlineOptions() {
+      this.cbFill = new JCheckBox("Fill", false);
+      JComponent view = new PixelPlateOptionsView(this.pixelPlateModel, this.getMixCharactersModel()).getContent();
+      JPanel panel = new JPanel(new BorderLayout());
+      panel.add(view, BorderLayout.CENTER);
+      panel.add(this.cbFill, BorderLayout.SOUTH);
+      return () -> panel;
    }
 
    @Override

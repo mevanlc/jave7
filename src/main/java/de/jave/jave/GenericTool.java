@@ -2,20 +2,25 @@ package de.jave.jave;
 
 import de.jave.jave.filter.Filter;
 import de.jave.jave.pixelplate.PixelPlateModel;
-import de.jave.jave.pixelplate.PixelPlateOptionsPanel;
+import de.jave.jave.pixelplate.PixelPlateOptionsView;
 import de.jave.jave.plate.JaveMainPanel;
-import java.awt.BorderLayout;
+import de.jave.jave.tool.dialog.IInlineToolOptions;
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 import net.disy.commons.core.model.listener.IChangeListener;
 
 public abstract class GenericTool extends Tool {
    protected final PixelPlateModel pixelPlateModel;
-   private PixelPlateOptionsPanel pixelPlateOptionsPanel;
+   private IInlineToolOptions inlineOptions;
 
    public GenericTool(JaveMainPanel mainPanel, JavEApplication application, Filter filter) {
       super(mainPanel, application, filter);
       this.pixelPlateModel = application.getPixelPlateModel();
+      this.getMixCharactersModel().addChangeListener(new IChangeListener() {
+         @Override
+         public void stateChanged() {
+            GenericTool.this.setMixMode(GenericTool.this.isMix());
+         }
+      });
    }
 
    public boolean isFeltpenMode() {
@@ -31,29 +36,15 @@ public abstract class GenericTool extends Tool {
    }
 
    @Override
-   public JComponent getOptionsComponent() {
-      if (this.pixelPlateOptionsPanel == null) {
-         this.pixelPlateOptionsPanel = new PixelPlateOptionsPanel(this.pixelPlateModel, this.getMixCharactersModel());
-         this.getMixCharactersModel().addChangeListener(new IChangeListener() {
-            @Override
-            public void stateChanged() {
-               GenericTool.this.setMixMode(GenericTool.this.isMix());
-            }
-         });
+   public final IInlineToolOptions getInlineOptionsPanel() {
+      if (this.inlineOptions == null) {
+         this.inlineOptions = this.buildInlineOptions();
       }
-
-      JComponent ac = this.getAdditionalOptionsComponent();
-      if (ac == null) {
-         return this.pixelPlateOptionsPanel;
-      } else {
-         JPanel p = new JPanel(new BorderLayout());
-         p.add(this.pixelPlateOptionsPanel, "North");
-         p.add(ac, "Center");
-         return p;
-      }
+      return this.inlineOptions;
    }
 
-   public JComponent getAdditionalOptionsComponent() {
-      return null;
+   protected IInlineToolOptions buildInlineOptions() {
+      final JComponent content = new PixelPlateOptionsView(this.pixelPlateModel, this.getMixCharactersModel()).getContent();
+      return () -> content;
    }
 }
