@@ -168,8 +168,8 @@ public class EraserTool extends AbstractPencilTool {
          }
       });
       JPanel optionsPanel = new JPanel(new GridDialogLayout(2, false));
-      optionsPanel.add(new JLabel("Style:"), GridDialogLayoutData.RIGHT);
-      optionsPanel.add(this.chStyle);
+      optionsPanel.add(new JLabel("Style:"), new GridDialogLayoutData().setHorizontalSpan(2));
+      optionsPanel.add(this.chStyle, new GridDialogLayoutData(GridDialogLayoutData.FILL_HORIZONTAL).setHorizontalSpan(2));
       optionsPanel.add(new JLabel("Size:"), GridDialogLayoutData.RIGHT);
       optionsPanel.add(new JSpinner(this.sizeModel));
       return optionsPanel;

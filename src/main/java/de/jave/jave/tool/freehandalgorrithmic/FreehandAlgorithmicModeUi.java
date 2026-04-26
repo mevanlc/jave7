@@ -10,7 +10,7 @@ public class FreehandAlgorithmicModeUi extends AbstractObjectUi<FreehandAlgorith
       } else if (value == FreehandAlgorithmicMode.LINES_MIDDLE) {
          return "Middle";
       } else if (value == FreehandAlgorithmicMode.CHARACTERS) {
-         return "Characters";
+         return "Custom";
       } else {
          throw new IllegalArgumentException();
       }

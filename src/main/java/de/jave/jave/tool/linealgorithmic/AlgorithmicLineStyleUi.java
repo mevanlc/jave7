@@ -26,4 +26,20 @@ public class AlgorithmicLineStyleUi extends AbstractObjectUi<AlgorithmicLineStyl
             throw new IllegalArgumentException();
       }
    }
+
+   @Override
+   public String getToolTipText(AlgorithmicLineStyle value) {
+      switch (value) {
+         case NORMAL:
+            return JaveMessages.Tool_LineAlgorithmic_Style_NormalTooltip;
+         case VERONICA:
+            return JaveMessages.Tool_LineAlgorithmic_Style_AuthorVeronicaTooltip;
+         case GLORY:
+            return JaveMessages.Tool_LineAlgorithmic_Style_AuthorGloryTooltip;
+         case SEGERMAN:
+            return JaveMessages.Tool_LineAlgorithmic_Style_AuthorSegermanTooltip;
+         default:
+            return null;
+      }
+   }
 }

@@ -10,7 +10,7 @@ public class RectangleStyleObjectUi extends AbstractObjectUi<RectangleStyle> {
          case NORMAL:
             return "Normal";
          case CHARACTERS:
-            return "Characters";
+            return "Custom";
          case ROUND:
             return "Round";
          case STYLE_1:

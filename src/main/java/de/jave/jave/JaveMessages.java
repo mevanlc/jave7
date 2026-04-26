@@ -63,6 +63,10 @@ public class JaveMessages extends NLS {
    public static String Tool_LineAlgorithmic_Style_AuthorGlory;
    public static String Tool_LineAlgorithmic_Style_AuthorSegerman;
    public static String Tool_LineAlgorithmic_Style_AuthorVeronica;
+   public static String Tool_LineAlgorithmic_Style_NormalTooltip;
+   public static String Tool_LineAlgorithmic_Style_AuthorVeronicaTooltip;
+   public static String Tool_LineAlgorithmic_Style_AuthorGloryTooltip;
+   public static String Tool_LineAlgorithmic_Style_AuthorSegermanTooltip;
    public static String Control_SizeLabel_Tooltip;
    public static String Control_InsertOverwriteLabel_Tooltip;
    public static String Control_FontLabel_Tooltip;
