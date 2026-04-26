@@ -5,11 +5,11 @@ import de.jave.gui.CharacterModel;
 import de.jave.jave.filter.Filter;
 import de.jave.jave.icon.JaveIcons;
 import de.jave.jave.plate.JaveMainPanel;
+import de.jave.jave.tool.dialog.IInlineToolOptions;
 import de.jave.lib.CharacterPlate;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import javax.swing.Icon;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 import net.disy.commons.core.model.listener.IChangeListener;
 
@@ -18,6 +18,7 @@ public class BrushTool extends AbstractPencilTool {
    private CharacterModel[] brushCharacterModels;
    private int brushHeight = 4;
    private int brushWidth = 4;
+   private IInlineToolOptions inlineOptions;
    private static final char[][] DEFAULT_BRUSH = new char[][]{{' ', '_', '_', ' '}, {'d', '8', '8', 'b'}, {'Y', '8', '8', 'P'}, {' ', ' ', ' ', ' '}};
 
    public BrushTool(JaveMainPanel plate, JavEApplication application, Filter filter) {
@@ -40,13 +41,16 @@ public class BrushTool extends AbstractPencilTool {
    }
 
    @Override
-   protected JComponent createOptionsComponent() {
-      JPanel optionsPanel = new JPanel(new BorderLayout());
-      this.brushPanel = new JPanel();
-      this.setBrush(DEFAULT_BRUSH);
-      optionsPanel.add(this.brushPanel, "Center");
-      optionsPanel.add(new MergeCharactersPanel(this.getMixCharactersModel()).getContent(), "South");
-      return optionsPanel;
+   public IInlineToolOptions getInlineOptionsPanel() {
+      if (this.inlineOptions == null) {
+         final JPanel optionsPanel = new JPanel(new BorderLayout());
+         this.brushPanel = new JPanel();
+         this.setBrush(DEFAULT_BRUSH);
+         optionsPanel.add(this.brushPanel, "Center");
+         optionsPanel.add(new MergeCharactersPanel(this.getMixCharactersModel()).getContent(), "South");
+         this.inlineOptions = () -> optionsPanel;
+      }
+      return this.inlineOptions;
    }
 
    @Override
@@ -112,8 +116,8 @@ public class BrushTool extends AbstractPencilTool {
          }
       }
 
-      this.brushPanel.validate();
-      this.packOptionsDialog();
+      this.brushPanel.revalidate();
+      this.brushPanel.repaint();
       this.repaintCursor();
    }
 
