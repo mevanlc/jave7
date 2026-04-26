@@ -3,6 +3,7 @@ package de.jave.jave.tool.linealgorithmic;
 import de.jave.jave.MergeCharactersPanel;
 import de.jave.jave.plate.MouseCharacterModel;
 import de.jave.jave.plate.MouseCharacterPanel;
+import de.jave.jave.tool.dialog.IInlineToolOptions;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JComboBox;
@@ -14,7 +15,7 @@ import net.disy.commons.swing.layout.grid.GridDialogLayout;
 import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
 import net.disy.commons.swing.ui.ObjectUiListCellRenderer;
 
-public class LineAlgorithmicOptionsPanel {
+public class LineAlgorithmicOptionsPanel implements IInlineToolOptions {
    private final JComponent content;
    private final LineAlgorithmicOptions options;
 
@@ -46,6 +47,7 @@ public class LineAlgorithmicOptionsPanel {
       mouseCharacterPanel.setEnabled(this.options.getStyle() == AlgorithmicLineStyle.CHARACTERS);
    }
 
+   @Override
    public JComponent getContent() {
       return this.content;
    }

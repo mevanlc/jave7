@@ -10,13 +10,13 @@ import de.jave.jave.pixelplate.PixelPlateMode;
 import de.jave.jave.plate.JaveMainPanel;
 import de.jave.jave.preferences.ColorScheme;
 import de.jave.jave.rendering.PixelPlateRenderer;
+import de.jave.jave.tool.dialog.IInlineToolOptions;
 import de.jave.lib.LocatedCharacterPlate;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import javax.swing.Icon;
-import javax.swing.JComponent;
 import net.disy.commons.swing.mousecursor.CursorId;
 import net.disy.commons.swing.mousecursor.CursorProvider;
 
@@ -24,6 +24,7 @@ public class LineAlgorithmicTool extends Tool {
    private Point point1;
    private Point point2;
    private final LineAlgorithmicOptions options = new LineAlgorithmicOptions();
+   private IInlineToolOptions inlineOptions;
 
    public LineAlgorithmicTool(JaveMainPanel plate, JavEApplication application, Filter filter) {
       super(plate, application, filter);
@@ -40,8 +41,11 @@ public class LineAlgorithmicTool extends Tool {
    }
 
    @Override
-   protected JComponent createOptionsComponent() {
-      return new LineAlgorithmicOptionsPanel(this.options, this.getMixCharactersModel(), this.getMouseCharacterModel()).getContent();
+   public IInlineToolOptions getInlineOptionsPanel() {
+      if (this.inlineOptions == null) {
+         this.inlineOptions = new LineAlgorithmicOptionsPanel(this.options, this.getMixCharactersModel(), this.getMouseCharacterModel());
+      }
+      return this.inlineOptions;
    }
 
    @Override
