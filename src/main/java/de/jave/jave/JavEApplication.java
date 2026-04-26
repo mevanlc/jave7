@@ -35,6 +35,7 @@ import de.jave.jave.filter.Filter;
 import de.jave.jave.icon.JaveIcons;
 import de.jave.jave.open.JaveDropFileOpener;
 import de.jave.jave.open.OpenImageFilePerformer;
+import de.jave.jave.pixelplate.PixelPlateModel;
 import de.jave.jave.plate.AnimationDocumentEditor;
 import de.jave.jave.plate.DocumentEditorTitleFactory;
 import de.jave.jave.plate.GameDocumentEditor;
@@ -112,6 +113,7 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
    private final CharacterSets characterSets;
    private final UndoRedoModel undoRedoModel;
    private final JaveStatusBar statusBar;
+   private final PixelPlateModel pixelPlateModel = new PixelPlateModel();
 
    public JavEApplication(ConfigurationList configurationList) {
       Ensure.ensureArgumentNotNull(configurationList);
@@ -952,6 +954,10 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
 
    public BooleanModel getAuxLinesVisibilityModel() {
       return this.auxLinesVisibilityModel;
+   }
+
+   public PixelPlateModel getPixelPlateModel() {
+      return this.pixelPlateModel;
    }
 
    public JaveMainPanel getMainPanel() {

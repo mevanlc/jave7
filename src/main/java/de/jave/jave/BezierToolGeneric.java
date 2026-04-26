@@ -51,7 +51,7 @@ public class BezierToolGeneric extends GenericTool {
             this.point3 = point;
             this.movingPoint = this.point3;
             this.markPlate = this.createMarkPlate(location);
-            pixelPlateOptionsPanel.configure(this.markPlate);
+            this.pixelPlateModel.configure(this.markPlate);
             this.markPlate.setCharacter(this.getMouseChar());
          }
 

@@ -46,7 +46,7 @@ public class FreehandToolGeneric extends GenericTool {
       if (location != null) {
          this.point1 = point;
          this.markPlate = this.createMarkPlate(location);
-         pixelPlateOptionsPanel.configure(this.markPlate);
+         this.pixelPlateModel.configure(this.markPlate);
          this.markPlate.setCharacter(this.getMouseChar());
          Point2d p1 = this.getPlate().getRealLocationForScreenPoint(this.point1);
          this.markPlate.drawLine(p1, p1);

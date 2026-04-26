@@ -52,7 +52,7 @@ public class RectangleToolGeneric extends GenericTool {
          this.clickPoint = point;
          this.dragPoint = point;
          this.markPlate = this.createMarkPlate(location);
-         pixelPlateOptionsPanel.configure(this.markPlate);
+         this.pixelPlateModel.configure(this.markPlate);
          this.markPlate.setCharacter(this.getMouseChar());
          this.repaintCursor();
       }

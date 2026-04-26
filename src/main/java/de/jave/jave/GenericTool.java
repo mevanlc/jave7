@@ -1,6 +1,7 @@
 package de.jave.jave;
 
 import de.jave.jave.filter.Filter;
+import de.jave.jave.pixelplate.PixelPlateModel;
 import de.jave.jave.pixelplate.PixelPlateOptionsPanel;
 import de.jave.jave.plate.JaveMainPanel;
 import java.awt.BorderLayout;
@@ -9,28 +10,30 @@ import javax.swing.JPanel;
 import net.disy.commons.core.model.listener.IChangeListener;
 
 public abstract class GenericTool extends Tool {
-   protected static PixelPlateOptionsPanel pixelPlateOptionsPanel;
+   protected final PixelPlateModel pixelPlateModel;
+   private PixelPlateOptionsPanel pixelPlateOptionsPanel;
 
    public GenericTool(JaveMainPanel mainPanel, JavEApplication application, Filter filter) {
       super(mainPanel, application, filter);
+      this.pixelPlateModel = application.getPixelPlateModel();
    }
 
    public boolean isFeltpenMode() {
-      return pixelPlateOptionsPanel.isFeltpenMode();
+      return this.pixelPlateModel.isFeltpenMode();
    }
 
    public boolean isLineMode() {
-      return pixelPlateOptionsPanel.isLineMode();
+      return this.pixelPlateModel.isLineMode();
    }
 
    public double getFeltpenPreviewDiameter() {
-      return pixelPlateOptionsPanel.getFeltpenPreviewDiameter();
+      return this.pixelPlateModel.getFeltpenPreviewDiameter();
    }
 
    @Override
    public JComponent getOptionsComponent() {
-      if (pixelPlateOptionsPanel == null) {
-         pixelPlateOptionsPanel = new PixelPlateOptionsPanel(this.getMixCharactersModel());
+      if (this.pixelPlateOptionsPanel == null) {
+         this.pixelPlateOptionsPanel = new PixelPlateOptionsPanel(this.pixelPlateModel, this.getMixCharactersModel());
          this.getMixCharactersModel().addChangeListener(new IChangeListener() {
             @Override
             public void stateChanged() {
@@ -41,10 +44,10 @@ public abstract class GenericTool extends Tool {
 
       JComponent ac = this.getAdditionalOptionsComponent();
       if (ac == null) {
-         return pixelPlateOptionsPanel;
+         return this.pixelPlateOptionsPanel;
       } else {
          JPanel p = new JPanel(new BorderLayout());
-         p.add(pixelPlateOptionsPanel, "North");
+         p.add(this.pixelPlateOptionsPanel, "North");
          p.add(ac, "Center");
          return p;
       }

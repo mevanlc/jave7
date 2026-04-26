@@ -49,7 +49,7 @@ public class ArcToolGeneric extends GenericTool {
          } else if (this.point3 == null) {
             this.point3 = point;
             this.markPlate = this.createMarkPlate(location);
-            pixelPlateOptionsPanel.configure(this.markPlate);
+            this.pixelPlateModel.configure(this.markPlate);
             this.markPlate.setCharacter(this.getMouseChar());
          }
 

@@ -33,11 +33,14 @@ import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
 public class PixelPlateOptionsPanel extends JPanel {
    private static final CardPanelKey FELTPENSTYLE_KEY = new CardPanelKey();
    private static final CardPanelKey LINESTYLE_KEY = new CardPanelKey();
-   private final ObjectModel<PencilSize> sizeModel = new ObjectModel<>(PencilSize.THIN);
-   private final ObjectModel<LineStyle> lineStyleModel = new ObjectModel<>(LineStyle.LINE);
-   private final ObjectModel<Character> feltPenStyleModel = new ObjectModel<>(PixelPlate.FELTPEN_CHARS[4]);
+   private final ObjectModel<PencilSize> sizeModel;
+   private final ObjectModel<LineStyle> lineStyleModel;
+   private final ObjectModel<Character> feltPenStyleModel;
 
-   public PixelPlateOptionsPanel(BooleanModel mixCharactersModel) {
+   public PixelPlateOptionsPanel(PixelPlateModel model, BooleanModel mixCharactersModel) {
+      this.sizeModel = model.getSizeModel();
+      this.lineStyleModel = model.getLineStyleModel();
+      this.feltPenStyleModel = model.getFeltPenStyleModel();
       JToggleButton bs0 = this.createToggleButton(JaveIcons.PENCIL1, JaveIcons.PENCIL1_DISABLED);
       JToggleButton bs1 = this.createToggleButton(JaveIcons.PENCIL4, JaveIcons.PENCIL4_DISABLED);
       JToggleButton bs2 = this.createToggleButton(JaveIcons.PENCIL5, JaveIcons.PENCIL5_DISABLED);
@@ -149,65 +152,4 @@ public class PixelPlateOptionsPanel extends JPanel {
       return button;
    }
 
-   public boolean isFeltpenMode() {
-      return !this.isLineMode();
-   }
-
-   public boolean isLineMode() {
-      return this.sizeModel.getValue() == PencilSize.THIN;
-   }
-
-   public double getFeltpenPreviewDiameter() {
-      switch (this.sizeModel.getValue()) {
-         case THIN:
-            return 1.0;
-         case THICK1:
-            return 1.9;
-         case THICK2:
-            return 2.5;
-         case THICK3:
-            return 3.2;
-         case THICK4:
-            return 4.0;
-         default:
-            throw new IllegalStateException();
-      }
-   }
-
-   public void configure(PixelPlate pixelPlate) {
-      PencilSize size = this.sizeModel.getValue();
-      if (size == PencilSize.THIN) {
-         LineStyle lineStyle = this.lineStyleModel.getValue();
-         switch (lineStyle) {
-            case LINE:
-               pixelPlate.setMode(PixelPlateMode.PIXEL);
-               break;
-            case DOT:
-               pixelPlate.setMode(PixelPlateMode.DOT);
-               break;
-            default:
-               throw new IllegalStateException();
-         }
-      } else {
-         char feltPenChar = this.feltPenStyleModel.getValue();
-         pixelPlate.setMode(new PixelPlateFeltPenMode(feltPenChar, getFeltPenSize(size)));
-      }
-   }
-
-   private static int getFeltPenSize(PencilSize size) {
-      switch (size) {
-         case THIN:
-            return 0;
-         case THICK1:
-            return 1;
-         case THICK2:
-            return 2;
-         case THICK3:
-            return 3;
-         case THICK4:
-            return 4;
-         default:
-            throw new IllegalStateException();
-      }
-   }
 }
