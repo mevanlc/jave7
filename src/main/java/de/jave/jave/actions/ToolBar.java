@@ -84,51 +84,44 @@ public class ToolBar {
       this.preferences = preferences;
       this.createTools();
 
-      GridDialogLayoutData fourColumnsData = new GridDialogLayoutData(GridDialogLayoutData.FILL_HORIZONTAL);
-      fourColumnsData.setHorizontalSpan(4);
-      JPanel panel = new JPanel(new GridDialogLayout(4, false, 0, 0));
+      GridDialogLayoutData fiveColumnsData = new GridDialogLayoutData(GridDialogLayoutData.FILL_HORIZONTAL);
+      fiveColumnsData.setHorizontalSpan(5);
+      JPanel panel = new JPanel(new GridDialogLayout(5, false, 0, 0));
       // Top padding aligns the first tool button with the bottom of the
       // document tab bar in the main panel.
-      panel.add(new Gap(1, 30), fourColumnsData);
+      panel.add(new Gap(1, 30), fiveColumnsData);
 
-      // Generic group: tools 0,2,4,6,8,9 — row(0,2,4,6) + row(8,9,gap,gap)
+      // Generic + Algorithmic groups joined: 10 tools paired (gen,alg)
+      // for each shape that has both — Bezier and Arc trail (gen only).
+      // row(freehand, fh-alg, line, line-alg, rect)
+      // row(rect-alg, ellipse, e-alg, bezier, arc)
       panel.add(this.btn(0));
+      panel.add(this.btn(1));
       panel.add(this.btn(2));
+      panel.add(this.btn(3));
       panel.add(this.btn(4));
+      panel.add(this.btn(5));
       panel.add(this.btn(6));
+      panel.add(this.btn(7));
       panel.add(this.btn(8));
       panel.add(this.btn(9));
-      panel.add(new Gap());
-      panel.add(new Gap());
-      panel.add(this.createHorizontalLine(6), fourColumnsData);
+      panel.add(this.createHorizontalLine(6), fiveColumnsData);
 
-      // Algorithmic group: tools 1,3,5,7
-      panel.add(this.btn(1));
-      panel.add(this.btn(3));
-      panel.add(this.btn(5));
-      panel.add(this.btn(7));
-      panel.add(this.createHorizontalLine(6), fourColumnsData);
-
-      // Selection group: tools 10,11,12,13
+      // Selection + Brush groups joined: tools 10..18,20 — 2 rows of 5
       panel.add(this.btn(10));
       panel.add(this.btn(11));
       panel.add(this.btn(12));
       panel.add(this.btn(13));
-      panel.add(this.createHorizontalLine(6), fourColumnsData);
-
-      // Brush group: tools 14,15,16,17,18,20 — row(14,15,16,17) + row(18,20,gap,gap)
       panel.add(this.btn(14));
       panel.add(this.btn(15));
       panel.add(this.btn(16));
       panel.add(this.btn(17));
       panel.add(this.btn(18));
       panel.add(this.btn(20));
-      panel.add(new Gap());
-      panel.add(new Gap());
 
-      panel.add(new Gap(1, 4), fourColumnsData);
-      panel.add(this.createHorizontalLine(2), fourColumnsData);
-      panel.add(optionsHost.getContent(), fourColumnsData);
+      panel.add(new Gap(1, 4), fiveColumnsData);
+      panel.add(this.createHorizontalLine(2), fiveColumnsData);
+      panel.add(optionsHost.getContent(), fiveColumnsData);
       this.content = panel;
    }
 
