@@ -21,7 +21,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import javax.swing.Icon;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import net.disy.commons.core.model.BooleanModel;
 import net.disy.commons.core.util.Ensure;
 import net.disy.commons.swing.mousecursor.CursorId;
@@ -30,7 +29,6 @@ import net.disy.commons.swing.mousecursor.CursorProvider;
 public abstract class Tool implements ItemListener, ActionListener {
    protected JaveMainPanel mainPanel;
    protected JavEApplication application;
-   protected JComponent optionsComponent;
    protected static boolean altDown = false;
    protected static boolean shiftDown = false;
    protected static boolean controlDown = false;
@@ -341,20 +339,6 @@ public abstract class Tool implements ItemListener, ActionListener {
    public void reset() {
       this.putAside(false);
       this.takeToHand();
-   }
-
-   protected JComponent createOptionsComponent() {
-      JLabel toolLabel = new JLabel(JaveMessages.ToolDialog_NoOptionsAvailableText);
-      toolLabel.setFont(JaveGlobalRessources.FONT_ITALIC);
-      return toolLabel;
-   }
-
-   public JComponent getOptionsComponent() {
-      if (this.optionsComponent == null) {
-         this.optionsComponent = this.createOptionsComponent();
-      }
-
-      return this.optionsComponent;
    }
 
    /**

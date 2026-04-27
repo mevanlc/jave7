@@ -44,7 +44,6 @@ public class JaveMessages extends NLS {
    public static String Menu_Tools;
    public static String Menu_Help;
    public static String Menu_Special;
-   public static String ToolDialog_NoOptionsAvailableText;
    public static String Tool_Fill_Name;
    public static String Tool_Fill_UndoName_Solid;
    public static String Tool_Fill_UndoName_Pattern;
