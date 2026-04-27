@@ -2,6 +2,7 @@ package de.jave.jave.open;
 
 import de.jave.jave.JavEApplication;
 import de.jave.jave.WatermarkTool;
+import de.jave.jave.actions.ToolBar;
 import java.awt.Component;
 import java.io.File;
 import javax.swing.Icon;
@@ -35,7 +36,7 @@ public class WatermarkImageOpenPerformStrategy implements IImageOpenPerformStrat
 
    @Override
    public void perform(Component parentComponent, File file) {
-      this.application.setTool(19);
+      this.application.setTool(ToolBar.WATERMARK_TOOL_INDEX);
       this.tool.performLoadImage(parentComponent, file);
    }
 }

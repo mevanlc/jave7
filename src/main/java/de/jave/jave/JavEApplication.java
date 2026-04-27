@@ -207,7 +207,7 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
          @Override
          public void stateChanged() {
             boolean v = JavEApplication.this.watermarkVisibilityModel.getValue();
-            ((IWatermarkPainter) JavEApplication.this.mainPanel.getToolManager().getTool(19)).setEnabled(v);
+            ((IWatermarkPainter) JavEApplication.this.mainPanel.getToolManager().getTool(ToolBar.WATERMARK_TOOL_INDEX)).setEnabled(v);
             JavEApplication.this.mainPanel.repaint();
          }
       });
@@ -215,7 +215,7 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
          @Override
          public void stateChanged() {
             boolean v = JavEApplication.this.auxLinesVisibilityModel.getValue();
-            ((IWatermarkPainter) JavEApplication.this.mainPanel.getToolManager().getTool(20)).setEnabled(v);
+            ((IWatermarkPainter) JavEApplication.this.mainPanel.getToolManager().getTool(ToolBar.AUXILIARY_LINES_TOOL_INDEX)).setEnabled(v);
             JavEApplication.this.mainPanel.repaint();
          }
       });
@@ -394,7 +394,7 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
    }
 
    public void showToolOptionsDialog() {
-      this.optionsDialog.setVisible(true);
+      this.toolOptionsDialogVisibilityModel.setValue(true);
    }
 
    public void doSelectionDelete() {
@@ -427,7 +427,7 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
       if (this.mainPanel.hasSelection()) {
          CharacterPlate cp = this.mainPanel.getContentOfInterest().getContent();
          if (cp.getWidth() <= 12 && cp.getHeight() <= 12 && cp.getHeight() * cp.getWidth() <= 100) {
-            this.setTool(14);
+            this.setTool(ToolBar.BRUSH_TOOL_INDEX);
             ((BrushTool)this.mainPanel.getCurrentTool()).setBrush(cp);
          } else {
             MessageDialogFactory.showMessageDialog(
@@ -589,17 +589,17 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
    }
 
    public void setWatermarkImage(WatermarkImageFile imageFile) {
-      this.setTool(19);
-      WatermarkTool tool = (WatermarkTool)this.mainPanel.getToolManager().getTool(19);
+      this.setTool(ToolBar.WATERMARK_TOOL_INDEX);
+      WatermarkTool tool = (WatermarkTool)this.mainPanel.getToolManager().getTool(ToolBar.WATERMARK_TOOL_INDEX);
       tool.setImage(imageFile);
       tool.fit();
       this.toolBar.setWatermarkVisible(true);
    }
 
    public void doLoadWatermark() {
-      this.setTool(19);
+      this.setTool(ToolBar.WATERMARK_TOOL_INDEX);
       this.toolBar.setWatermarkVisible(true);
-      WatermarkTool tool = (WatermarkTool)this.mainPanel.getToolManager().getTool(19);
+      WatermarkTool tool = (WatermarkTool)this.mainPanel.getToolManager().getTool(ToolBar.WATERMARK_TOOL_INDEX);
       tool.performLoadImage(this.frame);
    }
 
@@ -822,18 +822,18 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
    }
 
    public void switchToSelectonTool() {
-      this.setTool(12);
+      this.setTool(ToolBar.SELECTION_TOOL_INDEX);
       ((SelectionTool)this.mainPanel.getCurrentTool()).synchronizeToSelection();
    }
 
    @Override
    public void switchToTextTool(int x, int y) {
-      this.setTool(10);
+      this.setTool(ToolBar.TEXT_TOOL_INDEX);
       ((TextTool)this.mainPanel.getCurrentTool()).setCursorLocation(x, y);
    }
 
    public void switchToTextTool(char ch, int x, int y) {
-      this.setTool(10);
+      this.setTool(ToolBar.TEXT_TOOL_INDEX);
       TextTool textTool = (TextTool)this.mainPanel.getCurrentTool();
       textTool.setCursorLocation(x, y);
       textTool.checkSize();
@@ -841,11 +841,11 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
    }
 
    public void switchToTextTool() {
-      this.setTool(10);
+      this.setTool(ToolBar.TEXT_TOOL_INDEX);
    }
 
    public SelectionTool getSelectionTool() {
-      return (SelectionTool)this.mainPanel.getToolManager().getTool(12);
+      return (SelectionTool)this.mainPanel.getToolManager().getTool(ToolBar.SELECTION_TOOL_INDEX);
    }
 
    public void setTool(int toolIndex) {

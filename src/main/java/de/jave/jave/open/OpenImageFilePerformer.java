@@ -5,6 +5,7 @@ import de.jave.jave.WatermarkTool;
 import de.jave.jave.actions.CamelizerAction;
 import de.jave.jave.actions.Image2AsciiAction;
 import de.jave.jave.actions.JaveActions;
+import de.jave.jave.actions.ToolBar;
 import de.jave.jave.plate.ToolManager;
 import java.awt.Component;
 import java.io.File;
@@ -17,7 +18,7 @@ import net.disy.commons.swing.ui.IObjectUi;
 
 public class OpenImageFilePerformer {
    public static void performOpenImageFile(Component parentComponent, File file, JavEApplication application, JaveActions actions, ToolManager toolManager) {
-      WatermarkTool watermarkTool = (WatermarkTool)toolManager.getTool(19);
+      WatermarkTool watermarkTool = (WatermarkTool)toolManager.getTool(ToolBar.WATERMARK_TOOL_INDEX);
       Image2AsciiAction image2AsciiAction = actions.getImage2AsciiAction();
       CamelizerAction camelizerAction = actions.getCamelizerAction();
       final IImageOpenPerformStrategy[] stategies = new IImageOpenPerformStrategy[]{

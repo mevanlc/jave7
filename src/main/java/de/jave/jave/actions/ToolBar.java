@@ -54,12 +54,28 @@ import net.disy.commons.swing.layout.util.LayoutUtilities;
 import net.disy.commons.swing.widgets.HorizontalLine;
 
 public class ToolBar {
-   public static final int BRUSH_TOOL_INDEX = 14;
-   public static final int DEFAULT_TOOL_INDEX = 0;
-   public static final int SELECTION_TOOL_INDEX = 12;
+   public static final int FREEHAND_TOOL_INDEX = 0;
+   public static final int FREEHAND_ALGORITHMIC_TOOL_INDEX = 1;
+   public static final int LINE_TOOL_INDEX = 2;
+   public static final int LINE_ALGORITHMIC_TOOL_INDEX = 3;
+   public static final int RECTANGLE_TOOL_INDEX = 4;
+   public static final int RECTANGLE_ALGORITHMIC_TOOL_INDEX = 5;
+   public static final int ELLIPSE_TOOL_INDEX = 6;
+   public static final int ELLIPSE_ALGORITHMIC_TOOL_INDEX = 7;
+   public static final int BEZIER_TOOL_INDEX = 8;
+   public static final int ARC_TOOL_INDEX = 9;
    public static final int TEXT_TOOL_INDEX = 10;
-   public static final int AUXILIARY_LINES_TOOL_INDEX = 20;
+   public static final int FIGLET_TOOL_INDEX = 11;
+   public static final int SELECTION_TOOL_INDEX = 12;
+   public static final int FREEHAND_SELECTION_TOOL_INDEX = 13;
+   public static final int BRUSH_TOOL_INDEX = 14;
+   public static final int ERASER_TOOL_INDEX = 15;
+   public static final int FILL_TOOL_INDEX = 16;
+   public static final int CLONE_TOOL_INDEX = 17;
+   public static final int PAN_TOOL_INDEX = 18;
    public static final int WATERMARK_TOOL_INDEX = 19;
+   public static final int AUXILIARY_LINES_TOOL_INDEX = 20;
+   public static final int DEFAULT_TOOL_INDEX = FREEHAND_TOOL_INDEX;
    public static final int TOOL_COUNT = 21;
    private final JavEApplication application;
    private final SmartButtonGroup buttonGroup = new SmartButtonGroup();
@@ -107,7 +123,10 @@ public class ToolBar {
       panel.add(this.btn(9));
       panel.add(this.createHorizontalLine(6), fiveColumnsData);
 
-      // Selection + Brush groups joined: tools 10..18,20 — 2 rows of 5
+      // Selection + Brush + view-overlay groups: 11 tools in 3 rows
+      // row 1: text, figlet, sel, fh-sel, brush
+      // row 2: eraser, fill, clone, (2 gaps)
+      // row 3: pan, auxlines, watermark, (2 gaps) — view-overlay cluster
       panel.add(this.btn(10));
       panel.add(this.btn(11));
       panel.add(this.btn(12));
@@ -116,8 +135,13 @@ public class ToolBar {
       panel.add(this.btn(15));
       panel.add(this.btn(16));
       panel.add(this.btn(17));
+      panel.add(new Gap());
+      panel.add(new Gap());
       panel.add(this.btn(18));
       panel.add(this.btn(20));
+      panel.add(this.btn(19));
+      panel.add(new Gap());
+      panel.add(new Gap());
 
       panel.add(new Gap(1, 4), fiveColumnsData);
       panel.add(this.createHorizontalLine(2), fiveColumnsData);
@@ -189,7 +213,7 @@ public class ToolBar {
       this.tools[19] = new WatermarkTool(mainPanel, this.application, filter);
       this.tools[20] = new AuxiliaryLinesTool(mainPanel, this.application, filter);
       mainPanel.getToolManager().setTools(this.tools);
-      mainPanel.setCurrentTool(this.tools[0]);
+      mainPanel.setCurrentTool(this.tools[DEFAULT_TOOL_INDEX]);
 
       this.buttonIndexToToolIndex = createToolIndicesWithButtons();
       this.toolIndexToButtonIndex = new int[this.tools.length];
@@ -231,17 +255,12 @@ public class ToolBar {
    }
 
    private static int[] createToolIndicesWithButtons() {
-      // All tools get a button except WatermarkTool (index 19), which is now
-      // reachable only via the View menu. Tool indices in tools[] stay 0..20
-      // so raw-index setTool callers (e.g. setWatermarkImage → setTool(19))
-      // continue to work; the index-decoupling layer maps button positions.
-      int[] indices = new int[TOOL_COUNT - 1];
-      int b = 0;
+      // All tools get a button. Tool indices in tools[] match button-tool
+      // mapping 1:1 today; the indirection layer remains in place so we
+      // can re-introduce skips (e.g. for tools moved menu-only) cheaply.
+      int[] indices = new int[TOOL_COUNT];
       for (int t = 0; t < TOOL_COUNT; t++) {
-         if (t == WATERMARK_TOOL_INDEX) {
-            continue;
-         }
-         indices[b++] = t;
+         indices[t] = t;
       }
       return indices;
    }
