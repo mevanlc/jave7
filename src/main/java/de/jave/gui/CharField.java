@@ -3,6 +3,10 @@ package de.jave.gui;
 import de.jave.gfx.GfxTools;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
@@ -199,5 +203,47 @@ public class CharField extends JComponent implements KeyListener, FocusListener,
    public void focusLost(FocusEvent evt) {
       this.focus = false;
       this.repaint();
+   }
+
+   public void copy() {
+      char ch = this.model.getCharacter();
+      StringSelection sel = new StringSelection(String.valueOf(ch));
+      Toolkit.getDefaultToolkit().getSystemClipboard().setContents(sel, null);
+   }
+
+   public void cut() {
+      if (!this.editable || !this.isEnabled()) {
+         return;
+      }
+      this.copy();
+      if (this.model.getCharacter() != ' ') {
+         this.model.setCharacter(' ');
+         this.historyAdd(' ');
+      }
+   }
+
+   public void paste() {
+      if (!this.editable || !this.isEnabled()) {
+         return;
+      }
+      try {
+         Transferable t = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
+         if (t == null || !t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+            return;
+         }
+         String s = (String)t.getTransferData(DataFlavor.stringFlavor);
+         if (s == null || s.isEmpty()) {
+            return;
+         }
+         char ch = s.charAt(0);
+         if (ch < ' ') {
+            return;
+         }
+         if (this.model.getCharacter() != ch) {
+            this.model.setCharacter(ch);
+            this.historyAdd(ch);
+         }
+      } catch (Exception ignored) {
+      }
    }
 }

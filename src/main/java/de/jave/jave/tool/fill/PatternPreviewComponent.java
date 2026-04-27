@@ -2,6 +2,7 @@ package de.jave.jave.tool.fill;
 
 import de.jave.ascii.plate.textareabased.AsciiTextArea;
 import de.jave.ascii.plate.textareabased.AsciiTextAreaProperties;
+import de.jave.jave.actions.ClipboardOverride;
 import de.jave.jave.algorithm.fill.FillAlgorithm;
 import de.jave.jave.algorithm.fill.FillMatchMode;
 import de.jave.jave.pattern.Pattern;
@@ -41,6 +42,10 @@ public class PatternPreviewComponent implements IComponentContainer {
       CharacterPlate previewPlate = this.createPreviewPlate(pattern);
       this.textArea.setText(previewPlate.asString());
       this.textArea.scrollToTop();
+   }
+
+   public void setClipboardOverride(ClipboardOverride override) {
+      this.textArea.getContent().putClientProperty(ClipboardOverride.CLIENT_PROPERTY, override);
    }
 
    private CharacterPlate createPreviewPlate(Pattern pattern) {

@@ -1,6 +1,7 @@
 package de.jave.jave.tool.dialog;
 
 import de.jave.jave.Tool;
+import de.jave.jave.actions.FocusedTextClipboardDelegate;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import javax.swing.JComponent;
@@ -27,6 +28,7 @@ public class ToolSelectorBarOptionsHost {
             return new Dimension(Math.max(d.width, ToolSelectorBarOptionsHost.this.minWidth), d.height);
          }
       };
+      this.panel.putClientProperty(FocusedTextClipboardDelegate.TOOL_OPTIONS_HOST_PROPERTY, Boolean.TRUE);
    }
 
    public void setMinWidth(int width) {

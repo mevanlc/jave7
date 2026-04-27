@@ -5,6 +5,7 @@ import de.jave.ascii.plate.textareabased.AsciiTextArea;
 import de.jave.ascii.plate.textareabased.AsciiTextAreaProperties;
 import de.jave.jave.AsciiGradientComboBoxFactory;
 import de.jave.jave.JaveMessages;
+import de.jave.jave.actions.ClipboardOverride;
 import de.jave.jave.algorithm.compress.AsciiPacker;
 import de.jave.jave.algorithm.fill.FillMatchMode;
 import de.jave.jave.algorithm.fill.FillMode;
@@ -23,6 +24,9 @@ import de.jave.text.TextTools;
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -153,6 +157,12 @@ public class FillInlineOptionsPanel implements IInlineToolOptions {
    private JComponent buildPatternCard() {
       this.patternPreview = new PatternPreviewComponent(this.applicationPreferences.getDisplayFontModel());
       this.patternPreview.setPattern(this.options.getPattern());
+      this.patternPreview.setClipboardOverride(new ClipboardOverride() {
+         @Override
+         public void paste() {
+            FillInlineOptionsPanel.this.pasteClipboardAsPattern();
+         }
+      });
 
       SmartAction openAction = new SmartAction(JaveIcons.OPEN_ICON) {
          @Override
@@ -349,6 +359,21 @@ public class FillInlineOptionsPanel implements IInlineToolOptions {
       this.options.setPattern(pattern);
       if (this.patternPreview != null) {
          this.patternPreview.setPattern(pattern);
+      }
+   }
+
+   private void pasteClipboardAsPattern() {
+      try {
+         Transferable t = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
+         if (t == null || !t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+            return;
+         }
+         String s = (String)t.getTransferData(DataFlavor.stringFlavor);
+         if (s == null || s.isEmpty()) {
+            return;
+         }
+         this.applyPattern(new Pattern(AsciiPacker.encode(TextTools.toCharField(s))));
+      } catch (Exception ignored) {
       }
    }
 
