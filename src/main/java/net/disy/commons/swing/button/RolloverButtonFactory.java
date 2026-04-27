@@ -1,5 +1,6 @@
 package net.disy.commons.swing.button;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.AbstractButton;
@@ -24,6 +25,7 @@ public class RolloverButtonFactory {
             super.setUI(new BasicButtonUI() {
                @Override
                public void paint(Graphics g, JComponent c) {
+                  RolloverButtonFactory.paintSelectedBackground(g, (AbstractButton)c);
                   super.paint(g, c);
                   RolloverButtonFactory.paintButtonBorder(g, (AbstractButton)c);
                }
@@ -41,6 +43,7 @@ public class RolloverButtonFactory {
             super.setUI(new BasicToggleButtonUI() {
                @Override
                public void paint(Graphics g, JComponent c) {
+                  RolloverButtonFactory.paintSelectedBackground(g, (AbstractButton)c);
                   super.paint(g, c);
                   RolloverButtonFactory.paintButtonBorder(g, (AbstractButton)c);
                }
@@ -73,6 +76,28 @@ public class RolloverButtonFactory {
       button.setFocusPainted(false);
       button.setBorderPainted(false);
       button.setRolloverEnabled(true);
+   }
+
+   private static void paintSelectedBackground(Graphics g, AbstractButton button) {
+      boolean selected = button.getModel().isSelected();
+      boolean pressedAndArmed = button.getModel().isPressed() && button.getModel().isArmed();
+      if (!selected && !pressedAndArmed) {
+         return;
+      }
+      Color base = button.getBackground();
+      if (base == null) {
+         base = SwingColors.getControlColor();
+      }
+      g.setColor(darken(base, 28));
+      Dimension size = button.getSize();
+      g.fillRect(0, 0, size.width, size.height);
+   }
+
+   private static Color darken(Color c, int amount) {
+      int r = Math.max(0, c.getRed() - amount);
+      int g = Math.max(0, c.getGreen() - amount);
+      int b = Math.max(0, c.getBlue() - amount);
+      return new Color(r, g, b, c.getAlpha());
    }
 
    private static void paintButtonBorder(Graphics g, AbstractButton button) {
