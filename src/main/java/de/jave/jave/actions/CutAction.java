@@ -28,6 +28,9 @@ public class CutAction extends AbstractJaveAction {
 
    @Override
    protected void ececute(Component parentComponent, IDocumentEditor editor) {
+      if (FocusedTextClipboardDelegate.tryHandle(FocusedTextClipboardDelegate.Op.CUT)) {
+         return;
+      }
       Plate plate = editor.getPlate();
       JaveClipboardSelection s;
       if (!plate.hasSelection()) {

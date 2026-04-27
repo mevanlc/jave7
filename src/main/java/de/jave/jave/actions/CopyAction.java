@@ -25,6 +25,9 @@ public class CopyAction extends AbstractJaveAction {
 
    @Override
    protected void ececute(Component parentComponent, IDocumentEditor editor) {
+      if (FocusedTextClipboardDelegate.tryHandle(FocusedTextClipboardDelegate.Op.COPY)) {
+         return;
+      }
       JaveClipboardSelection sel;
       if (editor.getPlate().hasSelection()) {
          Selection selection = editor.getPlate().getSelection();

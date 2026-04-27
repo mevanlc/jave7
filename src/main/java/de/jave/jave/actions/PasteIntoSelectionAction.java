@@ -21,6 +21,9 @@ public class PasteIntoSelectionAction extends AbstractJaveAction {
 
    @Override
    protected void ececute(Component parentComponent, IDocumentEditor editor) {
+      if (FocusedTextClipboardDelegate.tryHandle(FocusedTextClipboardDelegate.Op.PASTE)) {
+         return;
+      }
       if (!editor.getPlate().hasSelection()) {
          return;
       }

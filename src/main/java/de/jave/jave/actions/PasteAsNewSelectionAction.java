@@ -30,6 +30,9 @@ public class PasteAsNewSelectionAction extends AbstractJaveAction {
 
    @Override
    protected void ececute(Component parentComponent, IDocumentEditor editor) {
+      if (FocusedTextClipboardDelegate.tryHandle(FocusedTextClipboardDelegate.Op.PASTE)) {
+         return;
+      }
       JaveClipboardSelection sel = ClipboardTransferer.getClipboardContent();
       if (sel != null) {
          JaveMainPanel mainPanel = this.getMainPanel();
