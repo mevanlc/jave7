@@ -10,8 +10,7 @@ import javax.swing.JPanel;
  * Bottom region of the tool selector bar that hosts the active tool's
  * inline options panel — or a fallback panel when the tool has none.
  *
- * <p>Wired from {@code JavEApplication.setTool(int)} alongside the
- * existing legacy {@code ToolOptionsDialog.setTool} call.
+ * <p>Wired from {@code JavEApplication.setTool(int)}.
  */
 public class ToolSelectorBarOptionsHost {
    private final JPanel panel;

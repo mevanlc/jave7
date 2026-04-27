@@ -7,7 +7,6 @@ import de.jave.preferences.SmartPreferences;
 import de.jave.util.RecentFileList;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.File;
 import net.disy.commons.core.io.FileModel;
@@ -27,9 +26,6 @@ public class JaveApplicationPreferences extends SmartPreferences {
    private static final String KEY_FRAME_Y = "frameY";
    private static final String KEY_FRAME_X = "frameX";
    private static final String KEY_FRAME_STATE = "frameState";
-   private static final String KEY_TOOL_DIALOG_LOCATION_X = "toolDialogLocationX";
-   private static final String KEY_TOOL_DIALOG_LOCATION_Y = "toolDialogLocationY";
-   private static final String KEY_TOOL_OPTIONS_DIALOG_VISIBLE = "toolOptionsDialogVisible";
    private static final String KEY_ANIMATION_WIDTH = "animationWidth";
    private static final String KEY_ANIMATION_HEIGHT = "animationHeight";
    private static final String KEY_DOCUMENT_WIDTH = "documentWidth";
@@ -39,7 +35,6 @@ public class JaveApplicationPreferences extends SmartPreferences {
    private static final String KEY_AUTHOR_NAME = "authorName";
    private static final String KEY_CURSOR_BLOCK_STYLE = "cursorBlockStyle";
    private static final String KEY_SHOW_QUICK_START_ON_STARTUP = "showQuickStartOnStartup";
-   private static final String KEY_SMALL_FRAME = "smallFrame";
    private static final boolean DEFAULT_USE_AWT_FILECHOOSER = false;
    private static final int DEFAULT_FRAME_X = 0;
    private static final int DEFAULT_FRAME_Y = 10;
@@ -143,25 +138,6 @@ public class JaveApplicationPreferences extends SmartPreferences {
       return new Rectangle(x, y, w, h);
    }
 
-   public Point getToolDialogLocation() {
-      int x = this.getInt("toolDialogLocationX", 600);
-      int y = this.getInt("toolDialogLocationY", 90);
-      return new Point(x, y);
-   }
-
-   public void setToolDialogLocation(Point location) {
-      this.put("toolDialogLocationX", location.x);
-      this.put("toolDialogLocationY", location.y);
-   }
-
-   public boolean getToolOptionsDialogVisible() {
-      return this.getBoolean(KEY_TOOL_OPTIONS_DIALOG_VISIBLE, false);
-   }
-
-   public void setToolOptionsDialogVisible(boolean visible) {
-      this.put(KEY_TOOL_OPTIONS_DIALOG_VISIBLE, visible);
-   }
-
    public RecentFileList getRecentFileList() {
       return this.recentFileList;
    }
@@ -248,12 +224,4 @@ public class JaveApplicationPreferences extends SmartPreferences {
       this.flush();
    }
 
-   public boolean isSmallOptionsDialog() {
-      return this.getBoolean("smallFrame", false);
-   }
-
-   public void setSmallFrame(boolean value) {
-      this.put("smallFrame", value);
-      this.flush();
-   }
 }

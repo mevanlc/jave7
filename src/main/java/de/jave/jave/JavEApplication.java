@@ -3,8 +3,6 @@ package de.jave.jave;
 import de.jave.asciimation.action.OpenAnimationAction;
 import de.jave.core.NLS;
 import de.jave.gui.StatusBar;
-import de.jave.gui.dialog.disposeanimation.AbstractDialogDisposeContext;
-import de.jave.gui.dialog.disposeanimation.DialogDisposeRectangleAnimator;
 import de.jave.gui.io.AcceptAllFileFilter;
 import de.jave.gui.io.CompositeExtensionFileFilter;
 import de.jave.gui.io.ExtensionFileFilters;
@@ -49,7 +47,6 @@ import de.jave.jave.preferences.JaveApplicationPreferences;
 import de.jave.jave.preferences.PlatePreferences;
 import de.jave.gui.layout.InlineOptionsWidthMeasurer;
 import de.jave.jave.tool.dialog.FallbackInlineOptionsPanel;
-import de.jave.jave.tool.dialog.ToolOptionsDialog;
 import de.jave.jave.tool.dialog.ToolSelectorBarOptionsHost;
 import de.jave.jave.tool.text.TextTool;
 import de.jave.jave.version.JaveTitleProvider;
@@ -67,7 +64,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -82,7 +78,6 @@ import net.disy.commons.core.message.MessageType;
 import net.disy.commons.core.model.BooleanModel;
 import net.disy.commons.core.model.listener.IChangeListener;
 import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.action.SmartToggleAction;
 import net.disy.commons.swing.dialog.message.MessageDialogFactory;
 import net.disy.commons.swing.dialog.message.MessageDialogUtilities;
 import net.disy.commons.swing.dialog.message.YesNoCancel;
@@ -93,7 +88,6 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
    private final JaveMainPanel mainPanel;
    private final DocumentManager documentManager;
    private final ToolBar toolBar;
-   private ToolOptionsDialog optionsDialog;
    private TextboxDialog textboxDialog;
    private ReplaceCharacterDialog replaceCharacterDialog;
    private AsciiThumbnailBrowser thumbnailBrowser;
@@ -105,7 +99,6 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
    private final JaveApplicationPreferences applicationPreferences;
    private final JaveTopToolbar topToolbar;
    private ToolSelectorBarOptionsHost toolSelectorBarOptionsHost;
-   private final BooleanModel toolOptionsDialogVisibilityModel;
    private final BooleanModel watermarkVisibilityModel;
    private final BooleanModel auxLinesVisibilityModel;
    private final PlatePreferences platePreferences;
@@ -127,15 +120,6 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
       this.javePreferences = new JavePreferences();
       this.applicationPreferences = new JaveApplicationPreferences(this.javePreferences);
       FileModel currectDirectoryModel = this.applicationPreferences.getCurrectDirectoryModel();
-      this.toolOptionsDialogVisibilityModel = new BooleanModel();
-      this.toolOptionsDialogVisibilityModel.setValue(this.applicationPreferences.getToolOptionsDialogVisible());
-      this.toolOptionsDialogVisibilityModel.addChangeListener(new IChangeListener() {
-         @Override
-         public void stateChanged() {
-            JavEApplication.this.applicationPreferences.setToolOptionsDialogVisible(
-                  JavEApplication.this.toolOptionsDialogVisibilityModel.getValue());
-         }
-      });
       this.watermarkVisibilityModel = new BooleanModel();
       this.auxLinesVisibilityModel = new BooleanModel();
       this.documentManager = new DocumentManager(currectDirectoryModel, this.applicationPreferences.getDefaultColorSchemeModel());
@@ -153,37 +137,18 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
          this,
          configurationList,
          this.javePreferences,
-         this.toolOptionsDialogVisibilityModel,
          this.platePreferences,
          this.applicationPreferences.getDisplayFontModel(),
          this.applicationPreferences.getDefaultColorSchemeModel()
       );
       ResizeDocumentAction resizeAction = this.actions.getResizeAction();
-      SmartToggleAction toolOptionsDialogToggleAction = this.actions.getToolOptionsDialogToggleAction();
       this.statusBar = new JaveStatusBar(
          this,
          this.applicationPreferences.getDisplayFontModel(),
          this.mainPanel.getActiveEditorModel(),
          this.status,
-         resizeAction,
-         toolOptionsDialogToggleAction
+         resizeAction
       );
-      DialogDisposeRectangleAnimator.attachTo(this.toolOptionsDialogVisibilityModel, new AbstractDialogDisposeContext() {
-         @Override
-         public JFrame getParentFrame() {
-            return JavEApplication.this.frame;
-         }
-
-         @Override
-         public Rectangle getTargetAreaOnScreen() {
-            return this.getAreaOnScreen(JavEApplication.this.statusBar.getToggleOptionsDialogButton());
-         }
-
-         @Override
-         public Rectangle getDialogAreaOnScreen() {
-            return this.getAreaOnScreen(JavEApplication.this.optionsDialog.getWindow());
-         }
-      });
       this.topToolbar = new JaveTopToolbar(this, this.actions, this.undoRedoModel);
       FallbackInlineOptionsPanel fallback = new FallbackInlineOptionsPanel();
       this.toolSelectorBarOptionsHost = new ToolSelectorBarOptionsHost(fallback);
@@ -375,16 +340,6 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
       this.applicationPreferences.getRecentFileList().setRecentFileOpenListener(this);
    }
 
-   public void startupOptionsDialog() {
-      boolean smallOptionsDialog = this.applicationPreferences.isSmallOptionsDialog();
-      this.optionsDialog = new ToolOptionsDialog(this, smallOptionsDialog, this.toolOptionsDialogVisibilityModel);
-      this.optionsDialog.setTool(this.mainPanel.getCurrentTool());
-      this.optionsDialog.pack();
-      this.optionsDialog.setLocation(this.applicationPreferences.getToolDialogLocation());
-      this.optionsDialog.show();
-      this.optionsDialog.toFront();
-   }
-
    public void updateSelectionMenu() {
       if (this.menuBar != null) {
          this.menuBar.updateSelectionMenu(this.mainPanel.hasSelection());
@@ -404,18 +359,6 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
 
    public void updateSizeLabelToDocumentSize() {
       this.statusBar.updateSizeLabelToDocumentSize();
-   }
-
-   public void packOptionsDialog() {
-      this.optionsDialog.pack();
-   }
-
-   public void hideToolOptionsDialog() {
-      this.optionsDialog.setVisible(false);
-   }
-
-   public void showToolOptionsDialog() {
-      this.toolOptionsDialogVisibilityModel.setValue(true);
    }
 
    public void doSelectionDelete() {
@@ -478,7 +421,6 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
 
          JaveStatusFile.deleteAllLogFiles();
          this.applicationPreferences.setApplicationFrameState(this.frame.getExtendedState(), this.frame.getBounds());
-         this.applicationPreferences.setToolDialogLocation(this.optionsDialog.getLocation());
          this.javePreferences.flush();
          this.applicationPreferences.flush();
          this.platePreferences.flush();
@@ -872,10 +814,6 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
    public void setTool(int toolIndex) {
       if (this.mainPanel.getToolManager().getCurrentToolIndex() != toolIndex) {
          Tool newTool = this.mainPanel.getToolManager().getTool(toolIndex);
-         if (this.optionsDialog != null) {
-            this.optionsDialog.setTool(newTool);
-         }
-
          if (this.toolSelectorBarOptionsHost != null) {
             this.toolSelectorBarOptionsHost.setTool(newTool);
          }

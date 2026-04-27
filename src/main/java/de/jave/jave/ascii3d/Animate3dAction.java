@@ -91,7 +91,6 @@ final class Animate3dAction extends SmartAction {
       this.render3DTool.dispose();
       this.application.getDocumentManager().getCurrentDocument().setModified(false);
       this.application.doClose(parentComponent);
-      this.application.showToolOptionsDialog();
       this.application.openJaveAnimation(animationFile);
    }
 }

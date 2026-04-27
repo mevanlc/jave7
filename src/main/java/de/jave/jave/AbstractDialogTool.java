@@ -93,7 +93,6 @@ public abstract class AbstractDialogTool {
          @Override
          public boolean performOk(Component parentComponent) {
             AbstractDialogTool.this.saveCurrentState(AbstractDialogTool.this.getToolActionName());
-            AbstractDialogTool.this.jave.showToolOptionsDialog();
             AbstractDialogTool.this.dialog.setVisible(false);
             return true;
          }
@@ -102,7 +101,6 @@ public abstract class AbstractDialogTool {
          public boolean performCancel(Component parentComponent) {
             AbstractDialogTool.this.document.setModified(false);
             AbstractDialogTool.this.jave.doClose(parentComponent);
-            AbstractDialogTool.this.jave.showToolOptionsDialog();
             AbstractDialogTool.this.getDialog().setVisible(false);
             return true;
          }
@@ -114,7 +112,6 @@ public abstract class AbstractDialogTool {
    }
 
    public final void show() {
-      this.jave.hideToolOptionsDialog();
       UserDialog myDialog = this.getDialog();
       this.toolStarted();
       myDialog.setVisible(true);

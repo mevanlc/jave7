@@ -51,8 +51,6 @@ public class JaveStartupRunnable implements IStartupRunnable {
          jave.startupMenuBar();
          monitor.subTask(JaveMessages.StartUp_SubTask_Cleanup);
          jave.startupFinish2();
-         monitor.subTask(JaveMessages.StartUp_SubTask_ToolOptionsDialog);
-         jave.startupOptionsDialog();
          MacOsXInitializer.initializeApplicationCallbacks(jave.getMaxOsXApplicationCallbacks());
          monitor.subTask(JaveMessages.StartUp_SubTask_Finished);
          jave.startupFinish3();

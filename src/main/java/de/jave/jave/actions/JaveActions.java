@@ -21,7 +21,6 @@ import de.jave.lib.CharacterPlate;
 import de.jave.preferences.JavePreferences;
 import java.awt.Component;
 import net.disy.commons.core.io.FileModel;
-import net.disy.commons.core.model.BooleanModel;
 import net.disy.commons.core.model.ObjectModel;
 import net.disy.commons.core.util.Ensure;
 import net.disy.commons.swing.action.SmartAction;
@@ -37,7 +36,6 @@ public class JaveActions {
    private final SmartAction fractalAction;
    private final SmartAction newAnimationAction;
    private final Image2AsciiAction image2AsciiAction;
-   private final SmartToggleAction toolOptionsDialogToggleAction;
    private final SmartToggleAction gridToggleAction;
    private final SmartToggleAction markIllegalToggleAction;
    private final SmartToggleAction connectedLinesViewToggleAction;
@@ -63,7 +61,6 @@ public class JaveActions {
       @Deprecated final JavEApplication jave,
       ConfigurationList configurationList,
       JavePreferences preferences,
-      BooleanModel toolOptionsDialogVisibilityModel,
       PlatePreferences plateViewOptions,
       FontModel displayFontModel,
       ObjectModel<ColorScheme> defaultColorSchemeModel
@@ -148,9 +145,6 @@ public class JaveActions {
          }
       };
       this.newAnimationAction = new NewAnimationAction(jave);
-      this.toolOptionsDialogToggleAction = new SmartToggleAction(toolOptionsDialogVisibilityModel, "Tool Options Dialog", JaveIcons.TOOL_DIALOG_VISIBLE_ICON);
-      this.toolOptionsDialogToggleAction.setAcceleratorKey(JaveKeyBindings.TOGGLE_TOOL_OPTIONS_DIALOG);
-      this.toolOptionsDialogToggleAction.setToolTipText("Show/Hide Tool Options Dialog");
       this.gridToggleAction = new SmartToggleAction(plateViewOptions.getGridVisibilityModel(), "Grid", JaveIcons.GRID_VISIBLE_ICON);
       this.gridToggleAction.setAcceleratorKey(JaveKeyBindings.TOGGLE_GRID);
       this.markIllegalToggleAction = new SmartToggleAction(plateViewOptions.getMarkIllegalModel(), "Mark illegal characters", JaveIcons.PURE_ASCII_ICON);
@@ -201,10 +195,6 @@ public class JaveActions {
 
    public SmartAction getFractalAction() {
       return this.fractalAction;
-   }
-
-   public SmartToggleAction getToolOptionsDialogToggleAction() {
-      return this.toolOptionsDialogToggleAction;
    }
 
    public SmartToggleAction getGridToggleAction() {

@@ -347,7 +347,6 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
       this.menuView.add(new ZoomInAction(mainPanel));
       this.menuView.add(new ZoomOutAction(mainPanel));
       this.menuView.addSeparator();
-      this.menuView.add(ActionWidgetFactory.createToggleMenuItem(actions.getToolOptionsDialogToggleAction()));
       this.menuView.add(ActionWidgetFactory.createToggleMenuItem(actions.getRulerToggleAction()));
       this.menuView.add(ActionWidgetFactory.createToggleMenuItem(actions.getGridToggleAction()));
       this.menuView.add(ActionWidgetFactory.createToggleMenuItem(actions.getMarkIllegalToggleAction()));

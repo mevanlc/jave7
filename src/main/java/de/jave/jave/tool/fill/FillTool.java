@@ -17,12 +17,12 @@ import de.jave.jave.pattern.PatternList;
 import de.jave.jave.plate.JaveMainPanel;
 import de.jave.jave.preferences.ColorScheme;
 import de.jave.jave.preferences.JaveApplicationPreferences;
+import de.jave.jave.tool.dialog.IInlineToolOptions;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import javax.swing.Icon;
-import javax.swing.JComponent;
 import net.disy.commons.core.util.Ensure;
 import net.disy.commons.swing.mousecursor.CursorId;
 import net.disy.commons.swing.mousecursor.CursorProvider;
@@ -36,6 +36,7 @@ public class FillTool extends Tool {
    private final JaveApplicationPreferences applicationPreferences;
    private final PatternList patternList;
    private final AsciiGradientConfiguration gradientConfiguration;
+   private IInlineToolOptions inlineOptions;
 
    public FillTool(JaveMainPanel plate, JavEApplication application, PatternList patternList, AsciiGradientConfiguration gradientConfiguration, Filter filter) {
       super(plate, application, filter);
@@ -57,9 +58,13 @@ public class FillTool extends Tool {
    }
 
    @Override
-   protected JComponent createOptionsComponent() {
-      return new FillOptionsPanel(this.options, this.getMouseCharacterModel(), this.applicationPreferences, this.patternList, this.gradientConfiguration)
-         .getContent();
+   public IInlineToolOptions getInlineOptionsPanel() {
+      if (this.inlineOptions == null) {
+         this.inlineOptions = new FillInlineOptionsPanel(
+            this.options, this.getMouseCharacterModel(), this.applicationPreferences, this.patternList, this.gradientConfiguration
+         );
+      }
+      return this.inlineOptions;
    }
 
    private FillMode getCurrentMode() {

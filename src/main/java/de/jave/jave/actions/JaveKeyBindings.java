@@ -35,7 +35,6 @@ public final class JaveKeyBindings {
    public static final KeyStroke CROP = KeyStroke.getKeyStroke(KeyEvent.VK_R, MENU);
 
    public static final KeyStroke TOGGLE_GRID = KeyStroke.getKeyStroke(KeyEvent.VK_G, MENU);
-   public static final KeyStroke TOGGLE_TOOL_OPTIONS_DIALOG = KeyStroke.getKeyStroke(KeyEvent.VK_T, MENU);
 
    public static final KeyStroke ZOOM_IN = KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, MENU);
    public static final KeyStroke ZOOM_OUT = KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, MENU);

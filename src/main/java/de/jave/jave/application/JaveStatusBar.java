@@ -12,12 +12,9 @@ import de.jave.jave.plate.IDocumentEditor;
 import java.awt.Dimension;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.JToggleButton;
 import net.disy.commons.core.model.ObjectModel;
 import net.disy.commons.core.model.listener.IChangeListener;
 import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.action.SmartToggleAction;
-import net.disy.commons.swing.button.RolloverButtonFactory;
 import net.disy.commons.swing.component.Gap;
 import net.disy.commons.swing.fontchooser.model.FontModel;
 import net.disy.commons.swing.layout.grid.GridDialogLayout;
@@ -26,7 +23,6 @@ import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
 public class JaveStatusBar {
    private final GStatusLabel sizeLabel;
    private final GStatusLabel lInsert;
-   private final JToggleButton toggleOptionsDialogButton;
    private final JPanel content;
    private final ActiveEditorModel activeEditorModel;
 
@@ -35,14 +31,12 @@ public class JaveStatusBar {
       FontModel fontModel,
       final ActiveEditorModel activeEditorModel,
       StatusBar statusBar,
-      final ResizeDocumentAction resizeAction,
-      SmartToggleAction toolOptionsDialogToggleAction
+      final ResizeDocumentAction resizeAction
    ) {
       Ensure.ensureArgumentNotNull(jave);
       Ensure.ensureArgumentNotNull(fontModel);
       Ensure.ensureArgumentNotNull(activeEditorModel);
       Ensure.ensureArgumentNotNull(resizeAction);
-      Ensure.ensureArgumentNotNull(toolOptionsDialogToggleAction);
       this.activeEditorModel = activeEditorModel;
       this.sizeLabel = new GStatusLabel("", new IMouseClickHandler() {
          @Override
@@ -53,9 +47,6 @@ public class JaveStatusBar {
          }
       });
       this.sizeLabel.setToolTipText(JaveMessages.Control_SizeLabel_Tooltip);
-      this.toggleOptionsDialogButton = RolloverButtonFactory.createToggleButton(toolOptionsDialogToggleAction);
-      this.toggleOptionsDialogButton.setPreferredSize(new Dimension(24, 19));
-      this.toggleOptionsDialogButton.setText(null);
       activeEditorModel.addChangeListener(new IChangeListener() {
          @Override
          public void stateChanged() {
@@ -82,13 +73,12 @@ public class JaveStatusBar {
          }
       });
       this.updateFontZoomModel(zoomableFontModelModel);
-      JPanel panel = new JPanel(new GridDialogLayout(7, false));
+      JPanel panel = new JPanel(new GridDialogLayout(6, false));
       panel.add(statusBar, GridDialogLayoutData.FILL_HORIZONTAL);
       panel.add(new FontLabel(fontModel).getContent());
       panel.add(new ZoomLabel(zoomableFontModelModel).getContent());
       panel.add(this.sizeLabel);
       panel.add(this.lInsert);
-      panel.add(this.toggleOptionsDialogButton);
       panel.add(new Gap(12, 1));
       this.content = panel;
    }
@@ -123,9 +113,5 @@ public class JaveStatusBar {
    public void setInsert(boolean insert) {
       this.lInsert
          .setText(insert ? JaveMessages.Control_InsertOverwriteLabel_InsertAbbreviation : JaveMessages.Control_InsertOverwriteLabel_OverwriteAbbreviation);
-   }
-
-   public JComponent getToggleOptionsDialogButton() {
-      return this.toggleOptionsDialogButton;
    }
 }

@@ -6,11 +6,11 @@ import net.disy.commons.swing.ui.AbstractObjectUi;
 public class FillMatchModeUi extends AbstractObjectUi<FillMatchMode> {
    public String getLabel(FillMatchMode value) {
       if (value == FillMatchMode.EQUAL_CHARACTER) {
-         return "Equal character";
+         return "Equal char";
       } else if (value == FillMatchMode.ANY_CHARACTER) {
-         return "Any character";
+         return "Any char";
       } else if (value == FillMatchMode.ANY_CHARACTER_DIAGONAL) {
-         return "Any character + diagonal";
+         return "Any+diagonal";
       } else {
          throw new IllegalArgumentException();
       }

@@ -241,10 +241,6 @@ public abstract class Tool implements ItemListener, ActionListener {
       Toolkit.getDefaultToolkit().beep();
    }
 
-   public void packOptionsDialog() {
-      this.application.packOptionsDialog();
-   }
-
    public abstract Icon getIcon();
 
    public abstract String getName();

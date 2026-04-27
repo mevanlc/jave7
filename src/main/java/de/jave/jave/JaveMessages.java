@@ -9,7 +9,6 @@ public class JaveMessages extends NLS {
    public static String StartUp_Task_Starting;
    public static String StartUp_SubTask_Finished;
    public static String StartUp_SubTask_CreatingUI;
-   public static String StartUp_SubTask_ToolOptionsDialog;
    public static String StartUp_SubTask_Cleanup;
    public static String StartUp_SubTask_CreateMenu;
    public static String StartUp_SubTask_CrashRecovery;

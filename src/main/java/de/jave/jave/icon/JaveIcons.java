@@ -76,7 +76,6 @@ public class JaveIcons implements IIconResources {
    public static final Icon TOOL_BEZIER_GENERIC_ICON = loadIcon("tool/bezier_generic.gif");
    public static final Icon TOOL_BRUSH_ICON = loadIcon("tool/brush.gif");
    public static final Icon TOOL_CLONE_BRUSH_ICON = loadIcon("tool/clone_brush.gif");
-   public static final Icon TOOL_DIALOG_VISIBLE_ICON = loadIcon("tooldialogvisible.gif");
    public static final Icon TOOL_ELLIPSE_GENERIC_ICON = loadIcon("tool/ellipse_generic.gif");
    public static final Icon TOOL_ERASER_ICON = loadIcon("tool/eraser.gif");
    public static final Icon TOOL_FREEHAND_GENERIC_ICON = loadIcon("tool/freehand_generic.gif");
