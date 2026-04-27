@@ -202,6 +202,7 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
       javax.swing.ActionMap am = root.getActionMap();
       im.put(de.jave.jave.actions.JaveKeyBindings.SELECT_TOOL, "jave.tool.selection");
       im.put(de.jave.jave.actions.JaveKeyBindings.FREEHAND_SELECT_TOOL, "jave.tool.freehandSelection");
+      im.put(de.jave.jave.actions.JaveKeyBindings.TEXT_TOOL, "jave.tool.text");
       am.put("jave.tool.selection", new javax.swing.AbstractAction() {
          @Override
          public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -212,6 +213,12 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
          @Override
          public void actionPerformed(java.awt.event.ActionEvent e) {
             JavEApplication.this.setTool(ToolBar.FREEHAND_SELECTION_TOOL_INDEX);
+         }
+      });
+      am.put("jave.tool.text", new javax.swing.AbstractAction() {
+         @Override
+         public void actionPerformed(java.awt.event.ActionEvent e) {
+            JavEApplication.this.setTool(ToolBar.TEXT_TOOL_INDEX);
          }
       });
    }
