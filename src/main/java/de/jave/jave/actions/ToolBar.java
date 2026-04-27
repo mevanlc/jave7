@@ -228,12 +228,7 @@ public class ToolBar {
             @Override
             protected void execute(Component parentComponent) {
                int sel = ToolBar.this.buttonGroup.getSelectedIndex();
-               int selectedToolIdx = ToolBar.this.buttonIndexToToolIndex[sel];
-               ToolBar.this.application.setTool(selectedToolIdx);
-               if (selectedToolIdx == WATERMARK_TOOL_INDEX
-                     && !((WatermarkTool) ToolBar.this.tools[WATERMARK_TOOL_INDEX]).hasData()) {
-                  ToolBar.this.application.showToolOptionsDialog();
-               }
+               ToolBar.this.application.setTool(ToolBar.this.buttonIndexToToolIndex[sel]);
                ToolBar.this.application.getMainPanel().requestFocus();
             }
          };

@@ -1,15 +1,15 @@
 package de.jave.jave;
 
-import de.jave.gui.GSliderArrangement;
+import de.jave.gui.io.FileChooserUtilities;
+import de.jave.gui.io.FileSelection;
 import de.jave.gui.io.IFileChooserConfiguration;
-import de.jave.gui.io.ISourceFilePanelConfiguration;
 import de.jave.gui.io.ImageIOUtilities;
-import de.jave.gui.io.SourceFilePanel;
 import de.jave.jave.filter.Filter;
 import de.jave.jave.icon.JaveIcons;
 import de.jave.jave.plate.JaveMainPanel;
 import de.jave.jave.preferences.ColorScheme;
 import de.jave.jave.preferences.JaveApplicationPreferences;
+import de.jave.jave.tool.dialog.IInlineToolOptions;
 import de.jave.jave.watermark.IWatermarkPainter;
 import de.jave.jave.watermark.WatermarkData;
 import de.jave.jave.watermark.WatermarkImageFile;
@@ -35,7 +35,10 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import net.disy.commons.core.io.FileModel;
@@ -44,7 +47,6 @@ import net.disy.commons.core.message.MessageType;
 import net.disy.commons.core.model.listener.IChangeListener;
 import net.disy.commons.swing.action.SmartAction;
 import net.disy.commons.swing.dialog.message.MessageDialogFactory;
-import net.disy.commons.swing.layout.grid.EndOfLineMarkerComponent;
 import net.disy.commons.swing.layout.grid.GridDialogLayout;
 import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
 import net.disy.commons.swing.widgets.HorizontalLine;
@@ -52,9 +54,14 @@ import net.disy.commons.swing.widgets.HorizontalLine;
 public class WatermarkTool extends Tool implements IWatermarkPainter {
    private WatermarkData data;
    private JButton bFit;
-   private JTextField tfSize;
+   private JButton bOpen;
+   private JButton bClose;
+   private JTextField tfImageName;
    private JTextField tfPosition;
-   private GSliderArrangement slaBrightness;
+   private JTextField tfSize;
+   private JSpinner spBrightness;
+   private JSlider slBrightness;
+   private SpinnerNumberModel brightnessModel;
    private JCheckBox cbNegative;
    private double xPos;
    private double yPos;
@@ -64,7 +71,9 @@ public class WatermarkTool extends Tool implements IWatermarkPainter {
    private MoveResizeRectangle imageRegion;
    private boolean enabled;
    private static final String LABEL = "Watermark";
-   private SourceFilePanel sourceFilePanel;
+   private final FileModel imageFileModel = new FileModel();
+   private IFileChooserConfiguration fileChooserConfiguration;
+   private IInlineToolOptions inlineOptions;
    private final JaveApplicationPreferences applicationPreferences;
    private Point point1;
 
@@ -99,100 +108,165 @@ public class WatermarkTool extends Tool implements IWatermarkPainter {
    }
 
    @Override
-   protected JComponent createOptionsComponent() {
-      this.bFit = new JButton(new SmartAction("Fit") {
+   public IInlineToolOptions getInlineOptionsPanel() {
+      if (this.inlineOptions == null) {
+         this.inlineOptions = new WatermarkOptionsPanel(this.buildWatermarkOptionsContent());
+      }
+      return this.inlineOptions;
+   }
+
+   protected JComponent buildWatermarkOptionsContent() {
+      this.fileChooserConfiguration = ImageIOUtilities.createImageOpenFileChooserConfiguration(
+         this.application.getDocumentManager().getCurrentDirectoryModel()
+      );
+
+      this.tfImageName = new JTextField(10);
+      this.tfImageName.setEditable(false);
+      this.imageFileModel.addChangeListener(new IChangeListener() {
+         @Override
+         public void stateChanged() {
+            File file = WatermarkTool.this.imageFileModel.getValue();
+            WatermarkTool.this.tfImageName.setText(file == null ? "" : file.getName());
+            WatermarkTool.this.tfImageName.setToolTipText(file == null ? null : file.getAbsolutePath());
+            if (file != null) {
+               WatermarkTool.this.fileChooserConfiguration.getCurrentDirectoryModel().setValue(file.getParentFile());
+            }
+            WatermarkTool.this.bClose.setEnabled(file != null);
+         }
+      });
+
+      SmartAction openAction = new SmartAction(JaveIcons.OPEN_ICON) {
+         @Override
+         protected void execute(Component parentComponent) {
+            WatermarkTool.this.openImageChooser(parentComponent);
+         }
+      };
+      openAction.setToolTipText("Open Image File as Watermark");
+      SmartAction closeAction = new SmartAction(JaveIcons.CLOSE_ICON) {
+         @Override
+         protected void execute(Component parentComponent) {
+            if (WatermarkTool.this.performCloseImage()) {
+               WatermarkTool.this.imageFileModel.setValue(null);
+            }
+         }
+      };
+      closeAction.setToolTipText("Close Current Watermark Image");
+      this.bOpen = new JButton("Open", JaveIcons.OPEN_ICON);
+      this.bOpen.addActionListener(openAction);
+      this.bOpen.setMargin(new java.awt.Insets(2, 4, 2, 4));
+      this.bClose = new JButton("Close", JaveIcons.CLOSE_ICON);
+      this.bClose.addActionListener(closeAction);
+      this.bClose.setMargin(new java.awt.Insets(2, 4, 2, 4));
+      this.bClose.setEnabled(false);
+
+      this.bFit = new JButton(new SmartAction("Fit Canvas") {
          @Override
          protected void execute(Component parentComponent) {
             WatermarkTool.this.fit();
          }
       });
-      this.tfSize = new JTextField(10);
-      this.tfSize.setEditable(false);
-      this.tfPosition = new JTextField(10);
-      this.tfPosition.setEditable(false);
-      this.slaBrightness = new GSliderArrangement("Brightness:", -100, 100, 50, 5, 100);
-      this.slaBrightness.getModel().addChangeListener(new ChangeListener() {
+
+      this.tfPosition = readonlyField();
+      this.tfSize = readonlyField();
+
+      this.brightnessModel = new SpinnerNumberModel(0.0d, -1.0d, 1.0d, 0.05d);
+      this.spBrightness = new JSpinner(this.brightnessModel);
+      ((JSpinner.DefaultEditor) this.spBrightness.getEditor()).getTextField().setColumns(4);
+      this.slBrightness = new JSlider(-100, 100, 0);
+      this.slBrightness.setPreferredSize(new java.awt.Dimension(140, this.slBrightness.getPreferredSize().height));
+      this.brightnessModel.addChangeListener(new ChangeListener() {
          @Override
          public void stateChanged(ChangeEvent e) {
-            if (WatermarkTool.this.data != null) {
-               double brightness = WatermarkTool.this.slaBrightness.getDValue();
-               boolean negative = WatermarkTool.this.cbNegative.isSelected();
-               Image image2 = WatermarkTool.lighten(WatermarkTool.this.data.getOriginalImage(), brightness, negative);
-               if (image2 != null) {
-                  WatermarkTool.this.data.setVisibleImage(image2);
-                  WatermarkTool.this.repaintAll();
-               }
+            int sliderVal = (int) Math.round(WatermarkTool.this.brightnessModel.getNumber().doubleValue() * 100.0);
+            if (WatermarkTool.this.slBrightness.getValue() != sliderVal) {
+               WatermarkTool.this.slBrightness.setValue(sliderVal);
+            }
+            WatermarkTool.this.applyBrightness();
+         }
+      });
+      this.slBrightness.addChangeListener(new ChangeListener() {
+         @Override
+         public void stateChanged(ChangeEvent e) {
+            double dv = WatermarkTool.this.slBrightness.getValue() / 100.0;
+            if (Math.abs(WatermarkTool.this.brightnessModel.getNumber().doubleValue() - dv) > 0.0001) {
+               WatermarkTool.this.brightnessModel.setValue(dv);
             }
          }
       });
+
       this.cbNegative = new JCheckBox("Negative", false);
       this.cbNegative.addItemListener(this);
-      JPanel optionsPanel = new JPanel(new GridDialogLayout(3, false));
-      optionsPanel.add(new JLabel("Position:"), GridDialogLayoutData.RIGHT);
-      optionsPanel.add(this.tfPosition);
-      optionsPanel.add(new EndOfLineMarkerComponent());
-      optionsPanel.add(new JLabel("Size:"), GridDialogLayoutData.RIGHT);
-      optionsPanel.add(this.tfSize);
-      optionsPanel.add(this.bFit);
-      final IFileChooserConfiguration fileChooserConfiguration = ImageIOUtilities.createImageOpenFileChooserConfiguration(
-         this.application.getDocumentManager().getCurrentDirectoryModel()
-      );
-      ISourceFilePanelConfiguration configuration = new ISourceFilePanelConfiguration() {
-         @Override
-         public String getLabel() {
-            return "Image:";
-         }
 
-         @Override
-         public boolean isCloseAvailable() {
-            return true;
-         }
+      this.bFit.setEnabled(false);
+      this.cbNegative.setEnabled(false);
+      this.spBrightness.setEnabled(false);
+      this.slBrightness.setEnabled(false);
+      this.bOpen.setEnabled(this.mainPanel.getActiveEditorModel().getActiveEditor() != null);
 
-         @Override
-         public IFileChooserConfiguration getFileChooserConfiguration() {
-            return fileChooserConfiguration;
-         }
-
-         @Override
-         public String getOpenButtonToolTipText() {
-            return "Open Image File as Watermark";
-         }
-
-         @Override
-         public String getCloseButtonToolTipText() {
-            return "Close Current Watermark Image";
-         }
-      };
-      this.sourceFilePanel = new SourceFilePanel(new FileModel(), configuration) {
-         @Override
-         protected boolean performOpenFile(Component parentComponent, File file) {
-            return WatermarkTool.this.performLoadImage(parentComponent, file);
-         }
-
-         @Override
-         protected boolean performCloseFile(Component parentComponent) {
-            return WatermarkTool.this.performCloseImage();
-         }
-      };
       this.mainPanel.getActiveEditorModel().addChangeListener(new IChangeListener() {
          @Override
          public void stateChanged() {
-            if (WatermarkTool.this.sourceFilePanel != null) {
-               WatermarkTool.this.sourceFilePanel.setEnabled(WatermarkTool.this.mainPanel.getActiveEditorModel().getActiveEditor() != null);
+            if (WatermarkTool.this.bOpen != null) {
+               WatermarkTool.this.bOpen.setEnabled(WatermarkTool.this.mainPanel.getActiveEditorModel().getActiveEditor() != null);
             }
          }
       });
-      this.bFit.setEnabled(false);
-      this.cbNegative.setEnabled(false);
-      this.slaBrightness.setEnabled(false);
+
+      JPanel imageRow = new JPanel(new GridDialogLayout(2, false));
+      imageRow.add(this.bOpen);
+      imageRow.add(this.bClose);
+
+      JPanel brightnessRow = new JPanel(new GridDialogLayout(2, false));
+      brightnessRow.add(new JLabel("Brightness:"));
+      brightnessRow.add(this.spBrightness);
+
       JPanel panel = new JPanel(new GridDialogLayout(1, false));
-      panel.add(this.sourceFilePanel.createPanel());
-      panel.add(new HorizontalLine(), GridDialogLayoutData.FILL_HORIZONTAL);
-      panel.add(optionsPanel);
-      panel.add(new HorizontalLine(), GridDialogLayoutData.FILL_HORIZONTAL);
-      panel.add(this.slaBrightness.createPanel());
+      panel.add(new JLabel("Image:"));
+      panel.add(this.tfImageName, new GridDialogLayoutData(GridDialogLayoutData.FILL_HORIZONTAL));
+      panel.add(imageRow);
+      panel.add(new HorizontalLine(), new GridDialogLayoutData(GridDialogLayoutData.FILL_HORIZONTAL));
+      panel.add(brightnessRow);
+      panel.add(this.slBrightness, new GridDialogLayoutData(GridDialogLayoutData.FILL_HORIZONTAL));
+      panel.add(new HorizontalLine(), new GridDialogLayoutData(GridDialogLayoutData.FILL_HORIZONTAL));
       panel.add(this.cbNegative);
+      panel.add(new HorizontalLine(), new GridDialogLayoutData(GridDialogLayoutData.FILL_HORIZONTAL));
+      panel.add(new JLabel("Position:"));
+      panel.add(this.tfPosition, new GridDialogLayoutData(GridDialogLayoutData.FILL_HORIZONTAL));
+      panel.add(new JLabel("Size:"));
+      panel.add(this.tfSize, new GridDialogLayoutData(GridDialogLayoutData.FILL_HORIZONTAL));
+      panel.add(this.bFit, new GridDialogLayoutData(GridDialogLayoutData.FILL_HORIZONTAL));
       return panel;
+   }
+
+   private static JTextField readonlyField() {
+      JTextField tf = new JTextField(10);
+      tf.setEditable(false);
+      return tf;
+   }
+
+   private void openImageChooser(Component parentComponent) {
+      if (this.fileChooserConfiguration == null) {
+         this.fileChooserConfiguration = ImageIOUtilities.createImageOpenFileChooserConfiguration(
+            this.application.getDocumentManager().getCurrentDirectoryModel()
+         );
+      }
+      FileSelection sel = FileChooserUtilities.performOpenFileChooser(parentComponent, this.fileChooserConfiguration);
+      if (!sel.isEmpty() && this.performLoadImage(parentComponent, sel.getFile())) {
+         this.imageFileModel.setValue(sel.getFile());
+      }
+   }
+
+   private void applyBrightness() {
+      if (this.data == null) {
+         return;
+      }
+      double brightness = this.brightnessModel.getNumber().doubleValue();
+      boolean negative = this.cbNegative.isSelected();
+      Image image2 = lighten(this.data.getOriginalImage(), brightness, negative);
+      if (image2 != null) {
+         this.data.setVisibleImage(image2);
+         this.repaintAll();
+      }
    }
 
    @Override
@@ -232,7 +306,8 @@ public class WatermarkTool extends Tool implements IWatermarkPainter {
       this.repaintAll();
       this.bFit.setEnabled(false);
       this.cbNegative.setEnabled(false);
-      this.slaBrightness.setEnabled(false);
+      this.spBrightness.setEnabled(false);
+      this.slBrightness.setEnabled(false);
       return true;
    }
 
@@ -267,7 +342,8 @@ public class WatermarkTool extends Tool implements IWatermarkPainter {
       if (imageWidth != -1 && imageHeight != -1) {
          this.bFit.setEnabled(true);
          this.cbNegative.setEnabled(true);
-         this.slaBrightness.setEnabled(true);
+         this.spBrightness.setEnabled(true);
+         this.slBrightness.setEnabled(true);
          Dimension documentSize = this.getCurrentDocumentSize();
          this.wPos = documentSize.getWidth();
          if (this.wPos < 5.0) {
@@ -277,12 +353,12 @@ public class WatermarkTool extends Tool implements IWatermarkPainter {
          this.hPos = (double)imageHeight * this.wPos / (double)imageWidth / 1.98;
          this.application.getToolBar().setWatermarkVisible(true);
          this.updateLabels();
-         double brightness = this.slaBrightness.getDValue();
+         double brightness = this.brightnessModel.getNumber().doubleValue();
          boolean negative = this.cbNegative.isSelected();
          Image image2 = lighten(imageFile.getImage(), brightness, negative);
          this.data = new WatermarkData(imageFile.getImage(), image2);
          this.repaintAll();
-         this.sourceFilePanel.getFileModel().setValue(imageFile.getFile());
+         this.imageFileModel.setValue(imageFile.getFile());
          return true;
       } else {
          return false;
@@ -475,7 +551,7 @@ public class WatermarkTool extends Tool implements IWatermarkPainter {
    public void itemStateChanged(ItemEvent evt) {
       if (this.data != null) {
          if (evt.getSource() == this.cbNegative) {
-            double brightness = this.slaBrightness.getDValue();
+            double brightness = this.brightnessModel.getNumber().doubleValue();
             boolean negative = this.cbNegative.isSelected();
             this.data.setVisibleImage(lighten(this.data.getOriginalImage(), brightness, negative));
          }
@@ -494,6 +570,6 @@ public class WatermarkTool extends Tool implements IWatermarkPainter {
    }
 
    public void performLoadImage(Component parent) {
-      this.sourceFilePanel.performOpenImage(parent);
+      this.openImageChooser(parent);
    }
 }
