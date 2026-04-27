@@ -122,6 +122,7 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
    private final JMenuItem miSelectionExpand;
    private final JMenuItem miSelectionDelete;
    private final List<JMenuItem> docOpenEnabledMenuItems = new ArrayList<>();
+   private SmartAction pasteIntoSelectionAction;
    private static final int[] windowShortcuts = new int[]{49, 50, 51, 52, 53, 54, 55, 56, 57, 48};
 
    public JaveMenuBar(
@@ -217,6 +218,8 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
       menuEdit.add(actions.getCopyAction());
       menuEdit.add(actions.getPasteAsNewSelectionAction());
       menuEdit.add(actions.getPasteAsNewDocumentAction());
+      this.pasteIntoSelectionAction = actions.getPasteIntoSelectionAction();
+      menuEdit.add(this.pasteIntoSelectionAction);
       menuEdit.addSeparator();
       menuEdit.add(this.miSelectAll);
       menuEdit.addSeparator();
@@ -481,6 +484,7 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
       if (this.menuSelection.isEnabled() != hasSelection) {
          this.menuSelection.setEnabled(hasSelection);
       }
+      this.pasteIntoSelectionAction.setEnabled(hasSelection);
    }
 
    private void updateWindowsMenu() {

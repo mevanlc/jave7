@@ -56,6 +56,7 @@ public class JaveActions {
    private final SmartAction cutAction;
    private final SmartAction pasteAsNewSelectionAction;
    private final SmartAction pasteAsNewDocumentAction;
+   private final SmartAction pasteIntoSelectionAction;
 
    public JaveActions(
       @Deprecated final JavEApplication jave,
@@ -71,11 +72,12 @@ public class JaveActions {
       Ensure.ensureArgumentNotNull(preferences);
       FileModel currentDirectoryModel = jave.getApplicationPreferences().getCurrectDirectoryModel();
       JaveMainPanel mainPanel = jave.getMainPanel();
-      this.copyAction = new CopyAction(mainPanel);
-      this.cutAction = new CutAction(mainPanel);
+      JaveApplicationPreferences applicationPreferences = jave.getApplicationPreferences();
+      this.copyAction = new CopyAction(mainPanel, applicationPreferences.getSelectionlessCutCopyOnCellModel());
+      this.cutAction = new CutAction(mainPanel, applicationPreferences.getSelectionlessCutCopyOnCellModel());
       this.pasteAsNewSelectionAction = new PasteAsNewSelectionAction(mainPanel, jave);
       this.pasteAsNewDocumentAction = new PasteAsNewDocumentAction(mainPanel, jave);
-      JaveApplicationPreferences applicationPreferences = jave.getApplicationPreferences();
+      this.pasteIntoSelectionAction = new PasteIntoSelectionAction(mainPanel);
       TextExportPreferences textExportPreferences = new TextExportPreferences(applicationPreferences);
       this.exportAction = new ExportTextAction(mainPanel, textExportPreferences, currentDirectoryModel, displayFontModel);
       this.quickStartAction = new QuickStartAction(jave);
@@ -275,5 +277,9 @@ public class JaveActions {
 
    public SmartAction getPasteAsNewDocumentAction() {
       return this.pasteAsNewDocumentAction;
+   }
+
+   public SmartAction getPasteIntoSelectionAction() {
+      return this.pasteIntoSelectionAction;
    }
 }

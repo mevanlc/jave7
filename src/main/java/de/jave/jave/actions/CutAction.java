@@ -8,16 +8,22 @@ import de.jave.jave.actions.enablestrategy.IJaveDocumentEditorActionEnabledStrat
 import de.jave.jave.actions.enablestrategy.TextAndAnimationEditorEnabledStrategy;
 import de.jave.jave.plate.IDocumentEditor;
 import de.jave.jave.plate.JaveMainPanel;
+import de.jave.jave.preferences.BooleanPreferenceModel;
+import de.jave.lib.CharacterPlate;
 import java.awt.Component;
+import java.awt.Point;
 import net.disy.commons.swing.mousecursor.CursorId;
 import net.disy.commons.swing.mousecursor.CursorProvider;
 import net.disy.commons.swing.resources.DisyCommonsSwingIconResources;
 
 public class CutAction extends AbstractJaveAction {
-   public CutAction(JaveMainPanel mainPanel) {
+   private final BooleanPreferenceModel selectionlessCutCopyOnCellModel;
+
+   public CutAction(JaveMainPanel mainPanel, BooleanPreferenceModel selectionlessCutCopyOnCellModel) {
       super(mainPanel, "Cut", DisyCommonsSwingIconResources.CUT);
       this.setAcceleratorKey(JaveKeyBindings.CUT);
       this.setToolTipText("Cut");
+      this.selectionlessCutCopyOnCellModel = selectionlessCutCopyOnCellModel;
    }
 
    @Override
@@ -25,6 +31,15 @@ public class CutAction extends AbstractJaveAction {
       Plate plate = editor.getPlate();
       JaveClipboardSelection s;
       if (!plate.hasSelection()) {
+         if (this.selectionlessCutCopyOnCellModel.getValue()) {
+            Point cursor = plate.getDocument().getCursorLocation();
+            CharacterPlate singleChar = new CharacterPlate(1, 1);
+            singleChar.set(0, 0, plate.getChar(cursor.x, cursor.y));
+            ClipboardTransferer.setClipboardContent(new JaveClipboardSelection(singleChar));
+            plate.setCharForce(cursor, ' ');
+            plate.saveCurrentState("cut");
+            return;
+         }
          s = new JaveClipboardSelection(plate.getDocument().getContent());
          plate.clear();
          this.getToolManager().getCurrentTool().reset();
@@ -34,7 +49,6 @@ public class CutAction extends AbstractJaveAction {
          plate.unselect();
          this.getToolManager().getCurrentTool().setCursor(CursorProvider.getInstance().getCursor(CursorId.CROSSHAIR_SELECTION));
       }
-
       ClipboardTransferer.setClipboardContent(s);
       plate.saveCurrentState("cut");
    }

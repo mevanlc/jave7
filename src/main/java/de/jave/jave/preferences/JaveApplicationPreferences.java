@@ -34,6 +34,7 @@ public class JaveApplicationPreferences extends SmartPreferences {
    private static final String KEY_AUTHOR_MAIL = "authorMail";
    private static final String KEY_AUTHOR_NAME = "authorName";
    private static final String KEY_CURSOR_BLOCK_STYLE = "cursorBlockStyle";
+   private static final String KEY_SELECTIONLESS_CUT_COPY_ON_CELL = "selectionlessCutCopyOnCell";
    private static final String KEY_SHOW_QUICK_START_ON_STARTUP = "showQuickStartOnStartup";
    private static final boolean DEFAULT_USE_AWT_FILECHOOSER = false;
    private static final int DEFAULT_FRAME_X = 0;
@@ -55,6 +56,7 @@ public class JaveApplicationPreferences extends SmartPreferences {
    private final RecentFileList recentFileList = new RecentFileList(new SmartPreferences(this.getSubPreferences("recentFiles")));
    private final FileModel currentDirectoryModel;
    private final BooleanPreferenceModel cursorBlockStyleModel;
+   private final BooleanPreferenceModel selectionlessCutCopyOnCellModel;
    private final FontModel displayFontModel;
    private final ObjectModel<ColorScheme> defaultColorSchemeModel;
    private final BooleanModel useAwtFileChooserModel = new BooleanModel(this.getBoolean("useAwtFileChooser", false));
@@ -86,6 +88,7 @@ public class JaveApplicationPreferences extends SmartPreferences {
          }
       });
       this.cursorBlockStyleModel = new BooleanPreferenceModel(this, "cursorBlockStyle", false);
+      this.selectionlessCutCopyOnCellModel = new BooleanPreferenceModel(this, KEY_SELECTIONLESS_CUT_COPY_ON_CELL, false);
       this.displayFontModel = new FontModel(this.getFont("font"));
       this.displayFontModel.addChangeListener(new IChangeListener() {
          @Override
@@ -182,6 +185,10 @@ public class JaveApplicationPreferences extends SmartPreferences {
 
    public BooleanPreferenceModel getCursorBlockStyleModel() {
       return this.cursorBlockStyleModel;
+   }
+
+   public BooleanPreferenceModel getSelectionlessCutCopyOnCellModel() {
+      return this.selectionlessCutCopyOnCellModel;
    }
 
    public int getApplicationFrameState() {
