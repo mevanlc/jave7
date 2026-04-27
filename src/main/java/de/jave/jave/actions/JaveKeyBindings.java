@@ -15,6 +15,8 @@ import javax.swing.KeyStroke;
 public final class JaveKeyBindings {
    private static final int MENU = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
    private static final int MENU_SHIFT = MENU | InputEvent.SHIFT_DOWN_MASK;
+   private static final int CTRL = InputEvent.CTRL_DOWN_MASK;
+   private static final int CTRL_SHIFT = CTRL | InputEvent.SHIFT_DOWN_MASK;
 
    public static final KeyStroke NEW_DOCUMENT = KeyStroke.getKeyStroke(KeyEvent.VK_N, MENU);
    public static final KeyStroke OPEN = KeyStroke.getKeyStroke(KeyEvent.VK_O, MENU);
@@ -39,6 +41,9 @@ public final class JaveKeyBindings {
    public static final KeyStroke ZOOM_OUT = KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, MENU);
 
    public static final KeyStroke PREFERENCES = KeyStroke.getKeyStroke(KeyEvent.VK_COMMA, MENU);
+
+   public static final KeyStroke SELECT_TOOL = KeyStroke.getKeyStroke(KeyEvent.VK_E, CTRL);
+   public static final KeyStroke FREEHAND_SELECT_TOOL = KeyStroke.getKeyStroke(KeyEvent.VK_E, CTRL_SHIFT);
 
    private JaveKeyBindings() {}
 }

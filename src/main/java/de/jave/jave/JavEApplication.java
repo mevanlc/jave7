@@ -227,7 +227,28 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
       this.frame.getContentPane().add(this.toolBar.getContent(), "West");
       this.frame.getContentPane().add(this.mainPanel.getContent(), "Center");
       this.frame.getContentPane().add(bottomPanel, "South");
+      this.installToolShortcuts();
       this.frame.pack();
+   }
+
+   private void installToolShortcuts() {
+      javax.swing.JComponent root = this.frame.getRootPane();
+      javax.swing.InputMap im = root.getInputMap(javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW);
+      javax.swing.ActionMap am = root.getActionMap();
+      im.put(de.jave.jave.actions.JaveKeyBindings.SELECT_TOOL, "jave.tool.selection");
+      im.put(de.jave.jave.actions.JaveKeyBindings.FREEHAND_SELECT_TOOL, "jave.tool.freehandSelection");
+      am.put("jave.tool.selection", new javax.swing.AbstractAction() {
+         @Override
+         public void actionPerformed(java.awt.event.ActionEvent e) {
+            JavEApplication.this.setTool(ToolBar.SELECTION_TOOL_INDEX);
+         }
+      });
+      am.put("jave.tool.freehandSelection", new javax.swing.AbstractAction() {
+         @Override
+         public void actionPerformed(java.awt.event.ActionEvent e) {
+            JavEApplication.this.setTool(ToolBar.FREEHAND_SELECTION_TOOL_INDEX);
+         }
+      });
    }
 
    public JaveActions getActions() {
