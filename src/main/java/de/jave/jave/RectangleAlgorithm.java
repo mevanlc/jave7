@@ -15,10 +15,11 @@ public class RectangleAlgorithm {
       {'/', '-', '\\', '|', '|', '\\', '-', '/'},
       {'O', '-', 'O', '|', '|', 'O', '-', 'O'},
       {')', '-', '(', '|', '|', ')', '-', '('},
+      {'┌', '─', '┐', '│', '│', '└', '─', '┘'},
       {'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'}
    };
    private static char[] userDefinedChars = new char[]{'+', '-', '+', '|', '|', '+', '-', '+'};
-   public static final int CHARACTERS = 7;
+   public static final int CHARACTERS = 8;
 
    public static void setUserDefinedChars(char[] chars) {
       userDefinedChars = chars;
