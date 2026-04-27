@@ -1134,6 +1134,7 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
                   this.scrollHome();
                }
                break;
+            case 123:
             case 155:
                this.toggleInsert();
          }
