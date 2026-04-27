@@ -182,7 +182,7 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
       fileMenu.addSeparator();
       fileMenu.add(actions.getQuickStartAction());
       fileMenu.addSeparator();
-      fileMenu.add(exitAction);
+      fileMenu.add(exitAction).setAccelerator(JaveKeyBindings.EXIT);
       JMenu animationMenu = new SmartMenu(JaveMessages.Menu_Animation);
       animationMenu.add(actions.getNewAnimationAction());
       animationMenu.addSeparator();

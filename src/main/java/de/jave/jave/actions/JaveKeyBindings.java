@@ -41,6 +41,7 @@ public final class JaveKeyBindings {
    public static final KeyStroke ZOOM_OUT = KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, MENU);
 
    public static final KeyStroke PREFERENCES = KeyStroke.getKeyStroke(KeyEvent.VK_COMMA, MENU);
+   public static final KeyStroke EXIT = KeyStroke.getKeyStroke(KeyEvent.VK_Q, CTRL);
 
    public static final KeyStroke SELECT_TOOL = KeyStroke.getKeyStroke(KeyEvent.VK_E, CTRL);
    public static final KeyStroke FREEHAND_SELECT_TOOL = KeyStroke.getKeyStroke(KeyEvent.VK_E, CTRL_SHIFT);
