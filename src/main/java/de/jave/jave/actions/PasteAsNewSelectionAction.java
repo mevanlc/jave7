@@ -7,20 +7,25 @@ import de.jave.jave.actions.enablestrategy.IJaveDocumentEditorActionEnabledStrat
 import de.jave.jave.actions.enablestrategy.TextAndAnimationEditorEnabledStrategy;
 import de.jave.jave.plate.IDocumentEditor;
 import de.jave.jave.plate.JaveMainPanel;
+import de.jave.jave.preferences.BooleanPreferenceModel;
+import de.jave.lib.CharacterPlate;
 import java.awt.Component;
 import java.awt.Point;
+import java.awt.Rectangle;
 import net.disy.commons.core.util.Ensure;
 import net.disy.commons.swing.resources.DisyCommonsSwingIconResources;
 
 public class PasteAsNewSelectionAction extends AbstractJaveAction {
    private final JavEApplication jave;
+   private final BooleanPreferenceModel pasteVFillsSelectionModel;
 
-   public PasteAsNewSelectionAction(JaveMainPanel mainPanel, JavEApplication jave) {
+   public PasteAsNewSelectionAction(JaveMainPanel mainPanel, JavEApplication jave, BooleanPreferenceModel pasteVFillsSelectionModel) {
       super(mainPanel, "Paste As New Selection", DisyCommonsSwingIconResources.PASTE);
       this.setAcceleratorKey(JaveKeyBindings.PASTE_AS_NEW_SELECTION);
       this.setToolTipText("Paste As New Selection");
       Ensure.ensureArgumentNotNull(jave);
       this.jave = jave;
+      this.pasteVFillsSelectionModel = pasteVFillsSelectionModel;
    }
 
    @Override
@@ -30,6 +35,20 @@ public class PasteAsNewSelectionAction extends AbstractJaveAction {
          JaveMainPanel mainPanel = this.getMainPanel();
          if (mainPanel.getDocument() == null) {
             this.jave.pasteAsNewDocument(sel.getContent());
+         } else if (this.pasteVFillsSelectionModel.getValue() && mainPanel.hasSelection()) {
+            CharacterPlate clipContent = sel.getContent();
+            int clipW = clipContent.getWidth();
+            int clipH = clipContent.getHeight();
+            Rectangle region = mainPanel.getSelectionRegion();
+            CharacterPlate newContent = new CharacterPlate(region.width, region.height);
+            for (int dy = 0; dy < region.height; dy++) {
+               for (int dx = 0; dx < region.width; dx++) {
+                  newContent.set(dx, dy, clipContent.get(dx % clipW, dy % clipH));
+               }
+            }
+            editor.getPlate().getSelection().set(new Rectangle(region.x, region.y, region.width, region.height), newContent);
+            editor.getPlate().repaint();
+            mainPanel.saveCurrentState("paste into selection");
          } else {
             Point location = mainPanel.getPasteLocation();
             mainPanel.pasteAsNewSelection(sel, location);

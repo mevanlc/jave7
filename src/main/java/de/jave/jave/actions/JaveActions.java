@@ -75,7 +75,7 @@ public class JaveActions {
       JaveApplicationPreferences applicationPreferences = jave.getApplicationPreferences();
       this.copyAction = new CopyAction(mainPanel, applicationPreferences.getSelectionlessCutCopyOnCellModel());
       this.cutAction = new CutAction(mainPanel, applicationPreferences.getSelectionlessCutCopyOnCellModel());
-      this.pasteAsNewSelectionAction = new PasteAsNewSelectionAction(mainPanel, jave);
+      this.pasteAsNewSelectionAction = new PasteAsNewSelectionAction(mainPanel, jave, applicationPreferences.getPasteVFillsSelectionModel());
       this.pasteAsNewDocumentAction = new PasteAsNewDocumentAction(mainPanel, jave);
       this.pasteIntoSelectionAction = new PasteIntoSelectionAction(mainPanel);
       TextExportPreferences textExportPreferences = new TextExportPreferences(applicationPreferences);

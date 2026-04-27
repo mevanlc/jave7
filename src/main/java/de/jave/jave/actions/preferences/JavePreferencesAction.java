@@ -52,6 +52,7 @@ public final class JavePreferencesAction extends SmartAction {
          new TextEditorPreferencesPanel(preferences, platePreferences),
          new AnimationEditorPreferencesPanel(preferences, platePreferences),
          new TextToolPreferencesPanel(preferences),
+         new SelectionPreferencesPanel(preferences),
          new AdvancedPreferencesPanel(preferences)
       };
       AbstractDialogPage dialogPage = new AbstractDialogPage("") {
