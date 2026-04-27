@@ -89,6 +89,10 @@ public class WatermarkTool extends Tool implements IWatermarkPainter {
       return this.enabled;
    }
 
+   public boolean hasData() {
+      return this.data != null;
+   }
+
    @Override
    public Icon getIcon() {
       return JaveIcons.TOOL_WATERMARK_ICON;
