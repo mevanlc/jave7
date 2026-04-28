@@ -50,6 +50,8 @@ public class SelectionTool extends Tool {
    private int keySelectionAnchorV = 3;
    private boolean selectionMoved = false;
    private boolean selectionResized = false;
+   private boolean cloneSelectionOnDrag = false;
+   private boolean selectionClonedOnDrag = false;
    protected static final int NONE = 1;
    private static final int MOVE = 0;
    private static final int N_RESIZE = 2;
@@ -455,6 +457,8 @@ public class SelectionTool extends Tool {
       this.location2 = null;
       this.location1 = location;
       this.point1 = point;
+      this.cloneSelectionOnDrag = false;
+      this.selectionClonedOnDrag = false;
       if (evt.isMetaDown()) {
          this.location1 = null;
          if (this.location2 != null) {
@@ -476,6 +480,7 @@ public class SelectionTool extends Tool {
                int place = sel.getPlace(point);
                if (place == 1) {
                   this.mode = 0;
+                  this.cloneSelectionOnDrag = evt.isAltDown();
                } else if (place == 0) {
                   this.mode = 10;
                   this.selectionMousePressedStarted(location);
@@ -584,14 +589,16 @@ public class SelectionTool extends Tool {
          this.gdy = 0;
          this.location1 = null;
          this.point1 = null;
+         this.cloneSelectionOnDrag = false;
          if (this.selectionResized) {
             this.getPlate().saveCurrentState("resize selection");
             this.selectionResized = false;
          }
 
          if (this.selectionMoved) {
-            this.getPlate().saveCurrentState("move selection");
+            this.getPlate().saveCurrentState(this.selectionClonedOnDrag ? "clone selection" : "move selection");
             this.selectionMoved = false;
+            this.selectionClonedOnDrag = false;
          }
       } else if (evt.isMetaDown() && this.location2 != null) {
          this.location2 = null;
@@ -657,6 +664,11 @@ public class SelectionTool extends Tool {
                   this.resize(ddx - this.dx, ddy - this.dy);
                   this.selectionResized = true;
                } else {
+                  if (this.cloneSelectionOnDrag && !this.selectionClonedOnDrag) {
+                     this.getPlate().getSelection().paste();
+                     this.selectionClonedOnDrag = true;
+                  }
+
                   int xx = ddx - this.dx;
 
                   int yy;
