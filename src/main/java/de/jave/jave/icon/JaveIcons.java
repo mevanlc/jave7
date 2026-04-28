@@ -39,6 +39,7 @@ public class JaveIcons implements IIconResources {
    public static final Icon PURE_ASCII_ICON = loadIcon("pure_toggle.gif");
    public static final Icon RESIZE_ICON = loadIcon("resize.gif");
    public static final Icon TEXTBOX_ICON = loadIcon("textbox.gif");
+   public static final Icon TRANSPARENT_ICON = loadIcon("transparent.gif");
    public static final Icon NEW_DOCUMENT_ICON = loadIcon("new.gif");
    public static final Icon OPEN_ICON = loadIcon("open.gif");
    public static final Icon OPEN_RECENT_ICON = loadIcon("open_recent.gif");

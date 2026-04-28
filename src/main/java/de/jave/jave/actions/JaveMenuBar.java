@@ -159,7 +159,13 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
             application.performExit(parentComponent);
          }
       };
-      JMenu menuRecent = new JMenu("Recent Files");
+      JMenu menuRecent = new JMenu("Recent Files") {
+         @Override
+         public JMenuItem add(JMenuItem menuItem) {
+            JaveMenuBar.this.installTransparentIconIfMissing(menuItem);
+            return super.add(menuItem);
+         }
+      };
       menuRecent.setIcon(JaveIcons.OPEN_RECENT_ICON);
       recentFileList.setMenu(menuRecent);
       JMenu fileMenu = new SmartMenu(JaveMessages.Menu_File);
@@ -430,6 +436,7 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
       this.add(menuSpecial);
       this.add(this.menuWindows);
       this.setHelpMenu(menuHelp);
+      this.installTransparentIconsOnMenuItems();
       this.docOpenEnabledMenuItems.add(this.miClear);
       this.docOpenEnabledMenuItems.add(this.miSelectAll);
       this.docOpenEnabledMenuItems.add(this.miClose);
@@ -537,6 +544,31 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
 
             this.menuWindows.add(this.windowMenuItems[i]);
          }
+      }
+      this.installTransparentIcons(this.menuWindows);
+   }
+
+   private void installTransparentIconsOnMenuItems() {
+      for (int i = 0; i < this.getMenuCount(); i++) {
+         this.installTransparentIcons(this.getMenu(i));
+      }
+   }
+
+   private void installTransparentIcons(JMenu menu) {
+      for (int i = 0; i < menu.getItemCount(); i++) {
+         JMenuItem item = menu.getItem(i);
+         if (item != null) {
+            this.installTransparentIconIfMissing(item);
+            if (item instanceof JMenu) {
+               this.installTransparentIcons((JMenu)item);
+            }
+         }
+      }
+   }
+
+   private void installTransparentIconIfMissing(JMenuItem item) {
+      if (item.getIcon() == null) {
+         item.setIcon(JaveIcons.TRANSPARENT_ICON);
       }
    }
 
