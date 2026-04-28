@@ -23,6 +23,8 @@ public class DisplayPreferencesPanel implements IJavePreferencesPanel {
    private static final double SCALE_MIN = 0.1;
    private static final double SCALE_MAX = 20.0;
    private static final double SCALE_STEP = 0.05;
+   private static final int ZOOM_DELTA_MIN = -32;
+   private static final int ZOOM_DELTA_MAX = 64;
 
    private final PlatePreferences platePreferences;
    private final JComponent content;
@@ -30,6 +32,7 @@ public class DisplayPreferencesPanel implements IJavePreferencesPanel {
    private final JPanel scaleFieldsPanel;
    private final SpinnerNumberModel widthScaleModel;
    private final SpinnerNumberModel heightScaleModel;
+   private final SpinnerNumberModel defaultZoomDeltaModel;
 
    private final CellScalingMode originalMode;
    private final float originalWidthScale;
@@ -63,6 +66,10 @@ public class DisplayPreferencesPanel implements IJavePreferencesPanel {
       this.scaleFieldsPanel.add(new JSpinner(this.heightScaleModel));
       panel.add(this.scaleFieldsPanel, GridDialogLayoutDataFactory.createHorizontalSpanData(2));
       this.scaleFieldsPanel.setVisible(this.originalMode == CellScalingMode.SCALED);
+
+      this.defaultZoomDeltaModel = new SpinnerNumberModel(platePreferences.getDefaultZoomDelta(), ZOOM_DELTA_MIN, ZOOM_DELTA_MAX, 1);
+      panel.add(new JLabel("Default zoom level:"), GridDialogLayoutData.RIGHT);
+      panel.add(new JSpinner(this.defaultZoomDeltaModel));
 
       this.cellScalingComboBox.addItemListener(new ItemListener() {
          @Override
@@ -109,6 +116,7 @@ public class DisplayPreferencesPanel implements IJavePreferencesPanel {
       }
       this.platePreferences.setCellScalingWidth((float)this.widthScaleModel.getNumber().doubleValue());
       this.platePreferences.setCellScalingHeight((float)this.heightScaleModel.getNumber().doubleValue());
+      this.platePreferences.setDefaultZoomDelta(this.defaultZoomDeltaModel.getNumber().intValue());
    }
 
    @Override

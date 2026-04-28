@@ -108,7 +108,7 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
       this.colorSchemeModel = colorSchemeModel;
       this.toolManager = toolManager;
       this.characterSets = characterSets;
-      this.zoomFontModel = new ZoomableFontModel(displayFontModel);
+      this.zoomFontModel = new ZoomableFontModel(displayFontModel, platePreferences.getDefaultZoomDelta());
       this.rulerProperties = new AsciiRulerProperties(this.characterSizeModel);
       this.rulerProperties.setShowMouseLocation(true);
       this.updateRulerPropertiesListener = new IChangeListener() {

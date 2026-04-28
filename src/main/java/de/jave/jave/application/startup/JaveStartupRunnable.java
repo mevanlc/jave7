@@ -8,7 +8,6 @@ import de.jave.jave.CharSetsConfigurationInitializable;
 import de.jave.jave.JavEApplication;
 import de.jave.jave.JaveConfigurationFileLoader;
 import de.jave.jave.JaveMessages;
-import de.jave.jave.actions.ToolBar;
 import de.jave.jave.actions.quickstart.QuickStartAction;
 import de.jave.jave.algorithm.GeneralAlgorithmConfigurationInitializable;
 import de.jave.jave.algorithm.gradient.AsciiGradientInitializable;
@@ -44,7 +43,7 @@ public class JaveStartupRunnable implements IStartupRunnable {
          monitor.subTask(JaveMessages.StartUp_SubTask_CreatingUI);
          jave = new JavEApplication(configurationList);
          monitor.subTask(JaveMessages.StartUp_SubTask_HalfwayPoint);
-         jave.setTool(ToolBar.DEFAULT_TOOL_INDEX);
+         jave.setTool(jave.getApplicationPreferences().getStartupToolIndex());
          monitor.subTask(JaveMessages.StartUp_SubTask_CrashRecovery);
          boolean recovered = jave.startupRecovery(monitor);
          monitor.subTask(JaveMessages.StartUp_SubTask_CreateMenu);

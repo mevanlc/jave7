@@ -62,6 +62,7 @@ import de.jave.undo.UndoState;
 import de.jave.util.RecentFileOpenListener;
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.WindowAdapter;
@@ -338,9 +339,52 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
             JavEApplication.this.performExit(JavEApplication.this.frame);
          }
       });
+      this.installSystemQuitHandler();
+      this.installPreferencesShutdownHook();
       this.frame.setBounds(this.applicationPreferences.getApplicationFrameBounds());
       this.frame.setExtendedState(this.applicationPreferences.getApplicationFrameState());
       this.frame.setVisible(true);
+   }
+
+   /**
+    * Route OS-level quit requests (e.g. macOS Cmd+Q, Dock > Quit, system logout)
+    * through {@link #performExit} so unsaved-document prompts run and preferences
+    * get flushed. Without this the JVM is killed before performExit fires and
+    * any in-memory preference changes are lost.
+    */
+   private void installSystemQuitHandler() {
+      if (!Desktop.isDesktopSupported()) {
+         return;
+      }
+      Desktop desktop = Desktop.getDesktop();
+      if (!desktop.isSupported(Desktop.Action.APP_QUIT_HANDLER)) {
+         return;
+      }
+      desktop.setQuitHandler((event, response) -> {
+         boolean exited = JavEApplication.this.performExit(JavEApplication.this.frame);
+         if (!exited) {
+            response.cancelQuit();
+         }
+         // On success performExit calls System.exit; response.performQuit()
+         // would otherwise also terminate the JVM, but we never reach here.
+      });
+   }
+
+   /**
+    * Backstop for unclean exits (force quit, SIGTERM, IDE stop) so preferences
+    * get flushed even when {@link #performExit} is bypassed. Best-effort only;
+    * unsaved-document prompts are not run here.
+    */
+   private void installPreferencesShutdownHook() {
+      Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+         try {
+            JavEApplication.this.javePreferences.flush();
+            JavEApplication.this.applicationPreferences.flush();
+            JavEApplication.this.platePreferences.flush();
+            JavEApplication.this.applicationPreferences.getRecentFileList().flush();
+         } catch (Throwable ignored) {
+         }
+      }, "jave-prefs-flush"));
    }
 
    public void startupFinish3() {
@@ -958,7 +1002,8 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
          @Override
          public void performShowPreferencesDialog() {
             JavePreferencesAction.performShowPreferencesDialog(
-               JavEApplication.this.frame, JavEApplication.this.applicationPreferences, JavEApplication.this.platePreferences
+               JavEApplication.this.frame, JavEApplication.this.applicationPreferences, JavEApplication.this.platePreferences,
+               JavEApplication.this.mainPanel.getToolManager()
             );
          }
 

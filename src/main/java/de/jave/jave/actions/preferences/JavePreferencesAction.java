@@ -1,6 +1,7 @@
 package de.jave.jave.actions.preferences;
 
 import de.jave.jave.actions.JaveKeyBindings;
+import de.jave.jave.plate.ToolManager;
 import de.jave.jave.preferences.JaveApplicationPreferences;
 import de.jave.jave.preferences.PlatePreferences;
 import java.awt.Component;
@@ -29,22 +30,25 @@ import net.disy.commons.swing.ui.ObjectUiListCellRenderer;
 public final class JavePreferencesAction extends SmartAction {
    private final JaveApplicationPreferences preferences;
    private final PlatePreferences platePreferences;
+   private final ToolManager toolManager;
 
-   public JavePreferencesAction(JaveApplicationPreferences preferences, PlatePreferences platePreferences) {
+   public JavePreferencesAction(JaveApplicationPreferences preferences, PlatePreferences platePreferences, ToolManager toolManager) {
       super("Preferences...");
       Ensure.ensureArgumentNotNull(preferences);
       Ensure.ensureArgumentNotNull(platePreferences);
+      Ensure.ensureArgumentNotNull(toolManager);
       this.preferences = preferences;
       this.platePreferences = platePreferences;
+      this.toolManager = toolManager;
       this.setAcceleratorKey(JaveKeyBindings.PREFERENCES);
    }
 
    @Override
    protected void execute(Component parentComponent) {
-      performShowPreferencesDialog(parentComponent, this.preferences, this.platePreferences);
+      performShowPreferencesDialog(parentComponent, this.preferences, this.platePreferences, this.toolManager);
    }
 
-   public static void performShowPreferencesDialog(Component parent, JaveApplicationPreferences preferences, PlatePreferences platePreferences) {
+   public static void performShowPreferencesDialog(Component parent, JaveApplicationPreferences preferences, PlatePreferences platePreferences, ToolManager toolManager) {
       final IJavePreferencesPanel[] panels = new IJavePreferencesPanel[]{
          new GeneralPreferencesPanel(preferences),
          new AuthorPreferencesPanel(preferences),
@@ -53,7 +57,8 @@ public final class JavePreferencesAction extends SmartAction {
          new AnimationEditorPreferencesPanel(preferences, platePreferences),
          new TextToolPreferencesPanel(preferences),
          new SelectionPreferencesPanel(preferences),
-         new AdvancedPreferencesPanel(preferences)
+         new AdvancedPreferencesPanel(preferences),
+         new DefaultsPreferencesPanel(preferences, toolManager)
       };
       AbstractDialogPage dialogPage = new AbstractDialogPage("") {
          @Override

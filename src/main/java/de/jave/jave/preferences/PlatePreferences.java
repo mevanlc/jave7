@@ -19,8 +19,10 @@ public class PlatePreferences extends SmartPreferences {
    private static final String KEY_CELL_SCALING_MODE = "cellScalingMode";
    private static final String KEY_CELL_SCALING_WIDTH = "cellScalingWidthScale";
    private static final String KEY_CELL_SCALING_HEIGHT = "cellScalingHeightScale";
+   private static final String KEY_DEFAULT_ZOOM_DELTA = "defaultZoomDelta";
    private static final CellScalingMode DEFAULT_CELL_SCALING_MODE = CellScalingMode.LINE;
    private static final float DEFAULT_CELL_SCALING_FACTOR = 1.0F;
+   private static final int DEFAULT_ZOOM_DELTA = 0;
    private static final boolean DEFAULT_AUTO_RESIZE_ON_DROP_FOR_ANIMATION_EDITOR = false;
    private static final boolean DEFAULT_AUTO_RESIZE_ON_DROP_FOR_TEXT_EDITOR = true;
    private static final boolean DEFAULT_GRID = true;
@@ -135,6 +137,14 @@ public class PlatePreferences extends SmartPreferences {
 
    public BooleanModel getRulerModel() {
       return this.rulerModel;
+   }
+
+   public int getDefaultZoomDelta() {
+      return this.getInt(KEY_DEFAULT_ZOOM_DELTA, DEFAULT_ZOOM_DELTA);
+   }
+
+   public void setDefaultZoomDelta(int delta) {
+      this.put(KEY_DEFAULT_ZOOM_DELTA, delta);
    }
 
    public boolean isAutoResizeOnDropForTextEditor() {

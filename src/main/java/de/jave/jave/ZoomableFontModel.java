@@ -14,8 +14,13 @@ public class ZoomableFontModel extends AbstractChangeableModel {
    private final IChangeListener fontModelChangeListener;
 
    public ZoomableFontModel(FontModel fontModel) {
+      this(fontModel, 0);
+   }
+
+   public ZoomableFontModel(FontModel fontModel, int initialSizeDelta) {
       Ensure.ensureArgumentNotNull(fontModel);
       this.fontModel = fontModel;
+      this.sizeDelta = initialSizeDelta;
       this.fontModelChangeListener = new IChangeListener() {
          @Override
          public void stateChanged() {

@@ -364,7 +364,7 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
       }
       this.menuView.add(this.menuColor);
       this.menuView.add(new ChooseDisplayFontAction(preferences.getDisplayFontModel()));
-      this.menuView.add(new JavePreferencesAction(preferences, platePreferences));
+      this.menuView.add(new JavePreferencesAction(preferences, platePreferences, mainPanel.getToolManager()));
       this.menuWindows = new SmartMenu(JaveMessages.Menu_Window);
       this.menuSelection = new SmartMenu(JaveMessages.Menu_Selection);
       this.menuSelection.setEnabled(false);
@@ -389,6 +389,7 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
       menuTools.add(actions.getClipartLibraryAction());
       menuTools.add(actions.getTextBoxAction());
       menuTools.add(actions.getMathematicalExpressionsAction());
+      menuTools.add(actions.getUnicodePickerAction());
       menuTools.addSeparator();
       IFigDriver figDriver = configurationList.getRequired(IFigDriver.class);
       menuTools.add(new FigletExportWizardAction(figDriver, mainPanel, preferences));

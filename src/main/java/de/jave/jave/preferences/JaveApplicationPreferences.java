@@ -238,4 +238,12 @@ public class JaveApplicationPreferences extends SmartPreferences {
       this.flush();
    }
 
+   public int getStartupToolIndex() {
+      return this.getInt("startupToolIndex", 0);
+   }
+
+   public void setStartupToolIndex(int index) {
+      this.put("startupToolIndex", index);
+   }
+
 }

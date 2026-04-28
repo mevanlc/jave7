@@ -57,6 +57,7 @@ public class JaveActions {
    private final SmartAction pasteAsNewSelectionAction;
    private final SmartAction pasteAsNewDocumentAction;
    private final SmartAction pasteIntoSelectionAction;
+   private final SmartAction unicodePickerAction;
 
    public JaveActions(
       @Deprecated final JavEApplication jave,
@@ -165,6 +166,7 @@ public class JaveActions {
       this.textBoxAction = new TextBoxAction(jave, mainPanel);
       this.saveAllAction = new SaveAllAction(jave, mainPanel);
       this.saveAsAction = new SaveAsAction(jave, mainPanel);
+      this.unicodePickerAction = new ShowUnicodePickerAction(mainPanel);
    }
 
    public SmartAction getExportAction() {
@@ -281,5 +283,9 @@ public class JaveActions {
 
    public SmartAction getPasteIntoSelectionAction() {
       return this.pasteIntoSelectionAction;
+   }
+
+   public SmartAction getUnicodePickerAction() {
+      return this.unicodePickerAction;
    }
 }
