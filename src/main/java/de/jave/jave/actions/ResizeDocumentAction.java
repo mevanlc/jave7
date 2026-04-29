@@ -1,6 +1,7 @@
 package de.jave.jave.actions;
 
 import de.jave.jave.JavEApplication;
+import de.jave.jave.DocumentSizeLimits;
 import de.jave.jave.actions.enablestrategy.IJaveDocumentEditorActionEnabledStrategy;
 import de.jave.jave.actions.enablestrategy.TextAndAnimationEditorEnabledStrategy;
 import de.jave.jave.browser.JaveDocumentType;
@@ -42,10 +43,20 @@ public class ResizeDocumentAction extends AbstractJaveAction {
       final JPanel panel = new JPanel(new GridDialogLayout(2, false));
       panel.add(new JLabel("New size:"), GridDialogLayoutDataFactory.createHorizontalSpanData(2));
       panel.add(new JLabel("Width:"));
-      SpinnerNumberModel itfWidth = new SpinnerNumberModel(documentSize.width, 1, 1000, 1);
+      SpinnerNumberModel itfWidth = new SpinnerNumberModel(
+         DocumentSizeLimits.clampWidth(documentSize.width),
+         DocumentSizeLimits.MIN_WIDTH,
+         DocumentSizeLimits.MAX_WIDTH,
+         1
+      );
       panel.add(new JSpinner(itfWidth));
       panel.add(new JLabel("Height:"));
-      SpinnerNumberModel itfHeight = new SpinnerNumberModel(documentSize.height, 1, 9999, 1);
+      SpinnerNumberModel itfHeight = new SpinnerNumberModel(
+         DocumentSizeLimits.clampHeight(documentSize.height),
+         DocumentSizeLimits.MIN_HEIGHT,
+         DocumentSizeLimits.MAX_HEIGHT,
+         1
+      );
       panel.add(new JSpinner(itfHeight));
       IDialogPage page = new AbstractDialogPage("") {
          @Override

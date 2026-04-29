@@ -1,5 +1,6 @@
 package de.jave.jave.actions.preferences;
 
+import de.jave.jave.DocumentSizeLimits;
 import de.jave.jave.preferences.JaveApplicationPreferences;
 import de.jave.jave.preferences.PlatePreferences;
 import java.awt.Dimension;
@@ -27,8 +28,18 @@ public class AnimationEditorPreferencesPanel implements IJavePreferencesPanel {
       Ensure.ensureArgumentNotNull(platePreferences);
       this.preferences = preferences;
       this.platePreferences = platePreferences;
-      this.defaultWidthModel = new SpinnerNumberModel(preferences.getDefaultAnimationSize().width, 10, 100, 1);
-      this.defaultHeightModel = new SpinnerNumberModel(preferences.getDefaultAnimationSize().height, 10, 100, 1);
+      this.defaultWidthModel = new SpinnerNumberModel(
+         DocumentSizeLimits.clampWidth(preferences.getDefaultAnimationSize().width),
+         10,
+         DocumentSizeLimits.MAX_WIDTH,
+         1
+      );
+      this.defaultHeightModel = new SpinnerNumberModel(
+         DocumentSizeLimits.clampHeight(preferences.getDefaultAnimationSize().height),
+         10,
+         DocumentSizeLimits.MAX_HEIGHT,
+         1
+      );
       this.autoResizeCheckBox = new JCheckBox("Auto expand when dropping selection", platePreferences.isAutoResizeOnDropForAnimationEditor());
       JPanel panel = new JPanel(new GridDialogLayout(2, false));
       panel.add(new JLabel("Default frame width:"), GridDialogLayoutData.RIGHT);
