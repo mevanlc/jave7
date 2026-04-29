@@ -341,6 +341,7 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
       });
       this.installSystemQuitHandler();
       this.installPreferencesShutdownHook();
+      this.actions.getCamelizerSessionManager().installAppForegroundListener(this.frame);
       this.frame.setBounds(this.applicationPreferences.getApplicationFrameBounds());
       this.frame.setExtendedState(this.applicationPreferences.getApplicationFrameState());
       this.frame.setVisible(true);

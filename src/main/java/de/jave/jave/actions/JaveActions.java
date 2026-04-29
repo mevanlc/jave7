@@ -4,6 +4,7 @@ import de.jave.figlet.engine.IFigDriver;
 import de.jave.image2ascii.AsciiGreyscaleTableConfiguration;
 import de.jave.image2ascii.IImage2AsciiResultTaker;
 import de.jave.jave.JavEApplication;
+import de.jave.jave.algorithm.camel.CamelizerSessionManager;
 import de.jave.jave.actions.export.ExportTextAction;
 import de.jave.jave.actions.export.TextExportPreferences;
 import de.jave.jave.actions.quickstart.QuickStartAction;
@@ -58,6 +59,7 @@ public class JaveActions {
    private final SmartAction pasteAsNewDocumentAction;
    private final SmartAction pasteIntoSelectionAction;
    private final SmartAction unicodePickerAction;
+   private final CamelizerSessionManager camelizerSessionManager;
 
    public JaveActions(
       @Deprecated final JavEApplication jave,
@@ -140,7 +142,8 @@ public class JaveActions {
          }
       };
       this.aboutAction.setToolTipText("About JavE");
-      this.camelizerAction = new CamelizerAction(mainPanel, currentDirectoryModel);
+      this.camelizerSessionManager = new CamelizerSessionManager(mainPanel, currentDirectoryModel);
+      this.camelizerAction = new CamelizerAction(mainPanel, this.camelizerSessionManager);
       this.fractalAction = new SmartAction("Fractals", JaveIcons.FRACTAL_ICON) {
          @Override
          protected void execute(Component parentComponent) {
@@ -287,5 +290,9 @@ public class JaveActions {
 
    public SmartAction getUnicodePickerAction() {
       return this.unicodePickerAction;
+   }
+
+   public CamelizerSessionManager getCamelizerSessionManager() {
+      return this.camelizerSessionManager;
    }
 }

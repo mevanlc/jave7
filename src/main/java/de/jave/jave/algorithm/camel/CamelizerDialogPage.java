@@ -182,7 +182,7 @@ public class CamelizerDialogPage extends AbstractDialogPage {
       field.setEnabled(enabled);
    }
 
-   private boolean performOpen(Component parentComponent, File file) {
+   boolean performOpen(Component parentComponent, File file) {
       Image loadedImage = null;
 
       try {
