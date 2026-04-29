@@ -246,4 +246,32 @@ public class JaveApplicationPreferences extends SmartPreferences {
       this.put("startupToolIndex", index);
    }
 
+   public Dimension getNewFileSize() {
+      return new Dimension(
+         this.getInt("newFileWidth", DEFAULT_DOCUMENT_WIDTH),
+         this.getInt("newFileHeight", DEFAULT_DOCUMENT_HEIGHT)
+      );
+   }
+
+   public void setNewFileSize(Dimension size) {
+      this.put("newFileWidth", size.width);
+      this.put("newFileHeight", size.height);
+   }
+
+   public boolean isNewFileFillEnabled() {
+      return this.getBoolean("newFileFillEnabled", false);
+   }
+
+   public void setNewFileFillEnabled(boolean enabled) {
+      this.put("newFileFillEnabled", enabled);
+   }
+
+   public char getNewFileFillCharacter() {
+      return (char)this.getInt("newFileFillCharacter", ' ');
+   }
+
+   public void setNewFileFillCharacter(char ch) {
+      this.put("newFileFillCharacter", ch);
+   }
+
 }

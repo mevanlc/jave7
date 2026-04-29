@@ -483,7 +483,14 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
    }
 
    public void doNew() {
-      PlateDocument doc = this.documentManager.createNew(this.applicationPreferences.getDefaultDocumentSize());
+      this.doNew(this.applicationPreferences.getDefaultDocumentSize(), null);
+   }
+
+   public void doNew(java.awt.Dimension size, Character fillCharacter) {
+      PlateDocument doc = this.documentManager.createNew(size);
+      if (fillCharacter != null) {
+         doc.getContent().fill(0, 0, size.width, size.height, fillCharacter.charValue());
+      }
       TextDocumentEditor editor = new TextDocumentEditor(
          DocumentDefaultTitleFactory.createDefaultDocumentTitle(),
          doc,

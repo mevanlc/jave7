@@ -170,6 +170,7 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
       recentFileList.setMenu(menuRecent);
       JMenu fileMenu = new SmartMenu(JaveMessages.Menu_File);
       fileMenu.add(actions.getNewDocumentAction());
+      fileMenu.add(new NewDocumentDialogAction(application, preferences));
       fileMenu.addSeparator();
       fileMenu.add(actions.getOpenAction());
       fileMenu.add(this.miRevert);
@@ -187,6 +188,8 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
       fileMenu.add(actions.getExportAction());
       fileMenu.addSeparator();
       fileMenu.add(actions.getQuickStartAction());
+      fileMenu.addSeparator();
+      fileMenu.add(new JavePreferencesAction(preferences, platePreferences, mainPanel.getToolManager()));
       fileMenu.addSeparator();
       fileMenu.add(exitAction).setAccelerator(JaveKeyBindings.EXIT);
       JMenu animationMenu = new SmartMenu(JaveMessages.Menu_Animation);
@@ -370,7 +373,6 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
       }
       this.menuView.add(this.menuColor);
       this.menuView.add(new ChooseDisplayFontAction(preferences.getDisplayFontModel()));
-      this.menuView.add(new JavePreferencesAction(preferences, platePreferences, mainPanel.getToolManager()));
       this.menuWindows = new SmartMenu(JaveMessages.Menu_Window);
       this.menuSelection = new SmartMenu(JaveMessages.Menu_Selection);
       this.menuSelection.setEnabled(false);
