@@ -4,6 +4,7 @@ import de.jave.ascii.font.ChooseDisplayFontAction;
 import de.jave.jave.actions.quickstart.QuickStartAction;
 import de.jave.jave.preferences.ColorScheme;
 import de.jave.jave.preferences.JaveApplicationPreferences;
+import de.jave.preferences.JavePreferences;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -21,14 +22,18 @@ import net.disy.commons.swing.ui.AbstractObjectUi;
 import net.disy.commons.swing.ui.ObjectUiListCellRenderer;
 
 public class GeneralPreferencesPanel implements IJavePreferencesPanel {
+   private final JavePreferences javePreferences;
    private final JaveApplicationPreferences preferences;
    private final JComponent content;
    private final SpinnerNumberModel recentFileMaxCountModel;
    private final FontModel fontModel;
    private final JComboBox colorSchemeComboBox;
+   private final JComboBox<Integer> iconSizeComboBox;
 
-   public GeneralPreferencesPanel(JaveApplicationPreferences preferences) {
+   public GeneralPreferencesPanel(JavePreferences javePreferences, JaveApplicationPreferences preferences) {
+      Ensure.ensureArgumentNotNull(javePreferences);
       Ensure.ensureArgumentNotNull(preferences);
+      this.javePreferences = javePreferences;
       this.preferences = preferences;
       JPanel panel = new JPanel(new GridDialogLayout(2, false));
       this.recentFileMaxCountModel = new SpinnerNumberModel(preferences.getRecentFileList().getMaxSize(), 3, 20, 1);
@@ -52,6 +57,14 @@ public class GeneralPreferencesPanel implements IJavePreferencesPanel {
       }));
       panel.add(new JLabel("Default Color Scheme:"), GridDialogLayoutData.RIGHT);
       panel.add(this.colorSchemeComboBox);
+      Integer[] iconSizes = new Integer[JavePreferences.SUPPORTED_ICON_SIZES.length];
+      for (int i = 0; i < iconSizes.length; i++) {
+         iconSizes[i] = JavePreferences.SUPPORTED_ICON_SIZES[i];
+      }
+      this.iconSizeComboBox = new JComboBox<>(iconSizes);
+      this.iconSizeComboBox.setSelectedItem(javePreferences.getIconSize());
+      panel.add(new JLabel("Icon size (requires restart):"), GridDialogLayoutData.RIGHT);
+      panel.add(this.iconSizeComboBox);
       this.content = panel;
    }
 
@@ -71,5 +84,9 @@ public class GeneralPreferencesPanel implements IJavePreferencesPanel {
       this.preferences.getRecentFileList().setMaxSize(maxSize);
       this.preferences.getDisplayFontModel().setFont(this.fontModel.getFont());
       this.preferences.getDefaultColorSchemeModel().setValue((ColorScheme)this.colorSchemeComboBox.getSelectedItem());
+      Integer selectedIconSize = (Integer)this.iconSizeComboBox.getSelectedItem();
+      if (selectedIconSize != null) {
+         this.javePreferences.setIconSize(selectedIconSize);
+      }
    }
 }

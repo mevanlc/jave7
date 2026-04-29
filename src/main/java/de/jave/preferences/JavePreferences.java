@@ -11,6 +11,9 @@ public class JavePreferences extends SmartPreferences {
    public static final String KEY_FONT_SIZE = "fontSize";
    public static final String KEY_FONT_STYLE = "fontStyle";
    public static final String KEY_FONT_FAMILY_NAME = "fontFamilyName";
+   public static final String KEY_ICON_SIZE = "iconSize";
+   public static final int DEFAULT_ICON_SIZE = 16;
+   public static final int[] SUPPORTED_ICON_SIZES = {16, 24, 32};
    private static final int DEFAULT_FONT_SIZE = IAsciiGuiConstants.DEFAULT_ASCII_FONT.getSize();
    private static final int DEFAULT_FONT_STYLE = IAsciiGuiConstants.DEFAULT_ASCII_FONT.getStyle();
    private static final String DEFAULT_FONT_FAMILY_NAME = IAsciiGuiConstants.DEFAULT_ASCII_FONT.getFamily();
@@ -35,5 +38,25 @@ public class JavePreferences extends SmartPreferences {
 
    public FontModel getDisplayFontModel() {
       return this.displayFontModel;
+   }
+
+   public int getIconSize() {
+      int v = this.getInt(KEY_ICON_SIZE, DEFAULT_ICON_SIZE);
+      for (int allowed : SUPPORTED_ICON_SIZES) {
+         if (v == allowed) {
+            return v;
+         }
+      }
+      return DEFAULT_ICON_SIZE;
+   }
+
+   public void setIconSize(int size) {
+      for (int allowed : SUPPORTED_ICON_SIZES) {
+         if (size == allowed) {
+            this.put(KEY_ICON_SIZE, size);
+            this.flush();
+            return;
+         }
+      }
    }
 }

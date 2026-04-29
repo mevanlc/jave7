@@ -1010,7 +1010,10 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
          @Override
          public void performShowPreferencesDialog() {
             JavePreferencesAction.performShowPreferencesDialog(
-               JavEApplication.this.frame, JavEApplication.this.applicationPreferences, JavEApplication.this.platePreferences,
+               JavEApplication.this.frame,
+               JavEApplication.this.javePreferences,
+               JavEApplication.this.applicationPreferences,
+               JavEApplication.this.platePreferences,
                JavEApplication.this.mainPanel.getToolManager()
             );
          }

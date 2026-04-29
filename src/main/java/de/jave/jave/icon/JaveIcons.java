@@ -1,13 +1,31 @@
 package de.jave.jave.icon;
 
 import de.jave.jave.application.resources.JaveImageProvider;
+import de.jave.preferences.JavePreferences;
 import java.awt.Image;
 import java.util.Arrays;
 import java.util.List;
+import java.util.prefs.Preferences;
 import javax.swing.Icon;
 import net.disy.commons.swing.resources.IIconResources;
 
 public class JaveIcons implements IIconResources {
+   private static final int[] FALLBACK_SIZES = {32, 24};
+   private static final int ICON_SIZE = readIconSizePreference();
+
+   private static int readIconSizePreference() {
+      try {
+         int v = Preferences.userRoot().node("JavE").getInt(JavePreferences.KEY_ICON_SIZE, JavePreferences.DEFAULT_ICON_SIZE);
+         return (v == 24 || v == 32) ? v : JavePreferences.DEFAULT_ICON_SIZE;
+      } catch (Exception e) {
+         return JavePreferences.DEFAULT_ICON_SIZE;
+      }
+   }
+
+   public static int getIconSize() {
+      return ICON_SIZE;
+   }
+
    private static final Image JAVE_ICON_IMAGE_16x16 = JaveImageProvider.getInstance().getImage("javeicon16.gif");
    private static final Image JAVE_ICON_IMAGE_32x32 = JaveImageProvider.getInstance().getImage("javeicon32.gif");
    private static final Image JAVE_ICON_IMAGE_64x64 = JaveImageProvider.getInstance().getImage("javeicon64.png");
@@ -119,6 +137,34 @@ public class JaveIcons implements IIconResources {
    public static final Icon PENCIL7_DISABLED = loadIcon("pencil/roundsize7_.gif");
 
    private static Icon loadIcon(String string) {
+      String upscaled = findUpscaledVariant(string);
+      if (upscaled != null) {
+         return JaveImageProvider.getInstance().getImageIcon(upscaled);
+      }
       return JaveImageProvider.getInstance().getImageIcon(string);
+   }
+
+   private static String findUpscaledVariant(String relativePath) {
+      if (ICON_SIZE == JavePreferences.DEFAULT_ICON_SIZE) {
+         return null;
+      }
+      int slash = relativePath.lastIndexOf('/');
+      int dot = relativePath.lastIndexOf('.');
+      if (slash < 0 || dot <= slash) {
+         return null;
+      }
+      String dir = relativePath.substring(0, slash);
+      String name = relativePath.substring(slash + 1, dot);
+      ClassLoader cl = JaveIcons.class.getClassLoader();
+      for (int size : FALLBACK_SIZES) {
+         if (size > ICON_SIZE) {
+            continue;
+         }
+         String candidate = dir + "/" + size + "/" + name + ".png";
+         if (cl.getResource("de/jave/" + candidate) != null) {
+            return candidate;
+         }
+      }
+      return null;
    }
 }

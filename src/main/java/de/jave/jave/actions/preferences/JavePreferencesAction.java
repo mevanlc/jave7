@@ -4,6 +4,7 @@ import de.jave.jave.actions.JaveKeyBindings;
 import de.jave.jave.plate.ToolManager;
 import de.jave.jave.preferences.JaveApplicationPreferences;
 import de.jave.jave.preferences.PlatePreferences;
+import de.jave.preferences.JavePreferences;
 import java.awt.Component;
 import javax.swing.JComponent;
 import javax.swing.JList;
@@ -28,15 +29,18 @@ import net.disy.commons.swing.ui.AbstractObjectUi;
 import net.disy.commons.swing.ui.ObjectUiListCellRenderer;
 
 public final class JavePreferencesAction extends SmartAction {
+   private final JavePreferences javePreferences;
    private final JaveApplicationPreferences preferences;
    private final PlatePreferences platePreferences;
    private final ToolManager toolManager;
 
-   public JavePreferencesAction(JaveApplicationPreferences preferences, PlatePreferences platePreferences, ToolManager toolManager) {
+   public JavePreferencesAction(JavePreferences javePreferences, JaveApplicationPreferences preferences, PlatePreferences platePreferences, ToolManager toolManager) {
       super("Preferences...");
+      Ensure.ensureArgumentNotNull(javePreferences);
       Ensure.ensureArgumentNotNull(preferences);
       Ensure.ensureArgumentNotNull(platePreferences);
       Ensure.ensureArgumentNotNull(toolManager);
+      this.javePreferences = javePreferences;
       this.preferences = preferences;
       this.platePreferences = platePreferences;
       this.toolManager = toolManager;
@@ -45,12 +49,12 @@ public final class JavePreferencesAction extends SmartAction {
 
    @Override
    protected void execute(Component parentComponent) {
-      performShowPreferencesDialog(parentComponent, this.preferences, this.platePreferences, this.toolManager);
+      performShowPreferencesDialog(parentComponent, this.javePreferences, this.preferences, this.platePreferences, this.toolManager);
    }
 
-   public static void performShowPreferencesDialog(Component parent, JaveApplicationPreferences preferences, PlatePreferences platePreferences, ToolManager toolManager) {
+   public static void performShowPreferencesDialog(Component parent, JavePreferences javePreferences, JaveApplicationPreferences preferences, PlatePreferences platePreferences, ToolManager toolManager) {
       final IJavePreferencesPanel[] panels = new IJavePreferencesPanel[]{
-         new GeneralPreferencesPanel(preferences),
+         new GeneralPreferencesPanel(javePreferences, preferences),
          new AuthorPreferencesPanel(preferences),
          new DisplayPreferencesPanel(platePreferences),
          new TextEditorPreferencesPanel(preferences, platePreferences),

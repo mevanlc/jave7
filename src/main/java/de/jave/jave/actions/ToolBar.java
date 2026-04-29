@@ -36,11 +36,7 @@ import de.jave.jave.tool.linealgorithmic.LineAlgorithmicTool;
 import de.jave.jave.tool.rectanglealgorithmic.RectangleAlgorithmicTool;
 import de.jave.jave.tool.text.TextTool;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.Insets;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
@@ -224,7 +220,7 @@ public class ToolBar {
 
       for (int b = 0; b < this.buttonIndexToToolIndex.length; b++) {
          final int toolIdx = this.buttonIndexToToolIndex[b];
-         SmartAction action = new SmartAction(scaleIcon(this.tools[toolIdx].getIcon(), 24)) {
+         SmartAction action = new SmartAction(this.tools[toolIdx].getIcon()) {
             @Override
             protected void execute(Component parentComponent) {
                int sel = ToolBar.this.buttonGroup.getSelectedIndex();
@@ -234,19 +230,9 @@ public class ToolBar {
          };
          action.setToolTipText(this.tools[toolIdx].getName());
          JToggleButton button = RolloverButtonFactory.createToggleButton(action);
-         button.setPreferredSize(new Dimension(28, 27));
          button.setSelected(toolIdx == this.application.getMainPanel().getToolManager().getCurrentToolIndex());
          this.buttonGroup.add(button);
       }
-   }
-
-   private static Icon scaleIcon(Icon icon, int size) {
-      if (icon instanceof ImageIcon) {
-         Image src = ((ImageIcon) icon).getImage();
-         Image scaled = src.getScaledInstance(size, size, Image.SCALE_AREA_AVERAGING);
-         return new ImageIcon(scaled);
-      }
-      return icon;
    }
 
    private static int[] createToolIndicesWithButtons() {
