@@ -5,12 +5,12 @@ import de.jave.figlet.engine.IFigDriver;
 import de.jave.figlet.engine.primitives.FigFont;
 import de.jave.figlet.engine.processing.FigletJobFactory;
 import de.jave.figlet.engine.processing.IFigletJob;
-import de.jave.figlet.swing.ui.FigletIcons;
 import de.jave.gfx.GfxTools;
 import de.jave.jave.JavEApplication;
 import de.jave.jave.JaveGlobalRessources;
 import de.jave.jave.Tool;
 import de.jave.jave.filter.Filter;
+import de.jave.jave.icon.JaveIcons;
 import de.jave.jave.plate.JaveMainPanel;
 import de.jave.jave.preferences.ColorScheme;
 import de.jave.jave.tool.dialog.IInlineToolOptions;
@@ -125,7 +125,7 @@ public class FIGletTool extends Tool implements IResultConsumer {
 
    @Override
    public Icon getIcon() {
-      return FigletIcons.FIGLET_ICON;
+      return JaveIcons.TOOL_FIGLET_ICON;
    }
 
    @Override
