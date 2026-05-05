@@ -7,6 +7,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 import net.disy.commons.core.util.Ensure;
+import net.disy.commons.swing.icon.IBaseIconProvider;
 import net.disy.commons.swing.icon.IconImageIcon;
 import net.disy.commons.swing.label.internal.MnemonicLabel;
 import net.disy.commons.swing.label.internal.MnemonicLabelParser;
@@ -14,6 +15,7 @@ import net.disy.commons.swing.util.GuiUtilities;
 import net.disy.commons.swing.util.IEnableable;
 
 public abstract class AbstractDisyAction extends AbstractAction implements IEnableable {
+   public static final String BASE_ICON = "BaseIcon";
    private Component explicitParentComponent;
 
    public AbstractDisyAction() {
@@ -93,12 +95,18 @@ public abstract class AbstractDisyAction extends AbstractAction implements IEnab
    }
 
    public final void setIcon(Icon icon) {
+      Icon baseIcon = getBaseIcon(icon);
       if (!(icon instanceof ImageIcon) && icon != null) {
          ImageIcon imageIcon = new IconImageIcon(icon);
          this.putValue("SmallIcon", imageIcon);
       } else {
          this.putValue("SmallIcon", icon);
       }
+      this.putValue(BASE_ICON, baseIcon);
+   }
+
+   private static Icon getBaseIcon(Icon icon) {
+      return icon instanceof IBaseIconProvider ? ((IBaseIconProvider)icon).getBaseIcon() : icon;
    }
 
    public final void setToolTipText(String shortDescription) {
@@ -111,5 +119,9 @@ public abstract class AbstractDisyAction extends AbstractAction implements IEnab
 
    public final Icon getIcon() {
       return (Icon)this.getValue("SmallIcon");
+   }
+
+   public final Icon getBaseIcon() {
+      return (Icon)this.getValue(BASE_ICON);
    }
 }

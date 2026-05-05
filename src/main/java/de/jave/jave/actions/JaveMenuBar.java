@@ -71,9 +71,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
+import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -81,6 +83,7 @@ import javax.swing.JPanel;
 import net.disy.commons.core.message.IBasicMessage;
 import net.disy.commons.core.model.listener.IChangeListener;
 import net.disy.commons.core.util.Ensure;
+import net.disy.commons.swing.action.AbstractDisyAction;
 import net.disy.commons.swing.action.ActionWidgetFactory;
 import net.disy.commons.swing.action.SmartAction;
 import net.disy.commons.swing.dialog.core.DialogHeaderPanelConfiguration;
@@ -92,6 +95,7 @@ import net.disy.commons.swing.dialog.userdialog.buttons.DialogButtonConfiguratio
 import net.disy.commons.swing.dialog.userdialog.page.AbstractDialogPage;
 import net.disy.commons.swing.dialog.userdialog.page.IDialogPage;
 import net.disy.commons.swing.fontchooser.model.FontModel;
+import net.disy.commons.swing.icon.IBaseIconProvider;
 import net.disy.commons.swing.layout.grid.GridDialogLayout;
 import net.disy.commons.swing.menu.HelpImplementedMenuBar;
 
@@ -572,6 +576,27 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
       if (item.getIcon() == null) {
          item.setIcon(JaveIcons.TRANSPARENT_ICON);
       }
+      this.installBaseMenuIcon(item);
+   }
+
+   private void installBaseMenuIcon(JMenuItem item) {
+      Icon baseIcon = this.getBaseMenuIcon(item);
+      if (baseIcon != null && baseIcon != item.getIcon()) {
+         item.setIcon(baseIcon);
+      }
+   }
+
+   private Icon getBaseMenuIcon(JMenuItem item) {
+      Action action = item.getAction();
+      if (action != null) {
+         Object baseIcon = action.getValue(AbstractDisyAction.BASE_ICON);
+         if (baseIcon instanceof Icon) {
+            return (Icon)baseIcon;
+         }
+      }
+
+      Icon icon = item.getIcon();
+      return icon instanceof IBaseIconProvider ? ((IBaseIconProvider)icon).getBaseIcon() : icon;
    }
 
    private String[] getMenuTitles() {
@@ -664,4 +689,5 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
          }
       }
    }
+
 }

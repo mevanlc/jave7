@@ -4,22 +4,26 @@ import de.jave.gui.layout.Gap;
 import de.jave.maxosx.MacOsXInitializer;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Insets;
 import javax.swing.AbstractButton;
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 public class ButtonToolbarBuilder {
-   private static final Dimension TOOLBAR_BUTTON_SIZE = getSystemDependentToolBarButtonSize();
-   private final JPanel panel = new JPanel(new FlowLayout(0, 0, 2));
+   private static final Dimension MINIMUM_TOOLBAR_BUTTON_SIZE = getSystemDependentMinimumToolBarButtonSize();
+   private static final int ICON_PADDING = 8;
+   private static final Insets TOOLBAR_BUTTON_MARGIN = new Insets(3, 3, 3, 3);
+   private final JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 2));
 
-   private static Dimension getSystemDependentToolBarButtonSize() {
+   private static Dimension getSystemDependentMinimumToolBarButtonSize() {
       return MacOsXInitializer.isMacOs() ? new Dimension(28, 28) : new Dimension(24, 23);
    }
 
    public ButtonToolbarBuilder() {
-      this.panel.add(new Gap(5, 1));
+      this.panel.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));
    }
 
    public void add(Action action) {
@@ -48,10 +52,25 @@ public class ButtonToolbarBuilder {
    private static void adjustButton(AbstractButton button) {
       if (button.getIcon() != null) {
          button.setText(null);
+         button.setIconTextGap(0);
       }
 
-      button.setPreferredSize(TOOLBAR_BUTTON_SIZE);
+      Dimension size = getToolBarButtonSize(button);
+      button.setPreferredSize(size);
+      button.setMinimumSize(size);
+      button.setMargin(TOOLBAR_BUTTON_MARGIN);
       button.setFocusPainted(false);
+      button.setRolloverEnabled(true);
+   }
+
+   private static Dimension getToolBarButtonSize(AbstractButton button) {
+      if (button.getIcon() == null) {
+         return MINIMUM_TOOLBAR_BUTTON_SIZE;
+      }
+
+      int width = Math.max(MINIMUM_TOOLBAR_BUTTON_SIZE.width, button.getIcon().getIconWidth() + ICON_PADDING);
+      int height = Math.max(MINIMUM_TOOLBAR_BUTTON_SIZE.height, button.getIcon().getIconHeight() + ICON_PADDING);
+      return new Dimension(width, height);
    }
 
    public void addSeparator() {

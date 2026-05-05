@@ -10,7 +10,6 @@ import javax.swing.Icon;
 import net.disy.commons.swing.resources.IIconResources;
 
 public class JaveIcons implements IIconResources {
-   private static final int[] FALLBACK_SIZES = {32, 24};
    private static final int ICON_SIZE = readIconSizePreference();
 
    private static int readIconSizePreference() {
@@ -138,34 +137,6 @@ public class JaveIcons implements IIconResources {
    public static final Icon PENCIL7_DISABLED = loadIcon("pencil/roundsize7_.gif");
 
    private static Icon loadIcon(String string) {
-      String upscaled = findUpscaledVariant(string);
-      if (upscaled != null) {
-         return JaveImageProvider.getInstance().getImageIcon(upscaled);
-      }
       return JaveImageProvider.getInstance().getImageIcon(string);
-   }
-
-   private static String findUpscaledVariant(String relativePath) {
-      if (ICON_SIZE == JavePreferences.DEFAULT_ICON_SIZE) {
-         return null;
-      }
-      int slash = relativePath.lastIndexOf('/');
-      int dot = relativePath.lastIndexOf('.');
-      if (slash < 0 || dot <= slash) {
-         return null;
-      }
-      String dir = relativePath.substring(0, slash);
-      String name = relativePath.substring(slash + 1, dot);
-      ClassLoader cl = JaveIcons.class.getClassLoader();
-      for (int size : FALLBACK_SIZES) {
-         if (size > ICON_SIZE) {
-            continue;
-         }
-         String candidate = dir + "/" + size + "/" + name + ".png";
-         if (cl.getResource("de/jave/" + candidate) != null) {
-            return candidate;
-         }
-      }
-      return null;
    }
 }
