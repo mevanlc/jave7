@@ -1,10 +1,24 @@
 plugins {
     id 'java'
+    id 'application'
     id 'maven-publish'
 }
 
 group = 'de.jave'
 version = '7.0.0'
+
+application {
+    mainClass = 'de.jave.jave.Jave'
+}
+
+def appName = 'JavE'
+def appBundleResourceDirs = ['clipart', 'config', 'examples', 'ext', 'fonts']
+def appJarFileName = "${project.name}-${project.version}-app.jar"
+def appVersion = project.version.toString()
+def appVendor = project.group.toString()
+def mainClassName = application.mainClass.get()
+def applicationsDir = file('/Applications')
+def installedAppImage = new File(applicationsDir, "${appName}.app")
 
 repositories {
     mavenCentral()
@@ -31,7 +45,99 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 
     jar {
+        manifest {
+            attributes 'Main-Class': mainClassName
+        }
+
         // Ensures the resources are included in the jar
         from sourceSets.main.output
+    }
+}
+
+tasks.register('appJar', Jar) {
+    group = 'build'
+    description = 'Builds a self-contained jar for native app packaging.'
+
+    archiveClassifier = 'app'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    dependsOn configurations.runtimeClasspath
+
+    manifest {
+        attributes 'Main-Class': mainClassName
+    }
+
+    from sourceSets.main.output
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA'
+}
+
+tasks.register('prepareMacAppBundleInput', Sync) {
+    group = 'distribution'
+    description = 'Stages the jar and repo-root data folders used by the macOS app bundle.'
+
+    dependsOn tasks.named('appJar')
+    into layout.buildDirectory.dir('jpackage/input')
+
+    from(tasks.named('appJar')) {
+        rename { appJarFileName }
+    }
+
+    appBundleResourceDirs.each { resourceDir ->
+        from(resourceDir) {
+            into resourceDir
+        }
+    }
+}
+
+tasks.register('macAppBundle', Exec) {
+    group = 'distribution'
+    description = 'Creates a macOS .app bundle with jpackage.'
+
+    dependsOn tasks.named('prepareMacAppBundleInput')
+
+    def outputDir = layout.buildDirectory.dir('jpackage').get().asFile
+    def inputDir = layout.buildDirectory.dir('jpackage/input').get().asFile
+    def appImage = new File(outputDir, "${appName}.app")
+
+    inputs.dir(inputDir)
+    outputs.dir(appImage)
+
+    doFirst {
+        appImage.deleteDir()
+        outputDir.mkdirs()
+    }
+
+    commandLine 'jpackage',
+        '--type', 'app-image',
+        '--name', appName,
+        '--app-version', appVersion,
+        '--vendor', appVendor,
+        '--input', inputDir.absolutePath,
+        '--dest', outputDir.absolutePath,
+        '--main-jar', appJarFileName,
+        '--main-class', mainClassName,
+        '--mac-package-identifier', 'de.jave.JavE'
+}
+
+tasks.register('deployToApplications', Copy) {
+    group = 'distribution'
+    description = 'Installs the macOS .app bundle to /Applications.'
+
+    dependsOn tasks.named('macAppBundle')
+
+    def appImage = layout.buildDirectory.dir("jpackage/${appName}.app")
+
+    from appImage
+    into installedAppImage
+
+    inputs.dir(appImage)
+    outputs.dir(installedAppImage)
+
+    doFirst {
+        installedAppImage.deleteDir()
+        applicationsDir.mkdirs()
     }
 }
