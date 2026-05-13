@@ -43,7 +43,7 @@ public class CutAction extends AbstractJaveAction {
             plate.saveCurrentState("cut");
             return;
          }
-         s = new JaveClipboardSelection(plate.getDocument().getContent());
+         s = new JaveClipboardSelection(plate.getContent());
          plate.clear();
          this.getToolManager().getCurrentTool().reset();
       } else {

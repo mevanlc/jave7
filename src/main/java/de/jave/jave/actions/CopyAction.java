@@ -38,7 +38,7 @@ public class CopyAction extends AbstractJaveAction {
          singleChar.set(0, 0, editor.getPlate().getChar(cursor.x, cursor.y));
          sel = new JaveClipboardSelection(singleChar);
       } else {
-         sel = new JaveClipboardSelection(editor.getPlate().getDocument().getContent());
+         sel = new JaveClipboardSelection(editor.getPlate().getContent());
       }
       ClipboardTransferer.setClipboardContent(sel);
    }

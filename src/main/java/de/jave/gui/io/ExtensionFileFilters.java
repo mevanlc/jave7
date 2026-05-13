@@ -10,6 +10,7 @@ public class ExtensionFileFilters {
    public static final ExtensionFileFilter ACTIONSCRIPT = new ExtensionFileFilter(JaveSwingMessages.FileFormat_ActionscriptFile, FileExtensions.AS);
    public static final ExtensionFileFilter JMOV = new ExtensionFileFilter(JaveSwingMessages.FileFormat_JavEAnimationFile, FileExtensions.JMOV);
    public static final ExtensionFileFilter TXT = new ExtensionFileFilter(JaveSwingMessages.FileFormat_TextFile, FileExtensions.TXT);
+   public static final ExtensionFileFilter JAVEDOC = new ExtensionFileFilter("JavE Layered Document", FileExtensions.JAVEDOC);
    public static final ExtensionFileFilter VT = new ExtensionFileFilter(JaveSwingMessages.FileFormat_VTAnimationFile, FileExtensions.VT);
    public static final ExtensionFileFilter GIF = new ExtensionFileFilter(JaveSwingMessages.FileFormat_GifImageFile, FileExtensions.GIF);
    public static final ExtensionFileFilter SWF = new ExtensionFileFilter(JaveSwingMessages.FileFormat_MacromediaFlashFile, FileExtensions.SWF);

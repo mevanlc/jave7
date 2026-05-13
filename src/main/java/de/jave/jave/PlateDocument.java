@@ -1,5 +1,11 @@
 package de.jave.jave;
 
+import de.jave.gui.io.FileExtension;
+import de.jave.gui.io.FileExtensions;
+import de.jave.jave.layers.ActiveLayerCharacterPlate;
+import de.jave.jave.layers.JaveDocArchive;
+import de.jave.jave.layers.LayeredDocument;
+import de.jave.jave.layers.SecondaryLayer;
 import de.jave.jave.preferences.ColorScheme;
 import de.jave.lib.CharacterPlate;
 import de.jave.undo.UndoManager;
@@ -24,6 +30,8 @@ public class PlateDocument {
    private RelativeTimeClock clock;
    private File file;
    private CharacterPlate content;
+   private LayeredDocument layeredDocument;
+   private CharacterPlate activeLayerContent;
    private Point scrollOrigin;
    private final Selection selection;
    private final Point cursorLocation;
@@ -31,7 +39,7 @@ public class PlateDocument {
    private List<DocumentListener> documentListeners;
 
    private PlateDocument(Dimension size, ColorScheme colorScheme) {
-      this.content = new CharacterPlate(size);
+      this.setContent(new CharacterPlate(size));
       this.selection = new Selection();
       this.cursorLocation = new Point(0, 0);
       this.colorScheme = colorScheme;
@@ -45,8 +53,74 @@ public class PlateDocument {
       return this.content;
    }
 
+   public CharacterPlate getEditableContent() {
+      return this.activeLayerContent;
+   }
+
+   public CharacterPlate getCompositeContent() {
+      return this.layeredDocument.getComposite(false);
+   }
+
    public void setContent(CharacterPlate cp) {
       this.content = cp;
+      if (this.layeredDocument == null) {
+         this.layeredDocument = LayeredDocument.fromContent(cp);
+      } else {
+         this.layeredDocument.getDocumentLayer().setContent(cp);
+      }
+      this.activeLayerContent = new ActiveLayerCharacterPlate(this.layeredDocument);
+   }
+
+   public LayeredDocument getLayeredDocument() {
+      return this.layeredDocument;
+   }
+
+   public boolean hasSecondaryLayers() {
+      return this.layeredDocument != null && this.layeredDocument.getLayerCount() > 1;
+   }
+
+   public int getLayerCount() {
+      return this.layeredDocument.getLayerCount();
+   }
+
+   public int getActiveLayerNumber() {
+      return this.layeredDocument.getActiveLayerNumber();
+   }
+
+   public void addSecondaryLayerAboveActive() {
+      this.layeredDocument.addSecondaryLayerAboveActive();
+   }
+
+   public void flattenLayers(boolean includeHiddenSecondaryLayers) {
+      this.layeredDocument.flatten(includeHiddenSecondaryLayers);
+      this.content = this.layeredDocument.getDocumentLayer().getContent();
+      this.activeLayerContent = new ActiveLayerCharacterPlate(this.layeredDocument);
+   }
+
+   public void resizeDocument(int width, int height) {
+      this.layeredDocument.resizeDocument(width, height);
+      this.content = this.layeredDocument.getDocumentLayer().getContent();
+   }
+
+   public void activateNextLayer() {
+      this.layeredDocument.activateNextLayer();
+   }
+
+   public SecondaryLayer getActiveSecondaryLayer() {
+      return this.layeredDocument.getActiveSecondaryLayer();
+   }
+
+   public void activateDocumentLayer() {
+      this.layeredDocument.activateDocumentLayer();
+   }
+
+   public void activateFirstSecondaryLayerOrCreate() {
+      SecondaryLayer layer = this.layeredDocument.activateFirstSecondaryLayerOrCreate();
+      layer.setName("Layer 2");
+   }
+
+   public boolean isDocumentLayerActive() {
+      return this.layeredDocument.isDocumentLayerActive();
    }
 
    public Point getCursorLocation() {
@@ -62,7 +136,7 @@ public class PlateDocument {
    }
 
    public synchronized void setDocumentState(CompressedDocumentState state) {
-      this.content.setContent(state.getContent());
+      this.setContent(new CharacterPlate(state.getContent()));
       this.selection.set(state.getSelectionLocation(), state.getSelectionContent(), state.getSelectionMask());
       this.scrollOrigin = state.getScrollOrigin();
       this.colorScheme = state.getColorScheme();
@@ -77,7 +151,7 @@ public class PlateDocument {
    }
 
    public boolean isEmpty() {
-      return this.content == null || this.content.isEmpty();
+      return this.layeredDocument == null || this.layeredDocument.getComposite(false).isEmpty();
    }
 
    public Selection getSelection() {
@@ -106,8 +180,14 @@ public class PlateDocument {
       PlateDocument doc = new PlateDocument(new Dimension(1, 1), colorScheme);
       doc.file = file;
       doc.modified = false;
-      String[] lines = readAsciiFileLines(file);
-      doc.content = new CharacterPlate(lines);
+      if (isJaveDocFile(file)) {
+         doc.layeredDocument = JaveDocArchive.read(file);
+         doc.content = doc.layeredDocument.getDocumentLayer().getContent();
+         doc.activeLayerContent = new ActiveLayerCharacterPlate(doc.layeredDocument);
+      } else {
+         String[] lines = readAsciiFileLines(file);
+         doc.setContent(new CharacterPlate(lines));
+      }
       return doc;
    }
 
@@ -154,6 +234,11 @@ public class PlateDocument {
    }
 
    protected void saveInternal(File file, RecentFileList recentFileList) throws IOException {
+      if (isJaveDocFile(file)) {
+         JaveDocArchive.write(this.layeredDocument, file);
+         recentFileList.add(file);
+         return;
+      }
       BufferedWriter bw = null;
 
       try {
@@ -200,6 +285,14 @@ public class PlateDocument {
 
    public File getFile() {
       return !this.hasFile() ? null : this.file;
+   }
+
+   public boolean isJaveDocBacked() {
+      return this.file != null && isJaveDocFile(this.file);
+   }
+
+   private static boolean isJaveDocFile(File file) {
+      return FileExtensions.JAVEDOC.equals(FileExtension.getFrom(file));
    }
 
    public synchronized void addDocumentListener(DocumentListener l) {

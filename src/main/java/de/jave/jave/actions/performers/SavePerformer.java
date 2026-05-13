@@ -28,6 +28,11 @@ import net.disy.commons.swing.dialog.message.MessageDialogUtilities;
 import net.disy.commons.swing.dialog.message.YesNoCancel;
 
 public class SavePerformer {
+   private static final String LAYERED_SAVE_REMINDER = "Your document contains multiple layers and must be saved in a dedicated\n"
+      + ".javedoc file to preserve the layers. If you would like to save the document as\n"
+      + "a single text file, first use the Layers menu to flatten the document to a\n"
+      + "single layer.";
+
    private static boolean performSaveDocumentAs(
       Component parentComponent,
       IDocumentEditor editor,
@@ -37,6 +42,9 @@ public class SavePerformer {
       IDocumentSaveListener listener
    ) {
       PlateDocument doc = editor.getPlate().getDocument();
+      if (doc.hasSecondaryLayers()) {
+         return performSaveLayeredDocumentAs(parentComponent, editor, recentFileList, currentDirectoryModel, statusDisplay, listener, true);
+      }
       File file = FileChooserUtilities.performSaveFileChooser(parentComponent, new IFileChooserConfiguration() {
          @Override
          public FileModel getCurrentDirectoryModel() {
@@ -83,6 +91,64 @@ public class SavePerformer {
       }
    }
 
+   private static boolean performSaveLayeredDocumentAs(
+      Component parentComponent,
+      IDocumentEditor editor,
+      RecentFileList recentFileList,
+      final FileModel currentDirectoryModel,
+      IStatusDisplay statusDisplay,
+      IDocumentSaveListener listener,
+      boolean showReminder
+   ) {
+      if (showReminder && !showLayeredSaveReminder(parentComponent)) {
+         return false;
+      }
+      PlateDocument doc = editor.getPlate().getDocument();
+      File file = FileChooserUtilities.performSaveFileChooser(parentComponent, new IFileChooserConfiguration() {
+         @Override
+         public FileModel getCurrentDirectoryModel() {
+            return currentDirectoryModel;
+         }
+
+         @Override
+         public String getSaveDialogTitle() {
+            return "Save JavE Layered Document";
+         }
+
+         @Override
+         public String getOpenDialogTitle() {
+            return null;
+         }
+
+         @Override
+         public SmartFileFilter[] getFileFilters() {
+            return new SmartFileFilter[]{ExtensionFileFilters.JAVEDOC};
+         }
+
+         @Override
+         public String getFileNameSuggestion() {
+            return null;
+         }
+
+         @Override
+         public boolean isMultipleOpenFileSelectionAllowed() {
+            return false;
+         }
+      });
+      if (file == null) {
+         return false;
+      } else {
+         currentDirectoryModel.setValue(file.getParentFile());
+         doc.setFile(file);
+         boolean success = performSaveDocument(parentComponent, editor, recentFileList, currentDirectoryModel, statusDisplay, listener);
+         if (!success) {
+            doc.setFile(null);
+         }
+         listener.savePerformed();
+         return success;
+      }
+   }
+
    private static boolean performSaveDocument(
       Component parentComponent,
       IDocumentEditor editor,
@@ -94,6 +160,8 @@ public class SavePerformer {
       PlateDocument doc = editor.getPlate().getDocument();
       if (!doc.hasFile()) {
          return performSaveDocumentAs(parentComponent, editor, recentFileList, currentDirectoryModel, statusDisplay, listener);
+      } else if (doc.hasSecondaryLayers() && !doc.isJaveDocBacked()) {
+         return performSaveLayeredDocumentAs(parentComponent, editor, recentFileList, currentDirectoryModel, statusDisplay, listener, true);
       } else {
          editor.getPlate().getToolManager().getCurrentTool().prepareForSave();
 
@@ -107,6 +175,12 @@ public class SavePerformer {
             return false;
          }
       }
+   }
+
+   private static boolean showLayeredSaveReminder(Component parentComponent) {
+      return MessageDialogUtilities.showOkCancelDialog(
+         parentComponent, new Message("JavE Layered Document", LAYERED_SAVE_REMINDER, MessageType.WARNING)
+      );
    }
 
    private static boolean performSaveAnimationAs(

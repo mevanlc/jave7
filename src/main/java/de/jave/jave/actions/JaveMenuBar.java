@@ -105,6 +105,7 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
    private final JMenu menuColor;
    private final JMenu menuView;
    private final JMenu menuModify;
+   private final JMenu menuLayer;
    private final JMenu menuSelection;
    private JMenu menuCharacterSets;
    private final JMenuItem miRevert;
@@ -314,6 +315,21 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
       this.menuModify.add(miAntiAlias);
       this.menuModify.addSeparator();
       this.menuModify.add(miCompress);
+      this.menuLayer = new SmartMenu("Layer");
+      this.menuLayer.add(new NewLayerAction(application, mainPanel));
+      JMenuItem miDeleteLayer = new JMenuItem("Delete Layer");
+      miDeleteLayer.setEnabled(false);
+      this.menuLayer.add(miDeleteLayer);
+      JMenuItem miDuplicateLayer = new JMenuItem("Duplicate Layer");
+      miDuplicateLayer.setEnabled(false);
+      this.menuLayer.add(miDuplicateLayer);
+      this.menuLayer.addSeparator();
+      JMenuItem miLayerCrop = new JMenuItem("Crop");
+      miLayerCrop.setEnabled(false);
+      this.menuLayer.add(miLayerCrop);
+      this.menuLayer.addSeparator();
+      this.menuLayer.add(new FlattenLayersAction(application, mainPanel, true));
+      this.menuLayer.add(new FlattenLayersAction(application, mainPanel, false));
       final CharSetsConfiguration charSetsConfiguration = configurationList.getRequired(CharSetsConfiguration.class);
       String[] s = charSetsConfiguration.getCharsetNames();
       if (s != null && s.length > 1) {
@@ -435,6 +451,7 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
       this.add(fileMenu);
       this.add(animationMenu);
       this.add(menuEdit);
+      this.add(this.menuLayer);
       this.add(this.menuModify);
       this.add(this.menuView);
       this.add(this.menuSelection);
@@ -515,6 +532,8 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
       this.menuView.setEnabled(docOpen);
       this.menuColor.setEnabled(docOpen);
       this.menuModify.setEnabled(docOpen);
+      IDocumentEditor activeEditor = this.application.getMainPanel().getActiveEditorModel().getActiveEditor();
+      this.menuLayer.setEnabled(activeEditor != null && activeEditor.getType() == JaveDocumentType.TEXT);
       if (this.docOpenEnabledMenuItems != null) {
          for (int i = 0; i < this.docOpenEnabledMenuItems.size(); i++) {
             this.docOpenEnabledMenuItems.get(i).setEnabled(docOpen);

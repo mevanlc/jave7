@@ -11,6 +11,7 @@ import net.disy.commons.core.util.Ensure;
 public enum JaveFileType {
    RASTER_IMAGE(ImageIOUtilities.getSupportedReaderFileFormatExtensions()),
    TEXT(FileExtensions.TXT),
+   LAYERED_TEXT(FileExtensions.JAVEDOC),
    ANIMATION(FileExtensions.JMOV),
    VT(FileExtensions.VT);
 

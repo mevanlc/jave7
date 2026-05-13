@@ -131,7 +131,7 @@ public abstract class Tool implements ItemListener, ActionListener {
    protected void crawl(int x, int y, boolean[][] marks, Rectangle region) {
       if (x >= 0 && y >= 0 && x < this.mainPanel.getDocumentSize().width && y < this.mainPanel.getDocumentSize().height && !marks[x][y]) {
          marks[x][y] = true;
-         if (this.mainPanel.getDocument().getContent().get(x, y) != ' ') {
+         if (this.getPlate().getContent().get(x, y) != ' ') {
             if (x < region.x) {
                region.x--;
                region.width++;

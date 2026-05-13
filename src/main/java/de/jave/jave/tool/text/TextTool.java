@@ -430,7 +430,7 @@ public class TextTool extends Tool {
       if (!insert) {
          this.getPlate().setCharForce(cursorLocation, ' ');
       } else {
-         CharacterPlate cp = this.getDocument().getContent();
+         CharacterPlate cp = this.getPlate().getContent();
          if (cursorLocation.x == this.getPlate().getDocumentWidth()) {
             String lineContent = cp.getLine(cursorLocation.y, cursorLocation.x + 1);
             int x = lineContent.length() - 1;

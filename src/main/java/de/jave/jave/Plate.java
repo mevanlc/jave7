@@ -8,6 +8,7 @@ import de.jave.ascii.plate.ruler.RulerComponent;
 import de.jave.ascii.plate.ruler.VerticalRulerRenderingStrategy;
 import de.jave.gui.xor.IXorPainter;
 import de.jave.jave.plate.ToolManager;
+import de.jave.jave.layers.SecondaryLayer;
 import de.jave.jave.preferences.ColorScheme;
 import de.jave.jave.preferences.PlatePreferences;
 import de.jave.jave.rendering.ConnectedLinesViewRenderer;
@@ -239,7 +240,7 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
 
    public void setMix(boolean what) {
       if (this.document != null) {
-         this.document.getContent().setMix(what);
+         this.getContent().setMix(what);
       }
    }
 
@@ -264,7 +265,7 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
    }
 
    public CompressedDocumentState getDocumentState(String actionName) {
-      char[][] cContent = this.document.getContent().getContent();
+      char[][] cContent = this.document.getCompositeContent().getContent();
       Point cLocation = this.getScrollPoint();
       char[][] cSelectionContent = null;
       Point cSelectionLocation = null;
@@ -325,6 +326,8 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
 
    public void crop() {
       if (!this.hasSelection()) {
+         // Layers: this is still document crop. Add a separate Layer > Crop path
+         // for active-layer selection cropping.
          Insets in = this.document.getContent().getEmptyInsets();
          if (in.left != 0 || in.right != 0 || in.top != 0 || in.bottom != 0) {
             CharacterPlate content = this.document.getContent();
@@ -348,6 +351,8 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
 
    private void cropToSelection() {
       if (this.selection.hasSelection()) {
+         // Layers: selection crop currently resizes the whole document layer.
+         // Layer crop should instead clear outside selection on the active layer.
          int newWidth = this.selection.getWidth();
          int newHeight = this.selection.getHeight();
          CharacterPlate content = this.document.getContent();
@@ -483,11 +488,11 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
    }
 
    public char[][] copy(Rectangle rectangle) {
-      return this.document.getContent().getCopy(rectangle).getContent();
+      return this.getContent().getCopy(rectangle).getContent();
    }
 
    public CharacterPlate cut(Rectangle rectangle) {
-      CharacterPlate content = this.document.getContent();
+      CharacterPlate content = this.getContent();
       int width = content.getWidth();
       int height = content.getHeight();
       CharacterPlate sel = new CharacterPlate(rectangle.width, rectangle.height);
@@ -519,8 +524,7 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
             this.selection.delete();
          }
 
-         CharacterPlate content = this.document.getContent();
-         content.setSize(newWidth, newHeight);
+         this.document.resizeDocument(newWidth, newHeight);
          this.handleDocumentSizeChanged();
       }
    }
@@ -540,30 +544,32 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
    }
 
    public void insertLine(int line) {
-      CharacterPlate content = this.document.getContent();
+      CharacterPlate content = this.getContent();
       content.insertLine(line);
       this.handleDocumentSizeChanged();
    }
 
    public void insertLine(int line, String text) {
-      CharacterPlate content = this.document.getContent();
+      CharacterPlate content = this.getContent();
       content.insertLine(line, text);
       this.handleDocumentSizeChanged();
    }
 
    public void addColumnsRight(int count) {
-      CharacterPlate content = this.document.getContent();
+      CharacterPlate content = this.getContent();
       content.addColumnsRight(count);
       this.handleDocumentSizeChanged();
    }
 
    public void removeLine(int line) {
-      CharacterPlate content = this.document.getContent();
+      CharacterPlate content = this.getContent();
       content.removeLine(line);
       this.handleDocumentSizeChanged();
    }
 
    public void setText(String text) {
+      // Layers: full-document text replacement remains DL-oriented for now.
+      // Revisit if paste/import flows should target the active layer.
       this.setPlateSize(TextTools.getDimensionOf(text));
       CharacterPlate content = this.document.getContent();
       int height = content.getHeight();
@@ -582,14 +588,18 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
    }
 
    public CharacterPlate getContent() {
-      return this.document.getContent();
+      return this.document.getEditableContent();
+   }
+
+   private CharacterPlate getRenderedContent() {
+      return this.document.getCompositeContent();
    }
 
    public JaveSelection getContentOfInterest() {
       if (this.document == null) {
          return null;
       } else {
-         return this.hasSelection() ? this.selection.getJaveSelection() : new JaveSelection(this.document.getContent());
+         return this.hasSelection() ? this.selection.getJaveSelection() : new JaveSelection(this.getRenderedContent());
       }
    }
 
@@ -608,7 +618,7 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
 
    public void clear() {
       this.unselect();
-      this.document.getContent().clear();
+      this.getContent().clear();
       this.handleDocumentSizeChanged();
    }
 
@@ -752,6 +762,7 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
          this.paintGrid(g, plateOrigin, colorScheme);
          this.paintDocumentBorder(g, plateOrigin, colorScheme);
          this.paintDocumentContents(g, plateOrigin);
+         this.paintActiveSecondaryLayerBounds(g, plateOrigin, colorScheme);
          this.paintIllegalCharacterMarks(g, plateOrigin);
          this.selection.paint(g, colorScheme);
          this.xorPainterDisplayed = false;
@@ -767,15 +778,32 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
       }
    }
 
+   private void paintActiveSecondaryLayerBounds(Graphics g, Point plateOrigin, ColorScheme colorScheme) {
+      SecondaryLayer activeSecondaryLayer = this.document.getActiveSecondaryLayer();
+      if (activeSecondaryLayer == null) {
+         return;
+      }
+      Rectangle bounds = activeSecondaryLayer.getBounds();
+      if (bounds.width <= 0 || bounds.height <= 0) {
+         return;
+      }
+      int x = plateOrigin.x + bounds.x * this.getCharWidth();
+      int y = plateOrigin.y + bounds.y * this.getCharHeight();
+      int width = bounds.width * this.getCharWidth();
+      int height = bounds.height * this.getCharHeight();
+      g.setColor(colorScheme.getColorToolPreview());
+      g.drawRect(x, y, width - 1, height - 1);
+   }
+
    private void paintDocumentContents(Graphics g, Point plateOrigin) {
       g.setColor(this.getDocument().getColorScheme().getColorText());
       g.setFont(this.zoomFontModel.getFont());
       RowRange rowRange = this.getVisibleRowRange();
       boolean connectedLinesView = this.platePreferences.getConnectedLinesViewModel().getValue();
       if (connectedLinesView) {
-         ConnectedLinesViewRenderer.paintConnectedLinesView(g, this.getContent(), rowRange, plateOrigin, this.characterSizeModel.getCharacterSize());
+         ConnectedLinesViewRenderer.paintConnectedLinesView(g, this.getRenderedContent(), rowRange, plateOrigin, this.characterSizeModel.getCharacterSize());
       } else {
-         CharacterPlate content = this.getContent();
+         CharacterPlate content = this.getRenderedContent();
 
          for (int y = rowRange.getRowStartIndex(); y <= rowRange.getRowEndIndex(); y++) {
             g.drawString(
@@ -809,7 +837,7 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
       boolean markIllegal = this.platePreferences.getMarkIllegalModel().getValue();
       if (markIllegal) {
          g.setColor(Color.red);
-         CharacterPlate content = this.getContent();
+         CharacterPlate content = this.getRenderedContent();
          RowRange rowRange = this.getVisibleRowRange();
          int documentWidth = this.getDocumentWidth();
 
@@ -884,7 +912,7 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
             }
          }
 
-         CharacterPlate content = this.document.getContent();
+         CharacterPlate content = this.getContent();
 
          for (int ix = 0; ix < line.length; ix++) {
             if (content.contains(locationX + ix, locationY + y)) {
@@ -1272,44 +1300,12 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
 
    public void pan(int dx, int dy) {
       if (dx != 0 || dy != 0) {
-         while (dx > 0) {
-            this.panRight();
-            dx--;
-         }
-
-         while (dx < 0) {
-            this.panLeft();
-            dx++;
-         }
-
-         while (dy > 0) {
-            this.panDown();
-            dy--;
-         }
-
-         while (dy < 0) {
-            this.panUp();
-            dy++;
-         }
-
+         JScrollBar horizontalScrollBar = this.scrollPanel.getHorizontalScrollBar();
+         JScrollBar verticalScrollBar = this.scrollPanel.getVerticalScrollBar();
+         horizontalScrollBar.setValue(horizontalScrollBar.getValue() - dx * this.getCharWidth());
+         verticalScrollBar.setValue(verticalScrollBar.getValue() - dy * this.getCharHeight());
          this.repaint(50L);
       }
-   }
-
-   private void panLeft() {
-      this.getContent().panLeft();
-   }
-
-   private void panRight() {
-      this.getContent().panRight();
-   }
-
-   private void panUp() {
-      this.getContent().panUp();
-   }
-
-   private void panDown() {
-      this.getContent().panDown();
    }
 
    public String getUndoActionName() {

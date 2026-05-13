@@ -86,6 +86,8 @@ public class AnimationDocumentEditor extends AbstractDocumentEditor {
       document.addDocumentListener(new DocumentListener() {
          @Override
          public void documentChanged() {
+            // Layers: animation remains a single CharacterPlate/frame path in MVP1.
+            // Do not feed layered composites here without revisiting animation support.
             AnimationDocumentEditor.this.animationEditorPanel.getModel().setCurrentFrameContent(document.getContent());
          }
 

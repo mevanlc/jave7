@@ -618,6 +618,48 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
       this.toolBar.setWatermarkVisible(true);
    }
 
+   public void addSecondaryLayerAndActivate() {
+      PlateDocument document = this.mainPanel.getDocument();
+      if (document == null) {
+         return;
+      }
+      document.addSecondaryLayerAboveActive();
+      document.setModified(true);
+      document.documentChanged();
+      this.status.showStatus("Added Layer " + document.getActiveLayerNumber());
+      this.mainPanel.repaint();
+      this.mainPanel.requestFocus();
+   }
+
+   public void flattenLayers(boolean includeHiddenSecondaryLayers) {
+      PlateDocument document = this.mainPanel.getDocument();
+      if (document == null) {
+         return;
+      }
+      if (!document.hasSecondaryLayers()) {
+         this.status.showStatus("Document has one layer");
+         this.mainPanel.requestFocus();
+         return;
+      }
+      document.flattenLayers(includeHiddenSecondaryLayers);
+      this.mainPanel.saveCurrentState(includeHiddenSecondaryLayers ? "flatten layers" : "flatten visible layers");
+      this.status.showStatus(includeHiddenSecondaryLayers ? "Flattened layers" : "Flattened visible layers");
+      this.mainPanel.repaint();
+      this.mainPanel.requestFocus();
+   }
+
+   public void activateNextLayer() {
+      PlateDocument document = this.mainPanel.getDocument();
+      if (document == null) {
+         return;
+      }
+      document.activateNextLayer();
+      document.documentChanged();
+      this.status.showStatus("Editing Layer " + document.getActiveLayerNumber());
+      this.mainPanel.repaint();
+      this.mainPanel.requestFocus();
+   }
+
    public void doLoadWatermark() {
       this.setTool(ToolBar.WATERMARK_TOOL_INDEX);
       this.toolBar.setWatermarkVisible(true);
@@ -686,11 +728,13 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
                   new CompositeExtensionFileFilter(
                      JaveMessages.FileFormat_All,
                      ExtensionFileFilters.TXT,
+                     ExtensionFileFilters.JAVEDOC,
                      ExtensionFileFilters.SUPPORTED_IMAGES,
                      ExtensionFileFilters.JMOV,
                      ExtensionFileFilters.VT
                   ),
                   ExtensionFileFilters.TXT,
+                  ExtensionFileFilters.JAVEDOC,
                   ExtensionFileFilters.SUPPORTED_IMAGES,
                   ExtensionFileFilters.JMOV,
                   ExtensionFileFilters.VT,

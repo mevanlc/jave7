@@ -119,6 +119,8 @@ public class SelectionAlgorithms {
       editor.getType().accept(new IJaveDocumentTypeVisitor<Void>() {
          public Void visitText(JaveDocumentType type) {
             selection.setLocation(p.x + expansion.left, p.y + expansion.top);
+            // Layers: auto-expand still grows the document layer only. Secondary
+            // layer position/content expansion needs a deliberate model method.
             CharacterPlate content = document.getContent();
             content.expand(expansion);
             plate.handleDocumentSizeChanged();
@@ -134,6 +136,8 @@ public class SelectionAlgorithms {
             AnimationDocumentEditor animationEditor = (AnimationDocumentEditor)editor;
             AnimationEditorModel model = animationEditor.getModel();
 
+            // Layers: animation documents are intentionally not layer-compatible
+            // in MVP1; keep this frame-oriented path separate from text layers.
             for (int frameIndex = 0; frameIndex < model.getAnimationFile().getFrameCount(); frameIndex++) {
                JaveAnimationFrame frame = model.getAnimationFile().getFrame(frameIndex);
                CharacterPlate characterPlate = new CharacterPlate(frame.getContent());

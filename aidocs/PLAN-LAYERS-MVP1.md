@@ -28,6 +28,10 @@ User-visible result:
 - Secondary layers can be toggled Opaque or non-Opaque.
 - The Layers panel can be hidden without changing the layer stack.
 - A new Layers menu provides `Flatten` and `Flatten Visible`.
+- The status bar exposes lightweight MVP controls:
+  `Layer count: N [-][+] | Current layer: n`. `+` creates a secondary layer,
+  `-` is present but can remain unimplemented initially, and clicking the current
+  layer cycles the active layer.
 - Layered documents are saved as `.javedoc` zip files containing `layers.xml`
   plus one text file per layer.
 
@@ -41,6 +45,8 @@ User-visible result:
 - A new secondary layer is inserted above the active layer, starts visible,
   starts Opaque, and starts with size 0 because it contains no non-space
   characters.
+- Layered save format is determined by layer count in MVP1: any document with
+  more than one layer saves as `.javedoc`, even if every secondary layer is empty.
 - The layer stack UI shows topmost layers at the top of the list, with the
   document layer fixed at the bottom.
 - Layer stack ordering and selection behavior should follow Photoshop-style UX
@@ -249,7 +255,7 @@ once:
   active-layer content view to tool code.
 - `Plate` rendering, illegal-character marking, copy-visible/export preview, and
   flattened save must use the visible composite.
-- Existing methods like `setChar`, `setCharForce`, paste, delete, resize, pan,
+- Existing methods like `setChar`, `setCharForce`, paste, delete, resize,
   and selection operations need deliberate mapping to active-layer edits.
 - Tools may draw on the selected secondary layer outside its current bounds.
   Drawing a non-space character there expands the layer bounds on the next bounds
@@ -272,10 +278,11 @@ Recommended mapping:
 ### Resizing and Pan
 
 Canvas size remains document-wide in MVP1. Resizing changes the document layer's
-size and clips or preserves secondary-layer positions relative to the document.
-Panning document content should move the document layer and secondary-layer
-positions together so the visible composite behaves like one document-sized
-image.
+size and clips secondary-layer content/bounds to the new document extents. It
+does not reposition layers in MVP1.
+
+Pan is a viewport/scroll operation over the whole document. It should not mutate
+the document layer, secondary-layer positions, or any other document structure.
 
 ## UI
 
@@ -307,8 +314,15 @@ Add a Layers menu with at least:
 - New Layer
 - Delete Layer
 - Duplicate Layer
+- Crop
 - Flatten
 - Flatten Visible
+
+`Crop` is an active-layer command, distinct from document crop in the Edit menu.
+It is best understood as a discoverable shortcut for keeping the current
+selection on the active layer and clearing everything outside that selection. On
+secondary layers, the normal non-space bounds recomputation then auto-shrinks the
+layer. On the document layer, the layer remains document-sized.
 
 `Flatten` and `Flatten Visible` replace the layer stack with one visible Opaque
 document layer and mark the document modified. Both should be undoable in MVP1
@@ -513,9 +527,11 @@ single layer.
 
 - Update `Plate` so paint/render paths use the composite plate.
 - Update editing paths so tool writes mutate active-layer content.
-- Ensure selection, paste, copy, crop, resize, and pan operate against active
+- Ensure selection, paste, copy, crop, and resize operate against active
   layer where that matches user intent, and against composite only for
   read-only/export/preview behavior.
+- Keep pan as a viewport/scroll operation over the whole document, not a
+  per-layer edit.
 - Add copy-visible/copy-flattened behavior separately from vanilla active-layer
   copy.
 
