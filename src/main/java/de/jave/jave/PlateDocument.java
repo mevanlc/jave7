@@ -91,6 +91,18 @@ public class PlateDocument {
       this.layeredDocument.addSecondaryLayerAboveActive();
    }
 
+   public void duplicateActiveLayer() {
+      this.layeredDocument.duplicateActiveLayer();
+   }
+
+   public boolean canDeleteActiveLayer() {
+      return this.layeredDocument.canDeleteActiveLayer();
+   }
+
+   public boolean deleteActiveLayer() {
+      return this.layeredDocument.deleteActiveLayer();
+   }
+
    public void flattenLayers(boolean includeHiddenSecondaryLayers) {
       this.layeredDocument.flatten(includeHiddenSecondaryLayers);
       this.content = this.layeredDocument.getDocumentLayer().getContent();

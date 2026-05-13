@@ -368,6 +368,20 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
       }
    }
 
+   public boolean cropActiveLayerToSelection() {
+      if (!this.selection.hasSelection()) {
+         return false;
+      }
+      CharacterPlate content = this.getContent();
+      boolean wasMix = content.isMix();
+      content.setMix(false);
+      content.clear();
+      this.selection.pasteIntoNormal(content);
+      content.setMix(wasMix);
+      this.handleDocumentSizeChanged();
+      return true;
+   }
+
    public void unselect() {
       this.selection.delete();
       this.jave.updateSelectionMenu();

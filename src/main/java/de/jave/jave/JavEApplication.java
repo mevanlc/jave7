@@ -648,6 +648,34 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
       this.mainPanel.requestFocus();
    }
 
+   public void duplicateActiveLayer() {
+      PlateDocument document = this.mainPanel.getDocument();
+      if (document == null) {
+         return;
+      }
+      document.duplicateActiveLayer();
+      this.mainPanel.saveCurrentState("duplicate layer");
+      this.status.showStatus("Duplicated Layer " + document.getActiveLayerNumber());
+      this.mainPanel.repaint();
+      this.mainPanel.requestFocus();
+   }
+
+   public void deleteActiveLayer() {
+      PlateDocument document = this.mainPanel.getDocument();
+      if (document == null) {
+         return;
+      }
+      if (!document.deleteActiveLayer()) {
+         this.status.showStatus("Document layer cannot be deleted");
+         this.mainPanel.requestFocus();
+         return;
+      }
+      this.mainPanel.saveCurrentState("delete layer");
+      this.status.showStatus("Deleted layer");
+      this.mainPanel.repaint();
+      this.mainPanel.requestFocus();
+   }
+
    public void activateNextLayer() {
       PlateDocument document = this.mainPanel.getDocument();
       if (document == null) {

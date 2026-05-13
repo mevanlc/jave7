@@ -80,6 +80,8 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import net.disy.commons.core.message.IBasicMessage;
 import net.disy.commons.core.model.listener.IChangeListener;
 import net.disy.commons.core.util.Ensure;
@@ -106,6 +108,8 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
    private final JMenu menuView;
    private final JMenu menuModify;
    private final JMenu menuLayer;
+   private final DeleteLayerAction deleteLayerAction;
+   private final DuplicateLayerAction duplicateLayerAction;
    private final JMenu menuSelection;
    private JMenu menuCharacterSets;
    private final JMenuItem miRevert;
@@ -317,19 +321,29 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
       this.menuModify.add(miCompress);
       this.menuLayer = new SmartMenu("Layer");
       this.menuLayer.add(new NewLayerAction(application, mainPanel));
-      JMenuItem miDeleteLayer = new JMenuItem("Delete Layer");
-      miDeleteLayer.setEnabled(false);
-      this.menuLayer.add(miDeleteLayer);
-      JMenuItem miDuplicateLayer = new JMenuItem("Duplicate Layer");
-      miDuplicateLayer.setEnabled(false);
-      this.menuLayer.add(miDuplicateLayer);
+      this.deleteLayerAction = new DeleteLayerAction(application, mainPanel);
+      this.menuLayer.add(this.deleteLayerAction);
+      this.duplicateLayerAction = new DuplicateLayerAction(application, mainPanel);
+      this.menuLayer.add(this.duplicateLayerAction);
       this.menuLayer.addSeparator();
-      JMenuItem miLayerCrop = new JMenuItem("Crop");
-      miLayerCrop.setEnabled(false);
-      this.menuLayer.add(miLayerCrop);
+      this.menuLayer.add(new LayerCropAction(mainPanel));
       this.menuLayer.addSeparator();
       this.menuLayer.add(new FlattenLayersAction(application, mainPanel, true));
       this.menuLayer.add(new FlattenLayersAction(application, mainPanel, false));
+      this.menuLayer.addMenuListener(new MenuListener() {
+         @Override
+         public void menuSelected(MenuEvent event) {
+            JaveMenuBar.this.updateLayerMenu();
+         }
+
+         @Override
+         public void menuDeselected(MenuEvent event) {
+         }
+
+         @Override
+         public void menuCanceled(MenuEvent event) {
+         }
+      });
       final CharSetsConfiguration charSetsConfiguration = configurationList.getRequired(CharSetsConfiguration.class);
       String[] s = charSetsConfiguration.getCharsetNames();
       if (s != null && s.length > 1) {
@@ -532,8 +546,7 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
       this.menuView.setEnabled(docOpen);
       this.menuColor.setEnabled(docOpen);
       this.menuModify.setEnabled(docOpen);
-      IDocumentEditor activeEditor = this.application.getMainPanel().getActiveEditorModel().getActiveEditor();
-      this.menuLayer.setEnabled(activeEditor != null && activeEditor.getType() == JaveDocumentType.TEXT);
+      this.updateLayerMenu();
       if (this.docOpenEnabledMenuItems != null) {
          for (int i = 0; i < this.docOpenEnabledMenuItems.size(); i++) {
             this.docOpenEnabledMenuItems.get(i).setEnabled(docOpen);
@@ -571,6 +584,16 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
          }
       }
       this.installTransparentIcons(this.menuWindows);
+   }
+
+   private void updateLayerMenu() {
+      IDocumentEditor activeEditor = this.application.getMainPanel().getActiveEditorModel().getActiveEditor();
+      boolean textEditorActive = activeEditor != null && activeEditor.getType() == JaveDocumentType.TEXT;
+      this.menuLayer.setEnabled(textEditorActive);
+      this.deleteLayerAction.setEnabled(
+         textEditorActive && activeEditor.getPlate().getDocument() != null && activeEditor.getPlate().getDocument().canDeleteActiveLayer()
+      );
+      this.duplicateLayerAction.setEnabled(textEditorActive);
    }
 
    private void installTransparentIconsOnMenuItems() {

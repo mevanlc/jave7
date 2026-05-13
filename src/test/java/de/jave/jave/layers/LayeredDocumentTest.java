@@ -79,6 +79,53 @@ public class LayeredDocumentTest {
    }
 
    @Test
+   public void duplicatingDocumentLayerCreatesSecondaryLayerCopy() {
+      LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{"abc"}));
+
+      SecondaryLayer duplicate = document.duplicateActiveLayer();
+
+      Assert.assertEquals(2, document.getLayerCount());
+      Assert.assertEquals(2, document.getActiveLayerNumber());
+      Assert.assertEquals(new Rectangle(0, 0, 3, 1), duplicate.getBounds());
+      Assert.assertArrayEquals(new String[]{"abc"}, document.getComposite(false).toStringArray());
+   }
+
+   @Test
+   public void duplicatingSecondaryLayerPreservesPositionAndContent() {
+      LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{"abcde"}));
+      SecondaryLayer original = document.addSecondaryLayerAboveActive();
+      document.setActiveChar(3, 0, 'Z');
+
+      SecondaryLayer duplicate = document.duplicateActiveLayer();
+
+      Assert.assertEquals(3, document.getLayerCount());
+      Assert.assertEquals(3, document.getActiveLayerNumber());
+      Assert.assertEquals(original.getBounds(), duplicate.getBounds());
+      Assert.assertArrayEquals(original.getContent().toStringArray(), duplicate.getContent().toStringArray());
+   }
+
+   @Test
+   public void activeDocumentLayerCannotBeDeleted() {
+      LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{"abc"}));
+
+      Assert.assertFalse(document.canDeleteActiveLayer());
+      Assert.assertFalse(document.deleteActiveLayer());
+      Assert.assertEquals(1, document.getLayerCount());
+   }
+
+   @Test
+   public void activeSecondaryLayerCanBeDeleted() {
+      LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{"abc"}));
+      document.addSecondaryLayerAboveActive();
+
+      Assert.assertTrue(document.canDeleteActiveLayer());
+      Assert.assertTrue(document.deleteActiveLayer());
+
+      Assert.assertEquals(1, document.getLayerCount());
+      Assert.assertEquals(1, document.getActiveLayerNumber());
+   }
+
+   @Test
    public void activatingNextLayerCyclesThroughDocumentOrder() {
       LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{"abc"}));
       document.addSecondaryLayerAboveActive();

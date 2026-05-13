@@ -161,6 +161,21 @@ public final class LayeredDocument {
       return duplicate;
    }
 
+   public SecondaryLayer duplicateActiveLayer() {
+      return this.duplicateLayer(this.getActiveLayer().getId());
+   }
+
+   public boolean canDeleteActiveLayer() {
+      return this.getActiveLayer() instanceof SecondaryLayer && this.getLayerCount() > 1;
+   }
+
+   public boolean deleteActiveLayer() {
+      if (!this.canDeleteActiveLayer()) {
+         return false;
+      }
+      return this.deleteSecondaryLayer(this.activeLayerId);
+   }
+
    public boolean deleteSecondaryLayer(String layerId) {
       SecondaryLayer layer = this.findSecondaryLayer(layerId);
       if (layer == null) {
