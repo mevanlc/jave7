@@ -79,6 +79,16 @@ public class LayeredDocumentTest {
    }
 
    @Test
+   public void renameLayerTrimsAndUpdatesLayerName() {
+      LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{"abc"}));
+      SecondaryLayer layer = document.addSecondaryLayerAboveActive();
+
+      Assert.assertTrue(document.renameLayer(layer.getId(), "  Ink  "));
+
+      Assert.assertEquals("Ink", layer.getName());
+   }
+
+   @Test
    public void duplicatingDocumentLayerCreatesSecondaryLayerCopy() {
       LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{"abc"}));
 
@@ -123,6 +133,52 @@ public class LayeredDocumentTest {
 
       Assert.assertEquals(1, document.getLayerCount());
       Assert.assertEquals(1, document.getActiveLayerNumber());
+   }
+
+   @Test
+   public void documentLayerVisibilityAndOpacityCannotBeToggled() {
+      LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{"abc"}));
+
+      Assert.assertFalse(document.canToggleActiveLayerVisibility());
+      Assert.assertFalse(document.toggleActiveLayerVisibility());
+      Assert.assertTrue(document.isActiveLayerVisible());
+      Assert.assertFalse(document.canToggleActiveLayerOpacity());
+      Assert.assertFalse(document.setActiveLayerOpaque(false));
+      Assert.assertTrue(document.isActiveLayerOpaque());
+   }
+
+   @Test
+   public void activeSecondaryLayerVisibilityCanBeToggled() {
+      LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{"abc"}));
+      document.addSecondaryLayerAboveActive();
+      document.setActiveChar(1, 0, 'X');
+
+      Assert.assertTrue(document.canToggleActiveLayerVisibility());
+      Assert.assertTrue(document.isActiveLayerVisible());
+      Assert.assertArrayEquals(new String[]{"aXc"}, document.getComposite(false).toStringArray());
+
+      Assert.assertTrue(document.toggleActiveLayerVisibility());
+
+      Assert.assertFalse(document.isActiveLayerVisible());
+      Assert.assertArrayEquals(new String[]{"abc"}, document.getComposite(false).toStringArray());
+      Assert.assertArrayEquals(new String[]{"aXc"}, document.getComposite(true).toStringArray());
+   }
+
+   @Test
+   public void activeSecondaryLayerOpacityCanBeToggled() {
+      LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{"abcde"}));
+      document.addSecondaryLayerAboveActive();
+      document.setActiveChar(1, 0, 'X');
+      document.setActiveChar(3, 0, 'Y');
+
+      Assert.assertTrue(document.canToggleActiveLayerOpacity());
+      Assert.assertTrue(document.isActiveLayerOpaque());
+      Assert.assertArrayEquals(new String[]{"aX Ye"}, document.getComposite(false).toStringArray());
+
+      Assert.assertTrue(document.setActiveLayerOpaque(false));
+
+      Assert.assertFalse(document.isActiveLayerOpaque());
+      Assert.assertArrayEquals(new String[]{"aXcYe"}, document.getComposite(false).toStringArray());
    }
 
    @Test

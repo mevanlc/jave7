@@ -16,6 +16,7 @@ import de.jave.jave.CharacterSets;
 import de.jave.jave.JavEApplication;
 import de.jave.jave.JaveGlobalRessources;
 import de.jave.jave.JaveMessages;
+import de.jave.jave.PlateDocument;
 import de.jave.jave.actions.fileimport.JaveImportAction;
 import de.jave.jave.actions.preferences.JavePreferencesAction;
 import de.jave.jave.algorithm.AlignLeft;
@@ -57,6 +58,7 @@ import de.jave.jave.icon.JaveIcons;
 import de.jave.jave.plate.DocumentEditorTitleFactory;
 import de.jave.jave.plate.IDocumentEditor;
 import de.jave.jave.plate.JaveMainPanel;
+import de.jave.jave.plate.TextDocumentEditor;
 import de.jave.jave.preferences.AnimationExportPreferences;
 import de.jave.jave.preferences.ColorScheme;
 import de.jave.jave.preferences.JaveApplicationPreferences;
@@ -110,6 +112,9 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
    private final JMenu menuLayer;
    private final DeleteLayerAction deleteLayerAction;
    private final DuplicateLayerAction duplicateLayerAction;
+   private final JMenuItem miToggleLayerVisibility;
+   private final JCheckBoxMenuItem miLayerOpaque;
+   private final JCheckBoxMenuItem miLayersPanel;
    private final JMenu menuSelection;
    private JMenu menuCharacterSets;
    private final JMenuItem miRevert;
@@ -326,6 +331,18 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
       this.duplicateLayerAction = new DuplicateLayerAction(application, mainPanel);
       this.menuLayer.add(this.duplicateLayerAction);
       this.menuLayer.addSeparator();
+      this.miToggleLayerVisibility = this.createMenuItem("Hide Layer");
+      this.menuLayer.add(this.miToggleLayerVisibility);
+      this.miLayerOpaque = new JCheckBoxMenuItem("Opaque");
+      this.miLayerOpaque.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent event) {
+            application.setActiveLayerOpaque(JaveMenuBar.this.miLayerOpaque.isSelected());
+            JaveMenuBar.this.updateLayerMenu();
+         }
+      });
+      this.menuLayer.add(this.miLayerOpaque);
+      this.menuLayer.addSeparator();
       this.menuLayer.add(new LayerCropAction(mainPanel));
       this.menuLayer.addSeparator();
       this.menuLayer.add(new FlattenLayersAction(application, mainPanel, true));
@@ -400,6 +417,9 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
       this.menuView.add(ActionWidgetFactory.createToggleMenuItem(actions.getAuxLinesVisibilityToggleAction()));
       this.menuView.addSeparator();
       this.menuView.add(ActionWidgetFactory.createToggleMenuItem(actions.getWatermarkVisibilityToggleAction()));
+      this.miLayersPanel = new JCheckBoxMenuItem("Layers Panel");
+      this.miLayersPanel.addActionListener(this);
+      this.menuView.add(this.miLayersPanel);
 
       this.menuView.addSeparator();
       if (this.menuCharacterSets != null) {
@@ -546,6 +566,7 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
       this.menuView.setEnabled(docOpen);
       this.menuColor.setEnabled(docOpen);
       this.menuModify.setEnabled(docOpen);
+      this.updateLayersPanelMenu();
       this.updateLayerMenu();
       if (this.docOpenEnabledMenuItems != null) {
          for (int i = 0; i < this.docOpenEnabledMenuItems.size(); i++) {
@@ -589,11 +610,24 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
    private void updateLayerMenu() {
       IDocumentEditor activeEditor = this.application.getMainPanel().getActiveEditorModel().getActiveEditor();
       boolean textEditorActive = activeEditor != null && activeEditor.getType() == JaveDocumentType.TEXT;
+      PlateDocument document = textEditorActive ? activeEditor.getPlate().getDocument() : null;
       this.menuLayer.setEnabled(textEditorActive);
       this.deleteLayerAction.setEnabled(
-         textEditorActive && activeEditor.getPlate().getDocument() != null && activeEditor.getPlate().getDocument().canDeleteActiveLayer()
+         textEditorActive && document != null && document.canDeleteActiveLayer()
       );
       this.duplicateLayerAction.setEnabled(textEditorActive);
+      boolean secondaryLayerActive = textEditorActive && document != null && !document.isDocumentLayerActive();
+      this.miToggleLayerVisibility.setEnabled(secondaryLayerActive);
+      this.miToggleLayerVisibility.setText(document != null && !document.isActiveLayerVisible() ? "Show Layer" : "Hide Layer");
+      this.miLayerOpaque.setEnabled(secondaryLayerActive);
+      this.miLayerOpaque.setSelected(document == null || document.isActiveLayerOpaque());
+   }
+
+   private void updateLayersPanelMenu() {
+      IDocumentEditor activeEditor = this.application.getMainPanel().getActiveEditorModel().getActiveEditor();
+      boolean textEditorActive = activeEditor instanceof TextDocumentEditor;
+      this.miLayersPanel.setEnabled(textEditorActive);
+      this.miLayersPanel.setSelected(textEditorActive && ((TextDocumentEditor)activeEditor).isLayersPanelVisible());
    }
 
    private void installTransparentIconsOnMenuItems() {
@@ -677,6 +711,12 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
          this.application.doRevert(parentComponent);
       } else if (source == this.miSelectAll) {
          this.application.selectAll();
+      } else if (source == this.miToggleLayerVisibility) {
+         this.application.toggleActiveLayerVisibility();
+         this.updateLayerMenu();
+      } else if (source == this.miLayersPanel) {
+         this.application.setLayersPanelVisible(this.miLayersPanel.isSelected());
+         this.updateLayersPanelMenu();
       } else if (source == this.miNextWindow) {
          this.application.doNextDocument();
       } else if (source == this.miPreviousWindow) {

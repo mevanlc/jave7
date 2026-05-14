@@ -7,6 +7,7 @@ import de.jave.jave.preferences.JaveApplicationPreferences;
 import de.jave.preferences.JavePreferences;
 import javax.swing.Icon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -29,6 +30,7 @@ public class GeneralPreferencesPanel implements IJavePreferencesPanel {
    private final FontModel fontModel;
    private final JComboBox colorSchemeComboBox;
    private final JComboBox<Integer> iconSizeComboBox;
+   private final JCheckBox showLayersPanelByDefaultCheckBox;
 
    public GeneralPreferencesPanel(JavePreferences javePreferences, JaveApplicationPreferences preferences) {
       Ensure.ensureArgumentNotNull(javePreferences);
@@ -65,6 +67,11 @@ public class GeneralPreferencesPanel implements IJavePreferencesPanel {
       this.iconSizeComboBox.setSelectedItem(javePreferences.getIconSize());
       panel.add(new JLabel("Icon size (requires restart):"), GridDialogLayoutData.RIGHT);
       panel.add(this.iconSizeComboBox);
+      this.showLayersPanelByDefaultCheckBox = new JCheckBox(
+         "Show Layers Panel by default",
+         javePreferences.isLayersPanelShownByDefault()
+      );
+      panel.add(this.showLayersPanelByDefaultCheckBox, twoColumnsData);
       this.content = panel;
    }
 
@@ -88,5 +95,6 @@ public class GeneralPreferencesPanel implements IJavePreferencesPanel {
       if (selectedIconSize != null) {
          this.javePreferences.setIconSize(selectedIconSize);
       }
+      this.javePreferences.setLayersPanelShownByDefault(this.showLayersPanelByDefaultCheckBox.isSelected());
    }
 }

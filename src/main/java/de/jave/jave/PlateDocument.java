@@ -87,8 +87,16 @@ public class PlateDocument {
       return this.layeredDocument.getActiveLayerNumber();
    }
 
+   public void activateLayerNumber(int layerNumber) {
+      this.layeredDocument.activateLayerNumber(layerNumber);
+   }
+
    public void addSecondaryLayerAboveActive() {
       this.layeredDocument.addSecondaryLayerAboveActive();
+   }
+
+   public boolean renameLayer(String layerId, String name) {
+      return this.layeredDocument.renameLayer(layerId, name);
    }
 
    public void duplicateActiveLayer() {
@@ -101,6 +109,30 @@ public class PlateDocument {
 
    public boolean deleteActiveLayer() {
       return this.layeredDocument.deleteActiveLayer();
+   }
+
+   public boolean canToggleActiveLayerVisibility() {
+      return this.layeredDocument.canToggleActiveLayerVisibility();
+   }
+
+   public boolean isActiveLayerVisible() {
+      return this.layeredDocument.isActiveLayerVisible();
+   }
+
+   public boolean toggleActiveLayerVisibility() {
+      return this.layeredDocument.toggleActiveLayerVisibility();
+   }
+
+   public boolean canToggleActiveLayerOpacity() {
+      return this.layeredDocument.canToggleActiveLayerOpacity();
+   }
+
+   public boolean isActiveLayerOpaque() {
+      return this.layeredDocument.isActiveLayerOpaque();
+   }
+
+   public boolean setActiveLayerOpaque(boolean opaque) {
+      return this.layeredDocument.setActiveLayerOpaque(opaque);
    }
 
    public void flattenLayers(boolean includeHiddenSecondaryLayers) {

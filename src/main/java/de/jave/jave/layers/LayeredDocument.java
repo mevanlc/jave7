@@ -137,6 +137,20 @@ public final class LayeredDocument {
       return layer;
    }
 
+   public boolean renameLayer(String layerId, String name) {
+      Ensure.ensureArgumentNotNull(name);
+      Layer layer = this.findLayer(layerId);
+      if (layer == null) {
+         return false;
+      }
+      String trimmedName = name.trim();
+      if (trimmedName.length() == 0 || trimmedName.equals(layer.getName())) {
+         return false;
+      }
+      layer.setName(trimmedName);
+      return true;
+   }
+
    public void addSecondaryLayer(SecondaryLayer layer) {
       Ensure.ensureArgumentNotNull(layer);
       this.secondaryLayers.add(layer);
@@ -174,6 +188,42 @@ public final class LayeredDocument {
          return false;
       }
       return this.deleteSecondaryLayer(this.activeLayerId);
+   }
+
+   public boolean canToggleActiveLayerVisibility() {
+      return this.getActiveLayer() instanceof SecondaryLayer;
+   }
+
+   public boolean isActiveLayerVisible() {
+      SecondaryLayer layer = this.getActiveSecondaryLayer();
+      return layer == null || layer.isVisible();
+   }
+
+   public boolean toggleActiveLayerVisibility() {
+      SecondaryLayer layer = this.getActiveSecondaryLayer();
+      if (layer == null) {
+         return false;
+      }
+      layer.setVisible(!layer.isVisible());
+      return true;
+   }
+
+   public boolean canToggleActiveLayerOpacity() {
+      return this.getActiveLayer() instanceof SecondaryLayer;
+   }
+
+   public boolean isActiveLayerOpaque() {
+      SecondaryLayer layer = this.getActiveSecondaryLayer();
+      return layer == null || layer.isOpaque();
+   }
+
+   public boolean setActiveLayerOpaque(boolean opaque) {
+      SecondaryLayer layer = this.getActiveSecondaryLayer();
+      if (layer == null) {
+         return false;
+      }
+      layer.setOpaque(opaque);
+      return true;
    }
 
    public boolean deleteSecondaryLayer(String layerId) {

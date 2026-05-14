@@ -12,7 +12,9 @@ public class JavePreferences extends SmartPreferences {
    public static final String KEY_FONT_STYLE = "fontStyle";
    public static final String KEY_FONT_FAMILY_NAME = "fontFamilyName";
    public static final String KEY_ICON_SIZE = "iconSize";
+   public static final String KEY_SHOW_LAYERS_PANEL_BY_DEFAULT = "showLayersPanelByDefault";
    public static final int DEFAULT_ICON_SIZE = 16;
+   public static final boolean DEFAULT_SHOW_LAYERS_PANEL_BY_DEFAULT = false;
    public static final int[] SUPPORTED_ICON_SIZES = {16, 24, 32};
    private static final int DEFAULT_FONT_SIZE = IAsciiGuiConstants.DEFAULT_ASCII_FONT.getSize();
    private static final int DEFAULT_FONT_STYLE = IAsciiGuiConstants.DEFAULT_ASCII_FONT.getStyle();
@@ -58,5 +60,14 @@ public class JavePreferences extends SmartPreferences {
             return;
          }
       }
+   }
+
+   public boolean isLayersPanelShownByDefault() {
+      return this.getBoolean(KEY_SHOW_LAYERS_PANEL_BY_DEFAULT, DEFAULT_SHOW_LAYERS_PANEL_BY_DEFAULT);
+   }
+
+   public void setLayersPanelShownByDefault(boolean show) {
+      this.put(KEY_SHOW_LAYERS_PANEL_BY_DEFAULT, show);
+      this.flush();
    }
 }

@@ -631,6 +631,33 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
       this.mainPanel.requestFocus();
    }
 
+   public void activateLayerNumber(int layerNumber) {
+      PlateDocument document = this.mainPanel.getDocument();
+      if (document == null || document.getActiveLayerNumber() == layerNumber) {
+         return;
+      }
+      document.activateLayerNumber(layerNumber);
+      document.documentChanged();
+      this.status.showStatus("Editing Layer " + document.getActiveLayerNumber());
+      this.mainPanel.repaint();
+      this.mainPanel.requestFocus();
+   }
+
+   public void renameLayer(String layerId, String name) {
+      PlateDocument document = this.mainPanel.getDocument();
+      if (document == null) {
+         return;
+      }
+      if (!document.renameLayer(layerId, name)) {
+         this.mainPanel.requestFocus();
+         return;
+      }
+      this.mainPanel.saveCurrentState("rename layer");
+      this.status.showStatus("Renamed layer");
+      this.mainPanel.repaint();
+      this.mainPanel.requestFocus();
+   }
+
    public void flattenLayers(boolean includeHiddenSecondaryLayers) {
       PlateDocument document = this.mainPanel.getDocument();
       if (document == null) {
@@ -676,6 +703,39 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
       this.mainPanel.requestFocus();
    }
 
+   public void toggleActiveLayerVisibility() {
+      PlateDocument document = this.mainPanel.getDocument();
+      if (document == null) {
+         return;
+      }
+      if (!document.toggleActiveLayerVisibility()) {
+         this.status.showStatus("Document layer visibility cannot be changed");
+         this.mainPanel.requestFocus();
+         return;
+      }
+      String actionName = document.isActiveLayerVisible() ? "show layer" : "hide layer";
+      this.mainPanel.saveCurrentState(actionName);
+      this.status.showStatus(document.isActiveLayerVisible() ? "Layer shown" : "Layer hidden");
+      this.mainPanel.repaint();
+      this.mainPanel.requestFocus();
+   }
+
+   public void setActiveLayerOpaque(boolean opaque) {
+      PlateDocument document = this.mainPanel.getDocument();
+      if (document == null) {
+         return;
+      }
+      if (!document.setActiveLayerOpaque(opaque)) {
+         this.status.showStatus("Document layer is always opaque");
+         this.mainPanel.requestFocus();
+         return;
+      }
+      this.mainPanel.saveCurrentState(opaque ? "make layer opaque" : "make layer non-opaque");
+      this.status.showStatus(opaque ? "Layer opaque" : "Layer non-opaque");
+      this.mainPanel.repaint();
+      this.mainPanel.requestFocus();
+   }
+
    public void activateNextLayer() {
       PlateDocument document = this.mainPanel.getDocument();
       if (document == null) {
@@ -686,6 +746,25 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
       this.status.showStatus("Editing Layer " + document.getActiveLayerNumber());
       this.mainPanel.repaint();
       this.mainPanel.requestFocus();
+   }
+
+   public boolean isLayersPanelVisible() {
+      TextDocumentEditor editor = this.getActiveTextDocumentEditor();
+      return editor != null && editor.isLayersPanelVisible();
+   }
+
+   public void setLayersPanelVisible(boolean visible) {
+      TextDocumentEditor editor = this.getActiveTextDocumentEditor();
+      if (editor == null) {
+         return;
+      }
+      editor.setLayersPanelVisible(visible);
+      this.mainPanel.requestFocus();
+   }
+
+   private TextDocumentEditor getActiveTextDocumentEditor() {
+      IDocumentEditor editor = this.mainPanel.getActiveEditorModel().getActiveEditor();
+      return editor instanceof TextDocumentEditor ? (TextDocumentEditor)editor : null;
    }
 
    public void doLoadWatermark() {
@@ -1071,6 +1150,14 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
 
    public JaveApplicationPreferences getApplicationPreferences() {
       return this.applicationPreferences;
+   }
+
+   public int getGeneralIconSize() {
+      return this.javePreferences.getIconSize();
+   }
+
+   public boolean isLayersPanelShownByDefault() {
+      return this.javePreferences.isLayersPanelShownByDefault();
    }
 
    public IStatusDisplay getStatusDisplay() {
