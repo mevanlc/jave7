@@ -136,6 +136,54 @@ public class LayeredDocumentTest {
    }
 
    @Test
+   public void activeSecondaryLayerCanMoveDownAndChangeCompositeOrder() {
+      LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{"."}));
+      SecondaryLayer lower = document.addSecondaryLayerAboveActive();
+      document.setActiveChar(0, 0, 'A');
+      SecondaryLayer upper = document.addSecondaryLayerAboveActive();
+      document.setActiveChar(0, 0, 'B');
+
+      Assert.assertTrue(document.canMoveActiveLayerDown());
+      Assert.assertTrue(document.moveActiveLayerDown());
+
+      Assert.assertEquals(2, document.getActiveLayerNumber());
+      Assert.assertSame(upper, document.getSecondaryLayers().get(0));
+      Assert.assertSame(lower, document.getSecondaryLayers().get(1));
+      Assert.assertArrayEquals(new String[]{"A"}, document.getComposite(false).toStringArray());
+   }
+
+   @Test
+   public void activeSecondaryLayerCanMoveUpAndChangeCompositeOrder() {
+      LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{"."}));
+      SecondaryLayer lower = document.addSecondaryLayerAboveActive();
+      document.setActiveChar(0, 0, 'A');
+      SecondaryLayer upper = document.addSecondaryLayerAboveActive();
+      document.setActiveChar(0, 0, 'B');
+      document.activateLayerNumber(2);
+
+      Assert.assertTrue(document.canMoveActiveLayerUp());
+      Assert.assertTrue(document.moveActiveLayerUp());
+
+      Assert.assertEquals(3, document.getActiveLayerNumber());
+      Assert.assertSame(upper, document.getSecondaryLayers().get(0));
+      Assert.assertSame(lower, document.getSecondaryLayers().get(1));
+      Assert.assertArrayEquals(new String[]{"A"}, document.getComposite(false).toStringArray());
+   }
+
+   @Test
+   public void documentLayerAndBottomSecondaryLayerCannotMoveDown() {
+      LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{"abc"}));
+
+      Assert.assertFalse(document.canMoveActiveLayerDown());
+      Assert.assertFalse(document.moveActiveLayerDown());
+
+      document.addSecondaryLayerAboveActive();
+
+      Assert.assertFalse(document.canMoveActiveLayerDown());
+      Assert.assertFalse(document.moveActiveLayerDown());
+   }
+
+   @Test
    public void documentLayerVisibilityAndOpacityCannotBeToggled() {
       LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{"abc"}));
 

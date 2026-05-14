@@ -111,6 +111,22 @@ public class PlateDocument {
       return this.layeredDocument.deleteActiveLayer();
    }
 
+   public boolean canMoveActiveLayerUp() {
+      return this.layeredDocument.canMoveActiveLayerUp();
+   }
+
+   public boolean moveActiveLayerUp() {
+      return this.layeredDocument.moveActiveLayerUp();
+   }
+
+   public boolean canMoveActiveLayerDown() {
+      return this.layeredDocument.canMoveActiveLayerDown();
+   }
+
+   public boolean moveActiveLayerDown() {
+      return this.layeredDocument.moveActiveLayerDown();
+   }
+
    public boolean canToggleActiveLayerVisibility() {
       return this.layeredDocument.canToggleActiveLayerVisibility();
    }

@@ -703,6 +703,31 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
       this.mainPanel.requestFocus();
    }
 
+   public void moveActiveLayerUp() {
+      this.moveActiveLayer(true);
+   }
+
+   public void moveActiveLayerDown() {
+      this.moveActiveLayer(false);
+   }
+
+   private void moveActiveLayer(boolean up) {
+      PlateDocument document = this.mainPanel.getDocument();
+      if (document == null) {
+         return;
+      }
+      boolean moved = up ? document.moveActiveLayerUp() : document.moveActiveLayerDown();
+      if (!moved) {
+         this.status.showStatus(up ? "Layer cannot move up" : "Layer cannot move down");
+         this.mainPanel.requestFocus();
+         return;
+      }
+      this.mainPanel.saveCurrentState(up ? "move layer up" : "move layer down");
+      this.status.showStatus("Moved Layer " + document.getActiveLayerNumber());
+      this.mainPanel.repaint();
+      this.mainPanel.requestFocus();
+   }
+
    public void toggleActiveLayerVisibility() {
       PlateDocument document = this.mainPanel.getDocument();
       if (document == null) {

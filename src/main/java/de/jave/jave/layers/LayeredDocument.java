@@ -190,6 +190,22 @@ public final class LayeredDocument {
       return this.deleteSecondaryLayer(this.activeLayerId);
    }
 
+   public boolean canMoveActiveLayerUp() {
+      return this.canMoveSecondaryLayer(this.activeLayerId, 1);
+   }
+
+   public boolean moveActiveLayerUp() {
+      return this.moveSecondaryLayer(this.activeLayerId, 1);
+   }
+
+   public boolean canMoveActiveLayerDown() {
+      return this.canMoveSecondaryLayer(this.activeLayerId, -1);
+   }
+
+   public boolean moveActiveLayerDown() {
+      return this.moveSecondaryLayer(this.activeLayerId, -1);
+   }
+
    public boolean canToggleActiveLayerVisibility() {
       return this.getActiveLayer() instanceof SecondaryLayer;
    }
@@ -239,18 +255,24 @@ public final class LayeredDocument {
    }
 
    public boolean moveSecondaryLayer(String layerId, int delta) {
+      if (!this.canMoveSecondaryLayer(layerId, delta)) {
+         return false;
+      }
+      SecondaryLayer layer = this.findSecondaryLayer(layerId);
+      int oldIndex = this.secondaryLayers.indexOf(layer);
+      this.secondaryLayers.remove(oldIndex);
+      this.secondaryLayers.add(oldIndex + delta, layer);
+      return true;
+   }
+
+   public boolean canMoveSecondaryLayer(String layerId, int delta) {
       SecondaryLayer layer = this.findSecondaryLayer(layerId);
       if (layer == null || delta == 0) {
          return false;
       }
       int oldIndex = this.secondaryLayers.indexOf(layer);
       int newIndex = oldIndex + delta;
-      if (newIndex < 0 || newIndex >= this.secondaryLayers.size()) {
-         return false;
-      }
-      this.secondaryLayers.remove(oldIndex);
-      this.secondaryLayers.add(newIndex, layer);
-      return true;
+      return newIndex >= 0 && newIndex < this.secondaryLayers.size();
    }
 
    public void setActiveChar(int x, int y, char ch) {

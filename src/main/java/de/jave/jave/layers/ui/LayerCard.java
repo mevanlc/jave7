@@ -174,6 +174,21 @@ public final class LayerCard extends JPanel {
       });
       popup.add(delete);
       popup.addSeparator();
+      JMenuItem moveUp = new JMenuItem("Move Up");
+      moveUp.setEnabled(this.canMoveUp());
+      moveUp.addActionListener(event -> {
+         this.selectLayer();
+         this.application.moveActiveLayerUp();
+      });
+      popup.add(moveUp);
+      JMenuItem moveDown = new JMenuItem("Move Down");
+      moveDown.setEnabled(this.canMoveDown());
+      moveDown.addActionListener(event -> {
+         this.selectLayer();
+         this.application.moveActiveLayerDown();
+      });
+      popup.add(moveDown);
+      popup.addSeparator();
       JMenuItem visibility = new JMenuItem(this.isLayerVisible() ? "Hide Layer" : "Show Layer");
       visibility.setEnabled(secondaryLayer);
       visibility.addActionListener(event -> {
@@ -208,6 +223,14 @@ public final class LayerCard extends JPanel {
 
    private boolean isLayerOpaque() {
       return !(this.layer instanceof SecondaryLayer) || ((SecondaryLayer)this.layer).isOpaque();
+   }
+
+   private boolean canMoveUp() {
+      return this.layer instanceof SecondaryLayer && this.layerNumber < this.document.getLayerCount();
+   }
+
+   private boolean canMoveDown() {
+      return this.layer instanceof SecondaryLayer && this.layerNumber > 2;
    }
 
    private static Color getUiColor(String key, Color fallback) {
