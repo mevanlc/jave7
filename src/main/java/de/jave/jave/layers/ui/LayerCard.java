@@ -42,6 +42,7 @@ public final class LayerCard extends JPanel {
    private final int layerNumber;
    private final JPanel namePanel;
    private final JLabel nameLabel;
+   private JTextField renameEditor;
 
    public LayerCard(JavEApplication application, PlateDocument document, Layer layer, int layerNumber, boolean active) {
       super(new BorderLayout(8, 0));
@@ -215,44 +216,65 @@ public final class LayerCard extends JPanel {
    }
 
    private void startRename() {
+      if (this.renameEditor != null) {
+         this.renameEditor.requestFocusInWindow();
+         this.renameEditor.selectAll();
+         return;
+      }
       JTextField editor = new JTextField(this.layer.getName());
+      this.renameEditor = editor;
       editor.selectAll();
       this.namePanel.removeAll();
       this.namePanel.add(editor, BorderLayout.CENTER);
       this.namePanel.revalidate();
       this.namePanel.repaint();
-      editor.requestFocusInWindow();
-      editor.addActionListener(event -> this.finishRename(editor));
+      SwingUtilities.invokeLater(() -> editor.requestFocusInWindow());
+      editor.addActionListener(event -> this.finishRename());
       editor.addFocusListener(new FocusAdapter() {
          @Override
          public void focusLost(FocusEvent event) {
-            LayerCard.this.finishRename(editor);
+            LayerCard.this.finishRename();
          }
       });
       editor.addKeyListener(new KeyAdapter() {
          @Override
          public void keyPressed(KeyEvent event) {
             if (event.getKeyCode() == KeyEvent.VK_ESCAPE) {
-               editor.putClientProperty("cancelRename", Boolean.TRUE);
                LayerCard.this.cancelRename();
             }
          }
       });
    }
 
-   private void finishRename(JTextField editor) {
-      if (Boolean.TRUE.equals(editor.getClientProperty("cancelRename"))) {
+   private void finishRename() {
+      JTextField editor = this.renameEditor;
+      if (editor == null) {
          return;
       }
-      this.application.renameLayer(this.layer.getId(), editor.getText());
+      String name = editor.getText().trim();
+      this.restoreNameLabel();
+      if (name.length() == 0 || name.equals(this.layer.getName())) {
+         this.application.getMainPanel().requestFocus();
+         return;
+      }
+      this.nameLabel.setText(name);
+      this.application.renameLayer(this.layer.getId(), name);
    }
 
    private void cancelRename() {
+      if (this.renameEditor == null) {
+         return;
+      }
+      this.restoreNameLabel();
+      this.application.getMainPanel().requestFocus();
+   }
+
+   private void restoreNameLabel() {
+      this.renameEditor = null;
       this.namePanel.removeAll();
       this.namePanel.add(this.nameLabel, BorderLayout.CENTER);
       this.namePanel.revalidate();
       this.namePanel.repaint();
-      this.application.getMainPanel().requestFocus();
    }
 
    private static final class LayerPreview extends JComponent {
