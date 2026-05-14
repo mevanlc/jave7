@@ -1,6 +1,7 @@
 package de.jave.jave.layers;
 
 import de.jave.lib.CharacterPlate;
+import de.jave.lib.area.BooleanArea;
 import java.io.File;
 import java.awt.Rectangle;
 import org.junit.Assert;
@@ -44,6 +45,46 @@ public class LayeredDocumentTest {
       document.setActiveChar(3, 0, 'Y');
 
       Assert.assertArrayEquals(new String[]{"aXcYe"}, document.getComposite(false).toStringArray());
+   }
+
+   @Test
+   public void documentLayerSelectionCoverageIsUnmasked() {
+      LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{"abcde"}));
+
+      Assert.assertNull(document.getActiveLayerCoverageMask(new Rectangle(0, 0, 5, 1)));
+   }
+
+   @Test
+   public void opaqueSecondaryLayerSelectionCoverageIncludesInternalSpacesOnlyInsideBounds() {
+      LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{"abcde"}));
+      document.addSecondaryLayerAboveActive();
+      document.setActiveChar(1, 0, 'X');
+      document.setActiveChar(3, 0, 'Y');
+
+      BooleanArea mask = document.getActiveLayerCoverageMask(new Rectangle(0, 0, 5, 1));
+
+      Assert.assertFalse(mask.isSet(0, 0));
+      Assert.assertTrue(mask.isSet(1, 0));
+      Assert.assertTrue(mask.isSet(2, 0));
+      Assert.assertTrue(mask.isSet(3, 0));
+      Assert.assertFalse(mask.isSet(4, 0));
+   }
+
+   @Test
+   public void nonOpaqueSecondaryLayerSelectionCoverageTreatsSpacesAsTransparent() {
+      LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{"abcde"}));
+      SecondaryLayer layer = document.addSecondaryLayerAboveActive();
+      layer.setOpaque(false);
+      document.setActiveChar(1, 0, 'X');
+      document.setActiveChar(3, 0, 'Y');
+
+      BooleanArea mask = document.getActiveLayerCoverageMask(new Rectangle(0, 0, 5, 1));
+
+      Assert.assertFalse(mask.isSet(0, 0));
+      Assert.assertTrue(mask.isSet(1, 0));
+      Assert.assertFalse(mask.isSet(2, 0));
+      Assert.assertTrue(mask.isSet(3, 0));
+      Assert.assertFalse(mask.isSet(4, 0));
    }
 
    @Test

@@ -1,8 +1,10 @@
 package de.jave.jave.layers;
 
 import de.jave.lib.CharacterPlate;
+import de.jave.lib.area.BooleanArea;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -321,6 +323,29 @@ public final class LayeredDocument {
       Point position = layer.getPosition();
       projection.paste(content, position.x, position.y);
       return projection;
+   }
+
+   public BooleanArea getActiveLayerCoverageMask(Rectangle region) {
+      Ensure.ensureArgumentNotNull(region);
+      Layer active = this.getActiveLayer();
+      if (active instanceof DocumentLayer) {
+         return null;
+      }
+
+      BooleanArea mask = new BooleanArea(region.width, region.height);
+      SecondaryLayer layer = (SecondaryLayer)active;
+      Rectangle bounds = layer.getBounds();
+      for (int y = 0; y < region.height; y++) {
+         int documentY = region.y + y;
+         for (int x = 0; x < region.width; x++) {
+            int documentX = region.x + x;
+            if (bounds.contains(documentX, documentY)) {
+               char ch = layer.getCharAtDocument(documentX, documentY);
+               mask.set(x, y, layer.isOpaque() || ch != ' ');
+            }
+         }
+      }
+      return mask.isAllSet() ? null : mask;
    }
 
    public void replaceActiveContentProjection(CharacterPlate projection) {

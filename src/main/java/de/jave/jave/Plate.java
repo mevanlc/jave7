@@ -393,7 +393,7 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
    }
 
    public void setSelection(Rectangle region) {
-      this.setSelection(region, this.cut(region));
+      this.setSelection(region, this.cutSelection(region));
    }
 
    public void setSelectionContent(CharacterPlate cp) {
@@ -426,6 +426,10 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
    }
 
    public void setSelection(Rectangle region, JaveSelection content) {
+      if (content.getMask() != null && content.getMask().isEmpty()) {
+         this.unselect();
+         return;
+      }
       this.selection.set(region, content);
       this.jave.updateSelectionMenu();
       this.repaint();
@@ -506,7 +510,12 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
    }
 
    public CharacterPlate cut(Rectangle rectangle) {
+      return this.cutSelection(rectangle).getContent();
+   }
+
+   public JaveSelection cutSelection(Rectangle rectangle) {
       CharacterPlate content = this.getContent();
+      BooleanArea mask = this.getActiveLayerCoverageMask(rectangle);
       int width = content.getWidth();
       int height = content.getHeight();
       CharacterPlate sel = new CharacterPlate(rectangle.width, rectangle.height);
@@ -516,7 +525,7 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
 
          for (int y = 0; y < rectangle.height; y++) {
             int yy = y + rectangle.y;
-            if (xx >= 0 && xx < width && yy >= 0 && yy < height) {
+            if ((mask == null || mask.isSet(x, y)) && xx >= 0 && xx < width && yy >= 0 && yy < height) {
                sel.setForce(x, y, content.get(xx, yy));
                content.set(xx, yy, ' ');
             }
@@ -524,7 +533,11 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
       }
 
       this.repaint();
-      return sel;
+      return new JaveSelection(sel, mask);
+   }
+
+   public BooleanArea getActiveLayerCoverageMask(Rectangle rectangle) {
+      return this.document.getLayeredDocument().getActiveLayerCoverageMask(rectangle);
    }
 
    public void setPlateSize(Dimension d) {

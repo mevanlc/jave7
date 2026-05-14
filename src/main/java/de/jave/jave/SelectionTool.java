@@ -7,7 +7,6 @@ import de.jave.jave.plate.JaveMainPanel;
 import de.jave.jave.plate.selection.SelectionAlgorithms;
 import de.jave.jave.preferences.ColorScheme;
 import de.jave.jave.tool.dialog.IInlineToolOptions;
-import de.jave.lib.CharacterPlate;
 import de.jave.text.TextTools;
 import java.awt.Cursor;
 import java.awt.Graphics2D;
@@ -530,9 +529,8 @@ public class SelectionTool extends Tool {
       this.dy = 0;
       this.location1 = null;
       if (this.mode == 10) {
-         CharacterPlate content = this.getPlate().cut(region);
-         this.getPlate().getSelection().set(region, content);
-         this.application.updateSelectionMenu();
+         JaveSelection content = this.getPlate().cutSelection(region);
+         this.getPlate().setSelection(region, content);
          this.synchronizeToSelection();
          this.repaintAll();
          this.getPlate().saveCurrentState("select");

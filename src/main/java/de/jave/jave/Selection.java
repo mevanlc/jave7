@@ -135,6 +135,24 @@ public class Selection {
       return new JaveSelection(this.content, this.mask);
    }
 
+   private BooleanArea getEffectiveSelectionMask(Rectangle region, BooleanArea selectionMask) {
+      BooleanArea layerMask = this.plate.getActiveLayerCoverageMask(region);
+      if (selectionMask == null) {
+         return layerMask;
+      }
+      if (layerMask == null) {
+         return selectionMask;
+      }
+
+      BooleanArea effectiveMask = new BooleanArea(region.width, region.height);
+      for (int y = 0; y < region.height; y++) {
+         for (int x = 0; x < region.width; x++) {
+            effectiveMask.set(x, y, selectionMask.isSet(x, y) && layerMask.isSet(x, y));
+         }
+      }
+      return effectiveMask;
+   }
+
    public Rectangle getRegion() {
       return this.region;
    }
@@ -264,17 +282,18 @@ public class Selection {
 
    public void set(Rectangle region, BooleanArea mask) {
       CharacterPlate content1 = new CharacterPlate(region.width, region.height);
+      BooleanArea effectiveMask = this.getEffectiveSelectionMask(region, mask);
 
       for (int y = 0; y < region.height; y++) {
          for (int x = 0; x < region.width; x++) {
-            if (mask.isSet(x, y) && this.plate.getContent().contains(region.x + x, region.y + y)) {
+            if ((effectiveMask == null || effectiveMask.isSet(x, y)) && this.plate.getContent().contains(region.x + x, region.y + y)) {
                content1.set(x, y, this.plate.getChar(region.x + x, region.y + y));
                this.plate.setCharForce(region.x + x, region.y + y, ' ');
             }
          }
       }
 
-      this.set(region, content1, mask);
+      this.set(region, content1, effectiveMask);
       this.optimizeSelectionRegion();
    }
 
@@ -331,12 +350,13 @@ public class Selection {
 
    public boolean add(Rectangle addRegion, BooleanArea addMask) {
       CharacterPlate addContent = new CharacterPlate(addRegion.width, addRegion.height);
+      BooleanArea effectiveAddMask = this.getEffectiveSelectionMask(addRegion, addMask);
 
       for (int y = 0; y < addRegion.height; y++) {
          for (int x = 0; x < addRegion.width; x++) {
             int xx = addRegion.x + x;
             int yy = addRegion.y + y;
-            if ((addMask == null || addMask.isSet(x, y)) && this.plate.getContent().contains(xx, yy)) {
+            if ((effectiveAddMask == null || effectiveAddMask.isSet(x, y)) && this.plate.getContent().contains(xx, yy)) {
                addContent.set(x, y, this.plate.getChar(xx, yy));
                this.plate.setCharForce(xx, yy, ' ');
             }
@@ -405,7 +425,7 @@ public class Selection {
             for (int xx = 0; xx < addRegion.width; xx++) {
                int maskX = addRegion.x - this.region.x + xx;
                int maskY = addRegion.y - this.region.y + y;
-               if (!this.mask.isSet(maskX, maskY) && (addMask == null || addMask.isSet(xx, y))) {
+               if (!this.mask.isSet(maskX, maskY) && (effectiveAddMask == null || effectiveAddMask.isSet(xx, y))) {
                   this.mask.set(maskX, maskY, true);
                   this.content.setForce(maskX, maskY, addContent.get(xx, y));
                   success = true;
@@ -968,8 +988,21 @@ public class Selection {
                g.setColor(colorScheme.getColorText());
             }
 
-            for (int yxxxxx = 0; yxxxxx < heightxx; yxxxxx++) {
-               g.drawString(String.valueOf(this.content.getContent()[yxxxxx]), p0.x, p0.y + yxxxxx * charHeight + charAscent);
+            if (this.mask == null) {
+               for (int yxxxxx = 0; yxxxxx < heightxx; yxxxxx++) {
+                  g.drawString(String.valueOf(this.content.getContent()[yxxxxx]), p0.x, p0.y + yxxxxx * charHeight + charAscent);
+               }
+            } else {
+               for (int yxxxxx = 0; yxxxxx < heightxx; yxxxxx++) {
+                  for (int x = 0; x < widthxx; x++) {
+                     if (this.mask.isSet(x, yxxxxx)) {
+                        char ch = this.content.get(x, yxxxxx);
+                        if (ch != ' ') {
+                           g.drawString(String.valueOf(ch), p0.x + x * charWidth, p0.y + yxxxxx * charHeight + charAscent);
+                        }
+                     }
+                  }
+               }
             }
          } else if (this.layer == 0) {
             int widthxxx = this.content.getWidth();

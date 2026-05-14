@@ -73,7 +73,7 @@ public class SelectionAlgorithms {
       Plate plate = editor.getPlate();
       Dimension documentSize = plate.getDocumentSize();
       Rectangle region = new Rectangle(0, 0, documentSize.width, documentSize.height);
-      plate.setSelection(region, plate.cut(region));
+      plate.setSelection(region);
    }
 
    public static void dropSelection(IDocumentEditor editor) {
