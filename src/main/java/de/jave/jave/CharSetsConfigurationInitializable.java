@@ -20,9 +20,11 @@ public class CharSetsConfigurationInitializable implements IJaveInitializable<Ch
       List<String> characters = new ArrayList<>();
       characters.add("");
       characters.add("");
+      characters.add("");
       List<String> names = new ArrayList<>();
       names.add(JaveCoreMessages.CharacterSets_AnyCharacter);
       names.add(JaveCoreMessages.CharacterSets_PureAscii);
+      names.add(JaveCoreMessages.CharacterSets_Unicode);
       BufferedReader br = null;
 
       try {

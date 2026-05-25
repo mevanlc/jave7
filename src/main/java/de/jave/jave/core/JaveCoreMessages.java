@@ -4,6 +4,7 @@ import de.jave.core.NLS;
 
 public class JaveCoreMessages extends NLS {
    public static String CharacterSets_UserDefined;
+   public static String CharacterSets_Unicode;
    public static String CharacterSets_PureAscii;
    public static String CharacterSets_AnyCharacter;
 

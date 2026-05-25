@@ -5,12 +5,13 @@ import net.disy.commons.core.util.Ensure;
 public class CharacterSets {
    private static final int NONE = 0;
    private static final int PURE_ASCII = 1;
-   private static final int DEFAULT_CHARSET_INDEX = 1;
-   private static int currentCharsetIndex = 1;
+   private static final int UNICODE = 2;
+   private static final int DEFAULT_CHARSET_INDEX = UNICODE;
+   private static int currentCharsetIndex = DEFAULT_CHARSET_INDEX;
    private final CharSetsConfiguration configuration;
 
    public static final int getDefaultCharsetIndex() {
-      return 1;
+      return DEFAULT_CHARSET_INDEX;
    }
 
    public CharacterSets(CharSetsConfiguration configuration) {
@@ -26,8 +27,22 @@ public class CharacterSets {
       if (currentCharsetIndex == 0) {
          return true;
       } else {
-         return currentCharsetIndex != 1 ? this.configuration.getCharSetChatacters(currentCharsetIndex).indexOf(ch) != -1 : ch >= ' ' && ch <= '~';
+         if (currentCharsetIndex == PURE_ASCII) {
+            return ch >= ' ' && ch <= '~';
+         } else if (currentCharsetIndex == UNICODE) {
+            return isLegalUnicodeBmpCharacter(ch);
+         }
+
+         return this.configuration.getCharSetChatacters(currentCharsetIndex).indexOf(ch) != -1;
       }
+   }
+
+   private static boolean isLegalUnicodeBmpCharacter(char ch) {
+      return !isAsciiControlCharacter(ch) && !Character.isSurrogate(ch) && Character.UnicodeBlock.of(ch) != Character.UnicodeBlock.PRIVATE_USE_AREA;
+   }
+
+   private static boolean isAsciiControlCharacter(char ch) {
+      return ch < ' ' || ch == '\u007f';
    }
 
    public String[] getCharsetNames() {
