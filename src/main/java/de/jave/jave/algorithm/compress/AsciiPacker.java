@@ -169,16 +169,24 @@ public class AsciiPacker {
       int index = 1;
       int w = 0;
 
-      for (char ch = code.charAt(index++); ch >= '0' && ch <= '9'; ch = code.charAt(index++)) {
+      while (index < code.length()) {
+         char ch = code.charAt(index++);
+         if (ch < '0' || ch > '9') {
+            break;
+         }
          w *= 10;
          w += ch - '0';
       }
 
       int h = 0;
 
-      for (char var13 = code.charAt(index++); var13 >= '0' && var13 <= '9' && index < code.length(); var13 = code.charAt(index++)) {
+      while (index < code.length()) {
+         char ch = code.charAt(index++);
+         if (ch < '0' || ch > '9') {
+            break;
+         }
          h *= 10;
-         h += var13 - '0';
+         h += ch - '0';
       }
 
       char[][] chars = new char[h][w];

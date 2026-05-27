@@ -38,16 +38,12 @@ public class CompressedDocumentState implements UndoState {
       this.toolName = toolName;
       this.colorScheme = colorScheme;
       this.content = AsciiPacker.encode(content);
-      if (selectionContent == null) {
-         this.selectionContent = null;
+      if (isEmptySelectionContent(selectionContent) || selectionLocation == null) {
+         this.clearSelection();
       } else {
          this.selectionContent = AsciiPacker.encode(selectionContent);
-      }
-
-      if (selectionMask == null) {
-         this.selectionMask = null;
-      } else {
-         this.selectionMask = selectionMask.toString();
+         this.selectionLocation = new Point(selectionLocation.x, selectionLocation.y);
+         this.selectionMask = selectionMask == null ? null : selectionMask.toString();
       }
 
       if (scrollOrigin != null) {
@@ -56,12 +52,6 @@ public class CompressedDocumentState implements UndoState {
       } else {
          this.scrollX = 0;
          this.scrollY = 0;
-      }
-
-      if (selectionLocation == null) {
-         this.selectionLocation = null;
-      } else {
-         this.selectionLocation = new Point(selectionLocation.x, selectionLocation.y);
       }
 
       if (cursorLocation != null) {
@@ -90,7 +80,11 @@ public class CompressedDocumentState implements UndoState {
    }
 
    public void setSelectionContent(String selectionContent) {
-      this.selectionContent = selectionContent;
+      if (isEmptyPackedSelectionContent(selectionContent)) {
+         this.clearSelection();
+      } else {
+         this.selectionContent = selectionContent;
+      }
    }
 
    public void setDuration(int duration) {
@@ -102,7 +96,7 @@ public class CompressedDocumentState implements UndoState {
    }
 
    public void setSelectionMask(String selectionMask) {
-      this.selectionMask = selectionMask;
+      this.selectionMask = this.selectionContent == null ? null : selectionMask;
    }
 
    public void setColorScheme(ColorScheme colorScheme) {
@@ -138,7 +132,15 @@ public class CompressedDocumentState implements UndoState {
    }
 
    public void setSelectionLocation(int selectionX, int selectionY) {
-      this.selectionLocation = new Point(selectionX, selectionY);
+      if (this.selectionContent != null) {
+         this.selectionLocation = new Point(selectionX, selectionY);
+      }
+   }
+
+   private void clearSelection() {
+      this.selectionContent = null;
+      this.selectionLocation = null;
+      this.selectionMask = null;
    }
 
    @Override
@@ -193,11 +195,11 @@ public class CompressedDocumentState implements UndoState {
    }
 
    public boolean hasSelection() {
-      return this.selectionContent != null;
+      return this.selectionContent != null && this.selectionLocation != null;
    }
 
    public char[][] getSelectionContent() {
-      return this.selectionContent == null ? null : AsciiPacker.decode(this.selectionContent);
+      return this.hasSelection() ? AsciiPacker.decode(this.selectionContent) : null;
    }
 
    public Point getSelectionLocation() {
@@ -209,7 +211,7 @@ public class CompressedDocumentState implements UndoState {
    }
 
    public BooleanArea getSelectionMask() {
-      return this.selectionMask == null ? null : new BooleanArea(this.selectionMask);
+      return !this.hasSelection() || this.selectionMask == null ? null : new BooleanArea(this.selectionMask);
    }
 
    public String getToolName() {
@@ -239,7 +241,7 @@ public class CompressedDocumentState implements UndoState {
       sb.append("C:");
       sb.append(this.colorScheme.getColorHex());
       sb.append('\n');
-      if (this.selectionContent != null) {
+      if (this.hasSelection()) {
          sb.append("S:");
          sb.append(this.selectionLocation.x);
          sb.append(' ');
@@ -270,5 +272,21 @@ public class CompressedDocumentState implements UndoState {
       sb.append(this.duration);
       sb.append('\n');
       return sb.toString();
+   }
+
+   private static boolean isEmptySelectionContent(char[][] selectionContent) {
+      return selectionContent == null || selectionContent.length == 0 || selectionContent[0] == null || selectionContent[0].length == 0;
+   }
+
+   private static boolean isEmptyPackedSelectionContent(String selectionContent) {
+      if (selectionContent == null) {
+         return true;
+      }
+
+      try {
+         return isEmptySelectionContent(AsciiPacker.decode(selectionContent));
+      } catch (RuntimeException ex) {
+         return false;
+      }
    }
 }

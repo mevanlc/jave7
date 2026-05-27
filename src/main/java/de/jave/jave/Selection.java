@@ -312,14 +312,16 @@ public class Selection {
    }
 
    public void set(Point origin, char[][] content, BooleanArea mask) {
-      if (origin != null && content != null) {
+      if (origin != null && !isEmptySelectionContent(content)) {
          this.set(new Rectangle(origin.x, origin.y, content[0].length, content.length), new CharacterPlate(content), mask);
       } else {
-         this.region = null;
-         this.content = null;
-         this.mask = null;
+         this.delete();
          this.textboxStyle = null;
       }
+   }
+
+   private static boolean isEmptySelectionContent(char[][] content) {
+      return content == null || content.length == 0 || content[0] == null || content[0].length == 0;
    }
 
    public void set(Point origin, CharacterPlate content) {
