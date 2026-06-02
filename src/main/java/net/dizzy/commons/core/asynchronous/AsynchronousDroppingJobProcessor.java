@@ -10,7 +10,11 @@ import net.dizzy.commons.core.progress.ICancelable;
 public class AsynchronousDroppingJobProcessor<T> {
    private final IJobProcessor<T> processor;
    private final IExceptionHandler exceptionHandler;
-   private final ExecutorService executor = Executors.newSingleThreadExecutor();
+   private final ExecutorService executor = Executors.newSingleThreadExecutor(runnable -> {
+      Thread thread = new Thread(runnable, "dizzy-dropping-job-processor");
+      thread.setDaemon(true);
+      return thread;
+   });
    private final Object lock = new Object();
    private Cancelable currentCancelable;
    private T pendingJob;

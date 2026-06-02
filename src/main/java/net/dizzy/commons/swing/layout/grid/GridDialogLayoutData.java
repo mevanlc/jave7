@@ -1,10 +1,15 @@
 package net.dizzy.commons.swing.layout.grid;
 
 public class GridDialogLayoutData {
-   public static final int FILL_HORIZONTAL = 1;
-   public static final int RIGHT = 2;
-   public static final int FILL_BOTH = 3;
-   public static final int FILL_VERTICAL = 4;
+   private static final int FILL_HORIZONTAL_VALUE = 1;
+   private static final int RIGHT_VALUE = 2;
+   private static final int FILL_BOTH_VALUE = 3;
+   private static final int FILL_VERTICAL_VALUE = 4;
+
+   public static final Integer FILL_HORIZONTAL = Integer.valueOf(FILL_HORIZONTAL_VALUE);
+   public static final Integer RIGHT = Integer.valueOf(RIGHT_VALUE);
+   public static final Integer FILL_BOTH = Integer.valueOf(FILL_BOTH_VALUE);
+   public static final Integer FILL_VERTICAL = Integer.valueOf(FILL_VERTICAL_VALUE);
 
    private int constant;
    private int horizontalSpan = 1;
@@ -81,21 +86,14 @@ public class GridDialogLayoutData {
    }
 
    private void appendConstant(StringBuilder builder) {
-      switch (constant) {
-         case FILL_HORIZONTAL:
-            append(builder, "growx, pushx");
-            break;
-         case RIGHT:
-            append(builder, "align right");
-            break;
-         case FILL_BOTH:
-            append(builder, "grow, push");
-            break;
-         case FILL_VERTICAL:
-            append(builder, "growy, pushy");
-            break;
-         default:
-            break;
+      if (constant == FILL_HORIZONTAL_VALUE) {
+         append(builder, "growx, pushx");
+      } else if (constant == RIGHT_VALUE) {
+         append(builder, "align right");
+      } else if (constant == FILL_BOTH_VALUE) {
+         append(builder, "grow, push");
+      } else if (constant == FILL_VERTICAL_VALUE) {
+         append(builder, "growy, pushy");
       }
    }
 
