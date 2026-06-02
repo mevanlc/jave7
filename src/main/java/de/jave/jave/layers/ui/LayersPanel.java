@@ -21,6 +21,7 @@ import javax.swing.JToggleButton;
 
 public final class LayersPanel {
    private static final int BASE_ICON_SIZE = 16;
+   private static final int PANEL_WIDTH = 260;
    private static final Dimension BASE_BOTTOM_BUTTON_SIZE = new Dimension(24, 22);
    private static final String ADD_LAYER_GLYPH = "＋";
    private static final String DELETE_LAYER_GLYPH = "−";
@@ -66,8 +67,8 @@ public final class LayersPanel {
       this.document = document;
       this.content = new JPanel(new BorderLayout());
       this.content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
-      this.content.setPreferredSize(new Dimension(260, 120));
-      this.content.setMinimumSize(new Dimension(180, 60));
+      this.content.setPreferredSize(new Dimension(PANEL_WIDTH, 120));
+      this.content.setMinimumSize(new Dimension(PANEL_WIDTH, 60));
 
       this.stackPanel = new JPanel();
       this.stackPanel.setLayout(new BoxLayout(this.stackPanel, BoxLayout.Y_AXIS));

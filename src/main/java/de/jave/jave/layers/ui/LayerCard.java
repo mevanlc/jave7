@@ -34,6 +34,7 @@ import javax.swing.UIManager;
 
 public final class LayerCard extends JPanel {
    private static final int LAYER_CARD_HEIGHT = 72;
+   private static final int LAYER_CARD_WIDTH = 220;
    private static final int PREVIEW_COLUMNS = 18;
    private static final int PREVIEW_ROWS = 6;
    private final JavEApplication application;
@@ -131,8 +132,8 @@ public final class LayerCard extends JPanel {
    }
 
    private void setFixedHeight() {
-      this.setMinimumSize(new Dimension(0, LAYER_CARD_HEIGHT));
-      this.setPreferredSize(new Dimension(220, LAYER_CARD_HEIGHT));
+      this.setMinimumSize(new Dimension(LAYER_CARD_WIDTH, LAYER_CARD_HEIGHT));
+      this.setPreferredSize(new Dimension(LAYER_CARD_WIDTH, LAYER_CARD_HEIGHT));
       this.setMaximumSize(new Dimension(Integer.MAX_VALUE, LAYER_CARD_HEIGHT));
    }
 
