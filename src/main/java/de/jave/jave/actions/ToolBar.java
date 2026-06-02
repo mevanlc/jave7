@@ -36,7 +36,9 @@ import de.jave.jave.tool.linealgorithmic.LineAlgorithmicTool;
 import de.jave.jave.tool.rectanglealgorithmic.RectangleAlgorithmicTool;
 import de.jave.jave.tool.text.TextTool;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Insets;
+import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
@@ -96,52 +98,60 @@ public class ToolBar {
       this.preferences = preferences;
       this.createTools();
 
-      GridDialogLayoutData fiveColumnsData = new GridDialogLayoutData(GridDialogLayoutData.FILL_HORIZONTAL);
+      GridDialogLayoutData fiveColumnsData = new GridDialogLayoutData();
       fiveColumnsData.setHorizontalSpan(5);
-      JPanel panel = new JPanel(new GridDialogLayout(5, false, 0, 0));
+      JPanel panel = new JPanel();
+      panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+      JPanel toolsPanel = new JPanel(new GridDialogLayout(5, false, 0, 0));
+      toolsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
       // Top padding aligns the first tool button with the bottom of the
       // document tab bar in the main panel.
-      panel.add(new Gap(1, 30), fiveColumnsData);
+      toolsPanel.add(new Gap(1, 30), fiveColumnsData);
 
       // Generic + Algorithmic groups joined: 10 tools paired (gen,alg)
       // for each shape that has both — Bezier and Arc trail (gen only).
       // row(freehand, fh-alg, line, line-alg, rect)
       // row(rect-alg, ellipse, e-alg, bezier, arc)
-      panel.add(this.btn(0));
-      panel.add(this.btn(1));
-      panel.add(this.btn(2));
-      panel.add(this.btn(3));
-      panel.add(this.btn(4));
-      panel.add(this.btn(5));
-      panel.add(this.btn(6));
-      panel.add(this.btn(7));
-      panel.add(this.btn(8));
-      panel.add(this.btn(9));
-      panel.add(this.createHorizontalLine(6), fiveColumnsData);
+      toolsPanel.add(this.btn(0));
+      toolsPanel.add(this.btn(1));
+      toolsPanel.add(this.btn(2));
+      toolsPanel.add(this.btn(3));
+      toolsPanel.add(this.btn(4));
+      toolsPanel.add(this.btn(5));
+      toolsPanel.add(this.btn(6));
+      toolsPanel.add(this.btn(7));
+      toolsPanel.add(this.btn(8));
+      toolsPanel.add(this.btn(9));
+      toolsPanel.add(this.createHorizontalLine(6), fiveColumnsData);
 
       // Selection + Brush + view-overlay groups: 11 tools in 3 rows
       // row 1: text, figlet, sel, fh-sel, brush
       // row 2: eraser, fill, clone, (2 gaps)
       // row 3: pan, auxlines, watermark, (2 gaps) — view-overlay cluster
-      panel.add(this.btn(10));
-      panel.add(this.btn(11));
-      panel.add(this.btn(12));
-      panel.add(this.btn(13));
-      panel.add(this.btn(14));
-      panel.add(this.btn(15));
-      panel.add(this.btn(16));
-      panel.add(this.btn(17));
-      panel.add(new Gap());
-      panel.add(new Gap());
-      panel.add(this.btn(18));
-      panel.add(this.btn(20));
-      panel.add(this.btn(19));
-      panel.add(new Gap());
-      panel.add(new Gap());
+      toolsPanel.add(this.btn(10));
+      toolsPanel.add(this.btn(11));
+      toolsPanel.add(this.btn(12));
+      toolsPanel.add(this.btn(13));
+      toolsPanel.add(this.btn(14));
+      toolsPanel.add(this.btn(15));
+      toolsPanel.add(this.btn(16));
+      toolsPanel.add(this.btn(17));
+      toolsPanel.add(new Gap());
+      toolsPanel.add(new Gap());
+      toolsPanel.add(this.btn(18));
+      toolsPanel.add(this.btn(20));
+      toolsPanel.add(this.btn(19));
+      toolsPanel.add(new Gap());
+      toolsPanel.add(new Gap());
 
-      panel.add(new Gap(1, 4), fiveColumnsData);
-      panel.add(this.createHorizontalLine(2), fiveColumnsData);
-      panel.add(optionsHost.getContent(), fiveColumnsData);
+      toolsPanel.setMaximumSize(toolsPanel.getPreferredSize());
+      panel.add(toolsPanel);
+
+      panel.add(new Gap(1, 4));
+      panel.add(this.createHorizontalLine(2));
+      JComponent optionsContent = optionsHost.getContent();
+      optionsContent.setAlignmentX(Component.LEFT_ALIGNMENT);
+      panel.add(optionsContent);
       this.content = panel;
    }
 
@@ -159,6 +169,8 @@ public class ToolBar {
             LayoutUtilities.getDpiAdjusted(3)
          )
       );
+      horizontalLine.setMaximumSize(new Dimension(Integer.MAX_VALUE, horizontalLine.getPreferredSize().height));
+      horizontalLine.setAlignmentX(Component.LEFT_ALIGNMENT);
       return horizontalLine;
    }
 

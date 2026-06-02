@@ -19,8 +19,16 @@ public class ImageProvider {
    }
 
    public ImageIcon getImageIcon(String name) {
-      URL url = Thread.currentThread().getContextClassLoader().getResource(basePath + name);
+      URL url = getResource(name);
       return url == null ? FALLBACK_ICON : new ImageIcon(url);
+   }
+
+   public boolean hasImage(String name) {
+      return getResource(name) != null;
+   }
+
+   private URL getResource(String name) {
+      return Thread.currentThread().getContextClassLoader().getResource(basePath + name);
    }
 
    private static String normalizeBasePath(String value) {

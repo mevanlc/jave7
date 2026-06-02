@@ -11,6 +11,7 @@ import net.dizzy.commons.swing.resources.IIconResources;
 
 public class JaveIcons implements IIconResources {
    private static final int ICON_SIZE = readIconSizePreference();
+   private static final int[] PREFERRED_ICON_SIZES = {32, 24};
 
    private static int readIconSizePreference() {
       try {
@@ -136,7 +137,37 @@ public class JaveIcons implements IIconResources {
    public static final Icon PENCIL7 = loadIcon("pencil/roundsize7.gif");
    public static final Icon PENCIL7_DISABLED = loadIcon("pencil/roundsize7_.gif");
 
-   private static Icon loadIcon(String string) {
-      return JaveImageProvider.getInstance().getImageIcon(string);
+   private static Icon loadIcon(String name) {
+      return JaveImageProvider.getInstance().getImageIcon(resolvePreferredIconPath(name, ICON_SIZE));
+   }
+
+   static String resolvePreferredIconPath(String name, int iconSize) {
+      if (iconSize == JavePreferences.DEFAULT_ICON_SIZE) {
+         return name;
+      }
+
+      int slash = name.lastIndexOf('/');
+      int dot = name.lastIndexOf('.');
+      if (dot <= slash) {
+         return name;
+      }
+
+      JaveImageProvider provider = JaveImageProvider.getInstance();
+      for (int size : PREFERRED_ICON_SIZES) {
+         if (size > iconSize) {
+            continue;
+         }
+         String candidate = createSizedPngPath(name, slash, dot, size);
+         if (provider.hasImage(candidate)) {
+            return candidate;
+         }
+      }
+      return name;
+   }
+
+   private static String createSizedPngPath(String name, int slash, int dot, int size) {
+      String dirPrefix = slash < 0 ? "" : name.substring(0, slash + 1);
+      String iconName = name.substring(slash + 1, dot);
+      return dirPrefix + size + "/" + iconName + ".png";
    }
 }
