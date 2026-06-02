@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 
 import org.junit.Test;
 
+import de.jave.jave.application.resources.JaveImageProvider;
 import net.dizzy.commons.core.asynchronous.AsynchronousDroppingJobProcessor;
 import net.dizzy.commons.core.asynchronous.IJobProcessor;
 import net.dizzy.commons.core.exception.IExceptionHandler;
@@ -90,5 +91,10 @@ public class CommonsReplacementSmokeTest {
       panel.doLayout();
 
       assertEquals(2, panel.getComponentCount());
+   }
+
+   @Test
+   public void imageProviderLoadsClasspathResourcesWithNormalizedBasePath() {
+      assertTrue(JaveImageProvider.getInstance().getImageIcon("javeicon16.gif").getIconWidth() > 1);
    }
 }

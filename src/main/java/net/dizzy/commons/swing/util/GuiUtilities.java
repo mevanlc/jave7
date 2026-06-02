@@ -11,6 +11,9 @@ public final class GuiUtilities {
    }
 
    public static Window getWindowFor(Component component) {
+      if (component == null) {
+         return null;
+      }
       return component instanceof Window ? (Window) component : SwingUtilities.getWindowAncestor(component);
    }
 

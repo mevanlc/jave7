@@ -7,6 +7,10 @@ plugins {
 group = 'de.jave'
 version = '7.0.0'
 
+base {
+    archivesName = 'jave7'
+}
+
 application {
     mainClass = 'de.jave.jave.Jave'
 }
@@ -45,14 +49,22 @@ java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 
-    jar {
-        manifest {
-            attributes 'Main-Class': mainClassName
-        }
+}
 
-        // Ensures the resources are included in the jar
-        from sourceSets.main.output
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    dependsOn configurations.runtimeClasspath
+
+    manifest {
+        attributes 'Main-Class': mainClassName
     }
+
+    from sourceSets.main.output
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA'
 }
 
 tasks.register('appJar', Jar) {
