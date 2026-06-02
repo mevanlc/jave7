@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
 import org.junit.Test;
@@ -23,6 +24,7 @@ import net.dizzy.commons.core.model.ObjectModel;
 import net.dizzy.commons.core.progress.ICancelable;
 import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
 import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.swing.dialog.tabbed.SmartTabbedPane;
 
 public class CommonsReplacementSmokeTest {
    @Test
@@ -96,5 +98,12 @@ public class CommonsReplacementSmokeTest {
    @Test
    public void imageProviderLoadsClasspathResourcesWithNormalizedBasePath() {
       assertTrue(JaveImageProvider.getInstance().getImageIcon("javeicon16.gif").getIconWidth() > 1);
+   }
+
+   @Test
+   public void smartTabbedPaneUsesLeadingScrollLayout() {
+      SmartTabbedPane tabbedPane = new SmartTabbedPane((pane, index) -> {});
+
+      assertEquals(JTabbedPane.SCROLL_TAB_LAYOUT, ((JTabbedPane)tabbedPane.getContent()).getTabLayoutPolicy());
    }
 }

@@ -13,6 +13,7 @@ public class SmartTabbedPane {
 
    public SmartTabbedPane(ISmartTabbedPaneCloseHandler closeHandler) {
       this.closeHandler = closeHandler;
+      this.tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
    }
 
    public void addTab(String title, Component component) { tabbedPane.addTab(title, component); }
