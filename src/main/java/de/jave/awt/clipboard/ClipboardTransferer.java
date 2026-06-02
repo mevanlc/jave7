@@ -18,19 +18,39 @@ public class ClipboardTransferer {
       Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 
       try {
-         Object o = clipboard.getContents(null);
-         if (o == null) {
-            return null;
-         } else if (o instanceof JaveClipboardSelection) {
-            return (JaveClipboardSelection)o;
-         } else {
-            String sel = (String)((Transferable)o).getTransferData(DataFlavor.stringFlavor);
-            return sel.indexOf(9) != -1 ? new JaveClipboardSelection(CharacterPlate.tabelize(sel)) : new JaveClipboardSelection(sel);
-         }
+         return createSelection(clipboard.getContents(null));
       } catch (UnsupportedFlavorException var3) {
          return null;
       } catch (IOException var4) {
          return null;
       }
+   }
+
+   static JaveClipboardSelection createSelection(Object clipboardContent) throws UnsupportedFlavorException, IOException {
+      if (clipboardContent == null) {
+         return null;
+      } else if (clipboardContent instanceof JaveClipboardSelection) {
+         return normalizeSelection((JaveClipboardSelection)clipboardContent);
+      } else if (clipboardContent instanceof Transferable) {
+         Transferable transferable = (Transferable)clipboardContent;
+         if (!transferable.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+            return null;
+         }
+         String sel = (String)transferable.getTransferData(DataFlavor.stringFlavor);
+         if (sel == null || sel.length() == 0) {
+            return null;
+         }
+         JaveClipboardSelection selection = sel.indexOf(9) != -1
+            ? new JaveClipboardSelection(CharacterPlate.tabelize(sel))
+            : new JaveClipboardSelection(sel);
+         return normalizeSelection(selection);
+      } else {
+         return null;
+      }
+   }
+
+   private static JaveClipboardSelection normalizeSelection(JaveClipboardSelection selection) {
+      CharacterPlate content = selection.getContent();
+      return content != null && content.getWidth() > 0 && content.getHeight() > 0 ? selection : null;
    }
 }

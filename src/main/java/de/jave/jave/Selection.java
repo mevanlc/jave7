@@ -325,23 +325,23 @@ public class Selection {
    }
 
    public void set(Point origin, CharacterPlate content) {
-      if (origin != null && content != null) {
+      if (origin != null && !isEmptySelectionContent(content)) {
          this.set(new Rectangle(origin.x, origin.y, content.getWidth(), content.getHeight()), content);
       } else {
-         this.region = null;
-         this.mask = null;
-         this.content = null;
+         this.delete();
          this.textboxStyle = null;
       }
    }
 
+   private static boolean isEmptySelectionContent(CharacterPlate content) {
+      return content == null || content.getWidth() == 0 || content.getHeight() == 0;
+   }
+
    public void set(Point origin, JaveClipboardSelection sel) {
-      if (origin != null && sel != null) {
+      if (origin != null && sel != null && !isEmptySelectionContent(sel.getContent())) {
          this.set(new Rectangle(origin.x, origin.y, sel.getContent().getWidth(), sel.getContent().getHeight()), sel.getContent(), sel.getMask());
       } else {
-         this.region = null;
-         this.mask = null;
-         this.content = null;
+         this.delete();
          this.textboxStyle = null;
       }
    }

@@ -12,26 +12,16 @@ import net.disy.commons.core.exception.CentralExceptionHandling;
 import net.disy.commons.core.exception.IExceptionHandler;
 import net.disy.commons.core.message.Message;
 import net.disy.commons.core.message.MessageType;
+import net.disy.commons.swing.dialog.core.IDialogResult;
 import net.disy.commons.swing.dialog.message.MessageDialogFactory;
+import net.disy.commons.swing.dialog.userdialog.IDialogCloseHandler;
 import net.disy.commons.swing.dialog.userdialog.UserDialog;
 
 public class JaveMainApplicationStarter {
    public static void startJaveApplication(final String[] arguments) {
       String applicationName = MessageFormat.format("JavE {0}", JaveVersion.getFullVersionNumber());
       MacOsXInitializer.setApplicationNameProperty(applicationName);
-      CentralExceptionHandling.setHandler(
-         new IExceptionHandler() {
-            @Override
-            public void handle(Throwable exception) {
-               exception.printStackTrace();
-               UserDialog dialog = MessageDialogFactory.createMessageDialog(
-                  null, new Message(JaveMessages.DefaultExceptionHandler_Title, JaveMessages.DefaultExceptionHandler_Text, MessageType.ERROR, exception)
-               );
-               dialog.getDialog().setModal(false);
-               dialog.show();
-            }
-         }
-      );
+      CentralExceptionHandling.setHandler(new DefaultExceptionHandler());
       SwingUtilities.invokeLater(new Runnable() {
          @Override
          public void run() {
@@ -45,5 +35,57 @@ public class JaveMainApplicationStarter {
             splash.startup(new JaveStartupRunnable(arguments));
          }
       });
+   }
+
+   static class DefaultExceptionHandler implements IExceptionHandler {
+      private boolean showingDialog;
+
+      @Override
+      public void handle(final Throwable exception) {
+         exception.printStackTrace();
+         if (!markShowingDialog()) {
+            return;
+         }
+         Runnable showDialog = new Runnable() {
+            @Override
+            public void run() {
+               showDialog(exception);
+            }
+         };
+         if (SwingUtilities.isEventDispatchThread()) {
+            showDialog.run();
+         } else {
+            SwingUtilities.invokeLater(showDialog);
+         }
+      }
+
+      private synchronized boolean markShowingDialog() {
+         if (this.showingDialog) {
+            return false;
+         }
+         this.showingDialog = true;
+         return true;
+      }
+
+      protected synchronized void clearShowingDialog() {
+         this.showingDialog = false;
+      }
+
+      void showDialog(Throwable exception) {
+         try {
+            UserDialog dialog = MessageDialogFactory.createMessageDialog(
+               null, new Message(JaveMessages.DefaultExceptionHandler_Title, JaveMessages.DefaultExceptionHandler_Text, MessageType.ERROR, exception)
+            );
+            dialog.showNonModal(new IDialogCloseHandler() {
+               @Override
+               public void handleDialogClose(IDialogResult result) {
+                  clearShowingDialog();
+               }
+            });
+         } catch (Throwable dialogException) {
+            clearShowingDialog();
+            dialogException.printStackTrace();
+         }
+      }
    }
 }
