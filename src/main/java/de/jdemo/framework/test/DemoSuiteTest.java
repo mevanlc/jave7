@@ -1,4 +1,3 @@
-// Copyright (c) 2008 by disy Informationssysteme GmbH
 package de.jdemo.framework.test;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -11,7 +10,6 @@ import de.jdemo.framework.DemoSuite;
 
 import org.junit.Test;
 
-// NOT_PUBLISHED
 public class DemoSuiteTest {
   public static class OverridingDemo extends DummyPublicVoidSomethingElseAndDemo {
     @Override

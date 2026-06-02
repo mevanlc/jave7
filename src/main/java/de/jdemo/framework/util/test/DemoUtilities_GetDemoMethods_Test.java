@@ -1,4 +1,3 @@
-//Copyright (c) 2008 by disy Informationssysteme GmbH
 package de.jdemo.framework.util.test;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -16,7 +15,6 @@ import de.jdemo.framework.util.DemoUtilities;
 
 import org.junit.Test;
 
-// NOT_PUBLISHED
 public class DemoUtilities_GetDemoMethods_Test {
 
 	public static class OverridingDemo extends
