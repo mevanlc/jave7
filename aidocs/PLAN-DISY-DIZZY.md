@@ -2,6 +2,21 @@
 
 Survey + reimplementation plan for the open-sourcing of JavE as JavE7.
 
+## Status — 2026-06-02
+
+Implemented and committed. Java imports now target `net.dizzy.commons.*`, the
+minimal replacement API exists under `src/main/java/net/dizzy/commons`, and the
+project builds successfully without the removed Disy sources.
+
+Milestone commits:
+- `657aa39` — restore the `net.dizzy` commons compile surface and migrate Java imports.
+- `349e3e6` — add smoke coverage for model notification, async drop/cancel, and the layout adapter.
+
+Verification completed:
+- `./gradlew compileJava`
+- `./gradlew compileJava compileTestJava test --rerun-tasks`
+- `./gradlew build`
+
 ## 0. Context & method
 
 JavE depends pervasively on a third-party house library, `net.disy.commons.*`
