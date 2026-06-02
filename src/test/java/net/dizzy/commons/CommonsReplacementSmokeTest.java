@@ -4,13 +4,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.awt.FlowLayout;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
+import javax.swing.JToggleButton;
 import javax.swing.JTextField;
 
 import org.junit.Test;
@@ -22,9 +23,9 @@ import net.dizzy.commons.core.exception.IExceptionHandler;
 import net.dizzy.commons.core.model.BooleanModel;
 import net.dizzy.commons.core.model.ObjectModel;
 import net.dizzy.commons.core.progress.ICancelable;
+import net.dizzy.commons.swing.dialog.tabbed.SmartTabbedPane;
 import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
 import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
-import net.dizzy.commons.swing.dialog.tabbed.SmartTabbedPane;
 
 public class CommonsReplacementSmokeTest {
    @Test
@@ -101,9 +102,25 @@ public class CommonsReplacementSmokeTest {
    }
 
    @Test
-   public void smartTabbedPaneUsesLeadingScrollLayout() {
+   public void smartTabbedPaneUsesLeadingTabStrip() {
       SmartTabbedPane tabbedPane = new SmartTabbedPane((pane, index) -> {});
+      tabbedPane.addTab("First", new JPanel());
+      tabbedPane.addTab("Second", new JPanel());
+      AtomicInteger selections = new AtomicInteger();
+      tabbedPane.addTabSelectionChangeListener(selections::incrementAndGet);
 
-      assertEquals(JTabbedPane.SCROLL_TAB_LAYOUT, ((JTabbedPane)tabbedPane.getContent()).getTabLayoutPolicy());
+      JPanel tabBar = (JPanel)tabbedPane.getContent().getComponent(0);
+      assertEquals(FlowLayout.LEFT, ((FlowLayout)tabBar.getLayout()).getAlignment());
+
+      tabbedPane.setSelectedTabIndex(1);
+      assertEquals(1, tabbedPane.getSelectedTabIndex());
+
+      tabbedPane.setTitleAt(1, "Renamed");
+      assertEquals("Renamed", ((JToggleButton)tabBar.getComponent(1)).getText());
+      assertEquals(1, selections.get());
+
+      tabbedPane.removeTab(1);
+      assertEquals(0, tabbedPane.getSelectedTabIndex());
+      assertEquals(2, selections.get());
    }
 }

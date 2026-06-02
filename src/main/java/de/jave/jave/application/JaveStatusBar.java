@@ -73,7 +73,7 @@ public class JaveStatusBar {
          }
       });
       this.updateFontZoomModel(zoomableFontModelModel);
-      JPanel panel = new JPanel(new GridDialogLayout(6, false));
+      JPanel panel = new JPanel(new GridDialogLayout(6, false, 0, 0));
       panel.add(statusBar, GridDialogLayoutData.FILL_HORIZONTAL);
       panel.add(new FontLabel(fontModel).getContent());
       panel.add(new ZoomLabel(zoomableFontModelModel).getContent());

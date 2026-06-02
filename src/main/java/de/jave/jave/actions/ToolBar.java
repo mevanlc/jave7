@@ -98,21 +98,20 @@ public class ToolBar {
       this.preferences = preferences;
       this.createTools();
 
-      GridDialogLayoutData fourColumnsData = new GridDialogLayoutData();
-      fourColumnsData.setHorizontalSpan(4);
+      GridDialogLayoutData sixColumnsData = new GridDialogLayoutData();
+      sixColumnsData.setHorizontalSpan(6);
       JPanel panel = new JPanel();
       panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-      JPanel toolsPanel = new JPanel(new GridDialogLayout(4, false, 0, 0));
+      JPanel toolsPanel = new JPanel(new GridDialogLayout(6, false, 0, 0));
       toolsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
       // Top padding aligns the first tool button with the bottom of the
       // document tab bar in the main panel.
-      toolsPanel.add(new Gap(1, 30), fourColumnsData);
+      toolsPanel.add(new Gap(1, 30), sixColumnsData);
 
       // Generic + Algorithmic groups joined: 10 tools paired (gen,alg)
       // for each shape that has both — Bezier and Arc trail (gen only).
-      // row(freehand, fh-alg, line, line-alg)
-      // row(rect, rect-alg, ellipse, e-alg)
-      // row(bezier, arc)
+      // row(freehand, fh-alg, line, line-alg, rect, rect-alg)
+      // row(ellipse, e-alg, bezier, arc)
       toolsPanel.add(this.btn(0));
       toolsPanel.add(this.btn(1));
       toolsPanel.add(this.btn(2));
@@ -125,12 +124,11 @@ public class ToolBar {
       toolsPanel.add(this.btn(9));
       toolsPanel.add(new Gap());
       toolsPanel.add(new Gap());
-      toolsPanel.add(this.createHorizontalLine(6), fourColumnsData);
+      toolsPanel.add(this.createHorizontalLine(6), sixColumnsData);
 
-      // Selection + Brush + view-overlay groups: 11 tools in 3 rows.
-      // row 1: text, figlet, sel, fh-sel
-      // row 2: brush, eraser, fill, clone
-      // row 3: pan, auxlines, watermark
+      // Selection + Brush + view-overlay groups.
+      // row 1: text, figlet, sel, fh-sel, brush, eraser
+      // row 2: fill, clone, pan, auxlines, watermark
       toolsPanel.add(this.btn(10));
       toolsPanel.add(this.btn(11));
       toolsPanel.add(this.btn(12));
@@ -142,6 +140,7 @@ public class ToolBar {
       toolsPanel.add(this.btn(18));
       toolsPanel.add(this.btn(20));
       toolsPanel.add(this.btn(19));
+      toolsPanel.add(new Gap());
       toolsPanel.add(new Gap());
 
       toolsPanel.setMaximumSize(toolsPanel.getPreferredSize());
