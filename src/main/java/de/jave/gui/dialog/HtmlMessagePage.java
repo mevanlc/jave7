@@ -7,15 +7,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
-import net.disy.commons.core.message.IBasicMessage;
-import net.disy.commons.core.message.MessageType;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.dialog.userdialog.page.AbstractDialogPage;
-import net.disy.commons.swing.layout.grid.GridAlignment;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
-import net.disy.commons.swing.message.LargeIconMessageTypeUi;
-import net.disy.commons.swing.message.MessageTypeUi;
+import net.dizzy.commons.core.message.IBasicMessage;
+import net.dizzy.commons.core.message.MessageType;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.dialog.userdialog.page.AbstractDialogPage;
+import net.dizzy.commons.swing.layout.grid.GridAlignment;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.swing.message.LargeIconMessageTypeUi;
+import net.dizzy.commons.swing.message.MessageTypeUi;
 
 public class HtmlMessagePage extends AbstractDialogPage {
    private final HtmlMessage message;

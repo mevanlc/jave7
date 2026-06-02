@@ -1,6 +1,6 @@
 package de.jave.jave.tool.fractal;
 
-import net.disy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
 
 public class FractalCutoutModel extends AbstractChangeableModel {
    private static final double DEFAULT_X_SPAN = 2.0;

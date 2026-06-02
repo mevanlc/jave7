@@ -3,7 +3,7 @@ package de.jave.asciimation.export;
 import de.jave.jave.preferences.AnimationExportPreferences;
 import java.awt.Font;
 import java.io.File;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class AdditionalAnimationExportOptions {
    private int gifScale;

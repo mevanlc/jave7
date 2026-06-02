@@ -15,8 +15,8 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
-import net.disy.commons.swing.button.DropDownButton;
-import net.disy.commons.swing.ui.ObjectUiListCellRenderer;
+import net.dizzy.commons.swing.button.DropDownButton;
+import net.dizzy.commons.swing.ui.ObjectUiListCellRenderer;
 
 public class VerticalLayoutPanel extends AbstractLayoutPanel {
    private final JPanel panel;

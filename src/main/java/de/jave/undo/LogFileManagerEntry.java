@@ -1,7 +1,7 @@
 package de.jave.undo;
 
 import java.io.File;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class LogFileManagerEntry {
    private final File file;

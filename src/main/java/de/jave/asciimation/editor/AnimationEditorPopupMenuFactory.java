@@ -4,7 +4,7 @@ import de.jave.jave.icon.JaveIcons;
 import de.jave.javeplayer.JaveAnimationFile;
 import java.awt.Component;
 import javax.swing.JPopupMenu;
-import net.disy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.action.SmartAction;
 
 public class AnimationEditorPopupMenuFactory {
    public static JPopupMenu createFramePopupMenu(final AnimationEditorModel model) {

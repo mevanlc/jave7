@@ -3,7 +3,7 @@ package de.jave.jave.clipart;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.AbstractListModel;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class ClipartGroupListModel extends AbstractListModel {
    private final ClipartManager clipartManager;

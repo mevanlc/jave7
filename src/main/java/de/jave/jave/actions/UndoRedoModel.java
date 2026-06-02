@@ -1,9 +1,9 @@
 package de.jave.jave.actions;
 
 import de.jave.jave.plate.JaveMainPanel;
-import net.disy.commons.core.model.AbstractChangeableModel;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
 
 public class UndoRedoModel extends AbstractChangeableModel {
    private final JaveMainPanel mainPanel;

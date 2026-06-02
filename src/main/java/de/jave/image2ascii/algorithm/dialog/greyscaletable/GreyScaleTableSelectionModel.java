@@ -3,9 +3,9 @@ package de.jave.image2ascii.algorithm.dialog.greyscaletable;
 import de.jave.image2ascii.AsciiGreyscaleTable;
 import de.jave.image2ascii.AsciiGreyscaleTableConfiguration;
 import de.jave.image2ascii.DynamicalGreyScaleTableProvider;
-import net.disy.commons.core.model.AbstractChangeableModel;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
 
 public class GreyScaleTableSelectionModel extends AbstractChangeableModel {
    private boolean automaticFromFont = false;

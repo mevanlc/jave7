@@ -1,9 +1,9 @@
 package de.jave.image2ascii.model;
 
 import de.jave.image2ascii.IImage2AsciiAlgorithm;
-import net.disy.commons.core.model.AbstractChangeableModel;
-import net.disy.commons.core.model.ObjectModel;
-import net.disy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.model.ObjectModel;
+import net.dizzy.commons.core.model.listener.IChangeListener;
 
 public class Image2AsciiOptionsModel extends AbstractChangeableModel {
    private final Image2AsciiOutputOptionsModel outputOptionsModel = new Image2AsciiOutputOptionsModel();

@@ -2,8 +2,8 @@ package de.jave.jave.help;
 
 import de.jave.internet.SwingBrowserLauncher;
 import java.awt.Component;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.dialog.core.IDialogHelpHandler;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.dialog.core.IDialogHelpHandler;
 
 public final class JaveOnlineHelpHandler implements IDialogHelpHandler {
    private static final String BASE_URL = "http://www.jave.de/docs/";

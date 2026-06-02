@@ -1,6 +1,6 @@
 package de.jave.jave.algorithm.camel;
 
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class CamelizeTextOptions {
    private char fillCharacter = ':';

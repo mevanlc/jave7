@@ -7,13 +7,13 @@ import de.jave.gui.io.ExtensionFileFilter;
 import de.jave.gui.io.ExtensionFileFilters;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import net.disy.commons.swing.layout.grid.GridAlignment;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
-import net.disy.commons.swing.layout.grid.GridDialogPanelBuilder;
-import net.disy.commons.swing.layout.grid.IDialogComponent;
-import net.disy.commons.swing.message.MessageTypeUi;
-import net.disy.commons.swing.widgets.AutoWrappingLabel;
+import net.dizzy.commons.swing.layout.grid.GridAlignment;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.swing.layout.grid.GridDialogPanelBuilder;
+import net.dizzy.commons.swing.layout.grid.IDialogComponent;
+import net.dizzy.commons.swing.message.MessageTypeUi;
+import net.dizzy.commons.swing.widgets.AutoWrappingLabel;
 
 public class AppletAnimationOutputOptionsPage extends DefaultAnimationOutputOptionsPage {
    public AppletAnimationOutputOptionsPage(AnimationExportWizardModel model) {

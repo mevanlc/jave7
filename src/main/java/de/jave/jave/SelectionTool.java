@@ -25,12 +25,12 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import net.disy.commons.core.model.BooleanModel;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
-import net.disy.commons.swing.mousecursor.CursorId;
-import net.disy.commons.swing.mousecursor.CursorProvider;
+import net.dizzy.commons.core.model.BooleanModel;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.swing.mousecursor.CursorId;
+import net.dizzy.commons.swing.mousecursor.CursorProvider;
 
 public class SelectionTool extends Tool {
    private final Timer timer = new Timer(600, new ActionListener() {

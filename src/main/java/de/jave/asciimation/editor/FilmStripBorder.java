@@ -4,8 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.JComponent;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
 
 public class FilmStripBorder extends JComponent {
    private final AnimationEditorModel model;

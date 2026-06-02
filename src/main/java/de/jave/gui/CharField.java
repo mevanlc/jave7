@@ -15,9 +15,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JComponent;
 import javax.swing.UIManager;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.color.SwingColors;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.color.SwingColors;
 
 public class CharField extends JComponent implements KeyListener, FocusListener, MouseListener {
    private static final int PREFERRED_WIDTH = 16;

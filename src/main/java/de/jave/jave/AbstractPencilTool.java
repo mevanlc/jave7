@@ -7,8 +7,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
-import net.disy.commons.swing.mousecursor.CursorId;
-import net.disy.commons.swing.mousecursor.CursorProvider;
+import net.dizzy.commons.swing.mousecursor.CursorId;
+import net.dizzy.commons.swing.mousecursor.CursorProvider;
 
 public abstract class AbstractPencilTool extends Tool {
    protected Point cursorLocation;

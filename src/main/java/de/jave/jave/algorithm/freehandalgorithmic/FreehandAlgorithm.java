@@ -5,7 +5,7 @@ import de.jave.jave.filter.Filter;
 import de.jave.jave.filter.FilterMode;
 import de.jave.jave.pixelplate.PixelPlate;
 import de.jave.lib.LocatedCharacterPlate;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class FreehandAlgorithm {
    private final Filter filter;

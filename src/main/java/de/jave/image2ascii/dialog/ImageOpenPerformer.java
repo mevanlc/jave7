@@ -12,13 +12,13 @@ import java.awt.image.PixelGrabber;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import net.disy.commons.core.message.Message;
-import net.disy.commons.core.message.MessageType;
-import net.disy.commons.core.progress.INonInterruptableRunnableWithProgress;
-import net.disy.commons.core.progress.IProgressMonitor;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.dialog.message.MessageDialogFactory;
-import net.disy.commons.swing.dialog.progress.ProgressMonitorDialog;
+import net.dizzy.commons.core.message.Message;
+import net.dizzy.commons.core.message.MessageType;
+import net.dizzy.commons.core.progress.INonInterruptableRunnableWithProgress;
+import net.dizzy.commons.core.progress.IProgressMonitor;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.dialog.message.MessageDialogFactory;
+import net.dizzy.commons.swing.dialog.progress.ProgressMonitorDialog;
 
 public class ImageOpenPerformer {
    private static final int PREVIEW_MAX_WIDTH = 128;

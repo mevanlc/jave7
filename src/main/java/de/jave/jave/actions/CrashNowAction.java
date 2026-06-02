@@ -2,13 +2,13 @@ package de.jave.jave.actions;
 
 import de.jave.jave.JaveMessages;
 import java.awt.Component;
-import net.disy.commons.core.message.Message;
-import net.disy.commons.core.message.MessageType;
-import net.disy.commons.swing.action.SmartAction;
-import net.disy.commons.swing.dialog.core.IDialogResult;
-import net.disy.commons.swing.dialog.message.MessageUserDialogConfiguration;
-import net.disy.commons.swing.dialog.userdialog.UserDialog;
-import net.disy.commons.swing.dialog.userdialog.buttons.DialogButtonConfigurationFactory;
+import net.dizzy.commons.core.message.Message;
+import net.dizzy.commons.core.message.MessageType;
+import net.dizzy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.dialog.core.IDialogResult;
+import net.dizzy.commons.swing.dialog.message.MessageUserDialogConfiguration;
+import net.dizzy.commons.swing.dialog.userdialog.UserDialog;
+import net.dizzy.commons.swing.dialog.userdialog.buttons.DialogButtonConfigurationFactory;
 
 public class CrashNowAction extends SmartAction {
    public CrashNowAction() {

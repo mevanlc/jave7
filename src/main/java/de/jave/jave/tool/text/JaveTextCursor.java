@@ -5,8 +5,8 @@ import de.jave.gui.xor.IXorPainter;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.util.EventDispatchThreadUtilities;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.util.EventDispatchThreadUtilities;
 
 public class JaveTextCursor implements IXorPainter {
    private static long counter = 0L;

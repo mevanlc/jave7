@@ -2,8 +2,8 @@ package de.jave.figlet.swing.action;
 
 import java.util.HashSet;
 import java.util.Set;
-import net.disy.commons.core.util.ArrayUtilities;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.ArrayUtilities;
+import net.dizzy.commons.core.util.Ensure;
 
 public class CharacterRanking {
    private final char[] characters;

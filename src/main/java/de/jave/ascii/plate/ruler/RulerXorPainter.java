@@ -4,8 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.util.EventDispatchThreadUtilities;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.util.EventDispatchThreadUtilities;
 
 public class RulerXorPainter implements IRulerXorPainter {
    private final Point mousePoint;

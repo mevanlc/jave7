@@ -21,7 +21,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class ColorScreenSaver extends Window implements MouseListener, MouseMotionListener, KeyListener, Runnable {
    private final PixelPlateMode mode = PixelPlateMode.DOT;

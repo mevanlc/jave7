@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
-import net.disy.commons.core.io.IOUtilities;
+import net.dizzy.commons.core.io.IOUtilities;
 
 public class PlateDocument {
    private boolean modified;

@@ -19,15 +19,15 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.component.IDisposableComponentContainer;
-import net.disy.commons.swing.fontchooser.model.FontModel;
-import net.disy.commons.swing.layout.cardlayout.CardPanel;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
-import net.disy.commons.swing.ui.ObjectUiListCellRenderer;
-import net.disy.commons.swing.widgets.HorizontalLine;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.component.IDisposableComponentContainer;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.swing.layout.cardlayout.CardPanel;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.swing.ui.ObjectUiListCellRenderer;
+import net.dizzy.commons.swing.widgets.HorizontalLine;
 
 public class Image2AsciiConversionOptionsPanel {
    private final IChangeListener algorithmOptionsChangeListener = new IChangeListener() {

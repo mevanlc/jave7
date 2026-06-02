@@ -1,8 +1,8 @@
 package de.jave.jave.configuration;
 
 import java.awt.Component;
-import net.disy.commons.core.message.IMessage;
-import net.disy.commons.swing.dialog.message.MessageDialogFactory;
+import net.dizzy.commons.core.message.IMessage;
+import net.dizzy.commons.swing.dialog.message.MessageDialogFactory;
 
 public class MessageDialogConfigurationFileErrorHandler implements IConfigurationFileErrorHandler {
    private final Component parentComponent;

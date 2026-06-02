@@ -1,8 +1,8 @@
 package de.jave.jave.rectangle;
 
 import de.jave.jave.algorithm.rectangle.RectangleStyle;
-import net.disy.commons.core.exception.UnreachableCodeReachedException;
-import net.disy.commons.swing.ui.AbstractObjectUi;
+import net.dizzy.commons.core.exception.UnreachableCodeReachedException;
+import net.dizzy.commons.swing.ui.AbstractObjectUi;
 
 public class RectangleStyleObjectUi extends AbstractObjectUi<RectangleStyle> {
    public String getLabel(RectangleStyle value) {

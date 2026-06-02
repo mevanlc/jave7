@@ -1,6 +1,6 @@
 package de.jave.jave.actions.fileimport;
 
-import net.disy.commons.swing.dialog.wizard.IWizardPage;
+import net.dizzy.commons.swing.dialog.wizard.IWizardPage;
 
 public class ImportWizardPageManager {
    private final ImportSourceFilePage page1;

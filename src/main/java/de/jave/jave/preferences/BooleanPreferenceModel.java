@@ -1,7 +1,7 @@
 package de.jave.jave.preferences;
 
 import de.jave.preferences.SmartPreferences;
-import net.disy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
 
 public class BooleanPreferenceModel extends AbstractChangeableModel {
    private final boolean defaultValue;

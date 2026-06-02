@@ -1,6 +1,6 @@
 package de.jave.jave.pixelplate;
 
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class PixelPlateConfiguration {
    public static PixelPlateConfiguration INSTANCE;

@@ -1,6 +1,6 @@
 package de.jave.jave.algorithm.camel;
 
-import net.disy.commons.swing.ui.AbstractObjectUi;
+import net.dizzy.commons.swing.ui.AbstractObjectUi;
 
 public class CamelizeTextPreserveModeObjectUi extends AbstractObjectUi<CamelizeTextPreserveMode> {
    public String getLabel(CamelizeTextPreserveMode value) {

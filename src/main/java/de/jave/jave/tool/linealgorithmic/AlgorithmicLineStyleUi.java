@@ -1,7 +1,7 @@
 package de.jave.jave.tool.linealgorithmic;
 
 import de.jave.jave.JaveMessages;
-import net.disy.commons.swing.ui.AbstractObjectUi;
+import net.dizzy.commons.swing.ui.AbstractObjectUi;
 
 public class AlgorithmicLineStyleUi extends AbstractObjectUi<AlgorithmicLineStyle> {
    public String getLabel(AlgorithmicLineStyle value) {

@@ -3,7 +3,7 @@ package de.jave.jave.clipart;
 import de.jave.jave.algorithm.compress.AsciiPacker;
 import de.jave.lib.CharacterPlate;
 import java.awt.Dimension;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class Clipart {
    private final String name;

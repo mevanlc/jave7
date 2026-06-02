@@ -10,13 +10,13 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import net.disy.commons.core.io.FileModel;
-import net.disy.commons.core.message.BasicMessage;
-import net.disy.commons.core.message.IBasicMessage;
-import net.disy.commons.core.message.MessageType;
-import net.disy.commons.swing.dialog.wizard.AbstractWizardConfiguration;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.core.io.FileModel;
+import net.dizzy.commons.core.message.BasicMessage;
+import net.dizzy.commons.core.message.IBasicMessage;
+import net.dizzy.commons.core.message.MessageType;
+import net.dizzy.commons.swing.dialog.wizard.AbstractWizardConfiguration;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
 
 public class ImportSourceFilePage extends AbstractImportWizardPage {
    private static final String DEFAULT_MESSAGE = "Open a source file and select the type for import.";

@@ -1,11 +1,11 @@
 package de.jave.image2ascii;
 
-import net.disy.commons.core.model.listener.ListenerList;
-import net.disy.commons.core.progress.ICanceledListener;
-import net.disy.commons.core.progress.IProgressMonitor;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.core.util.IClosure;
-import net.disy.commons.swing.dialog.progress.ProgressMonitorBar;
+import net.dizzy.commons.core.model.listener.ListenerList;
+import net.dizzy.commons.core.progress.ICanceledListener;
+import net.dizzy.commons.core.progress.IProgressMonitor;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.IClosure;
+import net.dizzy.commons.swing.dialog.progress.ProgressMonitorBar;
 
 public class ProxyProgressMonitor implements IProgressMonitor {
    private final ListenerList<ICanceledListener> listeners = new ListenerList<>();

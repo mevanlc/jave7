@@ -15,8 +15,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
-import net.disy.commons.core.io.IOUtilities;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.io.IOUtilities;
+import net.dizzy.commons.core.util.Ensure;
 
 public class CompressedJavaScriptAnimationExporter extends AbstractAnimationExporter {
    private final AnimationExportOptions options;

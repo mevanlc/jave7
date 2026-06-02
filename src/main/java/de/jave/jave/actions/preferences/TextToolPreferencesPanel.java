@@ -5,11 +5,11 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
-import net.disy.commons.core.model.ObjectModel;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.dialog.input.select.RadioButtonPanel;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.ui.AbstractObjectUi;
+import net.dizzy.commons.core.model.ObjectModel;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.dialog.input.select.RadioButtonPanel;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.ui.AbstractObjectUi;
 
 public class TextToolPreferencesPanel implements IJavePreferencesPanel {
    private final JaveApplicationPreferences preferences;

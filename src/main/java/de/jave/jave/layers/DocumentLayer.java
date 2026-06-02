@@ -2,7 +2,7 @@ package de.jave.jave.layers;
 
 import de.jave.lib.CharacterPlate;
 import java.awt.Dimension;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public final class DocumentLayer implements Layer {
    private final String id;

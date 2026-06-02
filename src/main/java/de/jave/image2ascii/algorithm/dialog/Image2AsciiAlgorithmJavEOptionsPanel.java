@@ -5,9 +5,9 @@ import de.jave.image2ascii.algorithm.AlgorithmJavEOptionsModel;
 import de.jave.image2ascii.algorithm.dialog.banned.BannedCharactersPanel;
 import de.jave.image2ascii.algorithm.dialog.greyscaletable.GreyScaleTablePanel;
 import javax.swing.JComponent;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.component.IDisposableComponentContainer;
-import net.disy.commons.swing.layout.grid.GridDialogPanelBuilder;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.component.IDisposableComponentContainer;
+import net.dizzy.commons.swing.layout.grid.GridDialogPanelBuilder;
 
 public class Image2AsciiAlgorithmJavEOptionsPanel implements IDisposableComponentContainer {
    private final BannedCharactersPanel bannedCharactersPanel;

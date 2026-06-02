@@ -24,8 +24,8 @@ import java.awt.event.MouseEvent;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import net.disy.commons.swing.mousecursor.CursorId;
-import net.disy.commons.swing.mousecursor.CursorProvider;
+import net.dizzy.commons.swing.mousecursor.CursorId;
+import net.dizzy.commons.swing.mousecursor.CursorProvider;
 
 public class RectangleAlgorithmicTool extends Tool {
    private Point clickLocation;

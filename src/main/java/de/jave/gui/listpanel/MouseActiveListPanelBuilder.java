@@ -4,10 +4,10 @@ import java.awt.Dimension;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.core.util.IBlock;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.IBlock;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
 
 public class MouseActiveListPanelBuilder<T> {
    private final IClickHandler<T> clickHandler;

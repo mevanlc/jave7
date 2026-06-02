@@ -9,10 +9,10 @@ import de.jave.jave.plate.JaveMainPanel;
 import de.jave.lib.CharacterPlate;
 import java.awt.Component;
 import java.lang.reflect.InvocationTargetException;
-import net.disy.commons.core.progress.INonInterruptableRunnableWithProgress;
-import net.disy.commons.core.progress.IProgressMonitor;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.dialog.progress.ProgressMonitorDialog;
+import net.dizzy.commons.core.progress.INonInterruptableRunnableWithProgress;
+import net.dizzy.commons.core.progress.IProgressMonitor;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.dialog.progress.ProgressMonitorDialog;
 
 public final class RepairShakedLinesAction extends AbstractJaveAction {
    private final AsciiRepairAlgorithmConfiguration configuration;

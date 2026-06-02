@@ -40,14 +40,14 @@ import java.awt.Insets;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.action.SmartAction;
-import net.disy.commons.swing.button.RolloverButtonFactory;
-import net.disy.commons.swing.button.SmartButtonGroup;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
-import net.disy.commons.swing.layout.util.LayoutUtilities;
-import net.disy.commons.swing.widgets.HorizontalLine;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.button.RolloverButtonFactory;
+import net.dizzy.commons.swing.button.SmartButtonGroup;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.swing.layout.util.LayoutUtilities;
+import net.dizzy.commons.swing.widgets.HorizontalLine;
 
 public class ToolBar {
    public static final int FREEHAND_TOOL_INDEX = 0;

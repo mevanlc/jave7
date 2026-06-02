@@ -5,7 +5,7 @@ import de.jave.text.TextTools;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Rectangle;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class CharacterPlate implements ICharacterDrawable {
    private char[][] chars;

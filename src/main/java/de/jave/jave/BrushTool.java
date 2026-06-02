@@ -11,7 +11,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import javax.swing.Icon;
 import javax.swing.JPanel;
-import net.disy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.model.listener.IChangeListener;
 
 public class BrushTool extends AbstractPencilTool {
    private JPanel brushPanel;

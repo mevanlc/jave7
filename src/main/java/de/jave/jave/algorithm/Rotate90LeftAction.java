@@ -9,7 +9,7 @@ import de.jave.jave.actions.enablestrategy.TextAndAnimationEditorEnabledStrategy
 import de.jave.jave.plate.JaveMainPanel;
 import java.awt.Component;
 import java.awt.Dimension;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class Rotate90LeftAction extends AbstractJaveUndoableAction {
    private final GeneralAlgorithmConfiguration configuration;

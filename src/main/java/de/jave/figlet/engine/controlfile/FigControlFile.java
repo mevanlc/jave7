@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import net.disy.commons.core.io.IOUtilities;
+import net.dizzy.commons.core.io.IOUtilities;
 
 public class FigControlFile {
    public static final String SIGNATURE = "flc2a";

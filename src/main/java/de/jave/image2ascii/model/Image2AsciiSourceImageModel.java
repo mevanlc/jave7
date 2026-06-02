@@ -1,9 +1,9 @@
 package de.jave.image2ascii.model;
 
 import java.io.File;
-import net.disy.commons.core.io.FileModel;
-import net.disy.commons.core.model.AbstractChangeableModel;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.io.FileModel;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.util.Ensure;
 
 public class Image2AsciiSourceImageModel extends AbstractChangeableModel {
    private SourceImageContainer sourceImage;

@@ -2,7 +2,7 @@ package de.jave.image2ascii;
 
 import de.jave.jave.application.resources.JaveImageProvider;
 import javax.swing.Icon;
-import net.disy.commons.swing.resources.IIconResources;
+import net.dizzy.commons.swing.resources.IIconResources;
 
 public class Image2AsciiIcons implements IIconResources {
    public static final Icon ALGORITHM_1PIXEL_ICON = loadIcon("image2ascii/i2a_1.gif");

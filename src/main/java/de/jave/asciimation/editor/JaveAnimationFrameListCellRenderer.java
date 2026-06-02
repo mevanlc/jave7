@@ -5,7 +5,7 @@ import de.jave.javeplayer.JaveAnimationFrame;
 import java.awt.Component;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class JaveAnimationFrameListCellRenderer extends DefaultListCellRenderer {
    private final AnimationEditorModel model;

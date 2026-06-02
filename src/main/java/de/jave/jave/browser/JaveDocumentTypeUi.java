@@ -3,7 +3,7 @@ package de.jave.jave.browser;
 import de.jave.asciimation.export.FileTypeIcons;
 import de.jave.jave.icon.JaveIcons;
 import javax.swing.Icon;
-import net.disy.commons.swing.ui.AbstractObjectUi;
+import net.dizzy.commons.swing.ui.AbstractObjectUi;
 
 public class JaveDocumentTypeUi extends AbstractObjectUi<JaveDocumentType> {
    public Icon getIcon(JaveDocumentType documentType) {

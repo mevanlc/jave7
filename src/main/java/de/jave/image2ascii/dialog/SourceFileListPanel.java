@@ -15,14 +15,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import net.disy.commons.core.io.FileModel;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.action.SmartAction;
-import net.disy.commons.swing.layout.util.ButtonPanelBuilder;
-import net.disy.commons.swing.layout.util.LayoutDirection;
-import net.disy.commons.swing.list.ListSelectionMode;
-import net.disy.commons.swing.ui.AbstractObjectUi;
-import net.disy.commons.swing.ui.ObjectUiListCellRenderer;
+import net.dizzy.commons.core.io.FileModel;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.layout.util.ButtonPanelBuilder;
+import net.dizzy.commons.swing.layout.util.LayoutDirection;
+import net.dizzy.commons.swing.list.ListSelectionMode;
+import net.dizzy.commons.swing.ui.AbstractObjectUi;
+import net.dizzy.commons.swing.ui.ObjectUiListCellRenderer;
 
 public class SourceFileListPanel {
    private final JComponent content;

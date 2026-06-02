@@ -5,10 +5,10 @@ import java.awt.Dimension;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import net.disy.commons.core.model.ObjectModel;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.label.SmartLabel;
+import net.dizzy.commons.core.model.ObjectModel;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.label.SmartLabel;
 
 public class ExportPreviewPanel {
    private final JComponent content;

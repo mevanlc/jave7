@@ -3,7 +3,7 @@ package de.jave.jave.filter;
 import de.jave.jave.algorithm.GeneralAlgorithm;
 import de.jave.lib.CharacterPlate;
 import java.awt.Insets;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class Filter {
    private final FilterMatrix[] postFilters;

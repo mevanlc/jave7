@@ -2,10 +2,10 @@ package de.jave.jave.actions;
 
 import de.jave.jave.JavEApplication;
 import java.awt.Component;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.action.SmartAction;
-import net.disy.commons.swing.resources.DisyCommonsSwingIconResources;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.resources.DisyCommonsSwingIconResources;
 
 public class UndoAction extends SmartAction {
    private final JavEApplication application;

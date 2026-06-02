@@ -5,8 +5,8 @@ import de.jave.jave.filter.Filter;
 import de.jave.jave.games.asctris.AscTris;
 import de.jave.jave.icon.JaveIcons;
 import java.awt.Component;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.action.SmartAction;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.action.SmartAction;
 
 public class AsctrisAction extends SmartAction {
    private final JavEApplication jave;

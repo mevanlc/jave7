@@ -1,7 +1,7 @@
 package de.jave.jave.algorithm.camel;
 
 import de.jave.lib.CharacterPlate;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public final class WordsToShapeResult {
    private final int difference;

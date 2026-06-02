@@ -1,7 +1,7 @@
 package de.jave.image2ascii.algorithm.dialog.banned;
 
-import net.disy.commons.core.model.AbstractChangeableModel;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.util.Ensure;
 
 public class BannedCharactersModel extends AbstractChangeableModel {
    public static final String DEFAUL_BANNED_CHARACTERS = "<>_()[]{}/~-";

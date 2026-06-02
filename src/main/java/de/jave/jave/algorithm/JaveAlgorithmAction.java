@@ -8,8 +8,8 @@ import de.jave.jave.actions.enablestrategy.TextAndAnimationEditorEnabledStrategy
 import de.jave.jave.plate.IDocumentEditor;
 import de.jave.jave.plate.JaveMainPanel;
 import java.awt.Component;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
 
 public class JaveAlgorithmAction extends AbstractJaveAction {
    private final JaveAlgorithm algorithm;

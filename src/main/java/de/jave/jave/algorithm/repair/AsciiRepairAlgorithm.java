@@ -2,7 +2,7 @@ package de.jave.jave.algorithm.repair;
 
 import de.jave.lib.CharacterPlate;
 import de.jave.lib.Toolbox;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class AsciiRepairAlgorithm {
    private final AsciiRepairAlgorithmConfiguration configuration;

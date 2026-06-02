@@ -3,7 +3,7 @@ package de.jave.figlet.engine.primitives;
 import de.jave.figlet.engine.layout.PrintDirection;
 import de.jave.lib.IPublicCloneable;
 import de.jave.text.QuickString;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class FigLayout implements IPublicCloneable {
    private static final String HIERARCHICAL_CHARACTERS = "|/\\[]{}()<>";

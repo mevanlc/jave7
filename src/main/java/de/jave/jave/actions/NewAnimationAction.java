@@ -8,8 +8,8 @@ import de.jave.javeplayer.JaveAnimationFrame;
 import de.jave.lib.CharacterPlate;
 import java.awt.Component;
 import java.awt.Dimension;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.action.SmartAction;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.action.SmartAction;
 
 public final class NewAnimationAction extends SmartAction {
    private final JavEApplication jave;

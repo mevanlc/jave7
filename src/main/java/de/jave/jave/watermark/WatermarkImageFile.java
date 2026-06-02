@@ -2,7 +2,7 @@ package de.jave.jave.watermark;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class WatermarkImageFile {
    private final File file;

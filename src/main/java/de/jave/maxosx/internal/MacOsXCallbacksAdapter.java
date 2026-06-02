@@ -2,7 +2,7 @@ package de.jave.maxosx.internal;
 
 import de.jave.maxosx.IMacOsXApplicationCallbacks;
 import java.lang.reflect.Method;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class MacOsXCallbacksAdapter {
    private final IMacOsXApplicationCallbacks callbacks;

@@ -1,7 +1,7 @@
 package de.jave.javeplayer;
 
 import java.awt.Color;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class AnimationProperties {
    private int frameDuration = 66;

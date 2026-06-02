@@ -6,7 +6,7 @@ import de.jave.jave.pixelplate.PixelPlateOptionsView;
 import de.jave.jave.plate.JaveMainPanel;
 import de.jave.jave.tool.dialog.IInlineToolOptions;
 import javax.swing.JComponent;
-import net.disy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.model.listener.IChangeListener;
 
 public abstract class GenericTool extends Tool {
    protected final PixelPlateModel pixelPlateModel;

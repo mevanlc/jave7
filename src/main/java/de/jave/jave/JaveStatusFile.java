@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import net.disy.commons.core.io.IOUtilities;
+import net.dizzy.commons.core.io.IOUtilities;
 
 public class JaveStatusFile {
    private static final File FILE = new File(JaveGlobalRessources.TMP_FOLDER, "status.log");

@@ -15,11 +15,11 @@ import de.jave.lib.CharacterPlate;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import javax.swing.Icon;
-import net.disy.commons.core.model.IChangeableModel;
-import net.disy.commons.core.progress.ICancelable;
-import net.disy.commons.core.progress.IProgressMonitor;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.component.IDisposableComponentContainer;
+import net.dizzy.commons.core.model.IChangeableModel;
+import net.dizzy.commons.core.progress.ICancelable;
+import net.dizzy.commons.core.progress.IProgressMonitor;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.component.IDisposableComponentContainer;
 
 public class Image2AsciiAlgorithmEdgeDetect extends AbstractImage2AsciiAlgorithm {
    private final AlgorithmEdgeDetectOptionsModel optionsModel = new AlgorithmEdgeDetectOptionsModel();

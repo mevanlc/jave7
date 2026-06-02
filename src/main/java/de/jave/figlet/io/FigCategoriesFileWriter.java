@@ -7,7 +7,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import net.disy.commons.core.io.IOUtilities;
+import net.dizzy.commons.core.io.IOUtilities;
 
 public class FigCategoriesFileWriter {
    public void write(IFigFontCategorization categorization, File outputFile) throws IOException {

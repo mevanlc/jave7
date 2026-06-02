@@ -11,8 +11,8 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import javax.swing.Icon;
-import net.disy.commons.swing.mousecursor.CursorId;
-import net.disy.commons.swing.mousecursor.CursorProvider;
+import net.dizzy.commons.swing.mousecursor.CursorId;
+import net.dizzy.commons.swing.mousecursor.CursorProvider;
 
 public class FreehandToolGeneric extends GenericTool {
    private Point point1;

@@ -49,7 +49,7 @@ import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import net.disy.commons.swing.layout.util.ButtonPanelBuilder;
+import net.dizzy.commons.swing.layout.util.ButtonPanelBuilder;
 
 public class UnicodePickerDialog {
 

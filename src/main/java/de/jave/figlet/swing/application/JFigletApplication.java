@@ -15,8 +15,8 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
-import net.disy.commons.swing.action.SmartAction;
-import net.disy.commons.swing.menu.HelpImplementedMenuBar;
+import net.dizzy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.menu.HelpImplementedMenuBar;
 
 public class JFigletApplication {
    private final JFrame frame;

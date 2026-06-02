@@ -6,7 +6,7 @@ import de.jave.jave.filter.Filter;
 import de.jave.jave.filter.FilterMode;
 import de.jave.lib.LocatedCharacterPlate;
 import java.awt.Rectangle;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class PixelPlate implements ICharacterDrawable {
    private static final char[] TWO_BY_TWO_CHARS = new char[]{' ', '\'', '.', '(', '`', '"', '/', 'P', ',', '\\', '_', 'L', ')', '7', 'J', '8'};

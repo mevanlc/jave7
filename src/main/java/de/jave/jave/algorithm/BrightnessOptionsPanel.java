@@ -12,12 +12,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.fontchooser.model.FontModel;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
-import net.disy.commons.swing.layout.grid.GridDialogPanelBuilder;
-import net.disy.commons.swing.layout.grid.IDialogComponent;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.swing.layout.grid.GridDialogPanelBuilder;
+import net.dizzy.commons.swing.layout.grid.IDialogComponent;
 
 public class BrightnessOptionsPanel implements JaveAlgorithmOptionsPanel {
    private final JComponent content;

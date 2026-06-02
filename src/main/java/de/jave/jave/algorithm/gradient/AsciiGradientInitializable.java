@@ -9,7 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import net.disy.commons.core.io.IOUtilities;
+import net.dizzy.commons.core.io.IOUtilities;
 
 public class AsciiGradientInitializable implements IJaveInitializable<AsciiGradientConfiguration> {
    public AsciiGradientConfiguration initialize(IJavaInitializationContext context) throws ConfigurationException {

@@ -4,7 +4,7 @@ import de.jave.figlet.engine.layout.HorizontalAlignment;
 import de.jave.figlet.engine.layout.PrintDirection;
 import de.jave.figlet.engine.layout.VerticalAlignment;
 import de.jave.text.QuickString;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class FigFragment implements Cloneable {
    private QuickString[] lines;

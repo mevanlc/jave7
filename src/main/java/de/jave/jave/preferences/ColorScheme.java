@@ -3,7 +3,7 @@ package de.jave.jave.preferences;
 import de.jave.jave.icon.JaveIcons;
 import java.awt.Color;
 import javax.swing.Icon;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class ColorScheme {
    private final String name;

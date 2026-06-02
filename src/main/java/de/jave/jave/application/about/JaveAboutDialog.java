@@ -12,19 +12,19 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import net.disy.commons.core.message.IBasicMessage;
-import net.disy.commons.swing.dialog.core.DialogHeaderPanelConfiguration;
-import net.disy.commons.swing.dialog.core.IDialogHeaderPanelConfiguration;
-import net.disy.commons.swing.dialog.userdialog.DefaultDialogConfiguration;
-import net.disy.commons.swing.dialog.userdialog.UserDialog;
-import net.disy.commons.swing.dialog.userdialog.buttons.DialogButtonConfigurationFactory;
-import net.disy.commons.swing.dialog.userdialog.page.AbstractDialogPage;
-import net.disy.commons.swing.dialog.userdialog.page.IDialogPage;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
-import net.disy.commons.swing.layout.util.LayoutUtilities;
-import net.disy.commons.swing.widgets.AutoWrappingLabel;
-import net.disy.commons.swing.widgets.HorizontalLine;
+import net.dizzy.commons.core.message.IBasicMessage;
+import net.dizzy.commons.swing.dialog.core.DialogHeaderPanelConfiguration;
+import net.dizzy.commons.swing.dialog.core.IDialogHeaderPanelConfiguration;
+import net.dizzy.commons.swing.dialog.userdialog.DefaultDialogConfiguration;
+import net.dizzy.commons.swing.dialog.userdialog.UserDialog;
+import net.dizzy.commons.swing.dialog.userdialog.buttons.DialogButtonConfigurationFactory;
+import net.dizzy.commons.swing.dialog.userdialog.page.AbstractDialogPage;
+import net.dizzy.commons.swing.dialog.userdialog.page.IDialogPage;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.swing.layout.util.LayoutUtilities;
+import net.dizzy.commons.swing.widgets.AutoWrappingLabel;
+import net.dizzy.commons.swing.widgets.HorizontalLine;
 
 public class JaveAboutDialog {
    public static void showAboutDialog(Component parentComponent) {

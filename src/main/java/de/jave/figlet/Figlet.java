@@ -12,7 +12,7 @@ import de.jave.figlet.util.FigException;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class Figlet {
    private final IFigDriver driver;

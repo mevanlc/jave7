@@ -1,6 +1,6 @@
 package de.jave.jave.plate;
 
-import net.disy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
 
 public class ActiveEditorModel extends AbstractChangeableModel {
    private IDocumentEditor activeEditor;

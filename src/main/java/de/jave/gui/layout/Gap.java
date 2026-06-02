@@ -2,7 +2,7 @@ package de.jave.gui.layout;
 
 import java.awt.Dimension;
 import javax.swing.JComponent;
-import net.disy.commons.swing.layout.util.LayoutUtilities;
+import net.dizzy.commons.swing.layout.util.LayoutUtilities;
 
 public class Gap extends JComponent {
    private final Dimension preferredSize;

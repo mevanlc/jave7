@@ -3,7 +3,7 @@ package de.jave.jave.application.startup;
 import de.jave.gui.splash.SplashComponentUtilities;
 import de.jave.jave.version.JaveVersion;
 import javax.swing.JComponent;
-import net.disy.commons.core.model.ObjectModel;
+import net.dizzy.commons.core.model.ObjectModel;
 
 public class JaveSplashComponentFactory {
    public static JComponent createAboutLogoComponent() {

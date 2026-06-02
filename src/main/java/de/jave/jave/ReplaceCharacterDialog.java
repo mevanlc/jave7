@@ -19,13 +19,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.action.SmartAction;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
-import net.disy.commons.swing.layout.util.ButtonPanelBuilder;
-import net.disy.commons.swing.layout.util.LayoutUtilities;
-import net.disy.commons.swing.util.ToggleComponentEnabler;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.swing.layout.util.ButtonPanelBuilder;
+import net.dizzy.commons.swing.layout.util.LayoutUtilities;
+import net.dizzy.commons.swing.util.ToggleComponentEnabler;
 
 public class ReplaceCharacterDialog {
    private final JaveMainPanel mainPanel;

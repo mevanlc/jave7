@@ -13,10 +13,10 @@ import de.jave.jave.plate.JaveMainPanel;
 import de.jave.javeplayer.JaveAnimationFile;
 import java.awt.Component;
 import java.io.File;
-import net.disy.commons.core.io.FileModel;
-import net.disy.commons.core.message.Message;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.dialog.message.MessageDialogFactory;
+import net.dizzy.commons.core.io.FileModel;
+import net.dizzy.commons.core.message.Message;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.dialog.message.MessageDialogFactory;
 
 public class OpenAnimationAction extends AbstractJaveAction {
    private final FileModel currentDirectoryModel;

@@ -16,17 +16,17 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentListener;
-import net.disy.commons.core.message.MessageType;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.action.SmartAction;
-import net.disy.commons.swing.component.IDisposableComponentContainer;
-import net.disy.commons.swing.events.AbstractDocumentChangeListener;
-import net.disy.commons.swing.layout.grid.GridAlignment;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
-import net.disy.commons.swing.toolbar.ToolBarUtilities;
-import net.disy.commons.swing.util.ToggleComponentEnabler;
+import net.dizzy.commons.core.message.MessageType;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.component.IDisposableComponentContainer;
+import net.dizzy.commons.swing.events.AbstractDocumentChangeListener;
+import net.dizzy.commons.swing.layout.grid.GridAlignment;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.swing.toolbar.ToolBarUtilities;
+import net.dizzy.commons.swing.util.ToggleComponentEnabler;
 
 public class Image2AsciiAlgorithmGradientOptionsPanel implements IDisposableComponentContainer {
    private final AlgorithmGradientOptionsModel optionsModel;

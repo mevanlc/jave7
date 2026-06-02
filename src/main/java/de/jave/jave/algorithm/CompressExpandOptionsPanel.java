@@ -4,7 +4,7 @@ import de.jave.gui.GSliderArrangement;
 import javax.swing.JComponent;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import net.disy.commons.swing.layout.grid.GridDialogPanelBuilder;
+import net.dizzy.commons.swing.layout.grid.GridDialogPanelBuilder;
 
 public class CompressExpandOptionsPanel implements JaveAlgorithmOptionsPanel {
    private final JComponent content;

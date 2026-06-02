@@ -1,8 +1,8 @@
 package de.jave.image2ascii.algorithm;
 
 import de.jave.braille.table.BrailleTables;
-import net.disy.commons.core.model.AbstractChangeableModel;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.util.Ensure;
 
 import java.util.Objects;
 

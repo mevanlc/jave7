@@ -9,9 +9,9 @@ import de.jave.jave.preferences.ColorScheme;
 import de.jave.jave.preferences.PlatePreferences;
 import java.io.File;
 import javax.swing.JComponent;
-import net.disy.commons.core.model.ObjectModel;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.core.model.ObjectModel;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
 
 public class GameDocumentEditor extends AbstractDocumentEditor {
    private final Plate plate;

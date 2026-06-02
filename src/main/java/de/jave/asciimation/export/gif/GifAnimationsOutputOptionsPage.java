@@ -12,9 +12,9 @@ import de.jave.jave.preferences.ColorScheme;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JPanel;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
-import net.disy.commons.swing.layout.grid.GridDialogPanelBuilder;
-import net.disy.commons.swing.layout.grid.IDialogComponent;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.swing.layout.grid.GridDialogPanelBuilder;
+import net.dizzy.commons.swing.layout.grid.IDialogComponent;
 
 public class GifAnimationsOutputOptionsPage extends DefaultAnimationOutputOptionsPage {
    public GifAnimationsOutputOptionsPage(AnimationExportWizardModel model, boolean isLoopAvailable) {

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class FigFontCategorization implements IFigFontCategorization {
    public static final String ALL_CATEGORY_NAME = "All fonts";

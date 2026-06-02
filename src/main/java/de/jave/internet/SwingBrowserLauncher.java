@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import net.disy.commons.core.message.Message;
-import net.disy.commons.swing.dialog.message.MessageDialogFactory;
+import net.dizzy.commons.core.message.Message;
+import net.dizzy.commons.swing.dialog.message.MessageDialogFactory;
 
 public class SwingBrowserLauncher {
    private SwingBrowserLauncher() {

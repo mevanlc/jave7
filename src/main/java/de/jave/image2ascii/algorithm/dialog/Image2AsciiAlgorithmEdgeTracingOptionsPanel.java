@@ -6,10 +6,10 @@ import java.awt.event.ActionListener;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.component.IDisposableComponentContainer;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.component.IDisposableComponentContainer;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
 
 public class Image2AsciiAlgorithmEdgeTracingOptionsPanel implements IDisposableComponentContainer {
    private final AlgorithmEdgeTracingOptionsModel optionsModel;

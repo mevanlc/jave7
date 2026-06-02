@@ -10,8 +10,8 @@ import java.awt.Dimension;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import net.disy.commons.core.io.IOUtilities;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.io.IOUtilities;
+import net.dizzy.commons.core.util.Ensure;
 
 public class ScrollbarAnimationExporter extends AbstractAnimationExporter {
    private final AnimationExportOptions options;

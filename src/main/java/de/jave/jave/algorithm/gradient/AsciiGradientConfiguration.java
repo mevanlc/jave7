@@ -1,6 +1,6 @@
 package de.jave.jave.algorithm.gradient;
 
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class AsciiGradientConfiguration {
    private final String[] gradients;

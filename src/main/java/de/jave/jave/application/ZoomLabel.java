@@ -5,10 +5,10 @@ import de.jave.gui.NullMouseClickHandler;
 import de.jave.jave.JaveMessages;
 import de.jave.jave.ZoomableFontModel;
 import javax.swing.JComponent;
-import net.disy.commons.core.model.ObjectModel;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.component.IComponentContainer;
+import net.dizzy.commons.core.model.ObjectModel;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.component.IComponentContainer;
 
 public class ZoomLabel implements IComponentContainer {
    private static final String NO_ZOOM_STRING = "   ";

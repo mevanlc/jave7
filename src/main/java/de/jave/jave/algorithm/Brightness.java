@@ -6,7 +6,7 @@ import de.jave.jave.JaveSelection;
 import de.jave.lib.CharacterPlate;
 import de.jave.lib.area.BooleanArea;
 import java.util.Random;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class Brightness extends JaveOptionsAlgorithm {
    private final AsciiGreyscaleTableConfiguration greyscaleTableConfiguration;

@@ -9,13 +9,13 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import net.disy.commons.core.message.IBasicMessage;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.dialog.userdialog.page.AbstractDialogPage;
-import net.disy.commons.swing.events.AbstractDocumentChangeListener;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
-import net.disy.commons.swing.layout.util.LayoutUtilities;
+import net.dizzy.commons.core.message.IBasicMessage;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.dialog.userdialog.page.AbstractDialogPage;
+import net.dizzy.commons.swing.events.AbstractDocumentChangeListener;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.swing.layout.util.LayoutUtilities;
 
 public class GradientSteganogramPage extends AbstractDialogPage {
    private final CharacterPlate plate;

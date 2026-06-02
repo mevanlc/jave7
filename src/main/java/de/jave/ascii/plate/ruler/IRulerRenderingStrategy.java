@@ -4,7 +4,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import net.disy.commons.swing.layout.util.LayoutDirection;
+import net.dizzy.commons.swing.layout.util.LayoutDirection;
 
 public interface IRulerRenderingStrategy {
    void renderMouseLocation(Graphics var1, Dimension var2, Point var3);

@@ -9,12 +9,12 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.component.IDisposableComponentContainer;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.ui.AbstractObjectUi;
-import net.disy.commons.swing.ui.ObjectUiListCellRenderer;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.component.IDisposableComponentContainer;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.ui.AbstractObjectUi;
+import net.dizzy.commons.swing.ui.ObjectUiListCellRenderer;
 
 public class Image2AsciiAlgorithmPixelPlateOptionsPanel implements IDisposableComponentContainer {
    private final AlgorithmPixelPlateOptionsModel optionsModel;

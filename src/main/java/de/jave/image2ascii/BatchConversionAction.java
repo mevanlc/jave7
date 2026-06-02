@@ -14,14 +14,14 @@ import de.jave.jave.preferences.AnimationExportPreferences;
 import java.awt.Component;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import net.disy.commons.core.message.Message;
-import net.disy.commons.core.message.MessageType;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.action.SmartAction;
-import net.disy.commons.swing.dialog.message.MessageDialogFactory;
-import net.disy.commons.swing.dialog.progress.ProgressMonitorDialog;
-import net.disy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.core.message.Message;
+import net.dizzy.commons.core.message.MessageType;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.dialog.message.MessageDialogFactory;
+import net.dizzy.commons.swing.dialog.progress.ProgressMonitorDialog;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
 
 public final class BatchConversionAction extends SmartAction {
    private final AnimationExportPreferences animationExportPreferences;

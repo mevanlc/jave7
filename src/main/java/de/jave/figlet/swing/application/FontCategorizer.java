@@ -40,8 +40,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
-import net.disy.commons.core.io.FileModel;
-import net.disy.commons.swing.action.SmartAction;
+import net.dizzy.commons.core.io.FileModel;
+import net.dizzy.commons.swing.action.SmartAction;
 
 public class FontCategorizer {
    private final JFrame frame;

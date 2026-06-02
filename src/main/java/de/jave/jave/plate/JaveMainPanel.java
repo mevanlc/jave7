@@ -21,11 +21,11 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.swing.Icon;
 import javax.swing.JComponent;
-import net.disy.commons.core.model.BooleanModel;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.dialog.tabbed.ISmartTabbedPaneCloseHandler;
-import net.disy.commons.swing.dialog.tabbed.SmartTabbedPane;
+import net.dizzy.commons.core.model.BooleanModel;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.dialog.tabbed.ISmartTabbedPaneCloseHandler;
+import net.dizzy.commons.swing.dialog.tabbed.SmartTabbedPane;
 
 public class JaveMainPanel {
    private final ToolManager toolManager = new ToolManager();

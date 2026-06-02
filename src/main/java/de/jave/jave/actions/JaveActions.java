@@ -21,12 +21,12 @@ import de.jave.jave.watermark.WatermarkImageFile;
 import de.jave.lib.CharacterPlate;
 import de.jave.preferences.JavePreferences;
 import java.awt.Component;
-import net.disy.commons.core.io.FileModel;
-import net.disy.commons.core.model.ObjectModel;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.action.SmartAction;
-import net.disy.commons.swing.action.SmartToggleAction;
-import net.disy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.core.io.FileModel;
+import net.dizzy.commons.core.model.ObjectModel;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.action.SmartToggleAction;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
 
 public class JaveActions {
    private final SmartAction newDocumentAction;

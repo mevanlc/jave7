@@ -6,9 +6,9 @@ import de.jave.jave.plate.JaveMainPanel;
 import de.jave.jave.plate.ToolManager;
 import java.awt.Component;
 import javax.swing.Icon;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.action.SmartAction;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.action.SmartAction;
 
 public abstract class AbstractJaveAction extends SmartAction {
    private final JaveMainPanel mainPanel;

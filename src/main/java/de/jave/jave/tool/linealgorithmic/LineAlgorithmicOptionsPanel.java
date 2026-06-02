@@ -16,11 +16,11 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import net.disy.commons.core.model.BooleanModel;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
-import net.disy.commons.swing.ui.ObjectUiListCellRenderer;
+import net.dizzy.commons.core.model.BooleanModel;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.swing.ui.ObjectUiListCellRenderer;
 
 public class LineAlgorithmicOptionsPanel implements IInlineToolOptions {
    private final JComponent content;

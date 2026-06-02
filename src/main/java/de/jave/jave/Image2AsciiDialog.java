@@ -25,17 +25,17 @@ import java.awt.event.WindowListener;
 import java.io.File;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import net.disy.commons.core.io.FileModel;
-import net.disy.commons.core.message.Message;
-import net.disy.commons.core.message.MessageType;
-import net.disy.commons.core.model.ObjectModel;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.action.SmartAction;
-import net.disy.commons.swing.dialog.DisyCommonsSwingDialogMessages;
-import net.disy.commons.swing.dialog.message.MessageDialogUtilities;
-import net.disy.commons.swing.dialog.message.YesNoCancel;
-import net.disy.commons.swing.fontchooser.model.FontModel;
-import net.disy.commons.swing.layout.util.ButtonPanelBuilder;
+import net.dizzy.commons.core.io.FileModel;
+import net.dizzy.commons.core.message.Message;
+import net.dizzy.commons.core.message.MessageType;
+import net.dizzy.commons.core.model.ObjectModel;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.dialog.DisyCommonsSwingDialogMessages;
+import net.dizzy.commons.swing.dialog.message.MessageDialogUtilities;
+import net.dizzy.commons.swing.dialog.message.YesNoCancel;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.swing.layout.util.ButtonPanelBuilder;
 
 public class Image2AsciiDialog {
    private final IImage2AsciiResultTaker resultTaker;

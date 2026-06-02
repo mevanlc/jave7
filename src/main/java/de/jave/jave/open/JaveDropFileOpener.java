@@ -16,8 +16,8 @@ import java.io.IOException;
 import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
-import net.disy.commons.core.exception.UnreachableCodeReachedException;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.exception.UnreachableCodeReachedException;
+import net.dizzy.commons.core.util.Ensure;
 
 public class JaveDropFileOpener implements DropTargetListener {
    private final JavEApplication application;

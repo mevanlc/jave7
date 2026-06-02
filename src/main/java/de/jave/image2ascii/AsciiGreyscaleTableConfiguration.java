@@ -1,7 +1,7 @@
 package de.jave.image2ascii;
 
 import java.util.Map;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class AsciiGreyscaleTableConfiguration {
    private final String[] tableNames;

@@ -6,12 +6,12 @@ import java.awt.Component;
 import java.awt.Dimension;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import net.disy.commons.swing.action.SmartAction;
-import net.disy.commons.swing.layout.grid.GridAlignment;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
-import net.disy.commons.swing.layout.util.LayoutUtilities;
-import net.disy.commons.swing.toolbar.ToolBarUtilities;
+import net.dizzy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.layout.grid.GridAlignment;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.swing.layout.util.LayoutUtilities;
+import net.dizzy.commons.swing.toolbar.ToolBarUtilities;
 
 public class FractalNavigationButtonPanelFactory {
    public static JComponent createButtonPanel(final FractalCutoutModel model, final Dimension plateSize) {

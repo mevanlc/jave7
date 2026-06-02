@@ -19,10 +19,10 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import net.disy.commons.swing.action.SmartAction;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
-import net.disy.commons.swing.layout.util.ButtonPanelBuilder;
+import net.dizzy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.swing.layout.util.ButtonPanelBuilder;
 
 public abstract class FontInfoAction extends AbstractFontListAction {
    public FontInfoAction(IFigDriver figlet) {

@@ -3,7 +3,7 @@ package de.jave.jave.actions.export;
 import de.jave.gui.io.ExtensionFileFilters;
 import java.util.ArrayList;
 import java.util.List;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class TextExportFormatFactory {
    private static final ResultConverter[] CONVERTERS = new ResultConverter[]{

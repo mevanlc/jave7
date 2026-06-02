@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import net.disy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
 
 public class FileSelectionModel extends AbstractChangeableModel {
    private final Set<File> selectedFiles = new HashSet<>();

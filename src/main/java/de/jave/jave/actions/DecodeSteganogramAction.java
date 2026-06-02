@@ -8,10 +8,10 @@ import de.jave.jave.algorithm.steganogram.GradientSteganogramPage;
 import de.jave.jave.plate.IDocumentEditor;
 import de.jave.jave.plate.JaveMainPanel;
 import java.awt.Component;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.dialog.userdialog.DefaultDialogConfiguration;
-import net.disy.commons.swing.dialog.userdialog.UserDialog;
-import net.disy.commons.swing.dialog.userdialog.buttons.DialogButtonConfigurationFactory;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.dialog.userdialog.DefaultDialogConfiguration;
+import net.dizzy.commons.swing.dialog.userdialog.UserDialog;
+import net.dizzy.commons.swing.dialog.userdialog.buttons.DialogButtonConfigurationFactory;
 
 public class DecodeSteganogramAction extends AbstractJaveAction {
    private final AsciiGradientConfiguration gradientConfiguration;

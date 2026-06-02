@@ -16,14 +16,14 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import net.disy.commons.core.io.FileModel;
-import net.disy.commons.core.message.Message;
-import net.disy.commons.core.message.MessageType;
-import net.disy.commons.core.model.BooleanModel;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.dialog.message.MessageDialogFactory;
-import net.disy.commons.swing.showhide.ShowHideContentPanel;
+import net.dizzy.commons.core.io.FileModel;
+import net.dizzy.commons.core.message.Message;
+import net.dizzy.commons.core.message.MessageType;
+import net.dizzy.commons.core.model.BooleanModel;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.dialog.message.MessageDialogFactory;
+import net.dizzy.commons.swing.showhide.ShowHideContentPanel;
 
 public class AnimationEditorPanel {
    public static final String JAVE_ANIMATION_EDITOR_TITLE = "JavE Animation Editor";

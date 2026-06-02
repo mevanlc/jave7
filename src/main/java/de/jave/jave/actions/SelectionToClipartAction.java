@@ -14,10 +14,10 @@ import de.jave.jave.plate.JaveMainPanel;
 import de.jave.jave.preferences.JaveApplicationPreferences;
 import de.jave.lib.CharacterPlate;
 import java.awt.Component;
-import net.disy.commons.core.model.ObjectModel;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.dialog.core.IDialogResult;
-import net.disy.commons.swing.dialog.userdialog.UserDialog;
+import net.dizzy.commons.core.model.ObjectModel;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.dialog.core.IDialogResult;
+import net.dizzy.commons.swing.dialog.userdialog.UserDialog;
 
 public class SelectionToClipartAction extends AbstractJaveAction {
    private final JaveApplicationPreferences preferences;

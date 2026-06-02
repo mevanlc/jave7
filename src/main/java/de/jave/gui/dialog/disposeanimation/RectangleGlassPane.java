@@ -3,7 +3,7 @@ package de.jave.gui.dialog.disposeanimation;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import javax.swing.JComponent;
-import net.disy.commons.swing.color.SwingColors;
+import net.dizzy.commons.swing.color.SwingColors;
 
 public class RectangleGlassPane extends JComponent {
    private Rectangle rectangle;

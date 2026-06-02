@@ -7,12 +7,12 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import net.disy.commons.core.model.ObjectModel;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.component.IComponentContainer;
-import net.disy.commons.swing.icon.CommonIcons;
-import net.disy.commons.swing.ui.AbstractObjectUi;
-import net.disy.commons.swing.ui.ObjectUiListCellRenderer;
+import net.dizzy.commons.core.model.ObjectModel;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.component.IComponentContainer;
+import net.dizzy.commons.swing.icon.CommonIcons;
+import net.dizzy.commons.swing.ui.AbstractObjectUi;
+import net.dizzy.commons.swing.ui.ObjectUiListCellRenderer;
 
 public class ClipartGroupListPanel implements IComponentContainer {
    private final JList list;

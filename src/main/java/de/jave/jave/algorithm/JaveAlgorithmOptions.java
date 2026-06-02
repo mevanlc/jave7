@@ -2,7 +2,7 @@ package de.jave.jave.algorithm;
 
 import de.jave.jave.JaveSelection;
 import java.util.Vector;
-import net.disy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
 
 public abstract class JaveAlgorithmOptions {
    protected Vector algorithmOptionsListeners;

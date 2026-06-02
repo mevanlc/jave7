@@ -12,8 +12,8 @@ import de.jave.lib.CharacterPlate;
 import java.awt.Component;
 import java.awt.Point;
 import java.awt.Rectangle;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.resources.DisyCommonsSwingIconResources;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.resources.DisyCommonsSwingIconResources;
 
 public class PasteAsNewSelectionAction extends AbstractJaveAction {
    private final JavEApplication jave;

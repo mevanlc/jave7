@@ -4,12 +4,12 @@ import de.jave.jave.JavEApplication;
 import de.jave.jave.icon.JaveIcons;
 import de.jave.javeplayer.JaveAnimationFile;
 import java.awt.Component;
-import net.disy.commons.core.io.FileModel;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.action.SmartAction;
-import net.disy.commons.swing.dialog.core.IDialogResult;
-import net.disy.commons.swing.dialog.wizard.IWizardConfiguration;
-import net.disy.commons.swing.dialog.wizard.WizardDialog;
+import net.dizzy.commons.core.io.FileModel;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.dialog.core.IDialogResult;
+import net.dizzy.commons.swing.dialog.wizard.IWizardConfiguration;
+import net.dizzy.commons.swing.dialog.wizard.WizardDialog;
 
 public class JaveImportAction extends SmartAction {
    private final FileModel currentDirectoryModel;

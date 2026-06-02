@@ -3,10 +3,10 @@ package de.jave.figlet.engine;
 import de.jave.figlet.engine.processing.IFigletJob;
 import de.jave.lib.job.IResultConsumer;
 import de.jave.lib.job.IWarningCollector;
-import net.disy.commons.core.asynchronous.IJobProcessor;
-import net.disy.commons.core.progress.ICancelable;
-import net.disy.commons.core.progress.ProgressUtilities;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.asynchronous.IJobProcessor;
+import net.dizzy.commons.core.progress.ICancelable;
+import net.dizzy.commons.core.progress.ProgressUtilities;
+import net.dizzy.commons.core.util.Ensure;
 
 public class FigConversionJobProcessor implements IJobProcessor<IFigletJob> {
    private final IWarningCollector warner;

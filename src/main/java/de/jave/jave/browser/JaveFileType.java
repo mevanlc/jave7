@@ -6,7 +6,7 @@ import de.jave.gui.io.ImageIOUtilities;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public enum JaveFileType {
    RASTER_IMAGE(ImageIOUtilities.getSupportedReaderFileFormatExtensions()),

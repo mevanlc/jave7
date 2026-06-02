@@ -1,7 +1,7 @@
 package de.jave.gui.dialog.disposeanimation;
 
 import java.awt.Rectangle;
-import net.disy.commons.animatedinterpolation.AbstractInterpolator;
+import net.dizzy.commons.animatedinterpolation.AbstractInterpolator;
 
 public class RectangleInterpolator extends AbstractInterpolator<Rectangle> {
    public Rectangle interpolate(Rectangle startValue, Rectangle endValue, double t) {

@@ -10,12 +10,12 @@ import java.awt.event.ActionListener;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.component.IDisposableComponentContainer;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
-import net.disy.commons.swing.layout.grid.GridDialogPanelBuilder;
-import net.disy.commons.swing.layout.grid.IDialogComponent;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.component.IDisposableComponentContainer;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.swing.layout.grid.GridDialogPanelBuilder;
+import net.dizzy.commons.swing.layout.grid.IDialogComponent;
 
 public class Image2AsciiAlgorithm4OptionsPanel implements IDisposableComponentContainer {
    private final Algorithm4OptionsModel optionsModel;

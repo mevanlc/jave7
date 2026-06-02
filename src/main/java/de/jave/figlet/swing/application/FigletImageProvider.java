@@ -1,7 +1,7 @@
 package de.jave.figlet.swing.application;
 
 import javax.swing.Icon;
-import net.disy.commons.swing.image.ImageProvider;
+import net.dizzy.commons.swing.image.ImageProvider;
 
 public class FigletImageProvider extends ImageProvider {
    private static final FigletImageProvider instance = new FigletImageProvider();

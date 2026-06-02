@@ -2,8 +2,8 @@ package de.jave.image2ascii.algorithm.dialog.banned;
 
 import java.awt.Font;
 import javax.swing.JComponent;
-import net.disy.commons.core.message.IBasicMessage;
-import net.disy.commons.swing.dialog.userdialog.page.AbstractDialogPage;
+import net.dizzy.commons.core.message.IBasicMessage;
+import net.dizzy.commons.swing.dialog.userdialog.page.AbstractDialogPage;
 
 public class BannedCharactersDialogPage extends AbstractDialogPage {
    private final AsciiCharactersSelectDialogPanel content;

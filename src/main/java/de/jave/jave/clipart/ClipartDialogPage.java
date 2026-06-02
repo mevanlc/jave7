@@ -5,12 +5,12 @@ import de.jave.gui.listpanel.IClickHandler;
 import java.awt.BorderLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import net.disy.commons.core.message.IBasicMessage;
-import net.disy.commons.core.model.ObjectModel;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.dialog.userdialog.page.AbstractDialogPage;
-import net.disy.commons.swing.layout.util.LayoutUtilities;
+import net.dizzy.commons.core.message.IBasicMessage;
+import net.dizzy.commons.core.model.ObjectModel;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.dialog.userdialog.page.AbstractDialogPage;
+import net.dizzy.commons.swing.layout.util.LayoutUtilities;
 
 public class ClipartDialogPage extends AbstractDialogPage {
    private static final String TITLE = "Clipart Library";

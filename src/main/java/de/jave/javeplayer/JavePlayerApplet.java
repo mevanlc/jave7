@@ -6,8 +6,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import javax.swing.JApplet;
 import javax.swing.UIManager;
-import net.disy.commons.core.message.Message;
-import net.disy.commons.swing.dialog.message.MessageDialogFactory;
+import net.dizzy.commons.core.message.Message;
+import net.dizzy.commons.swing.dialog.message.MessageDialogFactory;
 
 @SuppressWarnings("removal")
 public class JavePlayerApplet extends JApplet {

@@ -3,7 +3,7 @@ package de.jave.gui.splash;
 import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.SplashScreen;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class AwtSplashScreenWindow implements ISplashWindow {
    private final SplashScreen splash;

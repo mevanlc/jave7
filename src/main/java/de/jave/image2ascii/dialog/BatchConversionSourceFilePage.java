@@ -2,12 +2,12 @@ package de.jave.image2ascii.dialog;
 
 import java.io.File;
 import javax.swing.JComponent;
-import net.disy.commons.core.io.FileModel;
-import net.disy.commons.core.message.BasicMessage;
-import net.disy.commons.core.message.IBasicMessage;
-import net.disy.commons.core.message.MessageType;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.dialog.wizard.AbstractWizardPage;
+import net.dizzy.commons.core.io.FileModel;
+import net.dizzy.commons.core.message.BasicMessage;
+import net.dizzy.commons.core.message.IBasicMessage;
+import net.dizzy.commons.core.message.MessageType;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.dialog.wizard.AbstractWizardPage;
 
 public class BatchConversionSourceFilePage extends AbstractWizardPage {
    private final FileModel currentDirectoryModel;

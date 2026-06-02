@@ -18,17 +18,17 @@ import java.awt.Component;
 import java.awt.datatransfer.Clipboard;
 import java.io.File;
 import java.io.IOException;
-import net.disy.commons.core.io.FileModel;
-import net.disy.commons.core.message.Message;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.dialog.core.DialogHeaderPanelConfiguration;
-import net.disy.commons.swing.dialog.core.IDialogHeaderPanelConfiguration;
-import net.disy.commons.swing.dialog.core.IDialogResult;
-import net.disy.commons.swing.dialog.message.MessageDialogFactory;
-import net.disy.commons.swing.dialog.userdialog.DefaultDialogConfiguration;
-import net.disy.commons.swing.dialog.userdialog.UserDialog;
-import net.disy.commons.swing.dialog.userdialog.page.IDialogPage;
-import net.disy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.core.io.FileModel;
+import net.dizzy.commons.core.message.Message;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.dialog.core.DialogHeaderPanelConfiguration;
+import net.dizzy.commons.swing.dialog.core.IDialogHeaderPanelConfiguration;
+import net.dizzy.commons.swing.dialog.core.IDialogResult;
+import net.dizzy.commons.swing.dialog.message.MessageDialogFactory;
+import net.dizzy.commons.swing.dialog.userdialog.DefaultDialogConfiguration;
+import net.dizzy.commons.swing.dialog.userdialog.UserDialog;
+import net.dizzy.commons.swing.dialog.userdialog.page.IDialogPage;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
 
 public final class ExportTextAction extends AbstractJaveAction {
    private final FileModel currentDirectoryModel;

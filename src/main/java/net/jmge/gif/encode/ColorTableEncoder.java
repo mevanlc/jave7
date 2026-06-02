@@ -2,7 +2,7 @@ package net.jmge.gif.encode;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 import net.jmge.gif.GifColorTable;
 
 public class ColorTableEncoder {

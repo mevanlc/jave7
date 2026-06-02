@@ -9,11 +9,11 @@ import java.awt.Dimension;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import net.disy.commons.core.model.AbstractChangeableModel;
-import net.disy.commons.core.model.IChangeableModel;
-import net.disy.commons.core.progress.ICancelable;
-import net.disy.commons.core.progress.IProgressMonitor;
-import net.disy.commons.swing.component.IDisposableComponentContainer;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.model.IChangeableModel;
+import net.dizzy.commons.core.progress.ICancelable;
+import net.dizzy.commons.core.progress.IProgressMonitor;
+import net.dizzy.commons.swing.component.IDisposableComponentContainer;
 
 public class Image2AsciiAlgorithm3d extends AbstractImage2AsciiAlgorithm {
    @Override

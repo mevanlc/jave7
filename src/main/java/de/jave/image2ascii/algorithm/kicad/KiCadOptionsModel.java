@@ -1,7 +1,7 @@
 package de.jave.image2ascii.algorithm.kicad;
 
-import net.disy.commons.core.model.AbstractChangeableModel;
-import net.disy.commons.core.util.ObjectUtilities;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.util.ObjectUtilities;
 
 public class KiCadOptionsModel extends AbstractChangeableModel {
    public static final String DEFAULT_MODULE_NAME = "Logo";

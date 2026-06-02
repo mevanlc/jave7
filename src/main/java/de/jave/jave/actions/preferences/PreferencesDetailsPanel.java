@@ -4,10 +4,10 @@ import java.awt.Font;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
-import net.disy.commons.swing.layout.util.LayoutUtilities;
-import net.disy.commons.swing.widgets.HorizontalLine;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.swing.layout.util.LayoutUtilities;
+import net.dizzy.commons.swing.widgets.HorizontalLine;
 
 public class PreferencesDetailsPanel {
    private static final Font TITLE_FONT = new Font("SansSerif", 1, 13);

@@ -25,7 +25,7 @@ import de.jave.jave.preferences.JaveApplicationPreferences;
 import de.jave.lib.CharacterMergeRulesConfigurationInitializable;
 import de.jave.maxosx.MacOsXInitializer;
 import java.awt.Component;
-import net.disy.commons.swing.dialog.core.DialogDefaults;
+import net.dizzy.commons.swing.dialog.core.DialogDefaults;
 
 public class JaveStartupRunnable implements IStartupRunnable {
    public JaveStartupRunnable(String[] arguments) {

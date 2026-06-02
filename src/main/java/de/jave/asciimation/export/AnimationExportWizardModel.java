@@ -2,8 +2,8 @@ package de.jave.asciimation.export;
 
 import de.jave.jave.preferences.AnimationExportPreferences;
 import java.awt.Font;
-import net.disy.commons.core.io.FileModel;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.io.FileModel;
+import net.dizzy.commons.core.util.Ensure;
 
 public class AnimationExportWizardModel {
    private final AnimationExportOptions options;

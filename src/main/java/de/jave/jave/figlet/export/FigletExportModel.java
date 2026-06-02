@@ -8,9 +8,9 @@ import de.jave.lib.Toolbox;
 import de.jave.text.TextTools;
 import java.text.MessageFormat;
 import java.util.HashSet;
-import net.disy.commons.core.model.AbstractChangeableModel;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.core.util.StringUtilities;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.StringUtilities;
 
 public class FigletExportModel extends AbstractChangeableModel {
    private final CharacterPlate characterPlate;

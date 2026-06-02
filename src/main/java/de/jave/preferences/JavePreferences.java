@@ -3,9 +3,9 @@ package de.jave.preferences;
 import de.jave.ascii.IAsciiGuiConstants;
 import java.awt.Font;
 import java.util.prefs.Preferences;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.swing.font.FontFactory;
-import net.disy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.swing.font.FontFactory;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
 
 public class JavePreferences extends SmartPreferences {
    public static final String KEY_FONT_SIZE = "fontSize";

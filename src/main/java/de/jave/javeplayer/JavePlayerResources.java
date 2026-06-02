@@ -1,8 +1,8 @@
 package de.jave.javeplayer;
 
 import javax.swing.Icon;
-import net.disy.commons.swing.image.ImageProvider;
-import net.disy.commons.swing.resources.IIconResources;
+import net.dizzy.commons.swing.image.ImageProvider;
+import net.dizzy.commons.swing.resources.IIconResources;
 
 public class JavePlayerResources implements IIconResources {
    public static final Icon REVERSE_ICON = getIcon("reverse.gif");

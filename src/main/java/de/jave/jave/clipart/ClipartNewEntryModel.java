@@ -1,8 +1,8 @@
 package de.jave.jave.clipart;
 
 import de.jave.lib.CharacterPlate;
-import net.disy.commons.core.model.AbstractChangeableModel;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.util.Ensure;
 
 public class ClipartNewEntryModel extends AbstractChangeableModel {
    private final CharacterPlate code;

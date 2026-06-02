@@ -1,8 +1,8 @@
 package de.jave.jave.figlet.export;
 
 import de.jave.figlet.engine.IFigDriver;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.dialog.wizard.IWizardPage;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.dialog.wizard.IWizardPage;
 
 public class FigletExportWizardPageManager {
    private final IWizardPage page1;

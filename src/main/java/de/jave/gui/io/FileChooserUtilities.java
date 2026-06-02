@@ -11,7 +11,7 @@ import java.io.FilenameFilter;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
-import net.disy.commons.core.io.FileModel;
+import net.dizzy.commons.core.io.FileModel;
 
 public class FileChooserUtilities {
    public static boolean useAwtFileChooser = false;

@@ -1,6 +1,6 @@
 package de.jave.jave.tool.text;
 
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class RowRange {
    private final int rowEndIndex;

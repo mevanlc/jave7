@@ -3,8 +3,8 @@ package de.jave.image2ascii.model;
 import de.jave.image.Rotation;
 import de.jave.image.greyscale.algorithm.dithering.DitheringAlgorithms;
 import de.jave.image.greyscale.algorithm.dithering.IGreyscaleDithering;
-import net.disy.commons.core.model.AbstractChangeableModel;
-import net.disy.commons.core.util.ObjectUtilities;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.util.ObjectUtilities;
 
 public class Image2AsciiImageProcessingOptionsModel extends AbstractChangeableModel {
    private static final int SHARPEN_DEFAULT = 0;

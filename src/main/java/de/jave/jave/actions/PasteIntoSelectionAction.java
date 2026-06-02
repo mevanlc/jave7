@@ -9,7 +9,7 @@ import de.jave.jave.plate.JaveMainPanel;
 import de.jave.lib.CharacterPlate;
 import java.awt.Component;
 import java.awt.Rectangle;
-import net.disy.commons.swing.resources.DisyCommonsSwingIconResources;
+import net.dizzy.commons.swing.resources.DisyCommonsSwingIconResources;
 
 public class PasteIntoSelectionAction extends AbstractJaveAction {
 

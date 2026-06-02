@@ -13,16 +13,16 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.fontchooser.model.FontModel;
-import net.disy.commons.swing.layout.grid.GridAlignment;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
-import net.disy.commons.swing.layout.grid.IDialogComponent;
-import net.disy.commons.swing.ui.AbstractObjectUi;
-import net.disy.commons.swing.ui.ObjectUiListCellRenderer;
-import net.disy.commons.swing.util.ToggleComponentEnabler;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.swing.layout.grid.GridAlignment;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.swing.layout.grid.IDialogComponent;
+import net.dizzy.commons.swing.ui.AbstractObjectUi;
+import net.dizzy.commons.swing.ui.ObjectUiListCellRenderer;
+import net.dizzy.commons.swing.util.ToggleComponentEnabler;
 
 public class GreyScaleTablePanel implements IDialogComponent {
    private final JComboBox chTable;

@@ -6,7 +6,7 @@ import java.awt.Component;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JWindow;
-import net.disy.commons.core.model.ObjectModel;
+import net.dizzy.commons.core.model.ObjectModel;
 
 public class FallbackSplashWindow implements ISplashWindow {
    private final ObjectModel<String> textModel = new ObjectModel<>("");

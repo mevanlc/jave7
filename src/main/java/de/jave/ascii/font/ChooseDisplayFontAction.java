@@ -3,17 +3,17 @@ package de.jave.ascii.font;
 import de.jave.jave.swing.JaveSwingMessages;
 import java.awt.Component;
 import java.awt.Font;
-import net.disy.commons.core.message.Message;
-import net.disy.commons.core.message.MessageType;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.action.SmartAction;
-import net.disy.commons.swing.dialog.core.IDialogResult;
-import net.disy.commons.swing.dialog.message.MessageDialogUtilities;
-import net.disy.commons.swing.fontchooser.model.FontModel;
-import net.disy.commons.swing.fontchooser.resources.DisyCommonsSwingFontChooserIcons;
-import net.disy.commons.swing.fontchooser.util.FontUtilities;
-import net.disy.commons.swing.fontchooser.view.FontChooserDialog;
-import net.disy.commons.swing.fontchooser.view.fixedwidth.FixedWidthFontChooserDialogFactory;
+import net.dizzy.commons.core.message.Message;
+import net.dizzy.commons.core.message.MessageType;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.dialog.core.IDialogResult;
+import net.dizzy.commons.swing.dialog.message.MessageDialogUtilities;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.swing.fontchooser.resources.DisyCommonsSwingFontChooserIcons;
+import net.dizzy.commons.swing.fontchooser.util.FontUtilities;
+import net.dizzy.commons.swing.fontchooser.view.FontChooserDialog;
+import net.dizzy.commons.swing.fontchooser.view.fixedwidth.FixedWidthFontChooserDialogFactory;
 
 public class ChooseDisplayFontAction extends SmartAction {
    private final FontModel displayFontModel;

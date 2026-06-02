@@ -4,7 +4,7 @@ import de.jave.lib.gui.IStatusDisplay;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.JComponent;
-import net.disy.commons.swing.color.SwingColors;
+import net.dizzy.commons.swing.color.SwingColors;
 
 public class StatusBar extends JComponent implements IStatusDisplay {
    private String status = "";

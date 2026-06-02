@@ -16,8 +16,8 @@ import java.io.IOException;
 import java.io.StringReader;
 import javax.swing.Icon;
 import javax.swing.JComponent;
-import net.disy.commons.core.io.IOUtilities;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.io.IOUtilities;
+import net.dizzy.commons.core.util.Ensure;
 
 public final class ResultConverterTextExportFormat implements ITextExportFormat {
    private final ResultConverter converter;

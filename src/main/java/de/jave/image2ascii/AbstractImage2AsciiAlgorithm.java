@@ -1,7 +1,7 @@
 package de.jave.image2ascii;
 
 import java.awt.Dimension;
-import net.disy.commons.swing.component.IDisposableComponentContainer;
+import net.dizzy.commons.swing.component.IDisposableComponentContainer;
 
 public abstract class AbstractImage2AsciiAlgorithm implements IImage2AsciiAlgorithm {
    public abstract void setSpecialChars(String var1);

@@ -23,13 +23,13 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.events.AbstractDocumentChangeListener;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
-import net.disy.commons.swing.layout.util.LayoutUtilities;
-import net.disy.commons.swing.textfield.DoubleField;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.events.AbstractDocumentChangeListener;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.swing.layout.util.LayoutUtilities;
+import net.dizzy.commons.swing.textfield.DoubleField;
 
 public class FractalTool extends AbstractDialogTool implements ItemListener {
    private static final String[] RESOLUTION_STR = new String[]{"Lowest", "Low (Dots)", "Normal 2by2 (J7L_\"'`()8)", "Higher 3by2", "High"};

@@ -8,7 +8,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import net.disy.commons.swing.events.AbstractDocumentChangeListener;
+import net.dizzy.commons.swing.events.AbstractDocumentChangeListener;
 
 public class FontNameFilterPanel {
    private final JComponent content;

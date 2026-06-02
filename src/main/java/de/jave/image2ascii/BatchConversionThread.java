@@ -15,11 +15,11 @@ import java.awt.image.PixelGrabber;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import javax.imageio.ImageIO;
-import net.disy.commons.core.progress.ICancelable;
-import net.disy.commons.core.progress.IInterruptableRunnableWithProgress;
-import net.disy.commons.core.progress.IProgressMonitor;
-import net.disy.commons.core.progress.NullProgressMonitor;
-import net.disy.commons.core.progress.ProgressUtilities;
+import net.dizzy.commons.core.progress.ICancelable;
+import net.dizzy.commons.core.progress.IInterruptableRunnableWithProgress;
+import net.dizzy.commons.core.progress.IProgressMonitor;
+import net.dizzy.commons.core.progress.NullProgressMonitor;
+import net.dizzy.commons.core.progress.ProgressUtilities;
 
 public class BatchConversionThread implements IInterruptableRunnableWithProgress {
    private final File[] files;

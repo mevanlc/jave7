@@ -3,8 +3,8 @@ package de.jave.jave.algorithm;
 import de.jave.image2ascii.AsciiGreyscaleTable;
 import de.jave.image2ascii.AsciiGreyscaleTableConfiguration;
 import de.jave.jave.JaveSelection;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
 
 public class BrightnessOptions extends JaveAlgorithmOptions {
    private final AsciiGreyscaleTableConfiguration greyscaleTableConfiguration;

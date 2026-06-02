@@ -6,14 +6,14 @@ import de.jave.ascii.plate.textareabased.AsciiTextAreaProperties;
 import java.awt.Dimension;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import net.disy.commons.core.message.BasicMessage;
-import net.disy.commons.core.message.IBasicMessage;
-import net.disy.commons.core.message.MessageType;
-import net.disy.commons.core.util.StringUtilities;
-import net.disy.commons.swing.dialog.userdialog.page.AbstractDialogPage;
-import net.disy.commons.swing.label.SmartLabel;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.core.message.BasicMessage;
+import net.dizzy.commons.core.message.IBasicMessage;
+import net.dizzy.commons.core.message.MessageType;
+import net.dizzy.commons.core.util.StringUtilities;
+import net.dizzy.commons.swing.dialog.userdialog.page.AbstractDialogPage;
+import net.dizzy.commons.swing.label.SmartLabel;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
 
 public final class FontSampleInputDialogPage extends AbstractDialogPage {
    private AsciiTextArea asciiTextArea;

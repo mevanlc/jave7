@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import net.disy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
 
 public class BatchSourceImageModel extends AbstractChangeableModel {
    private final List<File> files;

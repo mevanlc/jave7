@@ -3,7 +3,7 @@ package de.jave.jave.watermark;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class WatermarkData {
    private final BufferedImage originalImage;

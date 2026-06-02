@@ -6,7 +6,7 @@ import de.jave.asciimation.export.FileTypeIcons;
 import de.jave.asciimation.export.IAnimationExportFormat;
 import de.jave.asciimation.export.IAnimationExporter;
 import javax.swing.Icon;
-import net.disy.commons.swing.dialog.wizard.IWizardPage;
+import net.dizzy.commons.swing.dialog.wizard.IWizardPage;
 
 public class AnimatedGifAnimationExportFormat implements IAnimationExportFormat {
    @Override

@@ -9,7 +9,7 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileSystemView;
-import net.disy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.model.listener.IChangeListener;
 
 public class FileListPanel {
    private final JList list;

@@ -13,9 +13,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import net.disy.commons.core.io.IOUtilities;
-import net.disy.commons.core.message.Message;
-import net.disy.commons.swing.dialog.message.MessageDialogFactory;
+import net.dizzy.commons.core.io.IOUtilities;
+import net.dizzy.commons.core.message.Message;
+import net.dizzy.commons.swing.dialog.message.MessageDialogFactory;
 
 public class ClipartGroup {
    private final String name;

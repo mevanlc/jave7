@@ -3,8 +3,8 @@ package de.jave.gui.io;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
-import net.disy.commons.core.string.StringConcatenationBuilder;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.string.StringConcatenationBuilder;
+import net.dizzy.commons.core.util.Ensure;
 
 public class ExtensionFileFilter extends SmartFileFilter {
    private final String description;

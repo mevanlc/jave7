@@ -13,11 +13,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import net.disy.commons.core.message.IBasicMessage;
-import net.disy.commons.swing.dialog.userdialog.DefaultDialogConfiguration;
-import net.disy.commons.swing.dialog.userdialog.UserDialog;
-import net.disy.commons.swing.dialog.userdialog.page.AbstractDialogPage;
-import net.disy.commons.swing.dialog.userdialog.page.IDialogPage;
+import net.dizzy.commons.core.message.IBasicMessage;
+import net.dizzy.commons.swing.dialog.userdialog.DefaultDialogConfiguration;
+import net.dizzy.commons.swing.dialog.userdialog.UserDialog;
+import net.dizzy.commons.swing.dialog.userdialog.page.AbstractDialogPage;
+import net.dizzy.commons.swing.dialog.userdialog.page.IDialogPage;
 
 public class ViViewerApplication {
    public static final int DEFAULT_PAUSE = 10;

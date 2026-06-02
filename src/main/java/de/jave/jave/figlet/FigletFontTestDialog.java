@@ -20,14 +20,14 @@ import java.awt.event.WindowEvent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import net.disy.commons.core.asynchronous.AsynchronousDroppingJobProcessor;
-import net.disy.commons.core.exception.PrintStackTraceExceptionHandler;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.action.SmartAction;
-import net.disy.commons.swing.fontchooser.model.FontModel;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
-import net.disy.commons.swing.layout.util.ButtonPanelBuilder;
+import net.dizzy.commons.core.asynchronous.AsynchronousDroppingJobProcessor;
+import net.dizzy.commons.core.exception.PrintStackTraceExceptionHandler;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.swing.layout.util.ButtonPanelBuilder;
 
 public class FigletFontTestDialog {
    private static final String INITIAL_TEXT = "Figlet";

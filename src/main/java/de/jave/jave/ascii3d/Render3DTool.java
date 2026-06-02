@@ -39,12 +39,12 @@ import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.events.AbstractDocumentChangeListener;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.toolbar.ToolBarBuilder;
-import net.disy.commons.swing.ui.ObjectUiListCellRenderer;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.events.AbstractDocumentChangeListener;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.toolbar.ToolBarBuilder;
+import net.dizzy.commons.swing.ui.ObjectUiListCellRenderer;
 
 public class Render3DTool extends AbstractDialogTool implements ItemListener, KeyListener {
    static final String TITLE = "3D Rendering Tool";

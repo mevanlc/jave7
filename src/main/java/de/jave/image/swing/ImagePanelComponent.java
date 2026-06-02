@@ -7,10 +7,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import javax.swing.JComponent;
-import net.disy.commons.core.model.ObjectModel;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.color.SwingColors;
+import net.dizzy.commons.core.model.ObjectModel;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.color.SwingColors;
 
 public final class ImagePanelComponent extends JComponent {
    private final ObjectModel<IDisplayableImage> imageModel;

@@ -8,7 +8,7 @@ import de.jave.jave.plate.IDocumentEditor;
 import de.jave.jave.plate.JaveMainPanel;
 import java.awt.Component;
 import java.io.File;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public final class CamelizerAction extends AbstractJaveAction {
    private final CamelizerSessionManager sessionManager;

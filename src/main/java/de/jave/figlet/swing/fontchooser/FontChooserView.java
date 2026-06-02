@@ -15,9 +15,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
-import net.disy.commons.core.model.listener.ListenerList;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.core.util.IClosure;
+import net.dizzy.commons.core.model.listener.ListenerList;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.IClosure;
 
 public class FontChooserView {
    private final JComponent content;

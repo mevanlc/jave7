@@ -1,6 +1,6 @@
 package de.jave.image2ascii;
 
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class AsciiGreyscaleTable {
    private final char[] greyscales;

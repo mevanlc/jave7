@@ -6,7 +6,7 @@ import de.jave.jave.watermark.IWatermarkPainter;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class FigletExportWatermarkPainter implements IWatermarkPainter {
    private final FigletExportModel model;

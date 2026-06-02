@@ -3,7 +3,7 @@ package de.jave.jave.algorithm.replaceillegal;
 import de.jave.jave.CharacterSets;
 import de.jave.jave.JaveSelection;
 import de.jave.lib.CharacterPlate;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class AsciiReplaceIllegal {
    private final AsciiReplaceIllegalConfiguration configuration;

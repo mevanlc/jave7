@@ -2,7 +2,7 @@ package de.jave.jave.algorithm;
 
 import de.jave.jave.JaveSelection;
 import de.jave.lib.area.BooleanArea;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class FlipDynamicAction extends JaveAlgorithm {
    private final GeneralAlgorithmConfiguration configuration;

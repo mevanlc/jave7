@@ -1,6 +1,6 @@
 package de.jave.jave;
 
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class CharSetsConfiguration {
    private final String[] charsetNames;

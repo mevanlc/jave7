@@ -2,7 +2,7 @@ package de.jave.asciimation.export;
 
 import de.jave.jave.application.resources.JaveImageProvider;
 import javax.swing.Icon;
-import net.disy.commons.swing.resources.IIconResources;
+import net.dizzy.commons.swing.resources.IIconResources;
 
 public class FileTypeIcons implements IIconResources {
    public static final Icon ANIMATION_ICON = JaveImageProvider.getInstance().getImageIcon("animation.gif");

@@ -10,8 +10,8 @@ import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
 
 public class Image2AsciiSourceImagePanel {
    private static final Dimension MAX_SIZE = new Dimension(500, 250);

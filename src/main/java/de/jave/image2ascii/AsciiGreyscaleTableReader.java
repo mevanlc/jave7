@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
-import net.disy.commons.core.io.IOUtilities;
+import net.dizzy.commons.core.io.IOUtilities;
 
 public class AsciiGreyscaleTableReader {
    public static AsciiGreyscaleTable load(File file) throws ConfigurationException {

@@ -3,10 +3,10 @@ package de.jave.jave.actions;
 import de.jave.jave.plate.ActiveEditorModel;
 import de.jave.jave.plate.IDocumentEditor;
 import de.jave.jave.preferences.ColorScheme;
-import net.disy.commons.core.model.AbstractChangeableModel;
-import net.disy.commons.core.model.ObjectModel;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.model.ObjectModel;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
 
 public class CurrentColorSchemeModel extends AbstractChangeableModel {
    private final ActiveEditorModel activeEditorModel;

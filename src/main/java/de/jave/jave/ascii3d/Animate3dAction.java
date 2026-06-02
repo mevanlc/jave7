@@ -14,13 +14,13 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.lang.reflect.InvocationTargetException;
-import net.disy.commons.core.progress.ICancelable;
-import net.disy.commons.core.progress.IInterruptableRunnableWithProgress;
-import net.disy.commons.core.progress.IProgressMonitor;
-import net.disy.commons.core.progress.ProgressUtilities;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.action.SmartAction;
-import net.disy.commons.swing.dialog.progress.ProgressMonitorDialog;
+import net.dizzy.commons.core.progress.ICancelable;
+import net.dizzy.commons.core.progress.IInterruptableRunnableWithProgress;
+import net.dizzy.commons.core.progress.IProgressMonitor;
+import net.dizzy.commons.core.progress.ProgressUtilities;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.dialog.progress.ProgressMonitorDialog;
 
 final class Animate3dAction extends SmartAction {
    private final Render3DTool render3DTool;

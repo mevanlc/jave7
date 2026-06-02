@@ -4,7 +4,7 @@ import de.jave.core.collections.LruCache;
 import de.jave.figlet.engine.primitives.FigFont;
 import de.jave.figlet.util.FigException;
 import java.util.Map;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class FigFontCache implements IFigFontProvider {
    private static final int CAPACITY = 50;

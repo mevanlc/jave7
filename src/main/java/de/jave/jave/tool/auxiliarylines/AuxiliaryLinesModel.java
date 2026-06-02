@@ -3,7 +3,7 @@ package de.jave.jave.tool.auxiliarylines;
 import de.jave.jave.Point2d;
 import java.util.LinkedList;
 import java.util.List;
-import net.disy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
 
 public class AuxiliaryLinesModel extends AbstractChangeableModel {
    private final List<Line2d> lines = new LinkedList<>();

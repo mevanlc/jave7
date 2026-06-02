@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
-import net.disy.commons.swing.layout.util.LayoutDirection;
+import net.dizzy.commons.swing.layout.util.LayoutDirection;
 
 public class VerticalRulerRenderingStrategy implements IRulerRenderingStrategy {
    private static final AffineTransform ROTATE_LEFT = new AffineTransform(0.0F, -1.0F, 1.0F, 0.0F, 0.0F, 0.0F);

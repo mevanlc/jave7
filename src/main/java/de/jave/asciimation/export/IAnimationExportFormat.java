@@ -1,7 +1,7 @@
 package de.jave.asciimation.export;
 
 import javax.swing.Icon;
-import net.disy.commons.swing.dialog.wizard.IWizardPage;
+import net.dizzy.commons.swing.dialog.wizard.IWizardPage;
 
 public interface IAnimationExportFormat {
    Icon getIcon();

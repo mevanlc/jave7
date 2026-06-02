@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Action;
 import javax.swing.JPopupMenu;
-import net.disy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.action.SmartAction;
 
 public class FontSelectionActions {
    private final List<Action> actions = new ArrayList<>();

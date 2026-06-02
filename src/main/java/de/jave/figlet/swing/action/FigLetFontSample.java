@@ -6,8 +6,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
-import net.disy.commons.core.io.IOUtilities;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.io.IOUtilities;
+import net.dizzy.commons.core.util.Ensure;
 
 public class FigLetFontSample {
    private final String sampleText;

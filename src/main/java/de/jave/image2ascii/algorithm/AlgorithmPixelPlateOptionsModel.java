@@ -1,8 +1,8 @@
 package de.jave.image2ascii.algorithm;
 
 import de.jave.jave.pixelplate.PixelPlateMode;
-import net.disy.commons.core.model.AbstractChangeableModel;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.util.Ensure;
 
 public class AlgorithmPixelPlateOptionsModel extends AbstractChangeableModel {
    private PixelPlateMode mode = PixelPlateMode.THREE_BY_TWO;

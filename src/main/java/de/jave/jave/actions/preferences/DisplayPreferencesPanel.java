@@ -12,12 +12,12 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutDataFactory;
-import net.disy.commons.swing.ui.AbstractObjectUi;
-import net.disy.commons.swing.ui.ObjectUiListCellRenderer;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutDataFactory;
+import net.dizzy.commons.swing.ui.AbstractObjectUi;
+import net.dizzy.commons.swing.ui.ObjectUiListCellRenderer;
 
 public class DisplayPreferencesPanel implements IJavePreferencesPanel {
    private static final double SCALE_MIN = 0.1;

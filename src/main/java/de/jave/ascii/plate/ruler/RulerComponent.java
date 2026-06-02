@@ -11,9 +11,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import javax.swing.JComponent;
 import javax.swing.Timer;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.core.util.ObjectUtilities;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.ObjectUtilities;
 
 public final class RulerComponent extends JComponent {
    private static final int UPDATE_INTERVAL_MILLISECONDS = 30;

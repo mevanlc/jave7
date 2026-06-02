@@ -8,7 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
-import net.disy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.model.listener.IChangeListener;
 
 public abstract class AsciiThumbnailPanel extends JComponent {
    private static final int SPACING = 2;

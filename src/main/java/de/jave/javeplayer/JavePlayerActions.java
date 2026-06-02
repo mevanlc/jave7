@@ -1,9 +1,9 @@
 package de.jave.javeplayer;
 
 import java.awt.Component;
-import net.disy.commons.core.model.BooleanModel;
-import net.disy.commons.swing.action.SmartAction;
-import net.disy.commons.swing.action.SmartToggleAction;
+import net.dizzy.commons.core.model.BooleanModel;
+import net.dizzy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.action.SmartToggleAction;
 
 public class JavePlayerActions {
    private final SmartAction zoomOutAction;

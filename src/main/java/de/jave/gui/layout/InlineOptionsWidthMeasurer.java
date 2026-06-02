@@ -4,7 +4,7 @@ import java.awt.Dimension;
 import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import net.disy.commons.swing.layout.util.LayoutUtilities;
+import net.dizzy.commons.swing.layout.util.LayoutUtilities;
 
 /**
  * Measures the maximum natural preferred width across a list of inline

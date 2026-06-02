@@ -3,9 +3,9 @@ package de.jave.image2ascii;
 import de.jave.image2ascii.model.Image2AsciiOptionsModel;
 import de.jave.image2ascii.model.Image2AsciiSourceImageModel;
 import java.awt.Component;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.action.SmartAction;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.action.SmartAction;
 
 public final class DefaultSettingsAction extends SmartAction {
    private final Image2AsciiOptionsModel optionsModel;

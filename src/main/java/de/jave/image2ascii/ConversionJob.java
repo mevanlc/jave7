@@ -6,10 +6,10 @@ import de.jave.image.greyscale.GGreyscaleImage;
 import de.jave.image.greyscale.algorithm.dithering.IGreyscaleDithering;
 import de.jave.lib.CharacterPlate;
 import java.awt.Dimension;
-import net.disy.commons.core.progress.ICancelable;
-import net.disy.commons.core.progress.IProgressMonitor;
-import net.disy.commons.core.progress.ProgressUtilities;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.progress.ICancelable;
+import net.dizzy.commons.core.progress.IProgressMonitor;
+import net.dizzy.commons.core.progress.ProgressUtilities;
+import net.dizzy.commons.core.util.Ensure;
 
 public class ConversionJob {
    private final GGreyscaleImage originalImage;

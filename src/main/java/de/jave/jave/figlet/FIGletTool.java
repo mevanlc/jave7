@@ -26,10 +26,10 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import javax.swing.Icon;
-import net.disy.commons.core.asynchronous.AsynchronousDroppingJobProcessor;
-import net.disy.commons.core.exception.PrintStackTraceExceptionHandler;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.asynchronous.AsynchronousDroppingJobProcessor;
+import net.dizzy.commons.core.exception.PrintStackTraceExceptionHandler;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
 
 public class FIGletTool extends Tool implements IResultConsumer {
    private final IFigDriver figDriver;

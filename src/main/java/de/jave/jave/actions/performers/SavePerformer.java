@@ -20,12 +20,12 @@ import de.jave.util.RecentFileList;
 import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
-import net.disy.commons.core.io.FileModel;
-import net.disy.commons.core.message.Message;
-import net.disy.commons.core.message.MessageType;
-import net.disy.commons.swing.dialog.message.MessageDialogFactory;
-import net.disy.commons.swing.dialog.message.MessageDialogUtilities;
-import net.disy.commons.swing.dialog.message.YesNoCancel;
+import net.dizzy.commons.core.io.FileModel;
+import net.dizzy.commons.core.message.Message;
+import net.dizzy.commons.core.message.MessageType;
+import net.dizzy.commons.swing.dialog.message.MessageDialogFactory;
+import net.dizzy.commons.swing.dialog.message.MessageDialogUtilities;
+import net.dizzy.commons.swing.dialog.message.YesNoCancel;
 
 public class SavePerformer {
    private static final String LAYERED_SAVE_REMINDER = "Your document contains multiple layers and must be saved in a dedicated\n"

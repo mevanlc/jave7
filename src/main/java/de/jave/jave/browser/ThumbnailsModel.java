@@ -4,7 +4,7 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
-import net.disy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
 
 public class ThumbnailsModel extends AbstractChangeableModel {
    private final List<JaveFilePreviewItem> thumbnails = new ArrayList<>();

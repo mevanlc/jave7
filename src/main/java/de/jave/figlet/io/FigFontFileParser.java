@@ -21,7 +21,7 @@ import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.Reader;
 import java.util.StringTokenizer;
-import net.disy.commons.core.io.IOUtilities;
+import net.dizzy.commons.core.io.IOUtilities;
 
 public class FigFontFileParser {
    private static final String SIGNATURE = "flf2a";

@@ -1,6 +1,6 @@
 package de.jave.jave.clipart;
 
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class ClipartGroupItem {
    private final ClipartGroup clipartGroup;

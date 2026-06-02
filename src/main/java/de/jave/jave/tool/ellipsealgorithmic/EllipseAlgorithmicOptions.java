@@ -1,6 +1,6 @@
 package de.jave.jave.tool.ellipsealgorithmic;
 
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class EllipseAlgorithmicOptions {
    private AlgorithmicEllipseStyle style = AlgorithmicEllipseStyle.LINE;

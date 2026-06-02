@@ -1,7 +1,7 @@
 package de.jave.jave.pixelplate;
 
 import de.jave.jave.Point2d;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class PixelPlateArcRenderer {
    private final PixelPlate plate;

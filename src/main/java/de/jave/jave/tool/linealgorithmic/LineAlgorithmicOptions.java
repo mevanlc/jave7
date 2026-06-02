@@ -1,8 +1,8 @@
 package de.jave.jave.tool.linealgorithmic;
 
 import de.jave.preferences.SmartPreferences;
-import net.disy.commons.core.model.AbstractChangeableModel;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.util.Ensure;
 
 public class LineAlgorithmicOptions extends AbstractChangeableModel {
    private static final String KEY_STYLE = "style";

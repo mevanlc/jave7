@@ -7,7 +7,7 @@ import de.jave.lib.collections.IntVector;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import net.disy.commons.core.io.IOUtilities;
+import net.dizzy.commons.core.io.IOUtilities;
 
 public class AsciiReplaceIllegalConfigurationInitializable implements IJaveInitializable<AsciiReplaceIllegalConfiguration> {
    public AsciiReplaceIllegalConfiguration initialize(IJavaInitializationContext context) throws ConfigurationException {

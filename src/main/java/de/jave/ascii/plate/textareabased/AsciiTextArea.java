@@ -19,16 +19,16 @@ import java.awt.event.MouseListener;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
-import net.disy.commons.core.model.listener.ListenerList;
-import net.disy.commons.core.util.IClosure;
-import net.disy.commons.core.util.ObjectUtilities;
-import net.disy.commons.swing.action.SmartAction;
-import net.disy.commons.swing.component.IComponentContainer;
-import net.disy.commons.swing.dialog.DisyCommonsSwingDialogMessages;
-import net.disy.commons.swing.dialog.action.AbstractCopyAction;
-import net.disy.commons.swing.dialog.action.TextComponentSelectAllAction;
-import net.disy.commons.swing.events.AbstractDocumentChangeListener;
-import net.disy.commons.swing.resources.DisyCommonsSwingIconResources;
+import net.dizzy.commons.core.model.listener.ListenerList;
+import net.dizzy.commons.core.util.IClosure;
+import net.dizzy.commons.core.util.ObjectUtilities;
+import net.dizzy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.component.IComponentContainer;
+import net.dizzy.commons.swing.dialog.DisyCommonsSwingDialogMessages;
+import net.dizzy.commons.swing.dialog.action.AbstractCopyAction;
+import net.dizzy.commons.swing.dialog.action.TextComponentSelectAllAction;
+import net.dizzy.commons.swing.events.AbstractDocumentChangeListener;
+import net.dizzy.commons.swing.resources.DisyCommonsSwingIconResources;
 
 public class AsciiTextArea implements IComponentContainer {
    private final AsciiTextAreaComponent textArea;

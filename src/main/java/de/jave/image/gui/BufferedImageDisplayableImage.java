@@ -3,7 +3,7 @@ package de.jave.image.gui;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class BufferedImageDisplayableImage implements IDisplayableImage {
    private final BufferedImage image;

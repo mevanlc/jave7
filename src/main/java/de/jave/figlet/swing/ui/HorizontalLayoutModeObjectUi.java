@@ -3,7 +3,7 @@ package de.jave.figlet.swing.ui;
 import de.jave.figlet.engine.primitives.HorizontalLayoutMode;
 import de.jave.figlet.engine.primitives.IHorizontalLayoutModeVisitor;
 import javax.swing.Icon;
-import net.disy.commons.swing.ui.AbstractObjectUi;
+import net.dizzy.commons.swing.ui.AbstractObjectUi;
 
 public class HorizontalLayoutModeObjectUi extends AbstractObjectUi<HorizontalLayoutMode> {
    public Icon getIcon(HorizontalLayoutMode mode) {

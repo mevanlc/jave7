@@ -8,14 +8,14 @@ import java.text.MessageFormat;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import net.disy.commons.core.exception.CentralExceptionHandling;
-import net.disy.commons.core.exception.IExceptionHandler;
-import net.disy.commons.core.message.Message;
-import net.disy.commons.core.message.MessageType;
-import net.disy.commons.swing.dialog.core.IDialogResult;
-import net.disy.commons.swing.dialog.message.MessageDialogFactory;
-import net.disy.commons.swing.dialog.userdialog.IDialogCloseHandler;
-import net.disy.commons.swing.dialog.userdialog.UserDialog;
+import net.dizzy.commons.core.exception.CentralExceptionHandling;
+import net.dizzy.commons.core.exception.IExceptionHandler;
+import net.dizzy.commons.core.message.Message;
+import net.dizzy.commons.core.message.MessageType;
+import net.dizzy.commons.swing.dialog.core.IDialogResult;
+import net.dizzy.commons.swing.dialog.message.MessageDialogFactory;
+import net.dizzy.commons.swing.dialog.userdialog.IDialogCloseHandler;
+import net.dizzy.commons.swing.dialog.userdialog.UserDialog;
 
 public class JaveMainApplicationStarter {
    public static void startJaveApplication(final String[] arguments) {

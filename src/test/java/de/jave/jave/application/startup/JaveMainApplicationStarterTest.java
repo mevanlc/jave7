@@ -2,8 +2,8 @@ package de.jave.jave.application.startup;
 
 import java.lang.reflect.InvocationTargetException;
 import javax.swing.SwingUtilities;
-import net.disy.commons.swing.dialog.core.DialogResult;
-import net.disy.commons.swing.dialog.userdialog.IDialogCloseHandler;
+import net.dizzy.commons.swing.dialog.core.DialogResult;
+import net.dizzy.commons.swing.dialog.userdialog.IDialogCloseHandler;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -51,7 +51,7 @@ public class JaveMainApplicationStarterTest {
          this.dialogCount++;
          this.closeHandler = new IDialogCloseHandler() {
             @Override
-            public void handleDialogClose(net.disy.commons.swing.dialog.core.IDialogResult result) {
+            public void handleDialogClose(net.dizzy.commons.swing.dialog.core.IDialogResult result) {
                clearShowingDialog();
             }
          };

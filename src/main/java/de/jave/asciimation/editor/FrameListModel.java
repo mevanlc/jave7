@@ -2,8 +2,8 @@ package de.jave.asciimation.editor;
 
 import de.jave.javeplayer.JaveAnimationFile;
 import javax.swing.AbstractListModel;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
 
 public class FrameListModel extends AbstractListModel {
    private final AnimationEditorModel model;

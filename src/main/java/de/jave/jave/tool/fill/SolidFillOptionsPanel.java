@@ -4,10 +4,10 @@ import de.jave.jave.plate.MouseCharacterModel;
 import de.jave.jave.plate.MouseCharacterPanel;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.component.IComponentContainer;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.layout.util.LayoutUtilities;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.component.IComponentContainer;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.layout.util.LayoutUtilities;
 
 public class SolidFillOptionsPanel implements IComponentContainer {
    private final JComponent content;

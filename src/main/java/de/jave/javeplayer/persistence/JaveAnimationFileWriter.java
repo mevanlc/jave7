@@ -11,7 +11,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import net.disy.commons.core.io.IOUtilities;
+import net.dizzy.commons.core.io.IOUtilities;
 
 public class JaveAnimationFileWriter {
    public void write(JaveAnimationFile animation, File file) throws Exception {

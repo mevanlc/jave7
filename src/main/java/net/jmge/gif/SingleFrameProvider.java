@@ -1,6 +1,6 @@
 package net.jmge.gif;
 
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class SingleFrameProvider implements IGifFrameProvider {
    private final Gif89Frame frame;

@@ -1,7 +1,7 @@
 package de.jave.ascii.plate;
 
-import net.disy.commons.core.model.AbstractChangeableModel;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.util.Ensure;
 
 public class CharacterSizeModel extends AbstractChangeableModel {
    private CharacterMetrics characterMetrics = new CharacterMetrics(1, 1, 0);

@@ -1,7 +1,7 @@
 package de.jave.gui.dialog;
 
-import net.disy.commons.core.message.MessageType;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.message.MessageType;
+import net.dizzy.commons.core.util.Ensure;
 
 public class HtmlMessage {
    private final MessageType type;

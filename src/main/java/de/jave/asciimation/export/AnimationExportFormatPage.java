@@ -12,15 +12,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import net.disy.commons.core.message.BasicMessage;
-import net.disy.commons.core.message.IBasicMessage;
-import net.disy.commons.core.message.MessageType;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.dialog.wizard.AbstractWizardPage;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
-import net.disy.commons.swing.ui.AbstractObjectUi;
-import net.disy.commons.swing.ui.ObjectUiListCellRenderer;
+import net.dizzy.commons.core.message.BasicMessage;
+import net.dizzy.commons.core.message.IBasicMessage;
+import net.dizzy.commons.core.message.MessageType;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.dialog.wizard.AbstractWizardPage;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.swing.ui.AbstractObjectUi;
+import net.dizzy.commons.swing.ui.ObjectUiListCellRenderer;
 
 public class AnimationExportFormatPage extends AbstractWizardPage {
    private JList list;

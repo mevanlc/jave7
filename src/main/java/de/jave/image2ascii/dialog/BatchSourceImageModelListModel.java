@@ -1,8 +1,8 @@
 package de.jave.image2ascii.dialog;
 
 import javax.swing.AbstractListModel;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
 
 public class BatchSourceImageModelListModel extends AbstractListModel {
    private final BatchSourceImageModel model;

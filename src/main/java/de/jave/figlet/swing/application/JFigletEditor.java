@@ -27,12 +27,12 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
-import net.disy.commons.core.asynchronous.AsynchronousDroppingJobProcessor;
-import net.disy.commons.core.asynchronous.IJobProcessor;
-import net.disy.commons.core.exception.PrintStackTraceExceptionHandler;
-import net.disy.commons.core.progress.ICancelable;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.core.asynchronous.AsynchronousDroppingJobProcessor;
+import net.dizzy.commons.core.asynchronous.IJobProcessor;
+import net.dizzy.commons.core.exception.PrintStackTraceExceptionHandler;
+import net.dizzy.commons.core.progress.ICancelable;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
 
 public class JFigletEditor {
    private final AsciiTextArea taOutput;

@@ -5,11 +5,11 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutDataFactory;
-import net.disy.commons.swing.widgets.AutoWrappingLabel;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutDataFactory;
+import net.dizzy.commons.swing.widgets.AutoWrappingLabel;
 
 public class AuthorPreferencesPanel implements IJavePreferencesPanel {
    private final JPanel content;

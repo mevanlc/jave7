@@ -17,11 +17,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import javax.swing.JFrame;
-import net.disy.commons.core.io.FileModel;
-import net.disy.commons.core.message.Message;
-import net.disy.commons.core.message.MessageType;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.swing.dialog.message.MessageDialogFactory;
+import net.dizzy.commons.core.io.FileModel;
+import net.dizzy.commons.core.message.Message;
+import net.dizzy.commons.core.message.MessageType;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.swing.dialog.message.MessageDialogFactory;
 
 /**
  * Owns the per-tab Camelizer dialog instances. Listens to the active-editor

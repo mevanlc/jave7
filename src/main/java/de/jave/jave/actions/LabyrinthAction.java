@@ -3,7 +3,7 @@ package de.jave.jave.actions;
 import de.jave.jave.JavEApplication;
 import de.jave.jave.Labyrinth;
 import java.awt.Component;
-import net.disy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.action.SmartAction;
 
 public class LabyrinthAction extends SmartAction {
    private final JavEApplication jave;

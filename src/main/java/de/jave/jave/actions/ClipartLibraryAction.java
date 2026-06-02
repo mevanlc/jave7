@@ -14,13 +14,13 @@ import de.jave.jave.plate.IDocumentEditor;
 import de.jave.jave.plate.JaveMainPanel;
 import de.jave.jave.preferences.ColorScheme;
 import java.awt.Component;
-import net.disy.commons.core.model.ObjectModel;
-import net.disy.commons.swing.dialog.core.DialogHeaderPanelConfiguration;
-import net.disy.commons.swing.dialog.core.IDialogHeaderPanelConfiguration;
-import net.disy.commons.swing.dialog.userdialog.DefaultDialogConfiguration;
-import net.disy.commons.swing.dialog.userdialog.UserDialog;
-import net.disy.commons.swing.dialog.userdialog.buttons.DialogButtonConfigurationFactory;
-import net.disy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.core.model.ObjectModel;
+import net.dizzy.commons.swing.dialog.core.DialogHeaderPanelConfiguration;
+import net.dizzy.commons.swing.dialog.core.IDialogHeaderPanelConfiguration;
+import net.dizzy.commons.swing.dialog.userdialog.DefaultDialogConfiguration;
+import net.dizzy.commons.swing.dialog.userdialog.UserDialog;
+import net.dizzy.commons.swing.dialog.userdialog.buttons.DialogButtonConfigurationFactory;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
 
 public class ClipartLibraryAction extends AbstractJaveAction {
    private final JavEApplication jave;

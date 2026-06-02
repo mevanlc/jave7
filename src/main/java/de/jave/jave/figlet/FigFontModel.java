@@ -1,8 +1,8 @@
 package de.jave.jave.figlet;
 
 import de.jave.figlet.engine.primitives.FigFont;
-import net.disy.commons.core.model.AbstractChangeableModel;
-import net.disy.commons.core.util.ObjectUtilities;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.util.ObjectUtilities;
 
 public class FigFontModel extends AbstractChangeableModel {
    private FigFont font;

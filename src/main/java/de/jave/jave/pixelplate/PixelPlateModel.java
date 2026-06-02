@@ -1,6 +1,6 @@
 package de.jave.jave.pixelplate;
 
-import net.disy.commons.core.model.ObjectModel;
+import net.dizzy.commons.core.model.ObjectModel;
 
 /**
  * Shared state for the six generic drawing tools — pencil size, line

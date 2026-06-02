@@ -5,11 +5,11 @@ import de.jave.jave.plate.JaveMainPanel;
 import de.jave.lib.CharacterPlate;
 import de.jave.lib.gui.IStatusDisplay;
 import java.awt.Component;
-import net.disy.commons.core.message.Message;
-import net.disy.commons.core.message.MessageType;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.action.SmartAction;
-import net.disy.commons.swing.dialog.message.MessageDialogFactory;
+import net.dizzy.commons.core.message.Message;
+import net.dizzy.commons.core.message.MessageType;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.dialog.message.MessageDialogFactory;
 
 public class RepairIllegalRemoveAction extends SmartAction {
    private final JaveMainPanel mainPanel;

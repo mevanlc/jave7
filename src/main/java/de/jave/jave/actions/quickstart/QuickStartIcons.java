@@ -2,7 +2,7 @@ package de.jave.jave.actions.quickstart;
 
 import de.jave.jave.application.resources.JaveImageProvider;
 import javax.swing.Icon;
-import net.disy.commons.swing.resources.IIconResources;
+import net.dizzy.commons.swing.resources.IIconResources;
 
 public class QuickStartIcons implements IIconResources {
    public static final Icon ACTION_ICON = loadIcon("quickstart.gif");

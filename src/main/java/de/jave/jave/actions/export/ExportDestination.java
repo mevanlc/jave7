@@ -1,6 +1,6 @@
 package de.jave.jave.actions.export;
 
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public enum ExportDestination {
    CLIPBOARD("Copy to System Clipboard"),

@@ -10,7 +10,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import net.disy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.action.SmartAction;
 
 public class BraceLocationDialog {
    public static final int NONE = -1;

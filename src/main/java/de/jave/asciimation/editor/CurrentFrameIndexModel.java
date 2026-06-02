@@ -1,7 +1,7 @@
 package de.jave.asciimation.editor;
 
-import net.disy.commons.core.model.AbstractChangeableModel;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.util.Ensure;
 
 public class CurrentFrameIndexModel extends AbstractChangeableModel {
    private int currentFrameIndex;

@@ -13,8 +13,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.zip.ZipException;
 import java.util.zip.ZipInputStream;
-import net.disy.commons.core.exception.UnreachableCodeReachedException;
-import net.disy.commons.core.io.IOUtilities;
+import net.dizzy.commons.core.exception.UnreachableCodeReachedException;
+import net.dizzy.commons.core.io.IOUtilities;
 
 public class IOTools {
    private IOTools() {

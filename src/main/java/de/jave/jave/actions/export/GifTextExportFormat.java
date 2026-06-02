@@ -19,8 +19,8 @@ import java.io.File;
 import java.io.IOException;
 import javax.swing.Icon;
 import javax.swing.JComponent;
-import net.disy.commons.core.exception.UnreachableCodeReachedException;
-import net.disy.commons.swing.image.ClipboardImage;
+import net.dizzy.commons.core.exception.UnreachableCodeReachedException;
+import net.dizzy.commons.swing.image.ClipboardImage;
 import net.jmge.gif.TooManyColorsException;
 import net.jmge.gif.facade.GifFileWriter;
 

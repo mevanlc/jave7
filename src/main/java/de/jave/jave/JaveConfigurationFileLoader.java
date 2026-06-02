@@ -5,9 +5,9 @@ import de.jave.jave.configuration.IConfigurationFileErrorHandler;
 import de.jave.jave.configuration.IJavaInitializationContext;
 import de.jave.jave.configuration.IJaveInitializable;
 import java.io.File;
-import net.disy.commons.core.message.Message;
-import net.disy.commons.core.message.MessageType;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.message.Message;
+import net.dizzy.commons.core.message.MessageType;
+import net.dizzy.commons.core.util.Ensure;
 
 public class JaveConfigurationFileLoader {
    public static final String CONFIGURATION_FOLDER_NAME = "config";

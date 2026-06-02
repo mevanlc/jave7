@@ -1,7 +1,7 @@
 package de.jave.gui.io;
 
 import java.io.File;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class FileExtension implements Comparable<FileExtension> {
    private final String string;

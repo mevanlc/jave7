@@ -7,7 +7,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import net.disy.commons.core.io.IOUtilities;
+import net.dizzy.commons.core.io.IOUtilities;
 
 public class CharacterMergeRulesConfigurationInitializable implements IJaveInitializable<CharacterMergeRulesConfiguration> {
    public CharacterMergeRulesConfiguration initialize(IJavaInitializationContext context) throws ConfigurationException {

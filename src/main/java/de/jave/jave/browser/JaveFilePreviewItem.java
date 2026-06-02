@@ -4,7 +4,7 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.io.File;
 import javax.swing.Icon;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class JaveFilePreviewItem {
    private final Icon icon;

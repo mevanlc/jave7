@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import net.disy.commons.swing.layout.util.LayoutDirection;
+import net.dizzy.commons.swing.layout.util.LayoutDirection;
 
 public class HorizontalRulerRenderingStrategy implements IRulerRenderingStrategy {
    @Override

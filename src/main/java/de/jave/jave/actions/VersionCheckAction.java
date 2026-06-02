@@ -3,7 +3,7 @@ package de.jave.jave.actions;
 import de.jave.internet.SwingBrowserLauncher;
 import de.jave.jave.version.JaveVersion;
 import java.awt.Component;
-import net.disy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.action.SmartAction;
 
 public class VersionCheckAction extends SmartAction {
    private static final String BASE_URL_STRING = "http://www.jave.de/versioncheck/";

@@ -6,8 +6,8 @@ import java.awt.event.AdjustmentListener;
 import javax.swing.DefaultBoundedRangeModel;
 import javax.swing.JComponent;
 import javax.swing.JScrollBar;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
 
 public class AnimationScrollbar {
    private final JScrollBar frameScrollbar;

@@ -1,6 +1,6 @@
 package de.jave.lib;
 
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class CharacterMergeRulesConfiguration {
    public static CharacterMergeRulesConfiguration INSTANCE;

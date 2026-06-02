@@ -7,12 +7,12 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.SystemColor;
-import net.disy.commons.core.model.AbstractChangeableModel;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.core.util.ObjectUtilities;
-import net.disy.commons.swing.fontchooser.model.FontModel;
-import net.disy.commons.swing.layout.util.LayoutDirection;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.ObjectUtilities;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.swing.layout.util.LayoutDirection;
 
 public class AsciiRulerProperties extends AbstractChangeableModel {
    private int printMarginColumn = 72;

@@ -5,13 +5,13 @@ import de.jave.jave.icon.JaveIcons;
 import java.awt.Component;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.action.SmartAction;
-import net.disy.commons.swing.dialog.DisyCommonsSwingDialogMessages;
-import net.disy.commons.swing.dialog.core.IDialogResult;
-import net.disy.commons.swing.dialog.userdialog.DefaultDialogConfiguration;
-import net.disy.commons.swing.dialog.userdialog.IDialogConfiguration;
-import net.disy.commons.swing.dialog.userdialog.UserDialog;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.dialog.DisyCommonsSwingDialogMessages;
+import net.dizzy.commons.swing.dialog.core.IDialogResult;
+import net.dizzy.commons.swing.dialog.userdialog.DefaultDialogConfiguration;
+import net.dizzy.commons.swing.dialog.userdialog.IDialogConfiguration;
+import net.dizzy.commons.swing.dialog.userdialog.UserDialog;
 
 public class AnimationPropertiesAction extends SmartAction {
    private final AnimationEditorModel model;

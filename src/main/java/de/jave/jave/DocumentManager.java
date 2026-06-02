@@ -7,9 +7,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import net.disy.commons.core.io.FileModel;
-import net.disy.commons.core.model.ObjectModel;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.io.FileModel;
+import net.dizzy.commons.core.model.ObjectModel;
+import net.dizzy.commons.core.util.Ensure;
 
 public class DocumentManager {
    private final List<PlateDocument> documents = new ArrayList<>();

@@ -4,7 +4,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.io.IOException;
 import java.io.OutputStream;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 import net.jmge.gif.Gif89Frame;
 import net.jmge.gif.GifFrameDisposeMode;
 

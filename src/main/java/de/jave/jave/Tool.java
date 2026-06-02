@@ -21,10 +21,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import javax.swing.Icon;
 import javax.swing.JComponent;
-import net.disy.commons.core.model.BooleanModel;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.mousecursor.CursorId;
-import net.disy.commons.swing.mousecursor.CursorProvider;
+import net.dizzy.commons.core.model.BooleanModel;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.mousecursor.CursorId;
+import net.dizzy.commons.swing.mousecursor.CursorProvider;
 
 public abstract class Tool implements ItemListener, ActionListener {
    protected JaveMainPanel mainPanel;

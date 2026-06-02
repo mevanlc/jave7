@@ -10,10 +10,10 @@ import de.jave.jave.plate.JaveMainPanel;
 import de.jave.jave.preferences.ColorScheme;
 import de.jave.lib.CharacterPlate;
 import java.awt.Component;
-import net.disy.commons.swing.dialog.core.IDialogResult;
-import net.disy.commons.swing.dialog.userdialog.DefaultDialogConfiguration;
-import net.disy.commons.swing.dialog.userdialog.UserDialog;
-import net.disy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.swing.dialog.core.IDialogResult;
+import net.dizzy.commons.swing.dialog.userdialog.DefaultDialogConfiguration;
+import net.dizzy.commons.swing.dialog.userdialog.UserDialog;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
 
 public class MathematicalExpressionsAction extends AbstractJaveAction {
    private final JavEApplication jave;

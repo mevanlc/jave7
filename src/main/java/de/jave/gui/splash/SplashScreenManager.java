@@ -2,9 +2,9 @@ package de.jave.gui.splash;
 
 import java.awt.Component;
 import java.awt.SplashScreen;
-import net.disy.commons.core.message.Message;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.dialog.message.MessageDialogFactory;
+import net.dizzy.commons.core.message.Message;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.dialog.message.MessageDialogFactory;
 
 public class SplashScreenManager {
    private static final long MIN_VISIBLE_TIME = 1500L;

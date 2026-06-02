@@ -15,16 +15,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
-import net.disy.commons.core.message.IBasicMessage;
-import net.disy.commons.swing.dialog.core.DialogHeaderPanelConfiguration;
-import net.disy.commons.swing.dialog.core.IDialogHeaderPanelConfiguration;
-import net.disy.commons.swing.dialog.core.IDialogResult;
-import net.disy.commons.swing.dialog.userdialog.DefaultDialogConfiguration;
-import net.disy.commons.swing.dialog.userdialog.UserDialog;
-import net.disy.commons.swing.dialog.userdialog.page.AbstractDialogPage;
-import net.disy.commons.swing.dialog.userdialog.page.IDialogPage;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutDataFactory;
+import net.dizzy.commons.core.message.IBasicMessage;
+import net.dizzy.commons.swing.dialog.core.DialogHeaderPanelConfiguration;
+import net.dizzy.commons.swing.dialog.core.IDialogHeaderPanelConfiguration;
+import net.dizzy.commons.swing.dialog.core.IDialogResult;
+import net.dizzy.commons.swing.dialog.userdialog.DefaultDialogConfiguration;
+import net.dizzy.commons.swing.dialog.userdialog.UserDialog;
+import net.dizzy.commons.swing.dialog.userdialog.page.AbstractDialogPage;
+import net.dizzy.commons.swing.dialog.userdialog.page.IDialogPage;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutDataFactory;
 
 public class ResizeDocumentAction extends AbstractJaveAction {
    public ResizeDocumentAction(JavEApplication jave) {

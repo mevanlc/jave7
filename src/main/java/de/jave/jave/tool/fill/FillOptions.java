@@ -4,7 +4,7 @@ import de.jave.jave.algorithm.fill.FillMatchMode;
 import de.jave.jave.algorithm.fill.FillMode;
 import de.jave.jave.algorithm.fill.GradientStyle;
 import de.jave.jave.pattern.Pattern;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class FillOptions {
    private char[] gradient = new char[]{' '};

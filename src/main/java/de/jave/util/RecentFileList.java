@@ -10,11 +10,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import net.disy.commons.core.io.FileDisplayNameUtilities;
-import net.disy.commons.core.message.Message;
-import net.disy.commons.core.message.MessageType;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.dialog.message.MessageDialogFactory;
+import net.dizzy.commons.core.io.FileDisplayNameUtilities;
+import net.dizzy.commons.core.message.Message;
+import net.dizzy.commons.core.message.MessageType;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.dialog.message.MessageDialogFactory;
 
 public class RecentFileList implements ActionListener {
    private static final String KEY_MAX_FILE_COUNT = "maxFileCount";

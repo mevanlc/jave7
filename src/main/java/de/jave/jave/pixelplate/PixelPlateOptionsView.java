@@ -17,19 +17,19 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JToggleButton;
-import net.disy.commons.core.model.BooleanModel;
-import net.disy.commons.core.model.ObjectModel;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.swing.action.SmartAction;
-import net.disy.commons.swing.button.ButtonGroupLinker;
-import net.disy.commons.swing.button.RolloverButtonFactory;
-import net.disy.commons.swing.color.SwingColors;
-import net.disy.commons.swing.component.VerticalLine;
-import net.disy.commons.swing.fontchooser.util.FontUtilities;
-import net.disy.commons.swing.layout.cardlayout.CardPanel;
-import net.disy.commons.swing.layout.cardlayout.CardPanelKey;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.core.model.BooleanModel;
+import net.dizzy.commons.core.model.ObjectModel;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.button.ButtonGroupLinker;
+import net.dizzy.commons.swing.button.RolloverButtonFactory;
+import net.dizzy.commons.swing.color.SwingColors;
+import net.dizzy.commons.swing.component.VerticalLine;
+import net.dizzy.commons.swing.fontchooser.util.FontUtilities;
+import net.dizzy.commons.swing.layout.cardlayout.CardPanel;
+import net.dizzy.commons.swing.layout.cardlayout.CardPanelKey;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
 
 /**
  * View component for {@link PixelPlateModel}: pencil size selector,

@@ -4,8 +4,8 @@ import de.jave.jave.JavEApplication;
 import de.jave.jave.JaveMessages;
 import javax.swing.JComponent;
 import javax.swing.JToggleButton;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.action.ActionWidgetFactory;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.action.ActionWidgetFactory;
 
 public class JaveTopToolbar {
    private final JComponent content;

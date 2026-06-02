@@ -5,7 +5,7 @@ import de.jave.jave.icon.JaveIcons;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.Icon;
-import net.disy.commons.swing.ui.AbstractObjectUi;
+import net.dizzy.commons.swing.ui.AbstractObjectUi;
 
 public class RotationUi extends AbstractObjectUi<Rotation> {
    private static final Map<Rotation, Icon> ICON_BY_ROTATION = new HashMap<Rotation, Icon>() {

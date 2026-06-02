@@ -6,7 +6,7 @@ import de.jave.jave.actions.ToolBar;
 import java.awt.Component;
 import java.io.File;
 import javax.swing.Icon;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class WatermarkImageOpenPerformStrategy implements IImageOpenPerformStrategy {
    private final WatermarkTool tool;

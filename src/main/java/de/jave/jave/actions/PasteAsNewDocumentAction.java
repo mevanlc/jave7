@@ -8,8 +8,8 @@ import de.jave.jave.actions.enablestrategy.IJaveDocumentEditorActionEnabledStrat
 import de.jave.jave.plate.IDocumentEditor;
 import de.jave.jave.plate.JaveMainPanel;
 import java.awt.Component;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.resources.DisyCommonsSwingIconResources;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.resources.DisyCommonsSwingIconResources;
 
 public class PasteAsNewDocumentAction extends AbstractJaveAction {
    private final JavEApplication jave;

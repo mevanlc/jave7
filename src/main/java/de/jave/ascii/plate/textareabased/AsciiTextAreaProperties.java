@@ -4,9 +4,9 @@ import de.jave.ascii.IAsciiGuiConstants;
 import de.jave.ascii.plate.ruler.AsciiRulerProperties;
 import java.awt.Color;
 import java.awt.Font;
-import net.disy.commons.core.model.AbstractChangeableModel;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
 
 public class AsciiTextAreaProperties extends AbstractChangeableModel {
    private boolean editable = true;

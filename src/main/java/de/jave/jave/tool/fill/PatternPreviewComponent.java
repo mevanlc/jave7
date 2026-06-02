@@ -11,8 +11,8 @@ import java.awt.Dimension;
 import java.awt.SystemColor;
 import java.awt.event.MouseListener;
 import javax.swing.JComponent;
-import net.disy.commons.swing.component.IComponentContainer;
-import net.disy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.swing.component.IComponentContainer;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
 
 public class PatternPreviewComponent implements IComponentContainer {
    private final AsciiTextArea textArea;

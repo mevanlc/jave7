@@ -1,7 +1,7 @@
 package de.jave.jave.tool.ellipsealgorithmic;
 
 import de.jave.jave.JaveMessages;
-import net.disy.commons.swing.ui.AbstractObjectUi;
+import net.dizzy.commons.swing.ui.AbstractObjectUi;
 
 public class AlgorithmicEllipseStyleUi extends AbstractObjectUi<AlgorithmicEllipseStyle> {
    public String getLabel(AlgorithmicEllipseStyle value) {

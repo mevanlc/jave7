@@ -10,11 +10,11 @@ import de.jave.jave.plate.ToolManager;
 import java.awt.Component;
 import java.io.File;
 import javax.swing.Icon;
-import net.disy.commons.swing.dialog.input.select.AbstractOneOutOfManyDialogConfiguration;
-import net.disy.commons.swing.dialog.input.select.ISomeOutOfManyDialogResult;
-import net.disy.commons.swing.dialog.input.select.SmartSomeOutOfManySelectionDialog;
-import net.disy.commons.swing.ui.AbstractObjectUi;
-import net.disy.commons.swing.ui.IObjectUi;
+import net.dizzy.commons.swing.dialog.input.select.AbstractOneOutOfManyDialogConfiguration;
+import net.dizzy.commons.swing.dialog.input.select.ISomeOutOfManyDialogResult;
+import net.dizzy.commons.swing.dialog.input.select.SmartSomeOutOfManySelectionDialog;
+import net.dizzy.commons.swing.ui.AbstractObjectUi;
+import net.dizzy.commons.swing.ui.IObjectUi;
 
 public class OpenImageFilePerformer {
    public static void performOpenImageFile(Component parentComponent, File file, JavEApplication application, JaveActions actions, ToolManager toolManager) {

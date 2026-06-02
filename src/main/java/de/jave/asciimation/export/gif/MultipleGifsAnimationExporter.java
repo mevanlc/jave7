@@ -11,7 +11,7 @@ import de.jave.text.TextTools;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 import net.jmge.gif.facade.GifFileWriter;
 
 public class MultipleGifsAnimationExporter extends AbstractAnimationExporter {

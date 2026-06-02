@@ -4,10 +4,10 @@ import de.jave.ascii.plate.CellScalingMode;
 import de.jave.ascii.plate.CharacterMetrics;
 import de.jave.preferences.JavePreferences;
 import de.jave.preferences.SmartPreferences;
-import net.disy.commons.core.model.BooleanModel;
-import net.disy.commons.core.model.ObjectModel;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.model.BooleanModel;
+import net.dizzy.commons.core.model.ObjectModel;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
 
 public class PlatePreferences extends SmartPreferences {
    private static final String KEY_AUTO_RESIZE_ON_DROP_FOR_ANIMATION_EDITOR = "autoResizeOnDropForAnimationEditor";

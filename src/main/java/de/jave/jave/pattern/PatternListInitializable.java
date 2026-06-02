@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import net.disy.commons.core.io.IOUtilities;
+import net.dizzy.commons.core.io.IOUtilities;
 
 public class PatternListInitializable implements IJaveInitializable<PatternList> {
    public PatternList initialize(IJavaInitializationContext context) throws ConfigurationException {

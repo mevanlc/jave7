@@ -5,10 +5,10 @@ import de.jave.gui.GStatusLabel;
 import de.jave.gui.IMouseClickHandler;
 import de.jave.jave.JaveMessages;
 import javax.swing.JComponent;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.component.IComponentContainer;
-import net.disy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.component.IComponentContainer;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
 
 public class FontLabel implements IComponentContainer {
    private final GStatusLabel statusLabel;

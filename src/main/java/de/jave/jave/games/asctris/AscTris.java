@@ -15,7 +15,7 @@ import de.jave.lib.LocatedCharacterPlate;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class AscTris extends JaveGame implements Runnable {
    private static final String TITLE = "Asc-Tris 2.0";

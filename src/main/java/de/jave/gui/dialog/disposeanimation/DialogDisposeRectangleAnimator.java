@@ -5,8 +5,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-import net.disy.commons.core.model.BooleanModel;
-import net.disy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.model.BooleanModel;
+import net.dizzy.commons.core.model.listener.IChangeListener;
 
 public class DialogDisposeRectangleAnimator {
    private static final int MILLISECONDS_FOR_ANIMATION = 400;

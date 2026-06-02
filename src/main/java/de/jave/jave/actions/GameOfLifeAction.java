@@ -4,9 +4,9 @@ import de.jave.jave.ColorScreenSaver;
 import de.jave.jave.filter.Filter;
 import java.awt.Component;
 import java.awt.Frame;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.action.SmartAction;
-import net.disy.commons.swing.util.GuiUtilities;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.util.GuiUtilities;
 
 public class GameOfLifeAction extends SmartAction {
    private final Filter filter;

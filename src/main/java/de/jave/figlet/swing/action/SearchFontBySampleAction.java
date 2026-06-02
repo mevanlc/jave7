@@ -12,16 +12,16 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import net.disy.commons.core.progress.ICancelable;
-import net.disy.commons.core.progress.IInterruptableRunnableWithProgress;
-import net.disy.commons.core.progress.IProgressMonitor;
-import net.disy.commons.core.progress.ProgressUtilities;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.action.SmartAction;
-import net.disy.commons.swing.dialog.core.IDialogResult;
-import net.disy.commons.swing.dialog.progress.ProgressMonitorDialog;
-import net.disy.commons.swing.dialog.userdialog.DefaultDialogConfiguration;
-import net.disy.commons.swing.dialog.userdialog.UserDialog;
+import net.dizzy.commons.core.progress.ICancelable;
+import net.dizzy.commons.core.progress.IInterruptableRunnableWithProgress;
+import net.dizzy.commons.core.progress.IProgressMonitor;
+import net.dizzy.commons.core.progress.ProgressUtilities;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.dialog.core.IDialogResult;
+import net.dizzy.commons.swing.dialog.progress.ProgressMonitorDialog;
+import net.dizzy.commons.swing.dialog.userdialog.DefaultDialogConfiguration;
+import net.dizzy.commons.swing.dialog.userdialog.UserDialog;
 
 public final class SearchFontBySampleAction extends SmartAction {
    private static final String SAMPLE_TEXT = "abcdefghijklmnopqrstuvwxyz1234567890 a b c d e f g h i j k l m n o p q r s t u v w x y z ABCDEFGHIJKLMNOPQRSTUVWXYZ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z";

@@ -3,7 +3,7 @@ package de.jave.figlet.swing.ui;
 import de.jave.figlet.engine.primitives.IVerticalLayoutModeVisitor;
 import de.jave.figlet.engine.primitives.VerticalLayoutMode;
 import javax.swing.Icon;
-import net.disy.commons.swing.ui.AbstractObjectUi;
+import net.dizzy.commons.swing.ui.AbstractObjectUi;
 
 public class VerticalLayoutModeObjectUi extends AbstractObjectUi<VerticalLayoutMode> {
    public Icon getIcon(VerticalLayoutMode mode) {

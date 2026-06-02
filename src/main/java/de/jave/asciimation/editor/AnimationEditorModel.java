@@ -9,8 +9,8 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.ListSelectionModel;
-import net.disy.commons.core.model.AbstractChangeableModel;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.util.Ensure;
 
 public class AnimationEditorModel extends AbstractChangeableModel {
    private final CurrentFrameIndexModel currentFrameIndexModel = new CurrentFrameIndexModel();

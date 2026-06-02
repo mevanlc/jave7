@@ -9,8 +9,8 @@ import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
 
 public class MouseCharacterPanel {
    private final CharacterModel cf1 = new CharacterModel();

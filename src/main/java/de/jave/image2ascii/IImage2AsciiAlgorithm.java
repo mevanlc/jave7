@@ -4,9 +4,9 @@ import de.jave.image.IValueRaster;
 import de.jave.lib.CharacterPlate;
 import java.awt.Dimension;
 import javax.swing.Icon;
-import net.disy.commons.core.model.IChangeableModel;
-import net.disy.commons.core.progress.ICancelable;
-import net.disy.commons.core.progress.IProgressMonitor;
+import net.dizzy.commons.core.model.IChangeableModel;
+import net.dizzy.commons.core.progress.ICancelable;
+import net.dizzy.commons.core.progress.IProgressMonitor;
 
 public interface IImage2AsciiAlgorithm {
    IChangeableModel getOptionsModel();

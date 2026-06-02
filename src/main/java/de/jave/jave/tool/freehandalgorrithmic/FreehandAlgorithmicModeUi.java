@@ -1,7 +1,7 @@
 package de.jave.jave.tool.freehandalgorrithmic;
 
 import de.jave.jave.algorithm.freehandalgorithmic.FreehandAlgorithmicMode;
-import net.disy.commons.swing.ui.AbstractObjectUi;
+import net.dizzy.commons.swing.ui.AbstractObjectUi;
 
 public class FreehandAlgorithmicModeUi extends AbstractObjectUi<FreehandAlgorithmicMode> {
    public String getLabel(FreehandAlgorithmicMode value) {

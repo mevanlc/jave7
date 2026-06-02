@@ -9,16 +9,16 @@ import java.awt.Dimension;
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import net.disy.commons.core.io.FileModel;
-import net.disy.commons.core.message.IBasicMessage;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.dialog.core.DialogHeaderPanelConfiguration;
-import net.disy.commons.swing.dialog.core.IDialogHeaderPanelConfiguration;
-import net.disy.commons.swing.dialog.userdialog.DefaultDialogConfiguration;
-import net.disy.commons.swing.dialog.userdialog.UserDialog;
-import net.disy.commons.swing.dialog.userdialog.page.AbstractDialogPage;
-import net.disy.commons.swing.dialog.userdialog.page.IDialogPage;
-import net.disy.commons.swing.util.RelativePosition;
+import net.dizzy.commons.core.io.FileModel;
+import net.dizzy.commons.core.message.IBasicMessage;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.dialog.core.DialogHeaderPanelConfiguration;
+import net.dizzy.commons.swing.dialog.core.IDialogHeaderPanelConfiguration;
+import net.dizzy.commons.swing.dialog.userdialog.DefaultDialogConfiguration;
+import net.dizzy.commons.swing.dialog.userdialog.UserDialog;
+import net.dizzy.commons.swing.dialog.userdialog.page.AbstractDialogPage;
+import net.dizzy.commons.swing.dialog.userdialog.page.IDialogPage;
+import net.dizzy.commons.swing.util.RelativePosition;
 
 public abstract class AbstractDialogTool {
    private final JavEApplication jave;

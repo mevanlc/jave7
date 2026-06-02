@@ -16,11 +16,11 @@ import java.awt.event.ItemListener;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.swing.border.TitledPanel;
-import net.disy.commons.swing.fontchooser.model.FontModel;
-import net.disy.commons.swing.fontchooser.view.FontChooserButton;
-import net.disy.commons.swing.fontchooser.view.fixedwidth.FixedWidthFontChooserDialogFactory;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.swing.border.TitledPanel;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.swing.fontchooser.view.FontChooserButton;
+import net.dizzy.commons.swing.fontchooser.view.fixedwidth.FixedWidthFontChooserDialogFactory;
 
 public class GifExportOptionsPanel {
    private ImagePanel imagePanel;

@@ -23,10 +23,10 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import net.disy.commons.core.model.BooleanModel;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.core.model.BooleanModel;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
 
 public class FigletToolOptionsPanel implements IInlineToolOptions {
    private static final int MIN_PREFIX_LEN = 4;

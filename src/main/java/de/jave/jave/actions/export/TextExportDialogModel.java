@@ -1,7 +1,7 @@
 package de.jave.jave.actions.export;
 
-import net.disy.commons.core.model.FixedOptionsObjectSelectionModel;
-import net.disy.commons.core.model.ObjectModel;
+import net.dizzy.commons.core.model.FixedOptionsObjectSelectionModel;
+import net.dizzy.commons.core.model.ObjectModel;
 
 public class TextExportDialogModel {
    private final FixedOptionsObjectSelectionModel<ITextExportFormat> formatSelectionModel;

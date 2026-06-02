@@ -4,7 +4,7 @@ import de.jave.jave.preferences.AnimationExportPreferences;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class AnimationExportOptions {
    private IAnimationExportFormat format;

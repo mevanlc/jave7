@@ -1,7 +1,7 @@
 package de.jave.image2ascii;
 
 import javax.swing.Icon;
-import net.disy.commons.swing.ui.AbstractObjectUi;
+import net.dizzy.commons.swing.ui.AbstractObjectUi;
 
 public class Image2AsciiAlgorithmItemUi extends AbstractObjectUi<IImage2AsciiAlgorithmItem> {
    public Icon getIcon(IImage2AsciiAlgorithmItem value) {

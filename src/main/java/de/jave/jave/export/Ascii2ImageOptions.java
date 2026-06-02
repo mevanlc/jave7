@@ -2,7 +2,7 @@ package de.jave.jave.export;
 
 import java.awt.Color;
 import java.awt.Font;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class Ascii2ImageOptions {
    private final boolean connectedLinesView;

@@ -12,9 +12,9 @@ import de.jave.jave.preferences.BooleanPreferenceModel;
 import de.jave.lib.CharacterPlate;
 import java.awt.Component;
 import java.awt.Point;
-import net.disy.commons.swing.mousecursor.CursorId;
-import net.disy.commons.swing.mousecursor.CursorProvider;
-import net.disy.commons.swing.resources.DisyCommonsSwingIconResources;
+import net.dizzy.commons.swing.mousecursor.CursorId;
+import net.dizzy.commons.swing.mousecursor.CursorProvider;
+import net.dizzy.commons.swing.resources.DisyCommonsSwingIconResources;
 
 public class CutAction extends AbstractJaveAction {
    private final BooleanPreferenceModel selectionlessCutCopyOnCellModel;

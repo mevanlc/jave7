@@ -11,9 +11,9 @@ import de.jave.vi.ViPlayMode;
 import de.jave.vi.ViViewerApplication;
 import java.awt.Component;
 import java.io.File;
-import net.disy.commons.core.io.FileModel;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.action.SmartAction;
+import net.dizzy.commons.core.io.FileModel;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.action.SmartAction;
 
 public class ShowVtViewerAction extends SmartAction {
    private final FileModel currentDirectoryModel;

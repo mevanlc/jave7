@@ -11,10 +11,10 @@ import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
-import net.disy.commons.core.exception.MessageException;
-import net.disy.commons.core.message.Message;
-import net.disy.commons.core.message.MessageType;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.exception.MessageException;
+import net.dizzy.commons.core.message.Message;
+import net.dizzy.commons.core.message.MessageType;
+import net.dizzy.commons.core.util.Ensure;
 
 public class SwfAnimationExporter extends AbstractAnimationExporter {
    private final AnimationExportOptions options;

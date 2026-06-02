@@ -5,8 +5,8 @@ import de.jave.image.monochrome.GMonochromeImage;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import net.disy.commons.core.progress.ICancelable;
-import net.disy.commons.core.progress.ProgressUtilities;
+import net.dizzy.commons.core.progress.ICancelable;
+import net.dizzy.commons.core.progress.ProgressUtilities;
 
 public class GGreyscaleImage extends GImage {
    private int[][] pixels;

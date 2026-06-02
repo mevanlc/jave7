@@ -7,7 +7,7 @@ import java.net.URL;
 import java.util.prefs.Preferences;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import net.disy.commons.swing.icon.BaseIconImageIcon;
+import net.dizzy.commons.swing.icon.BaseIconImageIcon;
 
 public class Resources {
    private static final Icon errorIcon = new Resources.ErrorIcon();

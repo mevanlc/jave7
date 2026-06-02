@@ -1,7 +1,7 @@
 package de.jave.gui;
 
 import java.awt.Graphics;
-import net.disy.commons.swing.color.SwingColors;
+import net.dizzy.commons.swing.color.SwingColors;
 
 public class GuiTools {
    private GuiTools() {

@@ -3,8 +3,8 @@ package de.jave.asciimation.action;
 import de.jave.asciimation.editor.AnimationEditorModel;
 import de.jave.jave.icon.JaveIcons;
 import java.awt.Component;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.action.SmartAction;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.action.SmartAction;
 
 public class DuplicateCurrentFrameAction extends SmartAction {
    private final AnimationEditorModel model;

@@ -4,7 +4,7 @@ import de.jave.lib.CharacterPlate;
 import de.jave.lib.area.BooleanArea;
 import de.jave.lib.collections.IntVector;
 import java.awt.Toolkit;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class ViAnimator {
    private CharacterPlate plate;

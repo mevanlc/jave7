@@ -3,7 +3,7 @@ package de.jave.image2ascii.algorithm.dialog.banned;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import net.disy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
 
 public class AsciiCharacterSetModel extends AbstractChangeableModel {
    private String selectedCharacters = "";

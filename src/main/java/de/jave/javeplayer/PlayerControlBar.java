@@ -11,10 +11,10 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JToggleButton;
-import net.disy.commons.core.model.BooleanModel;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.action.ActionWidgetFactory;
-import net.disy.commons.swing.action.SmartAction;
+import net.dizzy.commons.core.model.BooleanModel;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.action.ActionWidgetFactory;
+import net.dizzy.commons.swing.action.SmartAction;
 
 public class PlayerControlBar implements IPlayerControlBar {
    private final JComponent content;

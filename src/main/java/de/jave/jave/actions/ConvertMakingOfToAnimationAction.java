@@ -26,9 +26,9 @@ import de.jave.lib.area.BooleanArea;
 import java.awt.Component;
 import java.awt.Point;
 import java.io.File;
-import net.disy.commons.core.message.Message;
-import net.disy.commons.core.message.MessageType;
-import net.disy.commons.swing.dialog.message.MessageDialogFactory;
+import net.dizzy.commons.core.message.Message;
+import net.dizzy.commons.core.message.MessageType;
+import net.dizzy.commons.swing.dialog.message.MessageDialogFactory;
 
 public class ConvertMakingOfToAnimationAction extends AbstractJaveAction {
    private final JavEApplication jave;

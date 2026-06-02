@@ -6,7 +6,7 @@ import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
-import net.disy.commons.swing.color.SwingColors;
+import net.dizzy.commons.swing.color.SwingColors;
 
 public class GStatusLabel extends JComponent {
    private static final int MINIMUM_WIDTH = 30;

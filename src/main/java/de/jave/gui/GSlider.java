@@ -17,7 +17,7 @@ import javax.swing.JComponent;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class GSlider extends JComponent implements KeyListener, FocusListener, MouseListener, MouseMotionListener {
    private final SpinnerNumberModel model;

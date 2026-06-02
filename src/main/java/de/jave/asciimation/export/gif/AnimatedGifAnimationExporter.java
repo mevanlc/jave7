@@ -10,7 +10,7 @@ import de.jave.javeplayer.AnimationProperties;
 import de.jave.lib.CharacterPlate;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 import net.jmge.gif.facade.AnimatedGifFileBuilder;
 
 public class AnimatedGifAnimationExporter extends AbstractAnimationExporter {

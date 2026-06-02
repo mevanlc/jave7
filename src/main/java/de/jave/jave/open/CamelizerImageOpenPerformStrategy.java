@@ -7,10 +7,10 @@ import de.jave.jave.plate.JaveMainPanel;
 import java.awt.Component;
 import java.io.File;
 import javax.swing.Icon;
-import net.disy.commons.core.message.Message;
-import net.disy.commons.core.message.MessageType;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.dialog.message.MessageDialogFactory;
+import net.dizzy.commons.core.message.Message;
+import net.dizzy.commons.core.message.MessageType;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.dialog.message.MessageDialogFactory;
 
 public class CamelizerImageOpenPerformStrategy implements IImageOpenPerformStrategy {
    private final CamelizerAction action;

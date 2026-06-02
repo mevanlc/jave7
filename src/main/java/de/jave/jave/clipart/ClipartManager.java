@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import net.disy.commons.core.message.Message;
-import net.disy.commons.swing.dialog.message.MessageDialogFactory;
+import net.dizzy.commons.core.message.Message;
+import net.dizzy.commons.swing.dialog.message.MessageDialogFactory;
 
 public class ClipartManager {
    private static final File BASE_FOLDER = new File(JaveGlobalRessources.codeBase, "clipart");

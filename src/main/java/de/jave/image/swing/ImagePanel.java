@@ -12,7 +12,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
-import net.disy.commons.core.model.ObjectModel;
+import net.dizzy.commons.core.model.ObjectModel;
 
 public class ImagePanel implements IInteractiveGraphicsEditable {
    private final JComponent imageComponent;

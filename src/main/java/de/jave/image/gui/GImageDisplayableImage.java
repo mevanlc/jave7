@@ -4,7 +4,7 @@ import de.jave.image.GImage;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class GImageDisplayableImage implements IDisplayableImage {
    private final GImage image;

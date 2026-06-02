@@ -1,6 +1,6 @@
 package de.jave.jave.ascii3d;
 
-import net.disy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
 
 public class Navigate3dModel extends AbstractChangeableModel {
    private static final double DEFAULT_ZOOM = 7.0;

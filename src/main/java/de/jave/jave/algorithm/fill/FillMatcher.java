@@ -3,7 +3,7 @@ package de.jave.jave.algorithm.fill;
 import de.jave.lib.CharacterPlate;
 import java.awt.Rectangle;
 import java.util.Stack;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class FillMatcher {
    public static final char MARK = '\u0002';

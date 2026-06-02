@@ -8,8 +8,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import net.disy.commons.core.exception.UnreachableCodeReachedException;
-import net.disy.commons.core.io.IOUtilities;
+import net.dizzy.commons.core.exception.UnreachableCodeReachedException;
+import net.dizzy.commons.core.io.IOUtilities;
 import net.jmge.gif.Gif89Frame;
 import net.jmge.gif.IGifFrameProvider;
 

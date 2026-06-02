@@ -5,7 +5,7 @@ import de.jave.figlet.engine.primitives.FigFont;
 import de.jave.figlet.util.FigException;
 import java.awt.Component;
 import javax.swing.JOptionPane;
-import net.disy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.action.SmartAction;
 
 public abstract class AbstractFontListAction extends SmartAction {
    private final IFigDriver figlet;

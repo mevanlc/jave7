@@ -6,14 +6,14 @@ import java.awt.Component;
 import java.awt.Font;
 import java.util.HashMap;
 import java.util.Map;
-import net.disy.commons.core.io.FileModel;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.dialog.core.DialogHeaderPanelConfiguration;
-import net.disy.commons.swing.dialog.core.IDialogHeaderPanelConfiguration;
-import net.disy.commons.swing.dialog.core.IDialogResult;
-import net.disy.commons.swing.dialog.wizard.AbstractWizardConfiguration;
-import net.disy.commons.swing.dialog.wizard.IWizardPage;
-import net.disy.commons.swing.dialog.wizard.WizardDialog;
+import net.dizzy.commons.core.io.FileModel;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.dialog.core.DialogHeaderPanelConfiguration;
+import net.dizzy.commons.swing.dialog.core.IDialogHeaderPanelConfiguration;
+import net.dizzy.commons.swing.dialog.core.IDialogResult;
+import net.dizzy.commons.swing.dialog.wizard.AbstractWizardConfiguration;
+import net.dizzy.commons.swing.dialog.wizard.IWizardPage;
+import net.dizzy.commons.swing.dialog.wizard.WizardDialog;
 
 public class AnimationExportWizard extends AbstractWizardConfiguration {
    private final String title;

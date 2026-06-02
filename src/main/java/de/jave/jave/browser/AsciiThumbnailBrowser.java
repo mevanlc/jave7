@@ -23,16 +23,16 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileSystemView;
-import net.disy.commons.core.io.FileModel;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.progress.ICancelable;
-import net.disy.commons.core.progress.IInterruptableRunnableWithProgress;
-import net.disy.commons.core.progress.IProgressMonitor;
-import net.disy.commons.core.progress.ProgressUtilities;
-import net.disy.commons.swing.action.SmartAction;
-import net.disy.commons.swing.dialog.progress.ProgressMonitorDialog;
-import net.disy.commons.swing.filechooser.view.FolderSelectionPanel;
-import net.disy.commons.swing.layout.util.ButtonPanelBuilder;
+import net.dizzy.commons.core.io.FileModel;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.progress.ICancelable;
+import net.dizzy.commons.core.progress.IInterruptableRunnableWithProgress;
+import net.dizzy.commons.core.progress.IProgressMonitor;
+import net.dizzy.commons.core.progress.ProgressUtilities;
+import net.dizzy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.dialog.progress.ProgressMonitorDialog;
+import net.dizzy.commons.swing.filechooser.view.FolderSelectionPanel;
+import net.dizzy.commons.swing.layout.util.ButtonPanelBuilder;
 
 public class AsciiThumbnailBrowser {
    private static final String TITLE = "JavE Thumbnail Browser";

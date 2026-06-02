@@ -3,8 +3,8 @@ package de.jave.asciimation;
 import de.jave.gui.io.ExtensionFileFilters;
 import de.jave.gui.io.IFileChooserConfiguration;
 import de.jave.gui.io.SmartFileFilter;
-import net.disy.commons.core.io.FileModel;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.io.FileModel;
+import net.dizzy.commons.core.util.Ensure;
 
 public class JmovFileChooserConfiguration implements IFileChooserConfiguration {
    private final FileModel currentDirectoryModel;

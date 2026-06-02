@@ -15,8 +15,8 @@ import de.jave.jave.algorithm.gradient.AsciiGradientConfiguration;
 import de.jave.jave.filter.Filter;
 import java.util.ArrayList;
 import java.util.List;
-import net.disy.commons.swing.component.IDisposableComponentContainer;
-import net.disy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.swing.component.IDisposableComponentContainer;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
 
 public class Image2AsciiAlgorithmFactory {
    private Image2AsciiAlgorithmFactory() {

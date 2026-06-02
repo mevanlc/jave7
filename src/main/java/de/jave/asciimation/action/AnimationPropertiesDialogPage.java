@@ -10,14 +10,14 @@ import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
-import net.disy.commons.core.message.IBasicMessage;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.color.widgets.ColorModel;
-import net.disy.commons.swing.dialog.color.ColorChooserButton;
-import net.disy.commons.swing.dialog.userdialog.page.AbstractDialogPage;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
-import net.disy.commons.swing.layout.util.LayoutUtilities;
+import net.dizzy.commons.core.message.IBasicMessage;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.color.widgets.ColorModel;
+import net.dizzy.commons.swing.dialog.color.ColorChooserButton;
+import net.dizzy.commons.swing.dialog.userdialog.page.AbstractDialogPage;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.swing.layout.util.LayoutUtilities;
 
 public final class AnimationPropertiesDialogPage extends AbstractDialogPage {
    private final AnimationEditorModel model;

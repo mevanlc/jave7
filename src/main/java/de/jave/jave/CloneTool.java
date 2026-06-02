@@ -12,11 +12,11 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import javax.swing.Icon;
 import javax.swing.JPanel;
-import net.disy.commons.core.message.Message;
-import net.disy.commons.core.message.MessageType;
-import net.disy.commons.swing.dialog.message.MessageDialogFactory;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.util.GuiUtilities;
+import net.dizzy.commons.core.message.Message;
+import net.dizzy.commons.core.message.MessageType;
+import net.dizzy.commons.swing.dialog.message.MessageDialogFactory;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.util.GuiUtilities;
 
 public class CloneTool extends EraserTool {
    private int dx;

@@ -1,6 +1,6 @@
 package de.jave.jave.actions.fileimport;
 
-import net.disy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
 
 public class AsciimationOptionsModel extends AbstractChangeableModel {
    private int skipTop = 0;

@@ -5,8 +5,8 @@ import java.io.File;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 import javax.swing.filechooser.FileSystemView;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.filechooser.util.FileObjectUi;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.filechooser.util.FileObjectUi;
 
 public class FileListCellRenderer extends DefaultListCellRenderer {
    private final FileObjectUi fileObjectUi;

@@ -9,9 +9,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
 import javax.swing.border.EmptyBorder;
-import net.disy.commons.core.util.IBlock;
-import net.disy.commons.swing.events.mouse.OverallMouseListeningPanel;
-import net.disy.commons.swing.layout.util.LayoutUtilities;
+import net.dizzy.commons.core.util.IBlock;
+import net.dizzy.commons.swing.events.mouse.OverallMouseListeningPanel;
+import net.dizzy.commons.swing.layout.util.LayoutUtilities;
 
 public final class MouseActivePanel extends OverallMouseListeningPanel {
    private Point pressedPoint;

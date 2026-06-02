@@ -14,11 +14,11 @@ import java.awt.Dimension;
 import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
-import net.disy.commons.core.model.IChangeableModel;
-import net.disy.commons.core.progress.ICancelable;
-import net.disy.commons.core.progress.IProgressMonitor;
-import net.disy.commons.core.progress.ProgressUtilities;
-import net.disy.commons.swing.component.IDisposableComponentContainer;
+import net.dizzy.commons.core.model.IChangeableModel;
+import net.dizzy.commons.core.progress.ICancelable;
+import net.dizzy.commons.core.progress.IProgressMonitor;
+import net.dizzy.commons.core.progress.ProgressUtilities;
+import net.dizzy.commons.swing.component.IDisposableComponentContainer;
 
 public class Image2AsciiAlgorithmBraille extends AbstractImage2AsciiAlgorithm {
    private final AlgorithmBrailleOptionsModel optionsModel = new AlgorithmBrailleOptionsModel();

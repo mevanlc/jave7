@@ -1,6 +1,6 @@
 package de.jave.gui;
 
-import net.disy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
 
 public class CharacterModel extends AbstractChangeableModel {
    private char character = ' ';

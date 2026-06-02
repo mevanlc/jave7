@@ -9,7 +9,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
-import net.disy.commons.core.io.IOUtilities;
+import net.dizzy.commons.core.io.IOUtilities;
 
 public abstract class AbstractFigFileResource implements IFigFileResource {
    protected final FigFileName[] createFigFileNames(String[] names) {

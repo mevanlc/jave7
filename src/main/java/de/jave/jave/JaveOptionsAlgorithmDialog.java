@@ -6,17 +6,17 @@ import de.jave.jave.algorithm.JaveOptionsAlgorithm;
 import de.jave.jave.plate.JaveMainPanel;
 import java.awt.Component;
 import javax.swing.JComponent;
-import net.disy.commons.core.message.IBasicMessage;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.dialog.core.DialogHeaderPanelConfiguration;
-import net.disy.commons.swing.dialog.core.IDialogHeaderPanelConfiguration;
-import net.disy.commons.swing.dialog.core.IDialogResult;
-import net.disy.commons.swing.dialog.userdialog.DefaultDialogConfiguration;
-import net.disy.commons.swing.dialog.userdialog.UserDialog;
-import net.disy.commons.swing.dialog.userdialog.page.AbstractDialogPage;
-import net.disy.commons.swing.dialog.userdialog.page.IDialogPage;
-import net.disy.commons.swing.fontchooser.model.FontModel;
-import net.disy.commons.swing.util.RelativePosition;
+import net.dizzy.commons.core.message.IBasicMessage;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.dialog.core.DialogHeaderPanelConfiguration;
+import net.dizzy.commons.swing.dialog.core.IDialogHeaderPanelConfiguration;
+import net.dizzy.commons.swing.dialog.core.IDialogResult;
+import net.dizzy.commons.swing.dialog.userdialog.DefaultDialogConfiguration;
+import net.dizzy.commons.swing.dialog.userdialog.UserDialog;
+import net.dizzy.commons.swing.dialog.userdialog.page.AbstractDialogPage;
+import net.dizzy.commons.swing.dialog.userdialog.page.IDialogPage;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.swing.util.RelativePosition;
 
 public class JaveOptionsAlgorithmDialog implements JaveAlgorithmOptionsListener {
    private final JaveSelection source;

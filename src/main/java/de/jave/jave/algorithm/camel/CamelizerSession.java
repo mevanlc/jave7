@@ -17,7 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import net.disy.commons.core.model.BooleanModel;
+import net.dizzy.commons.core.model.BooleanModel;
 
 import de.jave.gui.dialog.JDialogFactory;
 
@@ -52,7 +52,7 @@ final class CamelizerSession {
       JaveMainPanel mainPanel,
       Frame owner,
       CharacterPlate sourcePlate,
-      net.disy.commons.core.io.FileModel currentDirectoryModel,
+      net.dizzy.commons.core.io.FileModel currentDirectoryModel,
       File optionalImageFile,
       Runnable onDispose
    ) {

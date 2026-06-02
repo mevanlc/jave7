@@ -3,7 +3,7 @@ package de.jave.jave.tool.text;
 import de.jave.jave.JaveMessages;
 import de.jave.jave.icon.JaveIcons;
 import javax.swing.Icon;
-import net.disy.commons.swing.ui.AbstractObjectUi;
+import net.dizzy.commons.swing.ui.AbstractObjectUi;
 
 public class CursorMovementUi extends AbstractObjectUi<CursorMovement> {
    public Icon getIcon(CursorMovement value) {

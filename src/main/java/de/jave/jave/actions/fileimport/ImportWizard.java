@@ -1,8 +1,8 @@
 package de.jave.jave.actions.fileimport;
 
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.dialog.wizard.AbstractWizardConfiguration;
-import net.disy.commons.swing.dialog.wizard.IWizardPage;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.dialog.wizard.AbstractWizardConfiguration;
+import net.dizzy.commons.swing.dialog.wizard.IWizardPage;
 
 final class ImportWizard extends AbstractWizardConfiguration {
    private final ImportWizardModel model;

@@ -4,8 +4,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.List;
-import net.disy.commons.core.io.IOUtilities;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.io.IOUtilities;
+import net.dizzy.commons.core.util.Ensure;
 
 public class PatternList {
    private final List<Pattern> patterns;

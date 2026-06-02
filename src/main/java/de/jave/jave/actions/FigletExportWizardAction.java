@@ -9,8 +9,8 @@ import de.jave.jave.plate.IDocumentEditor;
 import de.jave.jave.plate.JaveMainPanel;
 import de.jave.jave.preferences.JaveApplicationPreferences;
 import java.awt.Component;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.dialog.wizard.WizardDialog;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.dialog.wizard.WizardDialog;
 
 public class FigletExportWizardAction extends AbstractJaveAction {
    private final JaveApplicationPreferences preferences;

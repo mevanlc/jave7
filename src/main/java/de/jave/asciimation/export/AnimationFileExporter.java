@@ -7,15 +7,15 @@ import de.jave.lib.CharacterPlate;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.lang.reflect.InvocationTargetException;
-import net.disy.commons.core.exception.MessageException;
-import net.disy.commons.core.message.Message;
-import net.disy.commons.core.message.MessageType;
-import net.disy.commons.core.progress.ICancelable;
-import net.disy.commons.core.progress.IInterruptableRunnableWithProgress;
-import net.disy.commons.core.progress.IProgressMonitor;
-import net.disy.commons.core.progress.ProgressUtilities;
-import net.disy.commons.swing.dialog.message.MessageDialogFactory;
-import net.disy.commons.swing.dialog.progress.ProgressMonitorDialog;
+import net.dizzy.commons.core.exception.MessageException;
+import net.dizzy.commons.core.message.Message;
+import net.dizzy.commons.core.message.MessageType;
+import net.dizzy.commons.core.progress.ICancelable;
+import net.dizzy.commons.core.progress.IInterruptableRunnableWithProgress;
+import net.dizzy.commons.core.progress.IProgressMonitor;
+import net.dizzy.commons.core.progress.ProgressUtilities;
+import net.dizzy.commons.swing.dialog.message.MessageDialogFactory;
+import net.dizzy.commons.swing.dialog.progress.ProgressMonitorDialog;
 
 public class AnimationFileExporter {
    public static void performExport(Component parentComponent, final JaveAnimationFile animationFile, AnimationExportOptions options) {

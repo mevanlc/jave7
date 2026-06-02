@@ -4,7 +4,7 @@ import de.jave.jave.actions.Image2AsciiAction;
 import java.awt.Component;
 import java.io.File;
 import javax.swing.Icon;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public final class Image2AsciiImageOpenPerformStrategy implements IImageOpenPerformStrategy {
    private final Image2AsciiAction action;

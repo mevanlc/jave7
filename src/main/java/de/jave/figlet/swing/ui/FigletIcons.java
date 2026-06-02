@@ -5,8 +5,8 @@ import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.Icon;
-import net.disy.commons.swing.icon.util.IconUtilities;
-import net.disy.commons.swing.resources.IIconResources;
+import net.dizzy.commons.swing.icon.util.IconUtilities;
+import net.dizzy.commons.swing.resources.IIconResources;
 
 public class FigletIcons implements IIconResources {
    public static final Icon FIGLET_ICON = Resources.getIconResource("figlet_icon16.gif");

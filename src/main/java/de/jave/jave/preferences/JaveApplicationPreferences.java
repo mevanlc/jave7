@@ -9,11 +9,11 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Rectangle;
 import java.io.File;
-import net.disy.commons.core.io.FileModel;
-import net.disy.commons.core.model.BooleanModel;
-import net.disy.commons.core.model.ObjectModel;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.core.io.FileModel;
+import net.dizzy.commons.core.model.BooleanModel;
+import net.dizzy.commons.core.model.ObjectModel;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
 
 public class JaveApplicationPreferences extends SmartPreferences {
    private static final String KEY_CLIPART_GROUP_NAME = "clipartGroupName";

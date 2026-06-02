@@ -11,13 +11,13 @@ import java.awt.Dimension;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import net.disy.commons.core.message.BasicMessage;
-import net.disy.commons.core.message.IBasicMessage;
-import net.disy.commons.core.message.MessageType;
-import net.disy.commons.swing.dialog.core.IDialogHelpHandler;
-import net.disy.commons.swing.dialog.userdialog.page.AbstractDialogPage;
-import net.disy.commons.swing.events.AbstractDocumentChangeListener;
-import net.disy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.core.message.BasicMessage;
+import net.dizzy.commons.core.message.IBasicMessage;
+import net.dizzy.commons.core.message.MessageType;
+import net.dizzy.commons.swing.dialog.core.IDialogHelpHandler;
+import net.dizzy.commons.swing.dialog.userdialog.page.AbstractDialogPage;
+import net.dizzy.commons.swing.events.AbstractDocumentChangeListener;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
 
 public final class FormulaEditorDialogPage extends AbstractDialogPage {
    private static final String EXAMPLE_FORMULA = "sqrt(pi)/5*x_i+2^{y+z}";

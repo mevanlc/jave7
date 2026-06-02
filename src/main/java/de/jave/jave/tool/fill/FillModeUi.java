@@ -1,7 +1,7 @@
 package de.jave.jave.tool.fill;
 
 import de.jave.jave.algorithm.fill.FillMode;
-import net.disy.commons.swing.ui.AbstractObjectUi;
+import net.dizzy.commons.swing.ui.AbstractObjectUi;
 
 public class FillModeUi extends AbstractObjectUi<FillMode> {
    public String getLabel(FillMode value) {

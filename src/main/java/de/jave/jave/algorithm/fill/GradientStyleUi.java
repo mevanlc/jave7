@@ -2,7 +2,7 @@ package de.jave.jave.algorithm.fill;
 
 import de.jave.jave.icon.JaveIcons;
 import javax.swing.Icon;
-import net.disy.commons.swing.ui.AbstractObjectUi;
+import net.dizzy.commons.swing.ui.AbstractObjectUi;
 
 public class GradientStyleUi extends AbstractObjectUi<GradientStyle> {
    public Icon getIcon(GradientStyle value) {

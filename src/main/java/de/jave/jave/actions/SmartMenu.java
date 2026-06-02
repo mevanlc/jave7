@@ -2,8 +2,8 @@ package de.jave.jave.actions;
 
 import de.jave.maxosx.MacOsXInitializer;
 import javax.swing.JMenu;
-import net.disy.commons.swing.label.internal.MnemonicLabel;
-import net.disy.commons.swing.label.internal.MnemonicLabelParser;
+import net.dizzy.commons.swing.label.internal.MnemonicLabel;
+import net.dizzy.commons.swing.label.internal.MnemonicLabelParser;
 
 public class SmartMenu extends JMenu {
    public SmartMenu(String text) {

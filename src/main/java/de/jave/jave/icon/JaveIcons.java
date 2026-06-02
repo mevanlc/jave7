@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.prefs.Preferences;
 import javax.swing.Icon;
-import net.disy.commons.swing.resources.IIconResources;
+import net.dizzy.commons.swing.resources.IIconResources;
 
 public class JaveIcons implements IIconResources {
    private static final int ICON_SIZE = readIconSizePreference();

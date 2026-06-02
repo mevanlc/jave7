@@ -1,6 +1,6 @@
 package de.jave.image2ascii.algorithm;
 
-import net.disy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
 
 public class AlgorithmFeltpenOptionsModel extends AbstractChangeableModel {
    private boolean medianCut = true;

@@ -1,6 +1,6 @@
 package de.jave.image2ascii.model;
 
-import net.disy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
 
 public class Image2AsciiOutputOptionsModel extends AbstractChangeableModel {
    private static final int RESULT_WIDTH_DEFAULT = 72;

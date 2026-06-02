@@ -2,15 +2,15 @@ package de.jave.jave.clipart;
 
 import de.jave.gui.FilenameTextField;
 import java.awt.Component;
-import net.disy.commons.core.message.BasicMessage;
-import net.disy.commons.core.message.IBasicMessage;
-import net.disy.commons.core.message.MessageType;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.action.SmartAction;
-import net.disy.commons.swing.dialog.input.text.ITextInputDialogConfiguration;
-import net.disy.commons.swing.dialog.input.text.ITextInputDialogResult;
-import net.disy.commons.swing.dialog.input.text.SmartTextInputDialog;
-import net.disy.commons.swing.icon.CommonIcons;
+import net.dizzy.commons.core.message.BasicMessage;
+import net.dizzy.commons.core.message.IBasicMessage;
+import net.dizzy.commons.core.message.MessageType;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.action.SmartAction;
+import net.dizzy.commons.swing.dialog.input.text.ITextInputDialogConfiguration;
+import net.dizzy.commons.swing.dialog.input.text.ITextInputDialogResult;
+import net.dizzy.commons.swing.dialog.input.text.SmartTextInputDialog;
+import net.dizzy.commons.swing.icon.CommonIcons;
 
 public final class NewClipartFolderAction extends SmartAction {
    private final ClipartManager clipartManager;

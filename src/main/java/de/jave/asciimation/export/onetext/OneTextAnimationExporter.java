@@ -8,8 +8,8 @@ import de.jave.lib.CharacterPlate;
 import java.awt.Dimension;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import net.disy.commons.core.io.IOUtilities;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.io.IOUtilities;
+import net.dizzy.commons.core.util.Ensure;
 
 public class OneTextAnimationExporter extends AbstractAnimationExporter {
    private final AnimationExportOptions options;

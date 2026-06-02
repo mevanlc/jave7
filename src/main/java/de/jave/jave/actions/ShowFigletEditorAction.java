@@ -13,7 +13,7 @@ import de.jave.jave.preferences.JaveApplicationPreferences;
 import de.jave.lib.CharacterPlate;
 import de.jave.preferences.JavePreferences;
 import java.awt.Component;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class ShowFigletEditorAction extends AbstractJaveAction {
    private final JavEApplication jave;

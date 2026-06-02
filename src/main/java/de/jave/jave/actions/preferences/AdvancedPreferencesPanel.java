@@ -3,11 +3,11 @@ package de.jave.jave.actions.preferences;
 import de.jave.jave.preferences.JaveApplicationPreferences;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import net.disy.commons.core.model.BooleanModel;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.action.ActionWidgetFactory;
-import net.disy.commons.swing.action.SmartToggleAction;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.core.model.BooleanModel;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.action.ActionWidgetFactory;
+import net.dizzy.commons.swing.action.SmartToggleAction;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
 
 public class AdvancedPreferencesPanel implements IJavePreferencesPanel {
    private final JaveApplicationPreferences preferences;

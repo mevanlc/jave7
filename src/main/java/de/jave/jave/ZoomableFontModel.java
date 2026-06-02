@@ -1,10 +1,10 @@
 package de.jave.jave;
 
 import java.awt.Font;
-import net.disy.commons.core.model.AbstractChangeableModel;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
 
 public class ZoomableFontModel extends AbstractChangeableModel {
    private static final int MIN_FONT_SIZE = 6;

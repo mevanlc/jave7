@@ -3,7 +3,7 @@ package de.jave.preferences;
 import java.io.File;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class SmartPreferences {
    private final Preferences preferences;

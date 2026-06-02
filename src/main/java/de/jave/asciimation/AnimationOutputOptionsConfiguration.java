@@ -3,7 +3,7 @@ package de.jave.asciimation;
 import de.jave.asciimation.export.IAnimationOutputOptionsConfiguration;
 import de.jave.gui.io.ExtensionFileFilter;
 import de.jave.gui.io.FileExtension;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class AnimationOutputOptionsConfiguration implements IAnimationOutputOptionsConfiguration {
    private final boolean controlsAvailable;

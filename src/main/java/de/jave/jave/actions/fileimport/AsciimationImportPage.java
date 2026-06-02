@@ -10,10 +10,10 @@ import java.io.IOException;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import net.disy.commons.core.message.IBasicMessage;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.core.message.IBasicMessage;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
 
 public class AsciimationImportPage extends AbstractImportWizardPage {
    private static final String DEFAULT_MESSAGE = "Select the options for ascii animation import. You can adjust how the file is separated into frames and preview the result in the player panel.";

@@ -18,10 +18,10 @@ import java.awt.BorderLayout;
 import java.io.File;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import net.disy.commons.core.io.FileModel;
-import net.disy.commons.core.model.ObjectModel;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.io.FileModel;
+import net.dizzy.commons.core.model.ObjectModel;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
 
 public class AnimationDocumentEditor extends AbstractDocumentEditor {
    private final Plate plate;

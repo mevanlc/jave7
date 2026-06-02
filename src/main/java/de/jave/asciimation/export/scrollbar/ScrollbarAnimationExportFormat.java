@@ -9,7 +9,7 @@ import de.jave.asciimation.export.IAnimationExportFormat;
 import de.jave.asciimation.export.IAnimationExporter;
 import de.jave.gui.io.ExtensionFileFilters;
 import javax.swing.Icon;
-import net.disy.commons.swing.dialog.wizard.IWizardPage;
+import net.dizzy.commons.swing.dialog.wizard.IWizardPage;
 
 public class ScrollbarAnimationExportFormat implements IAnimationExportFormat {
    @Override

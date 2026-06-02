@@ -18,11 +18,11 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.events.AbstractDocumentChangeListener;
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutDataFactory;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.events.AbstractDocumentChangeListener;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.dizzy.commons.swing.layout.grid.GridDialogLayoutDataFactory;
 
 public class FunctionPlotTool extends AbstractDialogTool implements ItemListener {
    private static final String[] STR_STYLE = new String[]{"Lines", "Dot", "2by2 (JFL...)", "3by2", "Felt pen 8"};

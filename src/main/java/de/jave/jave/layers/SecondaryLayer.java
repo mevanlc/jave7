@@ -3,7 +3,7 @@ package de.jave.jave.layers;
 import de.jave.lib.CharacterPlate;
 import java.awt.Point;
 import java.awt.Rectangle;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public final class SecondaryLayer implements Layer {
    private final String id;

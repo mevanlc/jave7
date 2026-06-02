@@ -1,6 +1,6 @@
 package de.jave.image2ascii;
 
-import net.disy.commons.swing.component.IDisposableComponentContainer;
+import net.dizzy.commons.swing.component.IDisposableComponentContainer;
 
 public interface IImage2AsciiAlgorithmItem {
    IDisposableComponentContainer createAdjustmentComponent();

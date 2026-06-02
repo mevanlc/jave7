@@ -1,6 +1,6 @@
 package de.jave.gui.io;
 
-import net.disy.commons.core.io.FileModel;
+import net.dizzy.commons.core.io.FileModel;
 
 public interface IFileChooserConfiguration {
    FileModel getCurrentDirectoryModel();

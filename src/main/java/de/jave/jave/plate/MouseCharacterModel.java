@@ -1,6 +1,6 @@
 package de.jave.jave.plate;
 
-import net.disy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
 
 public class MouseCharacterModel extends AbstractChangeableModel {
    private char character1 = 'X';

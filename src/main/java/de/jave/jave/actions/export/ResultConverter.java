@@ -5,7 +5,7 @@ import de.jave.gui.io.SmartFileFilter;
 import de.jave.lib.CharacterPlate;
 import de.jave.lib.net.HtmlUtilities;
 import java.util.StringTokenizer;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class ResultConverter {
    private final ExtensionFileFilter fileFilter;

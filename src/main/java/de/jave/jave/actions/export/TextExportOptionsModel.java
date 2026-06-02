@@ -4,7 +4,7 @@ import de.jave.jave.JaveGlobalRessources;
 import de.jave.jave.preferences.ColorScheme;
 import java.awt.Color;
 import java.awt.Font;
-import net.disy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
 
 public class TextExportOptionsModel extends AbstractChangeableModel implements ITextExportOptions {
    private boolean trim = true;

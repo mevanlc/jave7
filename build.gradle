@@ -27,6 +27,7 @@ repositories {
 dependencies {
     implementation 'org.apache.ant:ant:1.10.11'
     implementation 'junit:junit:4.13.1'
+    implementation 'com.miglayout:miglayout-swing:11.4.2'
 }
 
 sourceSets {

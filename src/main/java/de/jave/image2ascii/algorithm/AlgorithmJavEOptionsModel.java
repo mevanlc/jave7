@@ -3,10 +3,10 @@ package de.jave.image2ascii.algorithm;
 import de.jave.image2ascii.SharedImage2AsciiOptions;
 import de.jave.image2ascii.algorithm.dialog.banned.BannedCharactersModel;
 import de.jave.image2ascii.algorithm.dialog.greyscaletable.GreyScaleTableSelectionModel;
-import net.disy.commons.core.model.AbstractChangeableModel;
-import net.disy.commons.core.model.listener.IChangeListener;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
 
 public class AlgorithmJavEOptionsModel extends AbstractChangeableModel {
    private final SharedImage2AsciiOptions sharedOptions;

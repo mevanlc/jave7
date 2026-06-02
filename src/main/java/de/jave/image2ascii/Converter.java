@@ -13,9 +13,9 @@ import java.awt.image.BufferedImage;
 import java.awt.image.PixelGrabber;
 import java.io.File;
 import java.io.IOException;
-import net.disy.commons.core.exception.UnreachableCodeReachedException;
-import net.disy.commons.core.progress.NonCancelable;
-import net.disy.commons.core.progress.NullProgressMonitor;
+import net.dizzy.commons.core.exception.UnreachableCodeReachedException;
+import net.dizzy.commons.core.progress.NonCancelable;
+import net.dizzy.commons.core.progress.NullProgressMonitor;
 
 public class Converter {
    public static CharacterPlate convert(

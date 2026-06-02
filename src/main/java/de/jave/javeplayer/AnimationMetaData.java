@@ -1,6 +1,6 @@
 package de.jave.javeplayer;
 
-import net.disy.commons.core.util.ObjectUtilities;
+import net.dizzy.commons.core.util.ObjectUtilities;
 
 public class AnimationMetaData {
    private String authorName;

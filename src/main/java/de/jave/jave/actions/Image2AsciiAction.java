@@ -14,10 +14,10 @@ import de.jave.jave.preferences.AnimationExportPreferences;
 import de.jave.jave.preferences.ColorScheme;
 import java.awt.Component;
 import java.io.File;
-import net.disy.commons.core.io.FileModel;
-import net.disy.commons.core.model.ObjectModel;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.core.io.FileModel;
+import net.dizzy.commons.core.model.ObjectModel;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
 
 public class Image2AsciiAction extends AbstractJaveAction {
    private Image2AsciiDialog image2AsciiDialog;

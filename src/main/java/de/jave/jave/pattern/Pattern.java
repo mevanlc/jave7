@@ -1,7 +1,7 @@
 package de.jave.jave.pattern;
 
 import de.jave.jave.algorithm.compress.AsciiPacker;
-import net.disy.commons.core.util.Ensure;
+import net.dizzy.commons.core.util.Ensure;
 
 public class Pattern {
    private String name;

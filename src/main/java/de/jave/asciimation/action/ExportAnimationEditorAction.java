@@ -10,9 +10,9 @@ import de.jave.jave.plate.IDocumentEditor;
 import de.jave.jave.plate.JaveMainPanel;
 import de.jave.jave.preferences.AnimationExportPreferences;
 import java.awt.Component;
-import net.disy.commons.core.io.FileModel;
-import net.disy.commons.core.util.Ensure;
-import net.disy.commons.swing.fontchooser.model.FontModel;
+import net.dizzy.commons.core.io.FileModel;
+import net.dizzy.commons.core.util.Ensure;
+import net.dizzy.commons.swing.fontchooser.model.FontModel;
 
 public class ExportAnimationEditorAction extends AbstractJaveAction {
    private final FileModel currentDirectoryModel;

@@ -6,7 +6,7 @@ import java.awt.Rectangle;
 import javax.swing.JTextArea;
 import javax.swing.plaf.TextUI;
 import javax.swing.plaf.basic.BasicTextAreaUI;
-import net.disy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.model.listener.IChangeListener;
 
 public class AsciiTextAreaComponent extends JTextArea {
    private final IBackgroundPainter backgroundPainter;

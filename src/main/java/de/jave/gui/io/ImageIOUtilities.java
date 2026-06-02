@@ -1,9 +1,9 @@
 package de.jave.gui.io;
 
 import de.jave.jave.swing.JaveSwingMessages;
-import net.disy.commons.core.io.FileModel;
-import net.disy.commons.core.util.CollectionUtilities;
-import net.disy.commons.core.util.ITransformer;
+import net.dizzy.commons.core.io.FileModel;
+import net.dizzy.commons.core.util.CollectionUtilities;
+import net.dizzy.commons.core.util.ITransformer;
 
 import javax.imageio.ImageIO;
 import java.awt.image.RenderedImage;
