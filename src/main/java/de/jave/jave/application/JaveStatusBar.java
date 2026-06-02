@@ -9,16 +9,15 @@ import de.jave.jave.ZoomableFontModel;
 import de.jave.jave.actions.ResizeDocumentAction;
 import de.jave.jave.plate.ActiveEditorModel;
 import de.jave.jave.plate.IDocumentEditor;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import net.dizzy.commons.core.model.ObjectModel;
 import net.dizzy.commons.core.model.listener.IChangeListener;
 import net.dizzy.commons.core.util.Ensure;
-import net.dizzy.commons.swing.component.Gap;
 import net.dizzy.commons.swing.fontchooser.model.FontModel;
-import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
-import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
 
 public class JaveStatusBar {
    private final GStatusLabel sizeLabel;
@@ -73,13 +72,14 @@ public class JaveStatusBar {
          }
       });
       this.updateFontZoomModel(zoomableFontModelModel);
-      JPanel panel = new JPanel(new GridDialogLayout(6, false, 0, 0));
-      panel.add(statusBar, GridDialogLayoutData.FILL_HORIZONTAL);
-      panel.add(new FontLabel(fontModel).getContent());
-      panel.add(new ZoomLabel(zoomableFontModelModel).getContent());
-      panel.add(this.sizeLabel);
-      panel.add(this.lInsert);
-      panel.add(new Gap(12, 1));
+      JPanel panel = new JPanel(new BorderLayout(0, 0));
+      JPanel detailsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+      detailsPanel.add(new FontLabel(fontModel).getContent());
+      detailsPanel.add(new ZoomLabel(zoomableFontModelModel).getContent());
+      detailsPanel.add(this.sizeLabel);
+      detailsPanel.add(this.lInsert);
+      panel.add(statusBar, BorderLayout.CENTER);
+      panel.add(detailsPanel, BorderLayout.EAST);
       this.content = panel;
    }
 
