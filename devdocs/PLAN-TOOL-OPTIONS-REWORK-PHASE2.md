@@ -1,8 +1,10 @@
 # Tool Options Rework — PHASE2: Sweep Migration
 
-> **Status:** complete. 9 of 11 remaining tools migrated; only Watermark
-> and Fill (the two genuine size-hogs) remain in the legacy floating
-> dialog. Awaiting user review before PHASE3.
+> **Status:** complete. The 9 tools in this phase's scope are migrated.
+> The two tools this doc deferred (`WatermarkTool`, `FillTool`) were
+> subsequently migrated inline in PHASE3 — see
+> `devdocs/PLAN-TOOL-OPTIONS-REWORK-PHASE3.md`. All 21 tools now render
+> their options inline; no tool relies on the legacy floating dialog.
 >
 > Builds on landed PHASE0 infrastructure (`IInlineToolOptions`,
 > `ToolSelectorBarOptionsHost`, `InlineOptionsWidthMeasurer`,
