@@ -59,6 +59,7 @@ public class JaveActions {
    private final SmartAction pasteAsNewDocumentAction;
    private final SmartAction pasteIntoSelectionAction;
    private final SmartAction unicodePickerAction;
+   private final SmartAction boxDrawingPickerAction;
    private final CamelizerSessionManager camelizerSessionManager;
 
    public JaveActions(
@@ -170,6 +171,7 @@ public class JaveActions {
       this.saveAllAction = new SaveAllAction(jave, mainPanel);
       this.saveAsAction = new SaveAsAction(jave, mainPanel);
       this.unicodePickerAction = new ShowUnicodePickerAction(mainPanel);
+      this.boxDrawingPickerAction = new ShowBoxDrawingPickerAction(mainPanel);
    }
 
    public SmartAction getExportAction() {
@@ -290,6 +292,10 @@ public class JaveActions {
 
    public SmartAction getUnicodePickerAction() {
       return this.unicodePickerAction;
+   }
+
+   public SmartAction getBoxDrawingPickerAction() {
+      return this.boxDrawingPickerAction;
    }
 
    public CamelizerSessionManager getCamelizerSessionManager() {

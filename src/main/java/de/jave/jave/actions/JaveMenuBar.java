@@ -451,6 +451,7 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
       menuTools.add(actions.getClipartLibraryAction());
       menuTools.add(actions.getTextBoxAction());
       menuTools.add(actions.getMathematicalExpressionsAction());
+      menuTools.add(actions.getBoxDrawingPickerAction());
       menuTools.add(actions.getUnicodePickerAction());
       menuTools.addSeparator();
       IFigDriver figDriver = configurationList.getRequired(IFigDriver.class);
