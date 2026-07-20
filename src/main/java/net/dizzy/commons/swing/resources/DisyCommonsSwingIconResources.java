@@ -1,9 +1,13 @@
 package net.dizzy.commons.swing.resources;
 
+import de.jave.preferences.JavePreferences;
+import java.net.URL;
 import javax.swing.Icon;
-import javax.swing.UIManager;
+import javax.swing.ImageIcon;
+import net.dizzy.commons.swing.icon.IconScaler;
 
 public final class DisyCommonsSwingIconResources implements IIconResources {
+   private static final int ICON_SIZE = JavePreferences.readIconSizePreference();
    public static final Icon CUT = icon("cut");
    public static final Icon COPY = icon("copy");
    public static final Icon PASTE = icon("paste");
@@ -14,7 +18,8 @@ public final class DisyCommonsSwingIconResources implements IIconResources {
    }
 
    private static Icon icon(String name) {
-      Icon icon = UIManager.getIcon("FileView.fileIcon");
-      return icon == null ? new javax.swing.ImageIcon() : icon;
+      URL url = DisyCommonsSwingIconResources.class.getResource(name + ".gif");
+      Icon base = url == null ? new ImageIcon() : new ImageIcon(url);
+      return IconScaler.scaleToPreferredSize(base, ICON_SIZE);
    }
 }

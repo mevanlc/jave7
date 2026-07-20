@@ -1,10 +1,14 @@
 package de.jave.javeplayer;
 
+import de.jave.preferences.JavePreferences;
 import javax.swing.Icon;
+import net.dizzy.commons.swing.icon.IconScaler;
 import net.dizzy.commons.swing.image.ImageProvider;
 import net.dizzy.commons.swing.resources.IIconResources;
 
 public class JavePlayerResources implements IIconResources {
+   private static final int ICON_SIZE = JavePreferences.readIconSizePreference();
+   private static final ImageProvider IMAGE_PROVIDER = new ImageProvider("de/jave/jmov/player");
    public static final Icon REVERSE_ICON = getIcon("reverse.gif");
    public static final Icon FORWARD_ICON = getIcon("forward.gif");
    public static final Icon PLAY_ICON = getIcon("play.gif");
@@ -17,7 +21,6 @@ public class JavePlayerResources implements IIconResources {
    public static final Icon FORWARD_LAST_ICON = getIcon("forward_last.gif");
 
    private static Icon getIcon(String path) {
-      ImageProvider imageProvider = new ImageProvider("de/jave/jmov/player");
-      return imageProvider.getImageIcon(path);
+      return IconScaler.scaleToPreferredSize(IMAGE_PROVIDER.getImageIcon(path), ICON_SIZE);
    }
 }
