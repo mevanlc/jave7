@@ -16,6 +16,7 @@ import net.dizzy.commons.swing.resources.IIconResources;
 
 public class JaveIcons implements IIconResources {
    private static final int ICON_SIZE = readIconSizePreference();
+   private static final int SUPERSAMPLE_FACTOR = 3;
 
    private static int readIconSizePreference() {
       try {
@@ -153,8 +154,14 @@ public class JaveIcons implements IIconResources {
     * smaller than {@code targetSize}. Icons that are already as large as (or larger than) the
     * target are returned untouched, which protects genuinely large artwork loaded through the
     * same path — the splash image, the export-wizard/camelizer dialog icons, and the tall
-    * tool-type strips — from being shrunk to thumbnails. Aspect ratio is preserved and
-    * nearest-neighbour interpolation keeps the pixel art crisp.
+    * tool-type strips — from being shrunk to thumbnails. Aspect ratio is always preserved.
+    *
+    * <p>The interpolation depends on how the target relates to the 16px base. A whole-number
+    * multiple (32px = 2x) is a clean pixel doubling, so plain nearest-neighbour stays crisp.
+    * A fractional multiple (24px = 1.5x) would leave nearest-neighbour with uneven 1-vs-2px
+    * columns, so it is supersampled instead: the source is tripled with nearest-neighbour and
+    * then area-averaged down to the target (3x / 2 = 1.5x for the canonical 16px icon), which
+    * keeps solid interiors while smoothing the half-step edges.
     */
    static Icon scaleToPreferredSize(Icon icon, int targetSize) {
       if (targetSize == JavePreferences.DEFAULT_ICON_SIZE || !(icon instanceof ImageIcon)) {
@@ -173,15 +180,40 @@ public class JaveIcons implements IIconResources {
       int scaledWidth = Math.max(1, (int)Math.round(width * scale));
       int scaledHeight = Math.max(1, (int)Math.round(height * scale));
 
-      BufferedImage scaled = new BufferedImage(scaledWidth, scaledHeight, BufferedImage.TYPE_INT_ARGB);
-      Graphics2D graphics = scaled.createGraphics();
+      Image source = imageIcon.getImage();
+      BufferedImage scaled;
+      if (targetSize % JavePreferences.DEFAULT_ICON_SIZE == 0) {
+         scaled = nearestNeighbourScale(source, scaledWidth, scaledHeight);
+      } else {
+         BufferedImage tripled = nearestNeighbourScale(source, width * SUPERSAMPLE_FACTOR, height * SUPERSAMPLE_FACTOR);
+         scaled = areaAveragedScale(tripled, scaledWidth, scaledHeight);
+      }
+      return new ImageIcon(scaled);
+   }
+
+   private static BufferedImage nearestNeighbourScale(Image source, int destWidth, int destHeight) {
+      BufferedImage result = new BufferedImage(destWidth, destHeight, BufferedImage.TYPE_INT_ARGB);
+      Graphics2D graphics = result.createGraphics();
       try {
          graphics.setComposite(AlphaComposite.Src);
          graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-         graphics.drawImage(imageIcon.getImage(), 0, 0, scaledWidth, scaledHeight, null);
+         graphics.drawImage(source, 0, 0, destWidth, destHeight, null);
       } finally {
          graphics.dispose();
       }
-      return new ImageIcon(scaled);
+      return result;
+   }
+
+   private static BufferedImage areaAveragedScale(Image source, int destWidth, int destHeight) {
+      // ImageIcon forces the asynchronously produced, area-averaged image to finish loading.
+      ImageIcon averaged = new ImageIcon(source.getScaledInstance(destWidth, destHeight, Image.SCALE_AREA_AVERAGING));
+      BufferedImage result = new BufferedImage(destWidth, destHeight, BufferedImage.TYPE_INT_ARGB);
+      Graphics2D graphics = result.createGraphics();
+      try {
+         averaged.paintIcon(null, graphics, 0, 0);
+      } finally {
+         graphics.dispose();
+      }
+      return result;
    }
 }
