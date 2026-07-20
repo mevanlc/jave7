@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import net.dizzy.commons.core.model.BooleanModel;
@@ -90,10 +91,15 @@ public class LineAlgorithmicOptionsPanel implements IInlineToolOptions {
       JPanel optionsPanel = new JPanel(new GridDialogLayout(1, false));
       optionsPanel.add(new JLabel("Style:"));
       optionsPanel.add(chMode, GridDialogLayoutData.FILL_HORIZONTAL);
-      optionsPanel.add(createSpinnerPanel("Arrow:", arrowheadPlacementComboBox), GridDialogLayoutData.FILL_HORIZONTAL);
-      optionsPanel.add(createSpinnerPanel("Size:", arrowheadSizeSpinner), GridDialogLayoutData.FILL_HORIZONTAL);
-      optionsPanel.add(createSpinnerPanel("Angle:", arrowheadAngleSpinner), GridDialogLayoutData.FILL_HORIZONTAL);
-      optionsPanel.add(cardinalTipsCheckBox, GridDialogLayoutData.FILL_HORIZONTAL);
+
+      JPanel arrowPanel = new JPanel(new GridDialogLayout(1, false, 0, 0));
+      arrowPanel.setBorder(new TitledBorder("Arrow"));
+      arrowPanel.add(createSpinnerPanel("Head:", arrowheadPlacementComboBox), GridDialogLayoutData.FILL_HORIZONTAL);
+      arrowPanel.add(createSpinnerPanel("Size:", arrowheadSizeSpinner), GridDialogLayoutData.FILL_HORIZONTAL);
+      arrowPanel.add(createSpinnerPanel("Angle:", arrowheadAngleSpinner), GridDialogLayoutData.FILL_HORIZONTAL);
+      arrowPanel.add(cardinalTipsCheckBox, GridDialogLayoutData.FILL_HORIZONTAL);
+      optionsPanel.add(arrowPanel, GridDialogLayoutData.FILL_HORIZONTAL);
+
       optionsPanel.add(mouseCharacterPanel.getContent(), GridDialogLayoutData.FILL_HORIZONTAL);
       optionsPanel.add(new MergeCharactersPanel(mixCharactersModel).getContent(), GridDialogLayoutData.FILL_HORIZONTAL);
       this.content = optionsPanel;

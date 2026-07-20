@@ -1,6 +1,7 @@
 package de.jave.jave.tool.linealgorithmic;
 
 public enum ArrowheadPlacement {
+   NONE("None"),
    START("Start"),
    END("End"),
    BOTH("Both");

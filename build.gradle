@@ -135,7 +135,7 @@ tasks.register('macAppBundle', Exec) {
         '--mac-package-identifier', 'de.jave.JavE'
 }
 
-tasks.register('deployToApplications', Copy) {
+tasks.register('macDeployToApplications', Copy) {
     group = 'distribution'
     description = 'Installs the macOS .app bundle to /Applications.'
 
