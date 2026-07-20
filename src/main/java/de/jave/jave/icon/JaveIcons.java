@@ -2,16 +2,20 @@ package de.jave.jave.icon;
 
 import de.jave.jave.application.resources.JaveImageProvider;
 import de.jave.preferences.JavePreferences;
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
 import java.util.prefs.Preferences;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import net.dizzy.commons.swing.resources.IIconResources;
 
 public class JaveIcons implements IIconResources {
    private static final int ICON_SIZE = readIconSizePreference();
-   private static final int[] PREFERRED_ICON_SIZES = {32, 24};
 
    private static int readIconSizePreference() {
       try {
@@ -138,36 +142,46 @@ public class JaveIcons implements IIconResources {
    public static final Icon PENCIL7_DISABLED = loadIcon("pencil/roundsize7_.gif");
 
    private static Icon loadIcon(String name) {
-      return JaveImageProvider.getInstance().getImageIcon(resolvePreferredIconPath(name, ICON_SIZE));
+      return scaleToPreferredSize(JaveImageProvider.getInstance().getImageIcon(name), ICON_SIZE);
    }
 
-   static String resolvePreferredIconPath(String name, int iconSize) {
-      if (iconSize == JavePreferences.DEFAULT_ICON_SIZE) {
-         return name;
+   /**
+    * Rescales a native (~16px) pixel-art icon so its longest edge matches {@code targetSize},
+    * generating the 24px/32px variants on the fly instead of loading pregenerated PNGs.
+    *
+    * <p>Scaling is <em>upscale-only</em>: an icon is only enlarged when its longest edge is
+    * smaller than {@code targetSize}. Icons that are already as large as (or larger than) the
+    * target are returned untouched, which protects genuinely large artwork loaded through the
+    * same path — the splash image, the export-wizard/camelizer dialog icons, and the tall
+    * tool-type strips — from being shrunk to thumbnails. Aspect ratio is preserved and
+    * nearest-neighbour interpolation keeps the pixel art crisp.
+    */
+   static Icon scaleToPreferredSize(Icon icon, int targetSize) {
+      if (targetSize == JavePreferences.DEFAULT_ICON_SIZE || !(icon instanceof ImageIcon)) {
+         return icon;
       }
 
-      int slash = name.lastIndexOf('/');
-      int dot = name.lastIndexOf('.');
-      if (dot <= slash) {
-         return name;
+      ImageIcon imageIcon = (ImageIcon)icon;
+      int width = imageIcon.getIconWidth();
+      int height = imageIcon.getIconHeight();
+      int longestEdge = Math.max(width, height);
+      if (longestEdge <= 0 || longestEdge >= targetSize) {
+         return icon;
       }
 
-      JaveImageProvider provider = JaveImageProvider.getInstance();
-      for (int size : PREFERRED_ICON_SIZES) {
-         if (size > iconSize) {
-            continue;
-         }
-         String candidate = createSizedPngPath(name, slash, dot, size);
-         if (provider.hasImage(candidate)) {
-            return candidate;
-         }
-      }
-      return name;
-   }
+      double scale = (double)targetSize / longestEdge;
+      int scaledWidth = Math.max(1, (int)Math.round(width * scale));
+      int scaledHeight = Math.max(1, (int)Math.round(height * scale));
 
-   private static String createSizedPngPath(String name, int slash, int dot, int size) {
-      String dirPrefix = slash < 0 ? "" : name.substring(0, slash + 1);
-      String iconName = name.substring(slash + 1, dot);
-      return dirPrefix + size + "/" + iconName + ".png";
+      BufferedImage scaled = new BufferedImage(scaledWidth, scaledHeight, BufferedImage.TYPE_INT_ARGB);
+      Graphics2D graphics = scaled.createGraphics();
+      try {
+         graphics.setComposite(AlphaComposite.Src);
+         graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+         graphics.drawImage(imageIcon.getImage(), 0, 0, scaledWidth, scaledHeight, null);
+      } finally {
+         graphics.dispose();
+      }
+      return new ImageIcon(scaled);
    }
 }
