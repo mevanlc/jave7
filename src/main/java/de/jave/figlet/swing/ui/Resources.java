@@ -1,20 +1,17 @@
 package de.jave.figlet.swing.ui;
 
+import de.jave.preferences.JavePreferences;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.net.URL;
-import java.util.prefs.Preferences;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import net.dizzy.commons.swing.icon.BaseIconImageIcon;
+import net.dizzy.commons.swing.icon.IconScaler;
 
 public class Resources {
    private static final Icon errorIcon = new Resources.ErrorIcon();
-   private static final String PREFERENCES_NODE = "JavE";
-   private static final String ICON_SIZE_KEY = "iconSize";
-   private static final int DEFAULT_ICON_SIZE = 16;
-   private static final int[] FALLBACK_ICON_SIZES = {32, 24};
+   private static final int ICON_SIZE = JavePreferences.readIconSizePreference();
 
    public static Icon getIconResource(String name) {
       return getIconResource(Resources.class, name);
@@ -29,48 +26,18 @@ public class Resources {
    }
 
    private static Icon getIconResource(Class clazz, String name) {
-      URL url = getPreferredResourceUrl(clazz, name);
+      URL url = clazz.getResource(name);
       if (url == null) {
          System.err.println("Warning: could not load icon '" + name + "'.");
          return errorIcon;
-      } else {
-         try {
-            URL baseUrl = clazz.getResource(name);
-            return new BaseIconImageIcon(url, baseUrl == null ? null : new ImageIcon(baseUrl));
-         } catch (Exception var4) {
-            return new Resources.ErrorIcon();
-         }
       }
-   }
 
-   private static URL getPreferredResourceUrl(Class clazz, String name) {
-      int iconSize = readPreferredIconSize();
-      if (iconSize != DEFAULT_ICON_SIZE) {
-         int slash = name.lastIndexOf('/');
-         int dot = name.lastIndexOf('.');
-         if (dot > slash) {
-            String dirPrefix = slash < 0 ? "" : name.substring(0, slash + 1);
-            String iconName = name.substring(slash + 1, dot);
-            for (int size : FALLBACK_ICON_SIZES) {
-               if (size > iconSize) {
-                  continue;
-               }
-               URL url = clazz.getResource(dirPrefix + size + "/" + iconName + ".png");
-               if (url != null) {
-                  return url;
-               }
-            }
-         }
-      }
-      return clazz.getResource(name);
-   }
-
-   private static int readPreferredIconSize() {
       try {
-         int value = Preferences.userRoot().node(PREFERENCES_NODE).getInt(ICON_SIZE_KEY, DEFAULT_ICON_SIZE);
-         return value == 24 || value == 32 ? value : DEFAULT_ICON_SIZE;
-      } catch (Exception e) {
-         return DEFAULT_ICON_SIZE;
+         // The 24px/32px variants are generated on the fly from the native ~16px art via the
+         // shared IconScaler, instead of being packaged as pregenerated sized PNGs.
+         return IconScaler.scaleToPreferredSize(new ImageIcon(url), ICON_SIZE);
+      } catch (Exception var4) {
+         return new Resources.ErrorIcon();
       }
    }
 

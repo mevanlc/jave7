@@ -1,10 +1,13 @@
 package de.jave.image2ascii;
 
 import de.jave.jave.application.resources.JaveImageProvider;
+import de.jave.preferences.JavePreferences;
 import javax.swing.Icon;
+import net.dizzy.commons.swing.icon.IconScaler;
 import net.dizzy.commons.swing.resources.IIconResources;
 
 public class Image2AsciiIcons implements IIconResources {
+   private static final int ICON_SIZE = JavePreferences.readIconSizePreference();
    public static final Icon ALGORITHM_1PIXEL_ICON = loadIcon("image2ascii/i2a_1.gif");
    public static final Icon ALGORITHM_3D_ICON = loadIcon("image2ascii/i2a_3d.gif");
    public static final Icon ALGORITHM_4PIXEL_ICON = loadIcon("image2ascii/i2a_4.gif");
@@ -15,6 +18,6 @@ public class Image2AsciiIcons implements IIconResources {
    public static final Icon IMAGE2ASCII_ICON = loadIcon("image2ascii.gif");
 
    private static Icon loadIcon(String string) {
-      return JaveImageProvider.getInstance().getImageIcon(string);
+      return IconScaler.scaleToPreferredSize(JaveImageProvider.getInstance().getImageIcon(string), ICON_SIZE);
    }
 }

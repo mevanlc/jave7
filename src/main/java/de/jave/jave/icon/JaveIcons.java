@@ -2,30 +2,15 @@ package de.jave.jave.icon;
 
 import de.jave.jave.application.resources.JaveImageProvider;
 import de.jave.preferences.JavePreferences;
-import java.awt.AlphaComposite;
-import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
-import java.util.prefs.Preferences;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
+import net.dizzy.commons.swing.icon.IconScaler;
 import net.dizzy.commons.swing.resources.IIconResources;
 
 public class JaveIcons implements IIconResources {
-   private static final int ICON_SIZE = readIconSizePreference();
-   private static final int SUPERSAMPLE_FACTOR = 3;
-
-   private static int readIconSizePreference() {
-      try {
-         int v = Preferences.userRoot().node("JavE").getInt(JavePreferences.KEY_ICON_SIZE, JavePreferences.DEFAULT_ICON_SIZE);
-         return (v == 24 || v == 32) ? v : JavePreferences.DEFAULT_ICON_SIZE;
-      } catch (Exception e) {
-         return JavePreferences.DEFAULT_ICON_SIZE;
-      }
-   }
+   private static final int ICON_SIZE = JavePreferences.readIconSizePreference();
 
    public static int getIconSize() {
       return ICON_SIZE;
@@ -143,77 +128,6 @@ public class JaveIcons implements IIconResources {
    public static final Icon PENCIL7_DISABLED = loadIcon("pencil/roundsize7_.gif");
 
    private static Icon loadIcon(String name) {
-      return scaleToPreferredSize(JaveImageProvider.getInstance().getImageIcon(name), ICON_SIZE);
-   }
-
-   /**
-    * Rescales a native (~16px) pixel-art icon so its longest edge matches {@code targetSize},
-    * generating the 24px/32px variants on the fly instead of loading pregenerated PNGs.
-    *
-    * <p>Scaling is <em>upscale-only</em>: an icon is only enlarged when its longest edge is
-    * smaller than {@code targetSize}. Icons that are already as large as (or larger than) the
-    * target are returned untouched, which protects genuinely large artwork loaded through the
-    * same path — the splash image, the export-wizard/camelizer dialog icons, and the tall
-    * tool-type strips — from being shrunk to thumbnails. Aspect ratio is always preserved.
-    *
-    * <p>The interpolation depends on how the target relates to the 16px base. A whole-number
-    * multiple (32px = 2x) is a clean pixel doubling, so plain nearest-neighbour stays crisp.
-    * A fractional multiple (24px = 1.5x) would leave nearest-neighbour with uneven 1-vs-2px
-    * columns, so it is supersampled instead: the source is tripled with nearest-neighbour and
-    * then area-averaged down to the target (3x / 2 = 1.5x for the canonical 16px icon), which
-    * keeps solid interiors while smoothing the half-step edges.
-    */
-   static Icon scaleToPreferredSize(Icon icon, int targetSize) {
-      if (targetSize == JavePreferences.DEFAULT_ICON_SIZE || !(icon instanceof ImageIcon)) {
-         return icon;
-      }
-
-      ImageIcon imageIcon = (ImageIcon)icon;
-      int width = imageIcon.getIconWidth();
-      int height = imageIcon.getIconHeight();
-      int longestEdge = Math.max(width, height);
-      if (longestEdge <= 0 || longestEdge >= targetSize) {
-         return icon;
-      }
-
-      double scale = (double)targetSize / longestEdge;
-      int scaledWidth = Math.max(1, (int)Math.round(width * scale));
-      int scaledHeight = Math.max(1, (int)Math.round(height * scale));
-
-      Image source = imageIcon.getImage();
-      BufferedImage scaled;
-      if (targetSize % JavePreferences.DEFAULT_ICON_SIZE == 0) {
-         scaled = nearestNeighbourScale(source, scaledWidth, scaledHeight);
-      } else {
-         BufferedImage tripled = nearestNeighbourScale(source, width * SUPERSAMPLE_FACTOR, height * SUPERSAMPLE_FACTOR);
-         scaled = areaAveragedScale(tripled, scaledWidth, scaledHeight);
-      }
-      return new ImageIcon(scaled);
-   }
-
-   private static BufferedImage nearestNeighbourScale(Image source, int destWidth, int destHeight) {
-      BufferedImage result = new BufferedImage(destWidth, destHeight, BufferedImage.TYPE_INT_ARGB);
-      Graphics2D graphics = result.createGraphics();
-      try {
-         graphics.setComposite(AlphaComposite.Src);
-         graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-         graphics.drawImage(source, 0, 0, destWidth, destHeight, null);
-      } finally {
-         graphics.dispose();
-      }
-      return result;
-   }
-
-   private static BufferedImage areaAveragedScale(Image source, int destWidth, int destHeight) {
-      // ImageIcon forces the asynchronously produced, area-averaged image to finish loading.
-      ImageIcon averaged = new ImageIcon(source.getScaledInstance(destWidth, destHeight, Image.SCALE_AREA_AVERAGING));
-      BufferedImage result = new BufferedImage(destWidth, destHeight, BufferedImage.TYPE_INT_ARGB);
-      Graphics2D graphics = result.createGraphics();
-      try {
-         averaged.paintIcon(null, graphics, 0, 0);
-      } finally {
-         graphics.dispose();
-      }
-      return result;
+      return IconScaler.scaleToPreferredSize(JaveImageProvider.getInstance().getImageIcon(name), ICON_SIZE);
    }
 }

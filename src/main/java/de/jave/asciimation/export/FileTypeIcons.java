@@ -1,12 +1,15 @@
 package de.jave.asciimation.export;
 
 import de.jave.jave.application.resources.JaveImageProvider;
+import de.jave.preferences.JavePreferences;
 import javax.swing.Icon;
+import net.dizzy.commons.swing.icon.IconScaler;
 import net.dizzy.commons.swing.resources.IIconResources;
 
 public class FileTypeIcons implements IIconResources {
-   public static final Icon ANIMATION_ICON = JaveImageProvider.getInstance().getImageIcon("animation.gif");
-   public static final Icon TEXT_ICON = JaveImageProvider.getInstance().getImageIcon("text.gif");
+   private static final int ICON_SIZE = JavePreferences.readIconSizePreference();
+   public static final Icon ANIMATION_ICON = loadIcon("animation.gif");
+   public static final Icon TEXT_ICON = loadIcon("text.gif");
    public static final Icon JAVASCRIPT_ICON = loadFileTypeIcon("javascript.gif");
    public static final Icon JAVA_ICON = loadFileTypeIcon("java.gif");
    public static final Icon TEXTS_ICON = loadFileTypeIcon("texts.gif");
@@ -18,6 +21,10 @@ public class FileTypeIcons implements IIconResources {
    public static final Icon ANIMATED_GIF_ICON = loadFileTypeIcon("animatedgif.gif");
 
    private static final Icon loadFileTypeIcon(String name) {
-      return JaveImageProvider.getInstance().getImageIcon("filetypes/" + name);
+      return loadIcon("filetypes/" + name);
+   }
+
+   private static Icon loadIcon(String path) {
+      return IconScaler.scaleToPreferredSize(JaveImageProvider.getInstance().getImageIcon(path), ICON_SIZE);
    }
 }
