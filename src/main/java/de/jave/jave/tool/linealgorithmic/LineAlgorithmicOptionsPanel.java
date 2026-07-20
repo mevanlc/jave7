@@ -92,6 +92,11 @@ public class LineAlgorithmicOptionsPanel implements IInlineToolOptions {
       optionsPanel.add(new JLabel("Style:"));
       optionsPanel.add(chMode, GridDialogLayoutData.FILL_HORIZONTAL);
 
+      JPanel characterOptionsPanel = new JPanel(new BorderLayout());
+      characterOptionsPanel.add(new MergeCharactersPanel(mixCharactersModel).getContent(), BorderLayout.WEST);
+      characterOptionsPanel.add(mouseCharacterPanel.getContent(), BorderLayout.EAST);
+      optionsPanel.add(characterOptionsPanel, GridDialogLayoutData.FILL_HORIZONTAL);
+
       JPanel arrowPanel = new JPanel(new GridDialogLayout(1, false, 0, 0));
       arrowPanel.setBorder(new TitledBorder("Arrow"));
       arrowPanel.add(createSpinnerPanel("Head:", arrowheadPlacementComboBox), GridDialogLayoutData.FILL_HORIZONTAL);
@@ -99,9 +104,6 @@ public class LineAlgorithmicOptionsPanel implements IInlineToolOptions {
       arrowPanel.add(createSpinnerPanel("Angle:", arrowheadAngleSpinner), GridDialogLayoutData.FILL_HORIZONTAL);
       arrowPanel.add(cardinalTipsCheckBox, GridDialogLayoutData.FILL_HORIZONTAL);
       optionsPanel.add(arrowPanel, GridDialogLayoutData.FILL_HORIZONTAL);
-
-      optionsPanel.add(mouseCharacterPanel.getContent(), GridDialogLayoutData.FILL_HORIZONTAL);
-      optionsPanel.add(new MergeCharactersPanel(mixCharactersModel).getContent(), GridDialogLayoutData.FILL_HORIZONTAL);
       this.content = optionsPanel;
    }
 
