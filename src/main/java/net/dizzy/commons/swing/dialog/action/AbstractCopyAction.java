@@ -6,7 +6,7 @@ import net.dizzy.commons.swing.action.SmartAction;
 
 public abstract class AbstractCopyAction extends SmartAction {
    public AbstractCopyAction() {
-      super(net.dizzy.commons.swing.dialog.DisyCommonsSwingDialogMessages.CUT);
+      super(net.dizzy.commons.swing.dialog.DizzyCommonsSwingDialogMessages.CUT);
    }
 
    public AbstractCopyAction(String name) {

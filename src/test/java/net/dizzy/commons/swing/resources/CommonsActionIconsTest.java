@@ -3,7 +3,7 @@ package net.dizzy.commons.swing.resources;
 import static org.junit.Assert.assertTrue;
 
 import javax.swing.Icon;
-import net.dizzy.commons.swing.fontchooser.resources.DisyCommonsSwingFontChooserIcons;
+import net.dizzy.commons.swing.fontchooser.resources.DizzyCommonsSwingFontChooserIcons;
 import org.junit.Test;
 
 /**
@@ -15,11 +15,11 @@ public class CommonsActionIconsTest {
    @Test
    public void editActionIconsLoadRealArt() {
       Icon[] icons = {
-         DisyCommonsSwingIconResources.CUT,
-         DisyCommonsSwingIconResources.COPY,
-         DisyCommonsSwingIconResources.PASTE,
-         DisyCommonsSwingIconResources.UNDO_MODERN,
-         DisyCommonsSwingIconResources.REDO_MODERN,
+         DizzyCommonsSwingIconResources.CUT,
+         DizzyCommonsSwingIconResources.COPY,
+         DizzyCommonsSwingIconResources.PASTE,
+         DizzyCommonsSwingIconResources.UNDO_MODERN,
+         DizzyCommonsSwingIconResources.REDO_MODERN,
       };
       for (Icon icon : icons) {
          assertTrue("edit icon should load real 16px+ art", icon.getIconWidth() >= 16 && icon.getIconHeight() >= 16);
@@ -28,7 +28,7 @@ public class CommonsActionIconsTest {
 
    @Test
    public void fontChooserIconLoadsRealArt() {
-      Icon font = DisyCommonsSwingFontChooserIcons.FONT_ICON;
+      Icon font = DizzyCommonsSwingFontChooserIcons.FONT_ICON;
       assertTrue("font icon should load real 16px+ art", font.getIconWidth() >= 16 && font.getIconHeight() >= 16);
    }
 }

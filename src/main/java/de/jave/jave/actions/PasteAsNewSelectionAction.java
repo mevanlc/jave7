@@ -13,14 +13,14 @@ import java.awt.Component;
 import java.awt.Point;
 import java.awt.Rectangle;
 import net.dizzy.commons.core.util.Ensure;
-import net.dizzy.commons.swing.resources.DisyCommonsSwingIconResources;
+import net.dizzy.commons.swing.resources.DizzyCommonsSwingIconResources;
 
 public class PasteAsNewSelectionAction extends AbstractJaveAction {
    private final JavEApplication jave;
    private final BooleanPreferenceModel pasteVFillsSelectionModel;
 
    public PasteAsNewSelectionAction(JaveMainPanel mainPanel, JavEApplication jave, BooleanPreferenceModel pasteVFillsSelectionModel) {
-      super(mainPanel, "Paste As New Selection", DisyCommonsSwingIconResources.PASTE);
+      super(mainPanel, "Paste As New Selection", DizzyCommonsSwingIconResources.PASTE);
       this.setAcceleratorKey(JaveKeyBindings.PASTE_AS_NEW_SELECTION);
       this.setToolTipText("Paste As New Selection");
       Ensure.ensureArgumentNotNull(jave);

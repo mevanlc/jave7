@@ -303,7 +303,7 @@ class Message implements IMessage { /* 5 ctors below */ }
 
 **Icon-art-dependent (reimplement class is trivial; *sourcing images* is the work):**
 - `icon.CommonIcons` — constants `FOLDER`, `FOLDER_NEW`.
-- `resources.DisyCommonsSwingIconResources` — constants `CUT`, `COPY`, `PASTE`,
+- `resources.DizzyCommonsSwingIconResources` — constants `CUT`, `COPY`, `PASTE`,
   `UNDO_MODERN`, `REDO_MODERN`.
 - `resources.IIconResources` — **inert marker interface** (zero methods called;
   cheapest win — empty interface or drop the `implements`).
@@ -341,12 +341,12 @@ class Message implements IMessage { /* 5 ctors below */ }
   `createFontChooserDialog(Component, FontModel) : FontChooserDialog` (monospaced-only).
 - `view.FontChooserButton(FontModel[, factory])`, `getContent()`.
 - `color.widgets.ColorModel(Color)`, `getColor()` (mutated by `ColorChooserButton`, §4).
-- `resources.DisyCommonsSwingFontChooserIcons.FONT_ICON` (any non-null Icon).
+- `resources.DizzyCommonsSwingFontChooserIcons.FONT_ICON` (any non-null Icon).
 
 ### 3.12 `swing.action` — reimplement · small · **central abstraction**
 ```
-class AbstractDisyAction extends AbstractAction { public static final String BASE_ICON; }  // getValue key
-abstract class SmartAction extends AbstractDisyAction {
+class AbstractDizzyAction extends AbstractAction { public static final String BASE_ICON; }  // getValue key
+abstract class SmartAction extends AbstractDizzyAction {
     ctor(String label) | (Icon) | (String label, Icon);
     protected abstract void execute(java.awt.Component parentComponent);   // ← the template method
     setName / setToolTipText / setAcceleratorKey(KeyStroke) / setIcon / setEnabled / isEnabled / getValue
@@ -414,7 +414,7 @@ A thin `Message`→JOptionPane shim. Highest single win.
   `JOptionPane.showConfirmDialog` + map return codes.
 - `YesNoCancel` — enum `YES,NO,CANCEL` (compared with `==`; `OK` unused).
 - `MessageUserDialogConfiguration(Message, buttonConfig)` (1 site),
-  `DisyCommonsSwingDialogMessages` (button-label constants `OK/CANCEL/APPLY/CUT/PASTE`).
+  `DizzyCommonsSwingDialogMessages` (button-label constants `OK/CANCEL/APPLY/CUT/PASTE`).
 - *Build a `Message`→(title, text, JOptionPane messageType, optional
   stack-trace expander) adapter once; everything else is mechanical.*
 
@@ -655,7 +655,7 @@ below). Per-cell `GridDialogLayoutData` / the bare-int constants:
 
 **Asset sourcing (class trivial, art is the work):**
 - Cursors: 3 crosshair-selection bitmaps (`CursorProvider`).
-- Edit icons: `CUT/COPY/PASTE/UNDO_MODERN/REDO_MODERN` (`DisyCommonsSwingIconResources`).
+- Edit icons: `CUT/COPY/PASTE/UNDO_MODERN/REDO_MODERN` (`DizzyCommonsSwingIconResources`).
 - Folder icons: `FOLDER/FOLDER_NEW` (`CommonIcons`).
 - Message icons: small `infoIcon` + large per-type icons (`MessageTypeUi`/`LargeIconMessageTypeUi`).
 - Font icon: `FONT_ICON` (any non-null).

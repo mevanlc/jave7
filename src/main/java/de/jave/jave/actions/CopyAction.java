@@ -11,13 +11,13 @@ import de.jave.jave.preferences.BooleanPreferenceModel;
 import de.jave.lib.CharacterPlate;
 import java.awt.Component;
 import java.awt.Point;
-import net.dizzy.commons.swing.resources.DisyCommonsSwingIconResources;
+import net.dizzy.commons.swing.resources.DizzyCommonsSwingIconResources;
 
 public class CopyAction extends AbstractJaveAction {
    private final BooleanPreferenceModel selectionlessCutCopyOnCellModel;
 
    public CopyAction(JaveMainPanel mainPanel, BooleanPreferenceModel selectionlessCutCopyOnCellModel) {
-      super(mainPanel, "Copy", DisyCommonsSwingIconResources.COPY);
+      super(mainPanel, "Copy", DizzyCommonsSwingIconResources.COPY);
       this.setAcceleratorKey(JaveKeyBindings.COPY);
       this.setToolTipText("Copy");
       this.selectionlessCutCopyOnCellModel = selectionlessCutCopyOnCellModel;

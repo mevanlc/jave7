@@ -6,7 +6,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import net.dizzy.commons.swing.icon.IconScaler;
 
-public final class DisyCommonsSwingIconResources implements IIconResources {
+public final class DizzyCommonsSwingIconResources implements IIconResources {
    private static final int ICON_SIZE = JavePreferences.readIconSizePreference();
    public static final Icon CUT = icon("cut");
    public static final Icon COPY = icon("copy");
@@ -14,11 +14,11 @@ public final class DisyCommonsSwingIconResources implements IIconResources {
    public static final Icon UNDO_MODERN = icon("undo");
    public static final Icon REDO_MODERN = icon("redo");
 
-   private DisyCommonsSwingIconResources() {
+   private DizzyCommonsSwingIconResources() {
    }
 
    private static Icon icon(String name) {
-      URL url = DisyCommonsSwingIconResources.class.getResource(name + ".gif");
+      URL url = DizzyCommonsSwingIconResources.class.getResource(name + ".gif");
       Icon base = url == null ? new ImageIcon() : new ImageIcon(url);
       return IconScaler.scaleToPreferredSize(base, ICON_SIZE);
    }

@@ -31,7 +31,7 @@ import net.dizzy.commons.core.message.MessageType;
 import net.dizzy.commons.core.model.ObjectModel;
 import net.dizzy.commons.core.util.Ensure;
 import net.dizzy.commons.swing.action.SmartAction;
-import net.dizzy.commons.swing.dialog.DisyCommonsSwingDialogMessages;
+import net.dizzy.commons.swing.dialog.DizzyCommonsSwingDialogMessages;
 import net.dizzy.commons.swing.dialog.message.MessageDialogUtilities;
 import net.dizzy.commons.swing.dialog.message.YesNoCancel;
 import net.dizzy.commons.swing.fontchooser.model.FontModel;
@@ -73,13 +73,13 @@ public class Image2AsciiDialog {
       this.editor = new Image2Texter(
          this.sourceImageModel, optionsModel, displayFontModel, colorSchemeModel, gradientConfiguration, greyscaleTableConfiguration, filter
       );
-      SmartAction insertAction = new SmartAction(DisyCommonsSwingDialogMessages.OK) {
+      SmartAction insertAction = new SmartAction(DizzyCommonsSwingDialogMessages.OK) {
          @Override
          protected void execute(Component parent) {
             Image2AsciiDialog.this.performOk(parent);
          }
       };
-      SmartAction closeAction = new SmartAction(DisyCommonsSwingDialogMessages.CANCEL) {
+      SmartAction closeAction = new SmartAction(DizzyCommonsSwingDialogMessages.CANCEL) {
          @Override
          protected void execute(Component parent) {
             Image2AsciiDialog.this.performCancel();

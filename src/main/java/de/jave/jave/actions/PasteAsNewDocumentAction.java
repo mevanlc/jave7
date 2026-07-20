@@ -9,13 +9,13 @@ import de.jave.jave.plate.IDocumentEditor;
 import de.jave.jave.plate.JaveMainPanel;
 import java.awt.Component;
 import net.dizzy.commons.core.util.Ensure;
-import net.dizzy.commons.swing.resources.DisyCommonsSwingIconResources;
+import net.dizzy.commons.swing.resources.DizzyCommonsSwingIconResources;
 
 public class PasteAsNewDocumentAction extends AbstractJaveAction {
    private final JavEApplication jave;
 
    public PasteAsNewDocumentAction(JaveMainPanel mainPanel, JavEApplication jave) {
-      super(mainPanel, "Paste As New Document", DisyCommonsSwingIconResources.PASTE);
+      super(mainPanel, "Paste As New Document", DizzyCommonsSwingIconResources.PASTE);
       Ensure.ensureArgumentNotNull(jave);
       this.jave = jave;
    }

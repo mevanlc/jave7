@@ -5,7 +5,7 @@ import java.awt.Component;
 import net.dizzy.commons.core.model.listener.IChangeListener;
 import net.dizzy.commons.core.util.Ensure;
 import net.dizzy.commons.swing.action.SmartAction;
-import net.dizzy.commons.swing.resources.DisyCommonsSwingIconResources;
+import net.dizzy.commons.swing.resources.DizzyCommonsSwingIconResources;
 
 public class UndoAction extends SmartAction {
    private final JavEApplication application;
@@ -13,7 +13,7 @@ public class UndoAction extends SmartAction {
    private final boolean nameIsToolTip;
 
    public UndoAction(JavEApplication application, UndoRedoModel model, boolean nameIsToolTip) {
-      super(DisyCommonsSwingIconResources.UNDO_MODERN);
+      super(DizzyCommonsSwingIconResources.UNDO_MODERN);
       Ensure.ensureArgumentNotNull(application);
       Ensure.ensureArgumentNotNull(model);
       this.application = application;

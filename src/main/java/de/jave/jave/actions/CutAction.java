@@ -14,13 +14,13 @@ import java.awt.Component;
 import java.awt.Point;
 import net.dizzy.commons.swing.mousecursor.CursorId;
 import net.dizzy.commons.swing.mousecursor.CursorProvider;
-import net.dizzy.commons.swing.resources.DisyCommonsSwingIconResources;
+import net.dizzy.commons.swing.resources.DizzyCommonsSwingIconResources;
 
 public class CutAction extends AbstractJaveAction {
    private final BooleanPreferenceModel selectionlessCutCopyOnCellModel;
 
    public CutAction(JaveMainPanel mainPanel, BooleanPreferenceModel selectionlessCutCopyOnCellModel) {
-      super(mainPanel, "Cut", DisyCommonsSwingIconResources.CUT);
+      super(mainPanel, "Cut", DizzyCommonsSwingIconResources.CUT);
       this.setAcceleratorKey(JaveKeyBindings.CUT);
       this.setToolTipText("Cut");
       this.selectionlessCutCopyOnCellModel = selectionlessCutCopyOnCellModel;

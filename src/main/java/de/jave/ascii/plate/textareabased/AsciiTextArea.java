@@ -24,11 +24,11 @@ import net.dizzy.commons.core.util.IClosure;
 import net.dizzy.commons.core.util.ObjectUtilities;
 import net.dizzy.commons.swing.action.SmartAction;
 import net.dizzy.commons.swing.component.IComponentContainer;
-import net.dizzy.commons.swing.dialog.DisyCommonsSwingDialogMessages;
+import net.dizzy.commons.swing.dialog.DizzyCommonsSwingDialogMessages;
 import net.dizzy.commons.swing.dialog.action.AbstractCopyAction;
 import net.dizzy.commons.swing.dialog.action.TextComponentSelectAllAction;
 import net.dizzy.commons.swing.events.AbstractDocumentChangeListener;
-import net.dizzy.commons.swing.resources.DisyCommonsSwingIconResources;
+import net.dizzy.commons.swing.resources.DizzyCommonsSwingIconResources;
 
 public class AsciiTextArea implements IComponentContainer {
    private final AsciiTextAreaComponent textArea;
@@ -63,7 +63,7 @@ public class AsciiTextArea implements IComponentContainer {
             }
          }
       });
-      this.cutAction = new SmartAction(DisyCommonsSwingDialogMessages.CUT, DisyCommonsSwingIconResources.CUT) {
+      this.cutAction = new SmartAction(DizzyCommonsSwingDialogMessages.CUT, DizzyCommonsSwingIconResources.CUT) {
          @Override
          protected void execute(Component parentComponent) {
             AsciiTextArea.this.textArea.cut();
@@ -75,7 +75,7 @@ public class AsciiTextArea implements IComponentContainer {
             AsciiTextArea.this.textArea.copy();
          }
       };
-      this.pasteAction = new SmartAction(DisyCommonsSwingDialogMessages.PASTE, DisyCommonsSwingIconResources.PASTE) {
+      this.pasteAction = new SmartAction(DizzyCommonsSwingDialogMessages.PASTE, DizzyCommonsSwingIconResources.PASTE) {
          @Override
          protected void execute(Component parentComponent) {
             AsciiTextArea.this.textArea.paste();

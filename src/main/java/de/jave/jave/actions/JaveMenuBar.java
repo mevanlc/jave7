@@ -87,7 +87,7 @@ import javax.swing.event.MenuListener;
 import net.dizzy.commons.core.message.IBasicMessage;
 import net.dizzy.commons.core.model.listener.IChangeListener;
 import net.dizzy.commons.core.util.Ensure;
-import net.dizzy.commons.swing.action.AbstractDisyAction;
+import net.dizzy.commons.swing.action.AbstractDizzyAction;
 import net.dizzy.commons.swing.action.ActionWidgetFactory;
 import net.dizzy.commons.swing.action.SmartAction;
 import net.dizzy.commons.swing.dialog.core.DialogHeaderPanelConfiguration;
@@ -666,7 +666,7 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
    private Icon getBaseMenuIcon(JMenuItem item) {
       Action action = item.getAction();
       if (action != null) {
-         Object baseIcon = action.getValue(AbstractDisyAction.BASE_ICON);
+         Object baseIcon = action.getValue(AbstractDizzyAction.BASE_ICON);
          if (baseIcon instanceof Icon) {
             return (Icon)baseIcon;
          }

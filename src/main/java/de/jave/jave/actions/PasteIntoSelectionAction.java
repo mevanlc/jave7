@@ -9,12 +9,12 @@ import de.jave.jave.plate.JaveMainPanel;
 import de.jave.lib.CharacterPlate;
 import java.awt.Component;
 import java.awt.Rectangle;
-import net.dizzy.commons.swing.resources.DisyCommonsSwingIconResources;
+import net.dizzy.commons.swing.resources.DizzyCommonsSwingIconResources;
 
 public class PasteIntoSelectionAction extends AbstractJaveAction {
 
    public PasteIntoSelectionAction(JaveMainPanel mainPanel) {
-      super(mainPanel, "Paste Into Selection", DisyCommonsSwingIconResources.PASTE);
+      super(mainPanel, "Paste Into Selection", DizzyCommonsSwingIconResources.PASTE);
       this.setAcceleratorKey(JaveKeyBindings.PASTE_INTO_SELECTION);
       this.setToolTipText("Paste Into Selection");
    }

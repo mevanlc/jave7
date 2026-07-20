@@ -784,6 +784,7 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
          return;
       }
       editor.setLayersPanelVisible(visible);
+      this.javePreferences.setLayersPanelShownByDefault(visible);
       this.mainPanel.requestFocus();
    }
 

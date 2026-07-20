@@ -7,7 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import net.dizzy.commons.core.util.Ensure;
 import net.dizzy.commons.swing.action.SmartAction;
-import net.dizzy.commons.swing.dialog.DisyCommonsSwingDialogMessages;
+import net.dizzy.commons.swing.dialog.DizzyCommonsSwingDialogMessages;
 import net.dizzy.commons.swing.dialog.core.IDialogResult;
 import net.dizzy.commons.swing.dialog.userdialog.DefaultDialogConfiguration;
 import net.dizzy.commons.swing.dialog.userdialog.IDialogConfiguration;
@@ -33,7 +33,7 @@ public class AnimationPropertiesAction extends SmartAction {
       IDialogConfiguration<AnimationPropertiesDialogPage> userDialog = new DefaultDialogConfiguration<AnimationPropertiesDialogPage>(dialogPage) {
          @Override
          public JComponent[] createAdditionalButtons() {
-            return new JComponent[]{new JButton(new SmartAction(DisyCommonsSwingDialogMessages.APPLY) {
+            return new JComponent[]{new JButton(new SmartAction(DizzyCommonsSwingDialogMessages.APPLY) {
                @Override
                protected void execute(Component parent) {
                   dialogPage.applySettings();

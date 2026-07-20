@@ -23,7 +23,11 @@ public class JavePreferences extends SmartPreferences {
    private final FontModel displayFontModel;
 
    public JavePreferences() {
-      super(Preferences.userRoot().node(PREFERENCES_NODE));
+      this(Preferences.userRoot().node(PREFERENCES_NODE));
+   }
+
+   JavePreferences(Preferences preferences) {
+      super(preferences);
       String fontFamilyName = this.get("fontFamilyName", DEFAULT_FONT_FAMILY_NAME);
       int fontStyle = this.getInt("fontStyle", DEFAULT_FONT_STYLE);
       int fontSize = this.getInt("fontSize", DEFAULT_FONT_SIZE);

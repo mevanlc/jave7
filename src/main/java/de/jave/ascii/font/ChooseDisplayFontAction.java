@@ -10,7 +10,7 @@ import net.dizzy.commons.swing.action.SmartAction;
 import net.dizzy.commons.swing.dialog.core.IDialogResult;
 import net.dizzy.commons.swing.dialog.message.MessageDialogUtilities;
 import net.dizzy.commons.swing.fontchooser.model.FontModel;
-import net.dizzy.commons.swing.fontchooser.resources.DisyCommonsSwingFontChooserIcons;
+import net.dizzy.commons.swing.fontchooser.resources.DizzyCommonsSwingFontChooserIcons;
 import net.dizzy.commons.swing.fontchooser.util.FontUtilities;
 import net.dizzy.commons.swing.fontchooser.view.FontChooserDialog;
 import net.dizzy.commons.swing.fontchooser.view.fixedwidth.FixedWidthFontChooserDialogFactory;
@@ -19,7 +19,7 @@ public class ChooseDisplayFontAction extends SmartAction {
    private final FontModel displayFontModel;
 
    public ChooseDisplayFontAction(FontModel displayFontModel) {
-      super(JaveSwingMessages.Action_ChooseDisplayFont_Name, DisyCommonsSwingFontChooserIcons.FONT_ICON);
+      super(JaveSwingMessages.Action_ChooseDisplayFont_Name, DizzyCommonsSwingFontChooserIcons.FONT_ICON);
       Ensure.ensureArgumentNotNull(displayFontModel);
       this.displayFontModel = displayFontModel;
    }
