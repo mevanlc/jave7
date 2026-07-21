@@ -15,6 +15,7 @@ import de.jave.jave.JaveMessages;
 import de.jave.jave.LineToolGeneric;
 import de.jave.jave.PanTool;
 import de.jave.jave.RectangleToolGeneric;
+import de.jave.jave.SelectionClickSequence;
 import de.jave.jave.SelectionTool;
 import de.jave.jave.Tool;
 import de.jave.jave.WatermarkTool;
@@ -194,6 +195,7 @@ public class ToolBar {
    protected void createTools() {
       JaveMainPanel mainPanel = this.application.getMainPanel();
       this.tools = new Tool[21];
+      SelectionClickSequence selectionClickSequence = new SelectionClickSequence();
       Filter filter = this.configurationList.getRequired(Filter.class);
       this.tools[0] = new FreehandToolGeneric(mainPanel, this.application, filter);
       this.tools[2] = new LineToolGeneric(mainPanel, this.application, filter);
@@ -205,10 +207,10 @@ public class ToolBar {
       this.tools[3] = new LineAlgorithmicTool(mainPanel, this.application, filter);
       this.tools[5] = new RectangleAlgorithmicTool(mainPanel, this.application, filter);
       this.tools[7] = new EllipseAlgorithmicTool(mainPanel, this.application, filter);
-      this.tools[10] = new TextTool(mainPanel, this.application, this.preferences.getCursorBlockStyleModel(), filter);
+      this.tools[10] = new TextTool(mainPanel, this.application, this.preferences.getCursorBlockStyleModel(), selectionClickSequence, filter);
       IFigDriver figDriver = this.configurationList.getRequired(IFigDriver.class);
       this.tools[11] = new FIGletTool(mainPanel, this.application, figDriver, filter);
-      this.tools[12] = new SelectionTool(mainPanel, this.application, filter);
+      this.tools[12] = new SelectionTool(mainPanel, this.application, selectionClickSequence, filter);
       this.tools[13] = new FreehandSelectionTool(mainPanel, this.application, filter);
       this.tools[14] = new BrushTool(mainPanel, this.application, filter);
       this.tools[15] = new EraserTool(mainPanel, this.application, filter);

@@ -3,6 +3,7 @@ package de.jave.jave.tool.text;
 import de.jave.jave.JavEApplication;
 import de.jave.jave.JaveMessages;
 import de.jave.jave.MergeCharactersPanel;
+import de.jave.jave.SelectionClickSequence;
 import de.jave.jave.SelectionTool;
 import de.jave.jave.Tool;
 import de.jave.jave.filter.Filter;
@@ -37,6 +38,7 @@ public class TextTool extends Tool {
    private final BooleanModel mergeCharactersModel = new BooleanModel(false);
    private final MergeCharactersPanel mergeCharactersPanel = new MergeCharactersPanel(this.mergeCharactersModel);
    private final CursorBlinker blinkThread;
+   private final SelectionClickSequence selectionClickSequence;
    private Point point1;
    private Rectangle selectionRegion;
    private JComboBox chMovement;
@@ -44,8 +46,20 @@ public class TextTool extends Tool {
    private IInlineToolOptions inlineOptions;
 
    public TextTool(JaveMainPanel mainPanel, JavEApplication application, BooleanPreferenceModel cursorBlockStyle, Filter filter) {
+      this(mainPanel, application, cursorBlockStyle, new SelectionClickSequence(), filter);
+   }
+
+   public TextTool(
+      JaveMainPanel mainPanel,
+      JavEApplication application,
+      BooleanPreferenceModel cursorBlockStyle,
+      SelectionClickSequence selectionClickSequence,
+      Filter filter
+   ) {
       super(mainPanel, application, filter);
       Ensure.ensureArgumentNotNull(cursorBlockStyle);
+      Ensure.ensureArgumentNotNull(selectionClickSequence);
+      this.selectionClickSequence = selectionClickSequence;
       this.blinkThread = new CursorBlinker(mainPanel.getActiveEditorModel(), cursorBlockStyle);
       this.blinkThread.setInsert(isInsert());
    }
@@ -164,6 +178,10 @@ public class TextTool extends Tool {
 
    @Override
    public void mousePressed(Point point, Point location, MouseEvent evt) {
+      if (evt.getClickCount() == 1) {
+         this.selectionClickSequence.cancel();
+      }
+
       if (location != null) {
          this.blinkThread.setHasSelection(false);
          this.selectionRegion = null;
@@ -177,6 +195,7 @@ public class TextTool extends Tool {
 
    @Override
    public void mouseDragged(Point point, Point location, MouseEvent evt) {
+      this.selectionClickSequence.cancel();
       Point cursorLocation = this.getCursorLocation();
       if (location != null && this.point1 != null && cursorLocation != null && !evt.isMetaDown()) {
          if (Toolbox.abs(this.point1.x - point.x) > 2 || Toolbox.abs(this.point1.y - point.y) > 2) {
@@ -200,27 +219,36 @@ public class TextTool extends Tool {
    @Override
    public void mouseReleased(Point point, Point location, MouseEvent evt) {
       if (this.selectionRegion != null) {
-         this.application.switchToSelectonTool();
-         this.getPlate().setSelection(this.selectionRegion);
-         this.point1 = null;
-         this.blinkThread.setHasSelection(false);
-         this.selectionRegion = null;
-         SelectionTool st = this.application.getSelectionTool();
-         st.synchronizeToSelection();
-      } else if (evt.getClickCount() == 2 && this.getPlate().isInside(location) && this.getPlate().getChar(location.x, location.y) != ' ') {
-         Rectangle r = this.getAutoSelectRegion(location.x, location.y);
-         this.application.switchToSelectonTool();
-         this.getPlate().setSelection(r);
-         this.point1 = null;
-         this.blinkThread.setHasSelection(false);
-         this.selectionRegion = null;
-         SelectionTool st = this.application.getSelectionTool();
-         st.synchronizeToSelection();
+         this.selectRegion(this.selectionRegion);
+      } else if (
+         evt.getButton() == MouseEvent.BUTTON1
+            && location != null
+            && this.getPlate().isInside(location)
+            && this.selectionClickSequence.selectsSingleCellAt(evt.getClickCount())
+      ) {
+         this.selectRegion(new Rectangle(location.x, location.y, 1, 1));
+      } else if (
+         evt.getClickCount() == 2
+            && location != null
+            && this.getPlate().isInside(location)
+            && this.getPlate().getChar(location.x, location.y) != ' '
+      ) {
+         this.selectRegion(this.getAutoSelectRegion(location.x, location.y));
       } else {
          this.point1 = null;
          this.blinkThread.setHasSelection(false);
          this.selectionRegion = null;
       }
+   }
+
+   private void selectRegion(Rectangle region) {
+      this.application.switchToSelectonTool();
+      this.getPlate().setSelection(region);
+      this.point1 = null;
+      this.blinkThread.setHasSelection(false);
+      this.selectionRegion = null;
+      SelectionTool selectionTool = this.application.getSelectionTool();
+      selectionTool.synchronizeToSelection();
    }
 
    private void moveToTrack() {

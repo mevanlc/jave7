@@ -74,9 +74,29 @@ public class SelectionTool extends Tool {
    private int gdx;
    private int gdy;
    private IInlineToolOptions inlineOptions;
+   private final SelectionClickSequence selectionClickSequence;
+   private final boolean selectionClickSequenceEnabled;
 
    public SelectionTool(JaveMainPanel mainPanel, JavEApplication application, Filter filter) {
+      this(mainPanel, application, new SelectionClickSequence(), filter, false);
+   }
+
+   public SelectionTool(
+      JaveMainPanel mainPanel, JavEApplication application, SelectionClickSequence selectionClickSequence, Filter filter
+   ) {
+      this(mainPanel, application, selectionClickSequence, filter, true);
+   }
+
+   private SelectionTool(
+      JaveMainPanel mainPanel,
+      JavEApplication application,
+      SelectionClickSequence selectionClickSequence,
+      Filter filter,
+      boolean selectionClickSequenceEnabled
+   ) {
       super(mainPanel, application, filter);
+      this.selectionClickSequence = selectionClickSequence;
+      this.selectionClickSequenceEnabled = selectionClickSequenceEnabled;
       this.mode = 1;
    }
 
@@ -453,6 +473,20 @@ public class SelectionTool extends Tool {
 
    @Override
    public void mousePressed(Point point, Point location, MouseEvent evt) {
+      if (this.selectionClickSequenceEnabled && evt.getClickCount() == 1) {
+         if (
+            evt.getButton() == MouseEvent.BUTTON1
+               && !evt.isShiftDown()
+               && !evt.isControlDown()
+               && !evt.isAltDown()
+               && !evt.isMetaDown()
+         ) {
+            this.selectionClickSequence.start(this.hasSelection());
+         } else {
+            this.selectionClickSequence.cancel();
+         }
+      }
+
       this.location2 = null;
       this.location1 = location;
       this.point1 = point;
@@ -581,6 +615,7 @@ public class SelectionTool extends Tool {
             this.location1 = null;
          }
       } else if (this.hasSelection()) {
+         boolean selectionChanged = this.selectionResized || this.selectionMoved;
          this.dx = 0;
          this.dy = 0;
          this.gdx = 0;
@@ -597,6 +632,18 @@ public class SelectionTool extends Tool {
             this.getPlate().saveCurrentState(this.selectionClonedOnDrag ? "clone selection" : "move selection");
             this.selectionMoved = false;
             this.selectionClonedOnDrag = false;
+         }
+
+         if (
+            !selectionChanged
+               && evt.getButton() == MouseEvent.BUTTON1
+               && evt.getClickCount() == 1
+               && this.selectionClickSequence.isActive()
+               && location != null
+               && this.getPlate().selectionContains(location)
+         ) {
+            this.dropSelection();
+            this.application.switchToTextTool(location.x, location.y);
          }
       } else if (evt.isMetaDown() && this.location2 != null) {
          this.location2 = null;
@@ -617,7 +664,18 @@ public class SelectionTool extends Tool {
 
    @Override
    public void mouseClicked(Point point, Point location, MouseEvent evt) {
-      if (evt.getClickCount() == 2 && this.hasSelection()) {
+      if (evt.getClickCount() == 3 && this.selectionClickSequence.isActive()) {
+         if (
+            evt.getButton() == MouseEvent.BUTTON1
+               && location != null
+               && this.getPlate().isInside(location)
+               && this.selectionClickSequence.selectsFloodRegionAt(evt.getClickCount())
+         ) {
+            this.selectFloodRegion(location);
+         }
+
+         this.selectionClickSequence.cancel();
+      } else if (evt.getClickCount() == 2 && this.hasSelection()) {
          Selection sel = this.getPlate().getSelection();
          if (sel.contains(location) && sel.isTextbox()) {
             char[][] ch = sel.getContent().getContent();
@@ -640,8 +698,24 @@ public class SelectionTool extends Tool {
       }
    }
 
+   private void selectFloodRegion(Point location) {
+      if (this.hasSelection()) {
+         SelectionAlgorithms.dropSelection(this.getEditor());
+      }
+
+      if (this.getPlate().getChar(location.x, location.y) == ' ') {
+         this.application.switchToTextTool(location.x, location.y);
+         return;
+      }
+
+      Rectangle region = this.getAutoSelectRegion(location.x, location.y);
+      this.getPlate().setSelection(region);
+      this.synchronizeToSelection();
+   }
+
    @Override
    public void mouseDragged(Point point, Point location, MouseEvent evt) {
+      this.selectionClickSequence.cancel();
       if (this.mode != 1 && !evt.isMetaDown()) {
          if (this.mode == 12 || this.mode == 11) {
             this.selectionMouseDragged(location);
