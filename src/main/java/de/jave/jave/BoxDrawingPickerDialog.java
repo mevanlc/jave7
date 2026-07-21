@@ -2,12 +2,12 @@ package de.jave.jave;
 
 import de.jave.gui.dialog.JDialogFactory;
 import de.jave.jave.actions.JaveKeyBindings;
-import de.jave.jave.icon.JaveIcons;
 import de.jave.jave.plate.JaveMainPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -31,6 +31,7 @@ import java.util.prefs.Preferences;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -38,26 +39,26 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
-import net.dizzy.commons.swing.layout.util.ButtonPanelBuilder;
 
 /** A diagram-first picker for the Unicode Box Drawing block. */
 public class BoxDrawingPickerDialog {
    private static final int FONT_SIZE_MIN = 16;
    private static final int FONT_SIZE_MAX = 48;
-   private static final int FONT_SIZE_DEFAULT = 28;
+   private static final int FONT_SIZE_DEFAULT = 20;
    private static final int FONT_SIZE_STEP = 2;
-   private static final int WINDOW_MIN_WIDTH = 620;
-   private static final int WINDOW_MIN_HEIGHT = 480;
-   private static final String PREF_KEY_FONT_SIZE = "boxDrawingPickerFontSize";
-   private static final String PREF_KEY_WINDOW_WIDTH = "boxDrawingPickerWindowWidth";
-   private static final String PREF_KEY_WINDOW_HEIGHT = "boxDrawingPickerWindowHeight";
+   private static final int SECONDARY_FONT_SIZE_OFFSET = -4;
+   private static final int DASH_FONT_SIZE_OFFSET = -7;
+   private static final int WINDOW_MIN_WIDTH = 220;
+   private static final int WINDOW_MIN_HEIGHT = 380;
+   private static final String PREF_KEY_FONT_SIZE = "boxDrawingPickerCompactFontSize";
+   private static final String PREF_KEY_WINDOW_WIDTH = "boxDrawingPickerCompactWindowWidth";
+   private static final String PREF_KEY_WINDOW_HEIGHT = "boxDrawingPickerCompactWindowHeight";
 
    private final JaveMainPanel mainPanel;
    private final JDialog dialog;
@@ -82,9 +83,9 @@ public class BoxDrawingPickerDialog {
 
       this.previewLabel = new JLabel(" ", SwingConstants.CENTER);
       this.previewLabel.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 40));
-      this.previewLabel.setBorder(new EmptyBorder(3, 8, 3, 8));
       this.infoLabel = new JLabel(" ");
-      this.infoLabel.setFont(JaveGlobalRessources.FONT_DEFAULT);
+      this.infoLabel.setFont(JaveGlobalRessources.FONT_SMALL_FIXEDWIDTH.deriveFont(10.0f));
+      this.infoLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
       this.dialog.getContentPane().setLayout(new BorderLayout());
       this.dialog.getContentPane().add(buildContentPanel(), BorderLayout.CENTER);
@@ -102,66 +103,72 @@ public class BoxDrawingPickerDialog {
    }
 
    private JPanel buildContentPanel() {
-      JPanel panel = new JPanel(new BorderLayout(0, 6));
-      panel.setBorder(new EmptyBorder(8, 8, 4, 8));
+      JPanel panel = new JPanel(new BorderLayout(0, 3));
+      panel.setBorder(new EmptyBorder(5, 7, 3, 7));
+      panel.add(buildHint(), BorderLayout.NORTH);
+      panel.add(wrapLeading(buildDiagramPalette(), 0), BorderLayout.CENTER);
 
-      JPanel heading = new JPanel(new BorderLayout(8, 0));
-      JLabel hint = new JLabel("Click a piece to select it; double-click to insert. Right-click a box or line piece for alternates.");
-      hint.setFont(JaveGlobalRessources.FONT_DEFAULT);
-      heading.add(hint, BorderLayout.CENTER);
-      heading.add(buildZoomStrip(), BorderLayout.EAST);
-      panel.add(heading, BorderLayout.NORTH);
-
-      JPanel diagrams = new JPanel(new GridLayout(0, 3, 10, 10));
-      for (BoxDrawingPalette.Diagram diagram : BoxDrawingPalette.getDiagrams()) {
-         DiagramComponent component = new DiagramComponent(diagram);
-         this.diagramComponents.add(component);
-
-         JPanel wrapper = new JPanel(new BorderLayout());
-         Color separatorColor = UIManager.getColor("Separator.foreground");
-         if (separatorColor == null) {
-            separatorColor = UIManager.getColor("controlShadow");
-         }
-         wrapper.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(separatorColor),
-            new EmptyBorder(5, 7, 7, 7)
-         ));
-         JLabel title = new JLabel(diagram.getTitle(), SwingConstants.CENTER);
-         title.setFont(JaveGlobalRessources.FONT_DEFAULT);
-         wrapper.add(title, BorderLayout.NORTH);
-         wrapper.add(component, BorderLayout.CENTER);
-         diagrams.add(wrapper);
-      }
-
-      JScrollPane scrollPane = new JScrollPane(diagrams);
-      scrollPane.setBorder(BorderFactory.createEmptyBorder());
-      scrollPane.setPreferredSize(new Dimension(700, 470));
-      scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-      panel.add(scrollPane, BorderLayout.CENTER);
-
-      JPanel selection = new JPanel(new BorderLayout(6, 0));
-      selection.add(this.previewLabel, BorderLayout.WEST);
-      selection.add(this.infoLabel, BorderLayout.CENTER);
-      panel.add(selection, BorderLayout.SOUTH);
+      JPanel selection = new JPanel(new BorderLayout(0, 0));
+      selection.setBorder(BorderFactory.createCompoundBorder(
+         BorderFactory.createLoweredBevelBorder(),
+         new EmptyBorder(1, 3, 3, 3)
+      ));
+      selection.add(this.previewLabel, BorderLayout.CENTER);
+      selection.add(this.infoLabel, BorderLayout.SOUTH);
+      panel.add(wrapLeading(selection, 7), BorderLayout.SOUTH);
       return panel;
    }
 
-   private Box buildZoomStrip() {
-      JButton zoomOutButton = new JButton(JaveIcons.ZOOM_MINUS_ICON);
-      JButton zoomInButton = new JButton(JaveIcons.ZOOM_PLUS_ICON);
-      Insets compact = new Insets(1, 5, 1, 5);
-      zoomOutButton.setMargin(compact);
-      zoomInButton.setMargin(compact);
-      zoomOutButton.setToolTipText("Zoom out diagrams");
-      zoomInButton.setToolTipText("Zoom in diagrams");
-      zoomOutButton.addActionListener(event -> zoomOut());
-      zoomInButton.addActionListener(event -> zoomIn());
+   private JPanel wrapLeading(Component component, int horizontalGap) {
+      JPanel wrapper = new JPanel(new FlowLayout(FlowLayout.LEADING, horizontalGap, 0));
+      wrapper.add(component);
+      return wrapper;
+   }
 
-      Box strip = Box.createHorizontalBox();
-      strip.add(zoomOutButton);
-      strip.add(Box.createHorizontalStrut(2));
-      strip.add(zoomInButton);
-      return strip;
+   private Box buildHint() {
+      Box hint = Box.createVerticalBox();
+      hint.add(createHintLine("Click a piece to select it"));
+      hint.add(createHintLine("double-click to insert"));
+      hint.add(createHintLine("Right-click for alternates"));
+      return hint;
+   }
+
+   private JLabel createHintLine(String text) {
+      JLabel line = new JLabel(text);
+      line.setFont(JaveGlobalRessources.FONT_DEFAULT);
+      return line;
+   }
+
+   private JPanel buildDiagramPalette() {
+      List<BoxDrawingPalette.Diagram> diagrams = BoxDrawingPalette.getDiagrams();
+      JPanel primaryRow = new JPanel(new GridLayout(1, 3));
+      addDiagram(primaryRow, diagrams.get(0), 0);
+      addDiagram(primaryRow, diagrams.get(1), 0);
+      addDiagram(primaryRow, diagrams.get(2), 0);
+
+      JPanel secondaryRow = new JPanel(new GridLayout(1, 4));
+      addDiagram(secondaryRow, diagrams.get(6), SECONDARY_FONT_SIZE_OFFSET);
+      addDiagram(secondaryRow, diagrams.get(4), DASH_FONT_SIZE_OFFSET);
+      addDiagram(secondaryRow, diagrams.get(5), DASH_FONT_SIZE_OFFSET);
+      addDiagram(secondaryRow, diagrams.get(3), SECONDARY_FONT_SIZE_OFFSET);
+
+      JPanel palette = new JPanel();
+      palette.setLayout(new BoxLayout(palette, BoxLayout.Y_AXIS));
+      palette.setBorder(BorderFactory.createLineBorder(separatorColor()));
+      palette.add(primaryRow);
+      palette.add(secondaryRow);
+      return palette;
+   }
+
+   private void addDiagram(JPanel row, BoxDrawingPalette.Diagram diagram, int fontSizeOffset) {
+      DiagramComponent component = new DiagramComponent(diagram, fontSizeOffset);
+      this.diagramComponents.add(component);
+      row.add(component);
+   }
+
+   private Color separatorColor() {
+      Color color = UIManager.getColor("Separator.foreground");
+      return color == null ? UIManager.getColor("controlShadow") : color;
    }
 
    private JPanel buildButtonPanel() {
@@ -181,16 +188,13 @@ public class BoxDrawingPickerDialog {
             closeDialog();
          }
       });
-      JButton closeButton = new JButton(new AbstractAction("Close") {
-         @Override
-         public void actionPerformed(ActionEvent event) {
-            if (dismissPopup()) {
-               return;
-            }
-            closeDialog();
-         }
-      });
-      return new ButtonPanelBuilder().add(insertButton, insertCloseButton, closeButton).createPanel();
+      Insets compactMargin = new Insets(1, 7, 1, 7);
+      insertButton.setMargin(compactMargin);
+      insertCloseButton.setMargin(compactMargin);
+      JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEADING, 14, 0));
+      panel.add(insertButton);
+      panel.add(insertCloseButton);
+      return panel;
    }
 
    private void bindKeys() {
@@ -295,15 +299,6 @@ public class BoxDrawingPickerDialog {
       menu.setVisible(false);
    }
 
-   private boolean dismissPopup() {
-      JPopupMenu menu = this.activePopupMenu;
-      if (menu == null || !menu.isVisible()) {
-         return false;
-      }
-      menu.setVisible(false);
-      return true;
-   }
-
    private void insertSelected() {
       Plate plate = this.mainPanel.getPlate();
       if (plate == null) {
@@ -333,6 +328,7 @@ public class BoxDrawingPickerDialog {
    }
 
    private void updateDiagramFonts() {
+      Dimension oldPreferredSize = this.dialog.getPreferredSize();
       preferences().putInt(PREF_KEY_FONT_SIZE, this.diagramFontSize);
       flushPreferences();
       for (DiagramComponent component : this.diagramComponents) {
@@ -340,6 +336,16 @@ public class BoxDrawingPickerDialog {
       }
       this.dialog.getContentPane().revalidate();
       this.dialog.getContentPane().repaint();
+
+      Dimension newPreferredSize = this.dialog.getPreferredSize();
+      Dimension currentSize = this.dialog.getSize();
+      int width = Math.max(
+         WINDOW_MIN_WIDTH, currentSize.width + newPreferredSize.width - oldPreferredSize.width
+      );
+      int height = Math.max(
+         WINDOW_MIN_HEIGHT, currentSize.height + newPreferredSize.height - oldPreferredSize.height
+      );
+      this.dialog.setSize(width, height);
    }
 
    private Dimension readSavedWindowSize() {
@@ -436,13 +442,15 @@ public class BoxDrawingPickerDialog {
    }
 
    private final class DiagramComponent extends JComponent {
-      private static final int PADDING = 6;
+      private static final int PADDING = 2;
       private final String[] rows;
+      private final int fontSizeOffset;
       private int hoverRow = -1;
       private int hoverColumn = -1;
 
-      DiagramComponent(BoxDrawingPalette.Diagram diagram) {
+      DiagramComponent(BoxDrawingPalette.Diagram diagram, int fontSizeOffset) {
          this.rows = diagram.getRows();
+         this.fontSizeOffset = fontSizeOffset;
          this.setOpaque(true);
          this.setBackground(UIManager.getColor("Panel.background"));
          this.setFocusable(true);
@@ -488,7 +496,8 @@ public class BoxDrawingPickerDialog {
       }
 
       void updateFont() {
-         this.setFont(new Font(Font.MONOSPACED, Font.PLAIN, BoxDrawingPickerDialog.this.diagramFontSize));
+         int fontSize = BoxDrawingPickerDialog.this.diagramFontSize + this.fontSizeOffset;
+         this.setFont(new Font(Font.MONOSPACED, Font.PLAIN, fontSize));
          this.revalidate();
          this.repaint();
       }
