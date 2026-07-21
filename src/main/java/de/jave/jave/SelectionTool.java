@@ -481,7 +481,7 @@ public class SelectionTool extends Tool {
                && !evt.isAltDown()
                && !evt.isMetaDown()
          ) {
-            this.selectionClickSequence.start(this.hasSelection());
+            this.selectionClickSequence.start(location, evt.getWhen());
          } else {
             this.selectionClickSequence.cancel();
          }
@@ -664,18 +664,7 @@ public class SelectionTool extends Tool {
 
    @Override
    public void mouseClicked(Point point, Point location, MouseEvent evt) {
-      if (evt.getClickCount() == 3 && this.selectionClickSequence.isActive()) {
-         if (
-            evt.getButton() == MouseEvent.BUTTON1
-               && location != null
-               && this.getPlate().isInside(location)
-               && this.selectionClickSequence.selectsFloodRegionAt(evt.getClickCount())
-         ) {
-            this.selectFloodRegion(location);
-         }
-
-         this.selectionClickSequence.cancel();
-      } else if (evt.getClickCount() == 2 && this.hasSelection()) {
+      if (evt.getClickCount() == 2 && this.hasSelection()) {
          Selection sel = this.getPlate().getSelection();
          if (sel.contains(location) && sel.isTextbox()) {
             char[][] ch = sel.getContent().getContent();
@@ -696,21 +685,6 @@ public class SelectionTool extends Tool {
             this.application.switchToTextTool(location.x, location.y);
          }
       }
-   }
-
-   private void selectFloodRegion(Point location) {
-      if (this.hasSelection()) {
-         SelectionAlgorithms.dropSelection(this.getEditor());
-      }
-
-      if (this.getPlate().getChar(location.x, location.y) == ' ') {
-         this.application.switchToTextTool(location.x, location.y);
-         return;
-      }
-
-      Rectangle region = this.getAutoSelectRegion(location.x, location.y);
-      this.getPlate().setSelection(region);
-      this.synchronizeToSelection();
    }
 
    @Override

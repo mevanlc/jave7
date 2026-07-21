@@ -115,43 +115,6 @@ public abstract class Tool implements ItemListener, ActionListener {
       metaDown = what;
    }
 
-   protected Rectangle getAutoSelectRegion(int x, int y) {
-      boolean[][] marks = new boolean[this.mainPanel.getDocumentSize().width][this.mainPanel.getDocumentSize().height];
-      marks[x][y] = true;
-      Rectangle region = new Rectangle(x, y, 0, 0);
-      this.crawl(x + 1, y, marks, region);
-      this.crawl(x - 1, y, marks, region);
-      this.crawl(x, y + 1, marks, region);
-      this.crawl(x, y - 1, marks, region);
-      region.width++;
-      region.height++;
-      return region;
-   }
-
-   protected void crawl(int x, int y, boolean[][] marks, Rectangle region) {
-      if (x >= 0 && y >= 0 && x < this.mainPanel.getDocumentSize().width && y < this.mainPanel.getDocumentSize().height && !marks[x][y]) {
-         marks[x][y] = true;
-         if (this.getPlate().getContent().get(x, y) != ' ') {
-            if (x < region.x) {
-               region.x--;
-               region.width++;
-            } else if (y < region.y) {
-               region.y--;
-               region.height++;
-            } else if (x > region.x + region.width) {
-               region.width++;
-            } else if (y > region.y + region.height) {
-               region.height++;
-            }
-
-            this.crawl(x + 1, y, marks, region);
-            this.crawl(x - 1, y, marks, region);
-            this.crawl(x, y + 1, marks, region);
-            this.crawl(x, y - 1, marks, region);
-         }
-      }
-   }
-
    public void shiftReleased() {
       if (shiftDown) {
          shiftDown = false;

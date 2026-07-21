@@ -16,6 +16,8 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class SelectionAlgorithms {
    public static void pasteAsNewSelection(IDocumentEditor editor, CharacterPlate content, Point location) {
@@ -74,6 +76,59 @@ public class SelectionAlgorithms {
       Dimension documentSize = plate.getDocumentSize();
       Rectangle region = new Rectangle(0, 0, documentSize.width, documentSize.height);
       plate.setSelection(region);
+   }
+
+   public static boolean selectConnected(IDocumentEditor editor, Point location) {
+      Plate plate = editor.getPlate();
+      if (location == null || !plate.isInside(location)) {
+         return false;
+      }
+
+      dropSelectionIfAny(editor);
+      Rectangle region = findConnectedRegion(plate.getContent(), location);
+      if (region == null) {
+         return false;
+      }
+
+      plate.setSelection(region);
+      return true;
+   }
+
+   static Rectangle findConnectedRegion(CharacterPlate content, Point location) {
+      if (location == null || !content.contains(location.x, location.y) || content.get(location.x, location.y) == ' ') {
+         return null;
+      }
+
+      boolean[][] visited = new boolean[content.getWidth()][content.getHeight()];
+      Deque<Point> pending = new ArrayDeque<>();
+      pending.add(location);
+      int minX = location.x;
+      int maxX = location.x;
+      int minY = location.y;
+      int maxY = location.y;
+
+      while (!pending.isEmpty()) {
+         Point current = pending.removeFirst();
+         if (!content.contains(current.x, current.y) || visited[current.x][current.y]) {
+            continue;
+         }
+
+         visited[current.x][current.y] = true;
+         if (content.get(current.x, current.y) == ' ') {
+            continue;
+         }
+
+         minX = Math.min(minX, current.x);
+         maxX = Math.max(maxX, current.x);
+         minY = Math.min(minY, current.y);
+         maxY = Math.max(maxY, current.y);
+         pending.add(new Point(current.x + 1, current.y));
+         pending.add(new Point(current.x - 1, current.y));
+         pending.add(new Point(current.x, current.y + 1));
+         pending.add(new Point(current.x, current.y - 1));
+      }
+
+      return new Rectangle(minX, minY, maxX - minX + 1, maxY - minY + 1);
    }
 
    public static void dropSelection(IDocumentEditor editor) {

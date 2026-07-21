@@ -1,50 +1,54 @@
 package de.jave.jave;
 
+import java.awt.Point;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class SelectionClickSequenceTest {
    @Test
-   public void sequenceWithoutSelectionSelectsCellThenFloodRegion() {
-      SelectionClickSequence sequence = new SelectionClickSequence();
+   public void sameCellWithinIntervalCompletesDoubleClickAcrossTools() {
+      SelectionClickSequence sequence = new SelectionClickSequence(500L);
+      Point location = new Point(4, 3);
 
-      sequence.start(false);
+      sequence.start(location, 1_000L);
 
-      Assert.assertTrue(sequence.selectsSingleCellAt(2));
-      Assert.assertTrue(sequence.selectsFloodRegionAt(3));
-   }
-
-   @Test
-   public void sequenceWithSelectionSelectsCellButNotFloodRegion() {
-      SelectionClickSequence sequence = new SelectionClickSequence();
-
-      sequence.start(true);
-
-      Assert.assertTrue(sequence.selectsSingleCellAt(2));
-      Assert.assertFalse(sequence.selectsFloodRegionAt(3));
-   }
-
-   @Test
-   public void canceledSequenceDoesNotHandleMultipleClicks() {
-      SelectionClickSequence sequence = new SelectionClickSequence();
-      sequence.start(false);
-
-      sequence.cancel();
-
+      Assert.assertTrue(sequence.prepareSecondClick(location, 1_400L));
+      Assert.assertTrue(sequence.completeSecondClick(location));
       Assert.assertFalse(sequence.isActive());
-      Assert.assertFalse(sequence.selectsSingleCellAt(2));
-      Assert.assertFalse(sequence.selectsFloodRegionAt(3));
    }
 
    @Test
-   public void sequenceOnlyHandlesItsExactClickCounts() {
-      SelectionClickSequence sequence = new SelectionClickSequence();
+   public void differentCellDoesNotCompleteDoubleClick() {
+      SelectionClickSequence sequence = new SelectionClickSequence(500L);
+      sequence.start(new Point(4, 3), 1_000L);
 
-      sequence.start(false);
+      boolean prepared = sequence.prepareSecondClick(new Point(5, 3), 1_100L);
 
-      Assert.assertFalse(sequence.selectsSingleCellAt(1));
-      Assert.assertFalse(sequence.selectsSingleCellAt(3));
-      Assert.assertFalse(sequence.selectsFloodRegionAt(2));
-      Assert.assertFalse(sequence.selectsFloodRegionAt(4));
+      Assert.assertFalse(prepared);
+      Assert.assertFalse(sequence.isActive());
+      Assert.assertFalse(sequence.completeSecondClick(new Point(5, 3)));
+   }
+
+   @Test
+   public void clickAfterIntervalDoesNotCompleteDoubleClick() {
+      SelectionClickSequence sequence = new SelectionClickSequence(500L);
+      Point location = new Point(4, 3);
+      sequence.start(location, 1_000L);
+
+      boolean prepared = sequence.prepareSecondClick(location, 1_501L);
+
+      Assert.assertFalse(prepared);
+      Assert.assertFalse(sequence.isActive());
+   }
+
+   @Test
+   public void secondClickReleasedOnDifferentCellDoesNotSelect() {
+      SelectionClickSequence sequence = new SelectionClickSequence(500L);
+      Point location = new Point(4, 3);
+      sequence.start(location, 1_000L);
+
+      Assert.assertTrue(sequence.prepareSecondClick(location, 1_100L));
+      Assert.assertFalse(sequence.completeSecondClick(new Point(5, 3)));
+      Assert.assertFalse(sequence.isActive());
    }
 }

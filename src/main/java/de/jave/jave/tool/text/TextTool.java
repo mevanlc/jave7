@@ -178,7 +178,15 @@ public class TextTool extends Tool {
 
    @Override
    public void mousePressed(Point point, Point location, MouseEvent evt) {
-      if (evt.getClickCount() == 1) {
+      if (
+         evt.getButton() == MouseEvent.BUTTON1
+            && !evt.isShiftDown()
+            && !evt.isControlDown()
+            && !evt.isAltDown()
+            && !evt.isMetaDown()
+      ) {
+         this.selectionClickSequence.prepareSecondClick(location, evt.getWhen());
+      } else {
          this.selectionClickSequence.cancel();
       }
 
@@ -218,22 +226,16 @@ public class TextTool extends Tool {
 
    @Override
    public void mouseReleased(Point point, Point location, MouseEvent evt) {
+      boolean selectSingleCell = this.selectionClickSequence.completeSecondClick(location);
       if (this.selectionRegion != null) {
          this.selectRegion(this.selectionRegion);
       } else if (
          evt.getButton() == MouseEvent.BUTTON1
             && location != null
             && this.getPlate().isInside(location)
-            && this.selectionClickSequence.selectsSingleCellAt(evt.getClickCount())
+            && selectSingleCell
       ) {
          this.selectRegion(new Rectangle(location.x, location.y, 1, 1));
-      } else if (
-         evt.getClickCount() == 2
-            && location != null
-            && this.getPlate().isInside(location)
-            && this.getPlate().getChar(location.x, location.y) != ' '
-      ) {
-         this.selectRegion(this.getAutoSelectRegion(location.x, location.y));
       } else {
          this.point1 = null;
          this.blinkThread.setHasSelection(false);

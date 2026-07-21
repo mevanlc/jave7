@@ -41,6 +41,7 @@ import de.jave.jave.plate.IDocumentEditor;
 import de.jave.jave.plate.JaveMainPanel;
 import de.jave.jave.plate.MouseCharacterModel;
 import de.jave.jave.plate.TextDocumentEditor;
+import de.jave.jave.plate.selection.SelectionAlgorithms;
 import de.jave.jave.preferences.AnimationExportPreferences;
 import de.jave.jave.preferences.ColorScheme;
 import de.jave.jave.preferences.JaveApplicationPreferences;
@@ -1018,6 +1019,18 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
       this.mainPanel.selectAll();
       this.switchToSelectonTool();
       this.mainPanel.saveCurrentState(JaveMessages.Edit_SelectAll_UndoName);
+   }
+
+   public void selectConnected() {
+      IDocumentEditor editor = this.mainPanel.getEditor();
+      Point cursorLocation = new Point(editor.getPlate().getDocument().getCursorLocation());
+      boolean hadSelection = editor.getPlate().hasSelection();
+      if (SelectionAlgorithms.selectConnected(editor, cursorLocation)) {
+         this.switchToSelectonTool();
+         this.mainPanel.saveCurrentState("select connected");
+      } else if (hadSelection && !editor.getPlate().hasSelection()) {
+         this.mainPanel.saveCurrentState("drop selection");
+      }
    }
 
    public void switchToSelectonTool() {

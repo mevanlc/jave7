@@ -121,6 +121,7 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
    private final JMenuItem miClose;
    private final JMenuItem miCloseAll;
    private final JMenuItem miSelectAll;
+   private final JMenuItem miSelectConnected;
    private final JMenuItem miClear;
    private final JMenuItem miReplace;
    private final JMenuItem miRender3D;
@@ -229,6 +230,8 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
       animationMenu.add(new AnimationEditorPropertiesAction(mainPanel));
       this.miSelectAll = this.createMenuItem("Select All");
       this.miSelectAll.setAccelerator(JaveKeyBindings.SELECT_ALL);
+      this.miSelectConnected = this.createMenuItem("Select Connected");
+      this.miSelectConnected.setAccelerator(JaveKeyBindings.SELECT_CONNECTED);
       FontModel displayFontModel = preferences.getDisplayFontModel();
       this.miClear = this.createMenuItem(mainPanel, new Clear(), displayFontModel);
       this.miReplace = this.createMenuItem("Replace...");
@@ -245,6 +248,7 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
       menuEdit.add(this.pasteIntoSelectionAction);
       menuEdit.addSeparator();
       menuEdit.add(this.miSelectAll);
+      menuEdit.add(this.miSelectConnected);
       menuEdit.addSeparator();
       menuEdit.add(this.miClear);
       menuEdit.add(new CropAction(application, mainPanel));
@@ -497,6 +501,7 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
       this.installTransparentIconsOnMenuItems();
       this.docOpenEnabledMenuItems.add(this.miClear);
       this.docOpenEnabledMenuItems.add(this.miSelectAll);
+      this.docOpenEnabledMenuItems.add(this.miSelectConnected);
       this.docOpenEnabledMenuItems.add(this.miClose);
       this.docOpenEnabledMenuItems.add(this.miCloseAll);
       this.docOpenEnabledMenuItems.add(this.miReplace);
@@ -712,6 +717,8 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
          this.application.doRevert(parentComponent);
       } else if (source == this.miSelectAll) {
          this.application.selectAll();
+      } else if (source == this.miSelectConnected) {
+         this.application.selectConnected();
       } else if (source == this.miToggleLayerVisibility) {
          this.application.toggleActiveLayerVisibility();
          this.updateLayerMenu();

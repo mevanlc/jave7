@@ -32,6 +32,7 @@ public final class JaveKeyBindings {
    public static final KeyStroke PASTE_AS_NEW_SELECTION = KeyStroke.getKeyStroke(KeyEvent.VK_V, MENU);
    public static final KeyStroke PASTE_INTO_SELECTION = KeyStroke.getKeyStroke(KeyEvent.VK_V, MENU_SHIFT);
    public static final KeyStroke SELECT_ALL = KeyStroke.getKeyStroke(KeyEvent.VK_A, MENU);
+   public static final KeyStroke SELECT_CONNECTED = KeyStroke.getKeyStroke(KeyEvent.VK_A, MENU_SHIFT);
    public static final KeyStroke REPLACE = KeyStroke.getKeyStroke(KeyEvent.VK_H, MENU);
    public static final KeyStroke CROP = KeyStroke.getKeyStroke(KeyEvent.VK_R, MENU);
 
