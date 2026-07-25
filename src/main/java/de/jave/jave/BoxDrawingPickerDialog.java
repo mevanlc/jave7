@@ -67,6 +67,9 @@ public class BoxDrawingPickerDialog {
    private final List<DiagramComponent> diagramComponents = new ArrayList<>();
    private JPopupMenu activePopupMenu;
    private char selectedCharacter = '┌';
+   private DiagramComponent selectedDiagramComponent;
+   private int selectedRow = -1;
+   private int selectedColumn = -1;
    private int diagramFontSize;
 
    public BoxDrawingPickerDialog(Component parent, JaveMainPanel mainPanel) {
@@ -240,11 +243,40 @@ public class BoxDrawingPickerDialog {
    }
 
    private void selectCharacter(char ch) {
+      selectCharacter(ch, null, -1, -1);
+   }
+
+   private void selectCharacter(char ch, DiagramComponent primaryComponent, int row, int column) {
       this.selectedCharacter = ch;
+      this.selectedDiagramComponent = primaryComponent;
+      this.selectedRow = row;
+      this.selectedColumn = column;
       updateSelectionDisplay();
       for (DiagramComponent component : this.diagramComponents) {
          component.repaint();
       }
+   }
+
+   static Color createSelectionHintColor(Color selectionColor) {
+      return new Color(
+         lightenColorComponent(selectionColor.getRed()),
+         lightenColorComponent(selectionColor.getGreen()),
+         lightenColorComponent(selectionColor.getBlue()),
+         selectionColor.getAlpha()
+      );
+   }
+
+   private static int lightenColorComponent(int component) {
+      return component + (255 - component) * 2 / 3;
+   }
+
+   static boolean isReleaseInPressedCell(
+      int pressedRow, int pressedColumn, int releasedRow, int releasedColumn
+   ) {
+      return pressedRow >= 0
+         && pressedColumn >= 0
+         && pressedRow == releasedRow
+         && pressedColumn == releasedColumn;
    }
 
    private void updateSelectionDisplay() {
@@ -447,6 +479,8 @@ public class BoxDrawingPickerDialog {
       private final int fontSizeOffset;
       private int hoverRow = -1;
       private int hoverColumn = -1;
+      private int pressedRow = -1;
+      private int pressedColumn = -1;
 
       DiagramComponent(BoxDrawingPalette.Diagram diagram, int fontSizeOffset) {
          this.rows = diagram.getRows();
@@ -470,26 +504,32 @@ public class BoxDrawingPickerDialog {
 
             @Override
             public void mousePressed(MouseEvent event) {
-               maybeShowPopup(event);
+               clearPressedCell();
+               if (!maybeShowPopup(event) && event.getButton() == MouseEvent.BUTTON1) {
+                  capturePressedCell(event.getPoint());
+               }
             }
 
             @Override
             public void mouseReleased(MouseEvent event) {
-               maybeShowPopup(event);
+               if (maybeShowPopup(event)) {
+                  clearPressedCell();
+               } else if (event.getButton() == MouseEvent.BUTTON1) {
+                  Character ch = selectPressedCharacterAt(event.getPoint());
+                  if (ch != null) {
+                     requestFocusInWindow();
+                  }
+               } else {
+                  clearPressedCell();
+               }
             }
 
             @Override
             public void mouseClicked(MouseEvent event) {
-               if (event.getButton() != MouseEvent.BUTTON1) {
-                  return;
-               }
-               Character ch = getCharacterAt(event.getPoint());
-               if (ch != null) {
-                  requestFocusInWindow();
-                  selectCharacter(ch);
-                  if (event.getClickCount() == 2) {
-                     insertSelected();
-                  }
+               if (event.getButton() == MouseEvent.BUTTON1
+                  && event.getClickCount() == 2
+                  && isPrimarySelectionAt(event.getPoint())) {
+                  insertSelected();
                }
             }
          });
@@ -531,10 +571,22 @@ public class BoxDrawingPickerDialog {
                int x = originX + column * cellWidth;
                int y = originY + row * cellHeight;
                if (ch == BoxDrawingPickerDialog.this.selectedCharacter) {
-                  graphics.setColor(UIManager.getColor("List.selectionBackground"));
+                  boolean primarySelection = isPrimarySelection(row, column);
+                  Color selectionBackground = UIManager.getColor("List.selectionBackground");
+                  if (selectionBackground == null) {
+                     selectionBackground = Color.BLUE;
+                  }
+                  if (!primarySelection) {
+                     selectionBackground = createSelectionHintColor(selectionBackground);
+                  }
+                  graphics.setColor(selectionBackground);
                   graphics.fillRect(x, y, cellWidth, cellHeight);
-                  Color selectionForeground = UIManager.getColor("List.selectionForeground");
-                  graphics.setColor(selectionForeground == null ? UIManager.getColor("Label.foreground") : selectionForeground);
+                  if (primarySelection) {
+                     Color selectionForeground = UIManager.getColor("List.selectionForeground");
+                     graphics.setColor(selectionForeground == null ? UIManager.getColor("Label.foreground") : selectionForeground);
+                  } else {
+                     graphics.setColor(UIManager.getColor("Label.foreground"));
+                  }
                } else if (row == this.hoverRow && column == this.hoverColumn) {
                   Color hover = UIManager.getColor("List.dropCellBackground");
                   graphics.setColor(hover == null ? UIManager.getColor("controlHighlight") : hover);
@@ -558,16 +610,75 @@ public class BoxDrawingPickerDialog {
          return String.format("%c  U+%04X  %s", ch, (int)ch, BoxDrawingPalette.getDisplayName(ch));
       }
 
-      private void maybeShowPopup(MouseEvent event) {
+      private boolean maybeShowPopup(MouseEvent event) {
          if (!event.isPopupTrigger()) {
-            return;
+            return false;
          }
-         Character ch = getCharacterAt(event.getPoint());
+         Character ch = selectCharacterAt(event.getPoint());
          if (ch != null) {
-            selectCharacter(ch);
             showVariants(ch, this, event.getX(), event.getY());
          }
          event.consume();
+         return true;
+      }
+
+      private Character selectCharacterAt(Point point) {
+         int[] cell = getCellAt(point);
+         if (cell == null) {
+            return null;
+         }
+         char ch = this.rows[cell[0]].charAt(cell[1]);
+         if (ch == ' ') {
+            return null;
+         }
+         selectCharacter(ch, this, cell[0], cell[1]);
+         return ch;
+      }
+
+      private void capturePressedCell(Point point) {
+         int[] cell = getCellAt(point);
+         if (cell != null && this.rows[cell[0]].charAt(cell[1]) != ' ') {
+            this.pressedRow = cell[0];
+            this.pressedColumn = cell[1];
+         }
+      }
+
+      private Character selectPressedCharacterAt(Point point) {
+         int pressedCellRow = this.pressedRow;
+         int pressedCellColumn = this.pressedColumn;
+         clearPressedCell();
+
+         int[] releasedCell = getCellAt(point);
+         if (releasedCell == null || !isReleaseInPressedCell(
+            pressedCellRow, pressedCellColumn, releasedCell[0], releasedCell[1]
+         )) {
+            return null;
+         }
+         char ch = this.rows[releasedCell[0]].charAt(releasedCell[1]);
+         if (ch == ' ') {
+            return null;
+         }
+         selectCharacter(ch, this, releasedCell[0], releasedCell[1]);
+         return ch;
+      }
+
+      private void clearPressedCell() {
+         this.pressedRow = -1;
+         this.pressedColumn = -1;
+      }
+
+      private boolean isPrimarySelectionAt(Point point) {
+         int[] cell = getCellAt(point);
+         return cell != null
+            && this.rows[cell[0]].charAt(cell[1]) != ' '
+            && isPrimarySelection(cell[0], cell[1]);
+      }
+
+      private boolean isPrimarySelection(int row, int column) {
+         return BoxDrawingPickerDialog.this.selectedDiagramComponent == null
+            || (BoxDrawingPickerDialog.this.selectedDiagramComponent == this
+               && BoxDrawingPickerDialog.this.selectedRow == row
+               && BoxDrawingPickerDialog.this.selectedColumn == column);
       }
 
       private void updateHover(Point point) {
