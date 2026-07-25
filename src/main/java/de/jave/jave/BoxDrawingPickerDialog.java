@@ -11,11 +11,14 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -30,13 +33,13 @@ import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
@@ -54,11 +57,11 @@ public class BoxDrawingPickerDialog {
    private static final int FONT_SIZE_STEP = 2;
    private static final int SECONDARY_FONT_SIZE_OFFSET = -4;
    private static final int DASH_FONT_SIZE_OFFSET = -7;
-   private static final int WINDOW_MIN_WIDTH = 220;
-   private static final int WINDOW_MIN_HEIGHT = 380;
+   private static final int WINDOW_MIN_WIDTH = 206;
+   private static final int WINDOW_MIN_HEIGHT = 350;
    private static final String PREF_KEY_FONT_SIZE = "boxDrawingPickerCompactFontSize";
-   private static final String PREF_KEY_WINDOW_WIDTH = "boxDrawingPickerCompactWindowWidth";
-   private static final String PREF_KEY_WINDOW_HEIGHT = "boxDrawingPickerCompactWindowHeight";
+   private static final String PREF_KEY_WINDOW_X = "boxDrawingPickerWindowX";
+   private static final String PREF_KEY_WINDOW_Y = "boxDrawingPickerWindowY";
 
    private final JaveMainPanel mainPanel;
    private final JDialog dialog;
@@ -87,7 +90,7 @@ public class BoxDrawingPickerDialog {
       this.previewLabel = new JLabel(" ", SwingConstants.CENTER);
       this.previewLabel.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 40));
       this.infoLabel = new JLabel(" ");
-      this.infoLabel.setFont(JaveGlobalRessources.FONT_SMALL_FIXEDWIDTH.deriveFont(10.0f));
+      this.infoLabel.setFont(JaveGlobalRessources.FONT_SMALL_FIXEDWIDTH.deriveFont(9.0f));
       this.infoLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
       this.dialog.getContentPane().setLayout(new BorderLayout());
@@ -98,17 +101,17 @@ public class BoxDrawingPickerDialog {
 
       this.dialog.pack();
       this.dialog.setMinimumSize(new Dimension(WINDOW_MIN_WIDTH, WINDOW_MIN_HEIGHT));
-      Dimension savedSize = readSavedWindowSize();
-      if (savedSize != null) {
-         this.dialog.setSize(savedSize);
+      Point savedLocation = readSavedWindowLocation();
+      if (savedLocation == null) {
+         this.dialog.setLocationRelativeTo(parent);
+      } else {
+         this.dialog.setLocation(savedLocation);
       }
-      this.dialog.setLocationRelativeTo(parent);
    }
 
    private JPanel buildContentPanel() {
       JPanel panel = new JPanel(new BorderLayout(0, 3));
-      panel.setBorder(new EmptyBorder(5, 7, 3, 7));
-      panel.add(buildHint(), BorderLayout.NORTH);
+      panel.setBorder(new EmptyBorder(2, 6, 3, 6));
       panel.add(wrapLeading(buildDiagramPalette(), 0), BorderLayout.CENTER);
 
       JPanel selection = new JPanel(new BorderLayout(0, 0));
@@ -118,7 +121,7 @@ public class BoxDrawingPickerDialog {
       ));
       selection.add(this.previewLabel, BorderLayout.CENTER);
       selection.add(this.infoLabel, BorderLayout.SOUTH);
-      panel.add(wrapLeading(selection, 7), BorderLayout.SOUTH);
+      panel.add(wrapLeading(selection, 0), BorderLayout.SOUTH);
       return panel;
    }
 
@@ -126,20 +129,6 @@ public class BoxDrawingPickerDialog {
       JPanel wrapper = new JPanel(new FlowLayout(FlowLayout.LEADING, horizontalGap, 0));
       wrapper.add(component);
       return wrapper;
-   }
-
-   private Box buildHint() {
-      Box hint = Box.createVerticalBox();
-      hint.add(createHintLine("Click a piece to select it"));
-      hint.add(createHintLine("double-click to insert"));
-      hint.add(createHintLine("Right-click for alternates"));
-      return hint;
-   }
-
-   private JLabel createHintLine(String text) {
-      JLabel line = new JLabel(text);
-      line.setFont(JaveGlobalRessources.FONT_DEFAULT);
-      return line;
    }
 
    private JPanel buildDiagramPalette() {
@@ -191,13 +180,32 @@ public class BoxDrawingPickerDialog {
             closeDialog();
          }
       });
-      Insets compactMargin = new Insets(1, 7, 1, 7);
-      insertButton.setMargin(compactMargin);
-      insertCloseButton.setMargin(compactMargin);
-      JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEADING, 14, 0));
+      JButton helpButton = new JButton(new AbstractAction("?") {
+         @Override
+         public void actionPerformed(ActionEvent event) {
+            showHelp();
+         }
+      });
+      Insets compactMargin = new Insets(1, 2, 1, 2);
+      for (JButton button : new JButton[] {insertButton, insertCloseButton, helpButton}) {
+         button.putClientProperty("JButton.buttonType", "square");
+         button.setMargin(compactMargin);
+      }
+      helpButton.setToolTipText("Show picker instructions");
+      JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEADING, 4, 0));
       panel.add(insertButton);
       panel.add(insertCloseButton);
+      panel.add(helpButton);
       return panel;
+   }
+
+   private void showHelp() {
+      JOptionPane.showMessageDialog(
+         this.dialog,
+         "Click a piece to select it.\nDouble-click to insert.\nRight-click for alternates.",
+         "Box Drawing Picker Help",
+         JOptionPane.INFORMATION_MESSAGE
+      );
    }
 
    private void bindKeys() {
@@ -380,24 +388,33 @@ public class BoxDrawingPickerDialog {
       this.dialog.setSize(width, height);
    }
 
-   private Dimension readSavedWindowSize() {
-      int width = preferences().getInt(PREF_KEY_WINDOW_WIDTH, -1);
-      int height = preferences().getInt(PREF_KEY_WINDOW_HEIGHT, -1);
-      if (width < WINDOW_MIN_WIDTH || height < WINDOW_MIN_HEIGHT) {
-         return null;
-      }
-      return new Dimension(width, height);
-   }
-
-   private void saveWindowSize() {
-      Dimension size = this.dialog.getSize();
-      preferences().putInt(PREF_KEY_WINDOW_WIDTH, size.width);
-      preferences().putInt(PREF_KEY_WINDOW_HEIGHT, size.height);
-      flushPreferences();
-   }
-
    private static Preferences preferences() {
       return Preferences.userRoot().node("JavE");
+   }
+
+   private Point readSavedWindowLocation() {
+      int x = preferences().getInt(PREF_KEY_WINDOW_X, Integer.MIN_VALUE);
+      int y = preferences().getInt(PREF_KEY_WINDOW_Y, Integer.MIN_VALUE);
+      if (x == Integer.MIN_VALUE || y == Integer.MIN_VALUE) {
+         return null;
+      }
+
+      Point location = new Point(x, y);
+      Rectangle windowBounds = new Rectangle(location, this.dialog.getSize());
+      for (GraphicsDevice device : GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()) {
+         Rectangle visibleBounds = windowBounds.intersection(device.getDefaultConfiguration().getBounds());
+         if (visibleBounds.width >= 50 && visibleBounds.height >= 30) {
+            return location;
+         }
+      }
+      return null;
+   }
+
+   private void saveWindowLocation() {
+      Point location = this.dialog.getLocation();
+      preferences().putInt(PREF_KEY_WINDOW_X, location.x);
+      preferences().putInt(PREF_KEY_WINDOW_Y, location.y);
+      flushPreferences();
    }
 
    private static void flushPreferences() {
@@ -409,11 +426,12 @@ public class BoxDrawingPickerDialog {
    }
 
    private void closeDialog() {
-      saveWindowSize();
+      saveWindowLocation();
       this.dialog.setVisible(false);
    }
 
    public void show() {
+      this.dialog.pack();
       this.dialog.setVisible(true);
       if (!this.diagramComponents.isEmpty()) {
          this.diagramComponents.get(0).requestFocusInWindow();
@@ -474,7 +492,8 @@ public class BoxDrawingPickerDialog {
    }
 
    private final class DiagramComponent extends JComponent {
-      private static final int PADDING = 2;
+      private static final int HORIZONTAL_PADDING = 2;
+      private static final int VERTICAL_PADDING = 0;
       private final String[] rows;
       private final int fontSizeOffset;
       private int hoverRow = -1;
@@ -549,7 +568,10 @@ public class BoxDrawingPickerDialog {
          for (String row : this.rows) {
             columns = Math.max(columns, row.length());
          }
-         return new Dimension(columns * cellWidth(metrics) + PADDING * 2, this.rows.length * metrics.getHeight() + PADDING * 2);
+         return new Dimension(
+            columns * cellWidth(metrics) + HORIZONTAL_PADDING * 2,
+            this.rows.length * metrics.getHeight() + VERTICAL_PADDING * 2
+         );
       }
 
       @Override
