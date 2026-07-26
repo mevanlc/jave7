@@ -3,6 +3,7 @@ package de.jave.jave;
 import de.jave.gui.dialog.JDialogFactory;
 import de.jave.jave.actions.JaveKeyBindings;
 import de.jave.jave.plate.JaveMainPanel;
+import de.jave.lib.CharacterPlate;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -57,6 +58,9 @@ public class BoxDrawingPickerDialog {
    private static final int FONT_SIZE_STEP = 2;
    private static final int SECONDARY_FONT_SIZE_OFFSET = -4;
    private static final int DASH_FONT_SIZE_OFFSET = -7;
+   private static final int INSERT_ALL_WIDTH = 24;
+   private static final int[] PRIMARY_DIAGRAM_INDEXES = {0, 1, 2};
+   private static final int[] SECONDARY_DIAGRAM_INDEXES = {6, 4, 5, 3};
    private static final int WINDOW_MIN_WIDTH = 206;
    private static final int WINDOW_MIN_HEIGHT = 350;
    private static final String PREF_KEY_FONT_SIZE = "boxDrawingPickerCompactFontSize";
@@ -133,16 +137,18 @@ public class BoxDrawingPickerDialog {
 
    private JPanel buildDiagramPalette() {
       List<BoxDrawingPalette.Diagram> diagrams = BoxDrawingPalette.getDiagrams();
-      JPanel primaryRow = new JPanel(new GridLayout(1, 3));
-      addDiagram(primaryRow, diagrams.get(0), 0);
-      addDiagram(primaryRow, diagrams.get(1), 0);
-      addDiagram(primaryRow, diagrams.get(2), 0);
+      JPanel primaryRow = new JPanel(new GridLayout(1, PRIMARY_DIAGRAM_INDEXES.length));
+      for (int diagramIndex : PRIMARY_DIAGRAM_INDEXES) {
+         addDiagram(primaryRow, diagrams.get(diagramIndex), 0);
+      }
 
-      JPanel secondaryRow = new JPanel(new GridLayout(1, 4));
-      addDiagram(secondaryRow, diagrams.get(6), SECONDARY_FONT_SIZE_OFFSET);
-      addDiagram(secondaryRow, diagrams.get(4), DASH_FONT_SIZE_OFFSET);
-      addDiagram(secondaryRow, diagrams.get(5), DASH_FONT_SIZE_OFFSET);
-      addDiagram(secondaryRow, diagrams.get(3), SECONDARY_FONT_SIZE_OFFSET);
+      JPanel secondaryRow = new JPanel(new GridLayout(1, SECONDARY_DIAGRAM_INDEXES.length));
+      for (int diagramIndex : SECONDARY_DIAGRAM_INDEXES) {
+         int fontSizeOffset = diagramIndex == 4 || diagramIndex == 5
+            ? DASH_FONT_SIZE_OFFSET
+            : SECONDARY_FONT_SIZE_OFFSET;
+         addDiagram(secondaryRow, diagrams.get(diagramIndex), fontSizeOffset);
+      }
 
       JPanel palette = new JPanel();
       palette.setLayout(new BoxLayout(palette, BoxLayout.Y_AXIS));
@@ -173,11 +179,10 @@ public class BoxDrawingPickerDialog {
             insertSelected();
          }
       });
-      JButton insertCloseButton = new JButton(new AbstractAction("Insert & Close") {
+      JButton insertAllButton = new JButton(new AbstractAction("Insert All") {
          @Override
          public void actionPerformed(ActionEvent event) {
-            insertSelected();
-            closeDialog();
+            insertAll();
          }
       });
       JButton helpButton = new JButton(new AbstractAction("?") {
@@ -187,14 +192,14 @@ public class BoxDrawingPickerDialog {
          }
       });
       Insets compactMargin = new Insets(1, 2, 1, 2);
-      for (JButton button : new JButton[] {insertButton, insertCloseButton, helpButton}) {
+      for (JButton button : new JButton[] {insertButton, insertAllButton, helpButton}) {
          button.putClientProperty("JButton.buttonType", "square");
          button.setMargin(compactMargin);
       }
       helpButton.setToolTipText("Show picker instructions");
       JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEADING, 4, 0));
       panel.add(insertButton);
-      panel.add(insertCloseButton);
+      panel.add(insertAllButton);
       panel.add(helpButton);
       return panel;
    }
@@ -218,13 +223,12 @@ public class BoxDrawingPickerDialog {
          }
       });
       root.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-         KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.ALT_DOWN_MASK), "boxDrawing.insertClose"
+         KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.ALT_DOWN_MASK), "boxDrawing.insertAll"
       );
-      root.getActionMap().put("boxDrawing.insertClose", new AbstractAction() {
+      root.getActionMap().put("boxDrawing.insertAll", new AbstractAction() {
          @Override
          public void actionPerformed(ActionEvent event) {
-            insertSelected();
-            closeDialog();
+            insertAll();
          }
       });
       root.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "boxDrawing.close");
@@ -358,6 +362,66 @@ public class BoxDrawingPickerDialog {
       plate.setCharForce(location, this.selectedCharacter);
       plate.saveCurrentState("insert box drawing character");
       plate.repaint();
+   }
+
+   private void insertAll() {
+      Plate plate = this.mainPanel.getPlate();
+      if (plate == null) {
+         return;
+      }
+      Point location = plate.getPasteLocation();
+      if (location == null) {
+         return;
+      }
+      insertPaletteRows(plate.getContent(), location, createPaletteLayoutRows());
+      plate.saveCurrentState("insert box drawing palette");
+      plate.repaint();
+   }
+
+   static String[] createPaletteLayoutRows() {
+      List<BoxDrawingPalette.Diagram> diagrams = BoxDrawingPalette.getDiagrams();
+      List<String> rows = new ArrayList<>();
+      appendDiagramRow(rows, diagrams, PRIMARY_DIAGRAM_INDEXES);
+      appendDiagramRow(rows, diagrams, SECONDARY_DIAGRAM_INDEXES);
+      return rows.toArray(new String[0]);
+   }
+
+   private static void appendDiagramRow(
+      List<String> output, List<BoxDrawingPalette.Diagram> diagrams, int[] diagramIndexes
+   ) {
+      int rowHeight = 0;
+      List<String[]> diagramRows = new ArrayList<>();
+      for (int diagramIndex : diagramIndexes) {
+         String[] rows = diagrams.get(diagramIndex).getRows();
+         diagramRows.add(rows);
+         rowHeight = Math.max(rowHeight, rows.length);
+      }
+
+      int slotWidth = INSERT_ALL_WIDTH / diagramIndexes.length;
+      for (int row = 0; row < rowHeight; row++) {
+         StringBuilder line = new StringBuilder(INSERT_ALL_WIDTH);
+         for (String[] rows : diagramRows) {
+            int diagramRow = row - (rowHeight - rows.length) / 2;
+            String text = diagramRow >= 0 && diagramRow < rows.length ? rows[diagramRow] : "";
+            int leftPadding = (slotWidth - text.length()) / 2;
+            line.append(" ".repeat(leftPadding));
+            line.append(text);
+            line.append(" ".repeat(slotWidth - leftPadding - text.length()));
+         }
+         output.add(line.toString());
+      }
+   }
+
+   static void insertPaletteRows(CharacterPlate target, Point location, String[] rows) {
+      for (int y = 0; y < rows.length; y++) {
+         String row = rows[y];
+         for (int x = 0; x < row.length(); x++) {
+            char ch = row.charAt(x);
+            if (ch != ' ' && target.contains(location.x + x, location.y + y)) {
+               target.setForce(location.x + x, location.y + y, ch);
+            }
+         }
+      }
    }
 
    private void zoomIn() {

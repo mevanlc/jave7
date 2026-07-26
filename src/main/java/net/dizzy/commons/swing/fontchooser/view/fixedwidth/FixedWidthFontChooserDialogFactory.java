@@ -16,10 +16,10 @@ public final class FixedWidthFontChooserDialogFactory {
    }
 
    public static FontChooserDialog createDialog(Component parent, FontModel model) {
-      return new FontChooserDialog(parent, model);
+      return new FontChooserDialog(parent, model, true);
    }
 
    public FontChooserDialog createFontChooserDialog(Component parent, FontModel model) {
-      return new FontChooserDialog(parent, model);
+      return new FontChooserDialog(parent, model, true);
    }
 }
