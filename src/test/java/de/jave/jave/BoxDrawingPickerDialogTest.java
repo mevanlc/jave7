@@ -22,4 +22,10 @@ public class BoxDrawingPickerDialogTest {
       Assert.assertFalse(BoxDrawingPickerDialog.isReleaseInPressedCell(2, 3, 3, 3));
       Assert.assertFalse(BoxDrawingPickerDialog.isReleaseInPressedCell(-1, -1, 2, 3));
    }
+
+   @Test
+   public void variantMenuFontIsFiftyPercentLarger() {
+      Assert.assertEquals(21, BoxDrawingPickerDialog.variantMenuFontSize(20));
+      Assert.assertEquals(24, BoxDrawingPickerDialog.variantMenuFontSize(24));
+   }
 }

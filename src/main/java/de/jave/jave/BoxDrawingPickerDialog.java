@@ -301,19 +301,26 @@ public class BoxDrawingPickerDialog {
       }
       JPopupMenu menu = new JPopupMenu();
       menu.addPopupMenuListener(new PopupKeyHandler(menu));
-      Font menuFont = new Font(Font.MONOSPACED, Font.PLAIN, Math.max(14, this.diagramFontSize - 8));
+      Font menuFont = new Font(Font.MONOSPACED, Font.PLAIN, variantMenuFontSize(this.diagramFontSize));
       for (int i = 0; i < variants.length(); i++) {
          char variant = variants.charAt(i);
          JMenuItem item = new JMenuItem(String.format(
             "%c   U+%04X   %s", variant, (int)variant, BoxDrawingPalette.getDisplayName(variant)
          ));
          item.setFont(menuFont);
+         item.setBorder(BorderFactory.createCompoundBorder(
+            item.getBorder(), new EmptyBorder(4, 8, 4, 8)
+         ));
          item.setEnabled(variant != this.selectedCharacter);
          item.addActionListener(event -> selectCharacter(variant));
          menu.add(item);
       }
       this.activePopupMenu = menu;
       menu.show(invoker, x, y);
+   }
+
+   static int variantMenuFontSize(int diagramFontSize) {
+      return Math.round(Math.max(14, diagramFontSize - 8) * 1.5f);
    }
 
    private boolean handlePopupEnter() {
