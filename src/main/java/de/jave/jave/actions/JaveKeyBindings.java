@@ -1,5 +1,6 @@
 package de.jave.jave.actions;
 
+import de.jave.maxosx.MacOsXInitializer;
 import java.awt.Toolkit;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -33,7 +34,7 @@ public final class JaveKeyBindings {
    public static final KeyStroke PASTE_INTO_SELECTION = KeyStroke.getKeyStroke(KeyEvent.VK_V, MENU_SHIFT);
    public static final KeyStroke SELECT_ALL = KeyStroke.getKeyStroke(KeyEvent.VK_A, MENU);
    public static final KeyStroke SELECT_CONNECTED = KeyStroke.getKeyStroke(KeyEvent.VK_A, MENU_SHIFT);
-   public static final KeyStroke REPLACE = KeyStroke.getKeyStroke(KeyEvent.VK_H, MENU);
+   public static final KeyStroke REPLACE = ReplaceKeyBinding.create(MacOsXInitializer.isMacOs(), MENU);
    public static final KeyStroke CROP = KeyStroke.getKeyStroke(KeyEvent.VK_R, MENU);
 
    public static final KeyStroke TOGGLE_GRID = KeyStroke.getKeyStroke(KeyEvent.VK_G, MENU);
