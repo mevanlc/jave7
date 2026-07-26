@@ -2,10 +2,14 @@ package net.dizzy.commons.swing.action;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
+
+import net.dizzy.commons.swing.label.internal.MnemonicLabel;
+import net.dizzy.commons.swing.label.internal.MnemonicLabelParser;
 
 public abstract class SmartAction extends AbstractAction {
    public SmartAction() {
@@ -13,11 +17,13 @@ public abstract class SmartAction extends AbstractAction {
    }
 
    public SmartAction(String name) {
-      super(name);
+      super();
+      applyName(name);
    }
 
    public SmartAction(String name, Icon icon) {
-      super(name, icon);
+      super(null, icon);
+      applyName(name);
    }
 
    public SmartAction(Icon icon) {
@@ -45,11 +51,21 @@ public abstract class SmartAction extends AbstractAction {
    }
 
    public void setName(String name) {
-      putValue(NAME, name);
+      applyName(name);
    }
 
    public Icon getIcon() {
       Object value = getValue(SMALL_ICON);
       return value instanceof Icon ? (Icon) value : null;
+   }
+
+   private void applyName(String name) {
+      MnemonicLabel label = MnemonicLabelParser.parse(name);
+      putValue(NAME, label.getPlainText());
+      Character mnemonicCharacter = label.getMnemonicCharacter();
+      Integer mnemonicKey = mnemonicCharacter == null
+         ? null
+         : Integer.valueOf(KeyEvent.getExtendedKeyCodeForChar(mnemonicCharacter.charValue()));
+      putValue(MNEMONIC_KEY, mnemonicKey);
    }
 }
