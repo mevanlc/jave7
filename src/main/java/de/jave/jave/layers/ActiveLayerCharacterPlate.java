@@ -151,6 +151,30 @@ public final class ActiveLayerCharacterPlate extends CharacterPlate {
    }
 
    @Override
+   public void addColumnsLeft(int count) {
+      CharacterPlate projection = this.document.getActiveContentProjection().getClone();
+      projection.addColumnsLeft(count);
+      this.document.resizeDocument(projection.getWidth(), projection.getHeight());
+      this.document.replaceActiveContentProjection(projection);
+   }
+
+   @Override
+   public void addLinesBottom(int count) {
+      CharacterPlate projection = this.document.getActiveContentProjection().getClone();
+      projection.addLinesBottom(count);
+      this.document.resizeDocument(projection.getWidth(), projection.getHeight());
+      this.document.replaceActiveContentProjection(projection);
+   }
+
+   @Override
+   public void addLinesTop(int count) {
+      CharacterPlate projection = this.document.getActiveContentProjection().getClone();
+      projection.addLinesTop(count);
+      this.document.resizeDocument(projection.getWidth(), projection.getHeight());
+      this.document.replaceActiveContentProjection(projection);
+   }
+
+   @Override
    public void insertLine(int line) {
       CharacterPlate projection = this.document.getActiveContentProjection().getClone();
       projection.insertLine(line);

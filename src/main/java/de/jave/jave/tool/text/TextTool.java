@@ -15,6 +15,7 @@ import de.jave.jave.tool.dialog.IInlineToolOptions;
 import de.jave.lib.CharacterPlate;
 import de.jave.lib.Toolbox;
 import de.jave.text.TextTools;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -517,11 +518,28 @@ public class TextTool extends Tool {
 
    @Override
    public void keyTyped(char ch, KeyEvent evt) {
-      this.charEntered(ch);
+      if (ch != ' ' || !evt.isControlDown()) {
+         this.charEntered(ch);
+      }
    }
 
    @Override
    public void keyPressed(int code, KeyEvent evt) {
+      Point cursorLocation = this.getCursorLocation();
+      Dimension previousSize = this.getPlate().getDocumentSize();
+      if (TextRowEditing.handleShortcut(this.getPlate().getContent(), cursorLocation, code, evt.getModifiersEx())) {
+         this.getPlate().ensureVisible(cursorLocation);
+         if (!previousSize.equals(this.getPlate().getDocumentSize())) {
+            this.getPlate().handleDocumentSizeChanged();
+         } else {
+            this.repaintAll();
+         }
+         this.saveCurrentState(JaveMessages.Tool_Text_UndoName);
+         this.blinkThread.updateCursor();
+         evt.consume();
+         return;
+      }
+
       if (code != 9 || !controlDown) {
          if (code == 27) {
             this.point1 = null;
@@ -529,7 +547,6 @@ public class TextTool extends Tool {
             this.selectionRegion = null;
             this.repaintCursor();
          } else {
-            Point cursorLocation = this.getCursorLocation();
             if (!shiftDown || code != 38 && code != 40 && code != 37 && code != 39) {
                switch (code) {
                   case 8:
