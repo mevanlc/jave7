@@ -16,10 +16,18 @@ import de.jave.jave.plate.IDocumentEditor;
 import de.jave.javeplayer.JaveAnimationFile;
 import de.jave.javeplayer.persistence.JaveAnimationFileWriter;
 import de.jave.lib.gui.IStatusDisplay;
+import de.jave.maxosx.MacOsXInitializer;
 import de.jave.util.RecentFileList;
 import java.awt.Component;
+import java.awt.SecondaryLoop;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BooleanSupplier;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import net.dizzy.commons.core.io.FileModel;
 import net.dizzy.commons.core.message.Message;
 import net.dizzy.commons.core.message.MessageType;
@@ -28,6 +36,7 @@ import net.dizzy.commons.swing.dialog.message.MessageDialogUtilities;
 import net.dizzy.commons.swing.dialog.message.YesNoCancel;
 
 public class SavePerformer {
+   private static final int MAC_DIALOG_TRANSITION_DELAY_MS = 100;
    private static final String LAYERED_SAVE_REMINDER = "Your document contains multiple layers and must be saved in a dedicated\n"
       + ".javedoc file to preserve the layers. If you would like to save the document as\n"
       + "a single text file, first use the Layers menu to flatten the document to a\n"
@@ -343,14 +352,18 @@ public class SavePerformer {
             + DocumentEditorTitleFactory.createShortEditorTitle(editor)
             + " has been modified.\n"
             + "Do you want to save changes?";
-         YesNoCancel answer = MessageDialogUtilities.showYesNoCancelDialog(parentComponent, new Message("JavE Animation Editor", question, MessageType.WARNING));
+         YesNoCancel answer = MessageDialogUtilities.showSaveDiscardCancelDialog(
+            parentComponent, new Message("JavE Animation Editor", question, MessageType.WARNING)
+         );
          if (answer == YesNoCancel.NO) {
             editor.getModel().setModified(false);
             return true;
          } else {
             return answer == YesNoCancel.CANCEL
                ? false
-               : performSaveAnimation(parentComponent, editor, recentFileList, currentDirectoryModel, statusDisplay, documentSaveListener);
+               : performSaveAfterPrompt(
+                  () -> performSaveAnimation(parentComponent, editor, recentFileList, currentDirectoryModel, statusDisplay, documentSaveListener)
+               );
          }
       }
    }
@@ -365,14 +378,50 @@ public class SavePerformer {
    ) {
       PlateDocument doc = editor.getPlate().getDocument();
       String question = "Document " + DocumentEditorTitleFactory.createShortEditorTitle(editor) + " has been modified.\n" + "Do you want to save changes?";
-      YesNoCancel result = MessageDialogUtilities.showYesNoCancelDialog(parentComponent, new Message(JaveMessages.JavE, question, MessageType.WARNING));
+      YesNoCancel result = MessageDialogUtilities.showSaveDiscardCancelDialog(
+         parentComponent, new Message(JaveMessages.JavE, question, MessageType.WARNING)
+      );
       if (result == YesNoCancel.CANCEL) {
          return false;
       } else if (result == YesNoCancel.NO) {
          doc.setModified(false);
          return true;
       } else {
-         return performSaveDocument(parentComponent, editor, recentFileList, currentDirectoryModel, statusDisplay, documentSaveListener);
+         return performSaveAfterPrompt(
+            () -> performSaveDocument(parentComponent, editor, recentFileList, currentDirectoryModel, statusDisplay, documentSaveListener)
+         );
       }
+   }
+
+   private static boolean performSaveAfterPrompt(BooleanSupplier saveOperation) {
+      if (!MacOsXInitializer.isMacOs() || !SwingUtilities.isEventDispatchThread()) {
+         return saveOperation.getAsBoolean();
+      }
+
+      AtomicBoolean result = new AtomicBoolean();
+      AtomicReference<Throwable> failure = new AtomicReference<>();
+      SecondaryLoop loop = Toolkit.getDefaultToolkit().getSystemEventQueue().createSecondaryLoop();
+      // Aqua can discard a native save panel opened while the confirmation dialog is still tearing down.
+      Timer timer = new Timer(MAC_DIALOG_TRANSITION_DELAY_MS, event -> {
+         try {
+            result.set(saveOperation.getAsBoolean());
+         } catch (Throwable throwable) {
+            failure.set(throwable);
+         } finally {
+            loop.exit();
+         }
+      });
+      timer.setRepeats(false);
+      timer.start();
+      loop.enter();
+
+      Throwable throwable = failure.get();
+      if (throwable instanceof RuntimeException) {
+         throw (RuntimeException)throwable;
+      }
+      if (throwable instanceof Error) {
+         throw (Error)throwable;
+      }
+      return result.get();
    }
 }
