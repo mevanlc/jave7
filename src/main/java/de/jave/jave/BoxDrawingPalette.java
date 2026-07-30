@@ -157,31 +157,33 @@ final class BoxDrawingPalette {
          "Rounded",
          "╭─╮",
          "│ │",
-         "╰─╯"
+         "╰─╯",
+         "   ",
+         "   "
       ));
       diagrams.add(new Diagram(
          "Light dashes",
-         "┄┄┄ ┆",
-         "    ┆",
-         "┈┈┈ ┊",
-         "    ┊",
-         "╌╌╌ ╎",
-         "    ╎"
+         "┈┈┈",
+         "┄┄┄",
+         "╌╌╌",
+         "┊┆╎",
+         "┊┆╎"
       ));
       diagrams.add(new Diagram(
          "Heavy dashes",
-         "┅┅┅ ┇",
-         "    ┇",
-         "┉┉┉ ┋",
-         "    ┋",
-         "╍╍╍ ╏",
-         "    ╏"
+         "┉┉┉",
+         "┅┅┅",
+         "╍╍╍",
+         "┋┇╏",
+         "┋┇╏"
       ));
       diagrams.add(new Diagram(
          "Diagonals",
          "╱ ╲",
          " ╳ ",
-         "╲ ╱"
+         "╲ ╱",
+         "   ",
+         "   "
       ));
       return Collections.unmodifiableList(diagrams);
    }

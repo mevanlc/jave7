@@ -57,8 +57,8 @@ public class BoxDrawingPickerDialog {
    private static final int FONT_SIZE_DEFAULT = 20;
    private static final int FONT_SIZE_STEP = 2;
    private static final int SECONDARY_FONT_SIZE_OFFSET = -4;
-   private static final int DASH_FONT_SIZE_OFFSET = -7;
-   private static final int INSERT_ALL_WIDTH = 24;
+   private static final float GLYPH_INFO_FONT_SIZE = 9.0f;
+   private static final float GLYPH_NAME_MIN_FONT_SIZE = 6.0f;
    private static final int[] PRIMARY_DIAGRAM_INDEXES = {0, 1, 2};
    private static final int[] SECONDARY_DIAGRAM_INDEXES = {6, 4, 5, 3};
    private static final int WINDOW_MIN_WIDTH = 206;
@@ -70,7 +70,8 @@ public class BoxDrawingPickerDialog {
    private final JaveMainPanel mainPanel;
    private final JDialog dialog;
    private final JLabel previewLabel;
-   private final JLabel infoLabel;
+   private final JLabel codePointLabel;
+   private final ShrinkToFitLabel glyphNameLabel;
    private final List<DiagramComponent> diagramComponents = new ArrayList<>();
    private JPopupMenu activePopupMenu;
    private char selectedCharacter = '┌';
@@ -93,9 +94,10 @@ public class BoxDrawingPickerDialog {
 
       this.previewLabel = new JLabel(" ", SwingConstants.CENTER);
       this.previewLabel.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 40));
-      this.infoLabel = new JLabel(" ");
-      this.infoLabel.setFont(JaveGlobalRessources.FONT_SMALL_FIXEDWIDTH.deriveFont(9.0f));
-      this.infoLabel.setHorizontalAlignment(SwingConstants.CENTER);
+      Font glyphInfoFont = JaveGlobalRessources.FONT_SMALL_FIXEDWIDTH.deriveFont(GLYPH_INFO_FONT_SIZE);
+      this.codePointLabel = new JLabel(" ", SwingConstants.CENTER);
+      this.codePointLabel.setFont(glyphInfoFont);
+      this.glyphNameLabel = new ShrinkToFitLabel(glyphInfoFont, GLYPH_NAME_MIN_FONT_SIZE);
 
       this.dialog.getContentPane().setLayout(new BorderLayout());
       this.dialog.getContentPane().add(buildContentPanel(), BorderLayout.CENTER);
@@ -123,9 +125,10 @@ public class BoxDrawingPickerDialog {
          BorderFactory.createLoweredBevelBorder(),
          new EmptyBorder(1, 3, 3, 3)
       ));
+      selection.add(this.codePointLabel, BorderLayout.NORTH);
       selection.add(this.previewLabel, BorderLayout.CENTER);
-      selection.add(this.infoLabel, BorderLayout.SOUTH);
-      panel.add(wrapLeading(selection, 0), BorderLayout.SOUTH);
+      selection.add(this.glyphNameLabel, BorderLayout.SOUTH);
+      panel.add(selection, BorderLayout.SOUTH);
       return panel;
    }
 
@@ -144,10 +147,7 @@ public class BoxDrawingPickerDialog {
 
       JPanel secondaryRow = new JPanel(new GridLayout(1, SECONDARY_DIAGRAM_INDEXES.length));
       for (int diagramIndex : SECONDARY_DIAGRAM_INDEXES) {
-         int fontSizeOffset = diagramIndex == 4 || diagramIndex == 5
-            ? DASH_FONT_SIZE_OFFSET
-            : SECONDARY_FONT_SIZE_OFFSET;
-         addDiagram(secondaryRow, diagrams.get(diagramIndex), fontSizeOffset);
+         addDiagram(secondaryRow, diagrams.get(diagramIndex), SECONDARY_FONT_SIZE_OFFSET);
       }
 
       JPanel palette = new JPanel();
@@ -293,9 +293,21 @@ public class BoxDrawingPickerDialog {
 
    private void updateSelectionDisplay() {
       this.previewLabel.setText(String.valueOf(this.selectedCharacter));
-      this.infoLabel.setText(String.format(
-         "U+%04X  %s", (int)this.selectedCharacter, BoxDrawingPalette.getDisplayName(this.selectedCharacter)
-      ));
+      this.codePointLabel.setText(String.format("U+%04X", (int)this.selectedCharacter));
+      this.glyphNameLabel.setText(BoxDrawingPalette.getDisplayName(this.selectedCharacter));
+   }
+
+   static Font fitFontToWidth(JLabel label, Font preferredFont, float minimumSize, String text, int availableWidth) {
+      if (text == null || text.isEmpty() || availableWidth <= 0) {
+         return preferredFont;
+      }
+
+      Font fittedFont = preferredFont;
+      while (fittedFont.getSize2D() > minimumSize
+         && label.getFontMetrics(fittedFont).stringWidth(text) > availableWidth) {
+         fittedFont = preferredFont.deriveFont(Math.max(minimumSize, fittedFont.getSize2D() - 0.5f));
+      }
+      return fittedFont;
    }
 
    private void showVariants(char ch, Component invoker, int x, int y) {
@@ -381,35 +393,45 @@ public class BoxDrawingPickerDialog {
    static String[] createPaletteLayoutRows() {
       List<BoxDrawingPalette.Diagram> diagrams = BoxDrawingPalette.getDiagrams();
       List<String> rows = new ArrayList<>();
-      appendDiagramRow(rows, diagrams, PRIMARY_DIAGRAM_INDEXES);
-      appendDiagramRow(rows, diagrams, SECONDARY_DIAGRAM_INDEXES);
+      appendPaletteSection(rows, diagrams, PRIMARY_DIAGRAM_INDEXES, "");
+      appendPaletteSection(rows, diagrams, SECONDARY_DIAGRAM_INDEXES, " ");
       return rows.toArray(new String[0]);
    }
 
-   private static void appendDiagramRow(
-      List<String> output, List<BoxDrawingPalette.Diagram> diagrams, int[] diagramIndexes
+   private static void appendPaletteSection(
+      List<String> output, List<BoxDrawingPalette.Diagram> diagrams, int[] diagramIndexes, String indent
    ) {
-      int rowHeight = 0;
       List<String[]> diagramRows = new ArrayList<>();
+      List<Integer> diagramWidths = new ArrayList<>();
+      int rowCount = 0;
       for (int diagramIndex : diagramIndexes) {
          String[] rows = diagrams.get(diagramIndex).getRows();
          diagramRows.add(rows);
-         rowHeight = Math.max(rowHeight, rows.length);
+         diagramWidths.add(Integer.valueOf(maxRowWidth(rows)));
+         rowCount = Math.max(rowCount, rows.length);
       }
 
-      int slotWidth = INSERT_ALL_WIDTH / diagramIndexes.length;
-      for (int row = 0; row < rowHeight; row++) {
-         StringBuilder line = new StringBuilder(INSERT_ALL_WIDTH);
-         for (String[] rows : diagramRows) {
-            int diagramRow = row - (rowHeight - rows.length) / 2;
-            String text = diagramRow >= 0 && diagramRow < rows.length ? rows[diagramRow] : "";
-            int leftPadding = (slotWidth - text.length()) / 2;
-            line.append(" ".repeat(leftPadding));
+      for (int row = 0; row < rowCount; row++) {
+         StringBuilder line = new StringBuilder(indent);
+         for (int diagram = 0; diagram < diagramRows.size(); diagram++) {
+            if (diagram > 0) {
+               line.append(' ');
+            }
+            String[] rows = diagramRows.get(diagram);
+            String text = row < rows.length ? rows[row] : "";
             line.append(text);
-            line.append(" ".repeat(slotWidth - leftPadding - text.length()));
+            line.append(" ".repeat(diagramWidths.get(diagram).intValue() - text.length()));
          }
-         output.add(line.toString());
+         output.add(line.toString().stripTrailing());
       }
+   }
+
+   private static int maxRowWidth(String[] rows) {
+      int width = 0;
+      for (String row : rows) {
+         width = Math.max(width, row.length());
+      }
+      return width;
    }
 
    static void insertPaletteRows(CharacterPlate target, Point location, String[] rows) {
@@ -558,6 +580,47 @@ public class BoxDrawingPickerDialog {
          }
          if (BoxDrawingPickerDialog.this.activePopupMenu == this.menu) {
             BoxDrawingPickerDialog.this.activePopupMenu = null;
+         }
+      }
+   }
+
+   private static final class ShrinkToFitLabel extends JLabel {
+      private static final int HORIZONTAL_BREATHING_ROOM = 4;
+      private final Font preferredFont;
+      private final float minimumFontSize;
+
+      ShrinkToFitLabel(Font preferredFont, float minimumFontSize) {
+         super(" ", SwingConstants.CENTER);
+         this.preferredFont = preferredFont;
+         this.minimumFontSize = minimumFontSize;
+         super.setFont(preferredFont);
+      }
+
+      @Override
+      public void setText(String text) {
+         super.setText(text);
+         resizeFontToFit();
+      }
+
+      @Override
+      public void setBounds(int x, int y, int width, int height) {
+         super.setBounds(x, y, width, height);
+         resizeFontToFit();
+      }
+
+      private void resizeFontToFit() {
+         if (this.preferredFont == null) {
+            return;
+         }
+         Font fittedFont = fitFontToWidth(
+            this,
+            this.preferredFont,
+            this.minimumFontSize,
+            getText(),
+            Math.max(0, getWidth() - HORIZONTAL_BREATHING_ROOM)
+         );
+         if (!fittedFont.equals(getFont())) {
+            super.setFont(fittedFont);
          }
       }
    }

@@ -2,9 +2,11 @@ package de.jave.jave;
 
 import de.jave.lib.CharacterPlate;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Point;
 import java.util.HashSet;
 import java.util.Set;
+import javax.swing.JLabel;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -34,40 +36,63 @@ public class BoxDrawingPickerDialogTest {
    }
 
    @Test
+   public void glyphNameFontShrinksOnlyWhenNeededToFit() {
+      JLabel label = new JLabel();
+      Font preferredFont = new Font(Font.MONOSPACED, Font.PLAIN, 12);
+      String name = "LIGHT DIAGONAL UPPER CENTRE TO LOWER RIGHT";
+      int preferredWidth = label.getFontMetrics(preferredFont).stringWidth(name);
+      int constrainedWidth = label.getFontMetrics(preferredFont.deriveFont(8.0f)).stringWidth(name);
+
+      Font wideFont = BoxDrawingPickerDialog.fitFontToWidth(
+         label, preferredFont, 6.0f, name, preferredWidth
+      );
+      Font fittedFont = BoxDrawingPickerDialog.fitFontToWidth(
+         label, preferredFont, 6.0f, name, constrainedWidth
+      );
+
+      Assert.assertEquals(preferredFont, wideFont);
+      Assert.assertTrue(fittedFont.getSize2D() < preferredFont.getSize2D());
+      Assert.assertTrue(label.getFontMetrics(fittedFont).stringWidth(name) <= constrainedWidth);
+   }
+
+   @Test
    public void insertAllLayoutMatchesThePickerGrid() {
       String[] rows = BoxDrawingPickerDialog.createPaletteLayoutRows();
       Set<Character> insertedCharacters = new HashSet<>();
 
-      Assert.assertEquals(11, rows.length);
+      Assert.assertArrayEquals(new String[]{
+         "┌─┬─┐ ┏━┳━┓ ╔═╦═╗",
+         "│ │ │ ┃ ┃ ┃ ║ ║ ║",
+         "├─┼─┤ ┣━╋━┫ ╠═╬═╣",
+         "│ │ │ ┃ ┃ ┃ ║ ║ ║",
+         "└─┴─┘ ┗━┻━┛ ╚═╩═╝",
+         " ╱ ╲ ┈┈┈ ┉┉┉ ╭─╮",
+         "  ╳  ┄┄┄ ┅┅┅ │ │",
+         " ╲ ╱ ╌╌╌ ╍╍╍ ╰─╯",
+         "     ┊┆╎ ┋┇╏",
+         "     ┊┆╎ ┋┇╏"
+      }, rows);
       for (String row : rows) {
-         Assert.assertEquals(24, row.length());
          for (int i = 0; i < row.length(); i++) {
             if (row.charAt(i) != ' ') {
                insertedCharacters.add(row.charAt(i));
             }
          }
       }
-      Assert.assertEquals('┌', rows[0].charAt(1));
-      Assert.assertEquals('┏', rows[0].charAt(9));
-      Assert.assertEquals('╔', rows[0].charAt(17));
-      Assert.assertEquals('┄', rows[5].charAt(6));
-      Assert.assertEquals('┅', rows[5].charAt(12));
-      Assert.assertEquals('╱', rows[6].charAt(1));
-      Assert.assertEquals('╭', rows[6].charAt(19));
       Assert.assertEquals(BoxDrawingPalette.getVisibleCharacters(), insertedCharacters);
    }
 
    @Test
    public void insertAllWritesOnlyPaletteGlyphs() {
-      CharacterPlate target = new CharacterPlate(24, 11);
-      target.setForce(0, 0, 'x');
+      CharacterPlate target = new CharacterPlate(17, 10);
+      target.setForce(5, 0, 'x');
 
       BoxDrawingPickerDialog.insertPaletteRows(
          target, new Point(0, 0), BoxDrawingPickerDialog.createPaletteLayoutRows()
       );
 
-      Assert.assertEquals('x', target.get(0, 0));
-      Assert.assertEquals('┌', target.get(1, 0));
-      Assert.assertEquals('╏', target.get(16, 10));
+      Assert.assertEquals('x', target.get(5, 0));
+      Assert.assertEquals('┌', target.get(0, 0));
+      Assert.assertEquals('╏', target.get(11, 9));
    }
 }
