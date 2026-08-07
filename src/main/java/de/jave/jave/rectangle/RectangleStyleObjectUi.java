@@ -21,8 +21,12 @@ public class RectangleStyleObjectUi extends AbstractObjectUi<RectangleStyle> {
             return "Style 3";
          case STYLE_4:
             return "Style 4";
-         case UNICODE:
-            return "Unicode";
+         case UNICODE_REGULAR:
+            return "Unicode - Regular";
+         case UNICODE_BOLD:
+            return "Unicode - Bold";
+         case UNICODE_DOUBLE:
+            return "Unicode - Double";
          case UNDERSCORE:
             return "Underscore";
          default:

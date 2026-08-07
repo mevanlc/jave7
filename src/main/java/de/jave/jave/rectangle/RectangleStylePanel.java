@@ -13,6 +13,7 @@ import java.awt.BorderLayout;
 import java.awt.ItemSelectable;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.Arrays;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -31,6 +32,7 @@ public class RectangleStylePanel implements ItemListener, ItemSelectable {
    private static final RectangleStylePanel.RectangleStyleItem USER_DEFINED = new RectangleStylePanel.RectangleStyleItem("User Defined", null);
    private final JComponent content;
    private final MouseCharacterPanel mouseCharacterPanel;
+   private boolean applyingChars;
 
    public RectangleStylePanel(MouseCharacterModel mouseCharacterModel) {
       this.mouseCharacterModel = mouseCharacterModel;
@@ -56,10 +58,8 @@ public class RectangleStylePanel implements ItemListener, ItemSelectable {
       IChangeListener changeListener = new IChangeListener() {
          @Override
          public void stateChanged() {
-            RectangleStylePanel.this.chMode.setSelectedItem(RectangleStylePanel.USER_DEFINED);
-            RectangleAlgorithm.setUserDefinedChars(RectangleStylePanel.this.getCurrentChars());
-            if (RectangleStylePanel.this.itemListener != null) {
-               RectangleStylePanel.this.itemListener.itemStateChanged(new ItemEvent(RectangleStylePanel.this, 701, null, 1));
+            if (!RectangleStylePanel.this.applyingChars) {
+               RectangleStylePanel.this.charFieldEdited();
             }
          }
       };
@@ -89,9 +89,9 @@ public class RectangleStylePanel implements ItemListener, ItemSelectable {
       mouseCharacterModel.addChangeListener(new IChangeListener() {
          @Override
          public void stateChanged() {
-            RectangleStyle style = ((RectangleStylePanel.RectangleStyleItem)RectangleStylePanel.this.chMode.getSelectedItem()).getStyle();
-            if (style == RectangleStyle.CHARACTERS) {
+            if (RectangleStylePanel.this.getStyle() == RectangleStyle.CHARACTERS) {
                RectangleStylePanel.this.initializeTextFieldsFromMouseCharacter();
+               RectangleStylePanel.this.fireItemStateChanged();
             }
          }
       });
@@ -118,46 +118,78 @@ public class RectangleStylePanel implements ItemListener, ItemSelectable {
 
    @Override
    public void itemStateChanged(ItemEvent evt) {
-      RectangleStyle style = ((RectangleStylePanel.RectangleStyleItem)this.chMode.getSelectedItem()).getStyle();
-      if (style == RectangleStyle.CHARACTERS) {
-         this.initializeTextFieldsFromMouseCharacter();
-      } else {
-         char[] ch = RectangleAlgorithm.getCharsForStyle(style);
-
-         for (int i = 0; i < 8; i++) {
-            this.charModels[i].setCharacter(ch[i]);
-            this.charFields[i].setEditable(true);
+      if (evt == null || evt.getStateChange() == ItemEvent.SELECTED) {
+         RectangleStyle style = this.getStyle();
+         if (style == RectangleStyle.CHARACTERS) {
+            this.initializeTextFieldsFromMouseCharacter();
+         } else {
+            this.applyChars(RectangleAlgorithm.getCharsForStyle(style), true);
          }
-      }
 
-      this.updateMouseCharacterPanelEnabled();
-      if (this.itemListener != null) {
-         this.itemListener.itemStateChanged(new ItemEvent(this, 701, null, 1));
+         this.updateMouseCharacterPanelEnabled();
+         this.fireItemStateChanged();
       }
    }
 
    private void initializeTextFieldsFromMouseCharacter() {
-      char ch = this.mouseCharacterModel.getCharacter1();
+      char[] ch = new char[8];
+      Arrays.fill(ch, this.mouseCharacterModel.getCharacter1());
+      this.applyChars(ch, false);
+   }
 
-      for (int i = 0; i < 8; i++) {
-         this.charModels[i].setCharacter(ch);
-         this.charFields[i].setEditable(false);
+   /**
+    * Writes the given characters into the character fields without letting the change listener of the
+    * fields interpret them as a manual edit, which would switch the style back to "User Defined".
+    */
+   private void applyChars(char[] ch, boolean editable) {
+      this.applyingChars = true;
+
+      try {
+         for (int i = 0; i < 8; i++) {
+            this.charModels[i].setCharacter(ch[i]);
+            this.charFields[i].setEditable(editable);
+         }
+      } finally {
+         this.applyingChars = false;
+      }
+   }
+
+   private void charFieldEdited() {
+      RectangleAlgorithm.setUserDefinedChars(this.getCurrentChars());
+      if (this.chMode.getSelectedItem() == USER_DEFINED) {
+         this.fireItemStateChanged();
+      } else {
+         this.chMode.setSelectedItem(USER_DEFINED);
+      }
+   }
+
+   private void fireItemStateChanged() {
+      if (this.itemListener != null) {
+         this.itemListener.itemStateChanged(new ItemEvent(this, ItemEvent.ITEM_STATE_CHANGED, null, ItemEvent.SELECTED));
       }
    }
 
    private void updateMouseCharacterPanelEnabled() {
-      this.mouseCharacterPanel.setEnabled(((RectangleStylePanel.RectangleStyleItem)this.chMode.getSelectedItem()).getStyle() == RectangleStyle.CHARACTERS);
+      this.mouseCharacterPanel.setEnabled(this.getStyle() == RectangleStyle.CHARACTERS);
    }
 
    public void setStyle(RectangleStyle style) {
       for (int i = 0; i < this.chMode.getItemCount(); i++) {
          if (((RectangleStylePanel.RectangleStyleItem)this.chMode.getItemAt(i)).getStyle() == style) {
-            this.chMode.setSelectedIndex(i);
-            break;
+            if (this.chMode.getSelectedIndex() == i) {
+               this.itemStateChanged(null);
+            } else {
+               this.chMode.setSelectedIndex(i);
+            }
+
+            return;
          }
       }
+   }
 
-      this.itemStateChanged(null);
+   /** Returns the selected style, or <code>null</code> if the characters are user defined. */
+   public RectangleStyle getStyle() {
+      return ((RectangleStylePanel.RectangleStyleItem)this.chMode.getSelectedItem()).getStyle();
    }
 
    public char[] getCurrentChars() {

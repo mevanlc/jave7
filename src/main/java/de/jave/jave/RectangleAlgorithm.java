@@ -7,6 +7,7 @@ import java.awt.Rectangle;
 import java.util.Arrays;
 
 public class RectangleAlgorithm {
+   /** One row of eight characters per {@link RectangleStyle}, in the order the styles are declared. */
    private static final char[][] RECTANGLE_CHARACTERS = new char[][]{
       {'+', '-', '+', '|', '|', '+', '-', '+'},
       {' ', '_', ' ', '|', '|', '|', '_', '|'},
@@ -16,6 +17,8 @@ public class RectangleAlgorithm {
       {'O', '-', 'O', '|', '|', 'O', '-', 'O'},
       {')', '-', '(', '|', '|', ')', '-', '('},
       {'┌', '─', '┐', '│', '│', '└', '─', '┘'},
+      {'┏', '━', '┓', '┃', '┃', '┗', '━', '┛'},
+      {'╔', '═', '╗', '║', '║', '╚', '═', '╝'},
       {'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'}
    };
    private static char[] userDefinedChars = new char[]{'+', '-', '+', '|', '|', '+', '-', '+'};
