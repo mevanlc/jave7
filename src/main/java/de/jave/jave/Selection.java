@@ -41,6 +41,8 @@ public class Selection {
    public static final int NORTHWEST = 7;
    public static final int SOUTHEAST = 8;
    public static final int SOUTHWEST = 9;
+   private static final String ASCII_HORIZONTAL_LINES = "-=_~";
+   private static final String ASCII_VERTICAL_LINES = "|";
 
    public Selection() {
       this.layer = 1;
@@ -48,6 +50,12 @@ public class Selection {
 
    public void setPlate(Plate plate) {
       this.plate = plate;
+   }
+
+   private void repaintPlate() {
+      if (this.plate != null) {
+         this.plate.repaint();
+      }
    }
 
    public boolean isTextbox() {
@@ -561,7 +569,7 @@ public class Selection {
 
    private void pasteNormal() {
       this.pasteIntoNormal(this.plate.getContent());
-      this.plate.repaint();
+      this.repaintPlate();
    }
 
    public void pasteIntoNormal(CharacterPlate plate1) {
@@ -585,7 +593,7 @@ public class Selection {
          }
       }
 
-      this.plate.repaint();
+      this.repaintPlate();
    }
 
    private void pasteBackground() {
@@ -599,7 +607,7 @@ public class Selection {
          }
       }
 
-      this.plate.repaint();
+      this.repaintPlate();
    }
 
    private void pasteDifference() {
@@ -618,7 +626,7 @@ public class Selection {
          }
       }
 
-      this.plate.repaint();
+      this.repaintPlate();
    }
 
    public Point move(int dx, int dy) {
@@ -1133,12 +1141,7 @@ public class Selection {
 
             for (int x = w - dx - 1; x < w - 1; x++) {
                for (int y = 1; y < h - 1; y++) {
-                  char chOld = this.getOriginalCharAt(x, y);
-                  if (chOld == 0) {
-                     chOld = ' ';
-                  }
-
-                  newContent.setForce(x, y, chOld);
+                  newContent.setForce(x, y, this.getStretchedCharAt(x, y, this.content.get(w - dx - 2, y), BoxDrawingPalette.Piece.HORIZONTAL));
                }
 
                newContent.setForce(x, 0, this.content.get(w - dx - 2, 0));
@@ -1158,7 +1161,7 @@ public class Selection {
 
          this.content = newContent;
          this.region.width = w;
-         this.plate.repaint();
+         this.repaintPlate();
       }
    }
 
@@ -1184,12 +1187,7 @@ public class Selection {
 
             for (int x = 1; x < -dx + 1; x++) {
                for (int y = 1; y < h - 1; y++) {
-                  char chOld = this.getOriginalCharAt(x + dx, y);
-                  if (chOld == 0) {
-                     chOld = ' ';
-                  }
-
-                  newContent.setForce(x, y, chOld);
+                  newContent.setForce(x, y, this.getStretchedCharAt(x + dx, y, this.content.get(1, y), BoxDrawingPalette.Piece.HORIZONTAL));
                }
 
                newContent.setForce(x, 0, this.content.get(1, 0));
@@ -1207,7 +1205,7 @@ public class Selection {
          this.content = newContent;
          this.region.width = w;
          this.region.x += dx;
-         this.plate.repaint();
+         this.repaintPlate();
       }
    }
 
@@ -1233,12 +1231,7 @@ public class Selection {
 
             for (int y = 1; y < -dy + 1; y++) {
                for (int x = 1; x < w - 1; x++) {
-                  char chOld = this.getOriginalCharAt(x, y + dy);
-                  if (chOld == 0) {
-                     chOld = ' ';
-                  }
-
-                  newContent.setForce(x, y, chOld);
+                  newContent.setForce(x, y, this.getStretchedCharAt(x, y + dy, this.content.get(x, 1), BoxDrawingPalette.Piece.VERTICAL));
                }
 
                newContent.setForce(0, y, this.content.get(0, 1));
@@ -1256,7 +1249,7 @@ public class Selection {
          this.content = newContent;
          this.region.height = h;
          this.region.y += dy;
-         this.plate.repaint();
+         this.repaintPlate();
       }
    }
 
@@ -1278,12 +1271,7 @@ public class Selection {
 
             for (int y = h - dy - 1; y < h - 1; y++) {
                for (int x = 1; x < w - 1; x++) {
-                  char chOld = this.getOriginalCharAt(x, y);
-                  if (chOld == 0) {
-                     chOld = ' ';
-                  }
-
-                  newContent.setForce(x, y, chOld);
+                  newContent.setForce(x, y, this.getStretchedCharAt(x, y, this.content.get(x, h - dy - 2), BoxDrawingPalette.Piece.VERTICAL));
                }
 
                newContent.setForce(0, y, this.content.get(0, h - dy - 2));
@@ -1303,8 +1291,27 @@ public class Selection {
 
          this.content = newContent;
          this.region.height = h;
-         this.plate.repaint();
+         this.repaintPlate();
       }
+   }
+
+   /**
+    * Returns the character an inserted cell gets while a textbox is grown.  A line that runs into the
+    * seam where the cells are inserted is continued, so that internal lines stay connected to the
+    * border; every other cell falls back to the content the textbox covered before it was shrunk.
+    */
+   private char getStretchedCharAt(int x, int y, char seamCharacter, BoxDrawingPalette.Piece line) {
+      if (isLineCharacter(seamCharacter, line)) {
+         return seamCharacter;
+      } else {
+         char chOld = this.getOriginalCharAt(x, y);
+         return chOld == 0 ? ' ' : chOld;
+      }
+   }
+
+   private static boolean isLineCharacter(char ch, BoxDrawingPalette.Piece line) {
+      String asciiLines = line == BoxDrawingPalette.Piece.HORIZONTAL ? ASCII_HORIZONTAL_LINES : ASCII_VERTICAL_LINES;
+      return asciiLines.indexOf(ch) >= 0 || BoxDrawingPalette.getPiece(ch) == line;
    }
 
    private char getOriginalCharAt(int x, int y) {
