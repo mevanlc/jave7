@@ -11,7 +11,8 @@ public final class GlyphEncoding {
    }
 
    public static boolean isCodePoint(int glyph) {
-      return Character.isValidCodePoint(glyph);
+      return Character.isValidCodePoint(glyph)
+         && (glyph < Character.MIN_SURROGATE || glyph > Character.MAX_SURROGATE);
    }
 
    public static boolean isCluster(int glyph) {

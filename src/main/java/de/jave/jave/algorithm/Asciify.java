@@ -84,7 +84,7 @@ public class Asciify extends JaveAlgorithm {
             }
 
             if (!replaced) {
-               result.append(plate.get(x, y));
+               result.append(plate.glyphAt(x, y));
             }
          }
 

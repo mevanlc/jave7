@@ -26,7 +26,7 @@ public class FlipDynamicAction extends JaveAlgorithm {
    public JaveSelection apply(JaveSelection plate) {
       int h = plate.getHeight();
       int w = plate.getWidth();
-      char[][] ch = plate.getContent().getContent();
+      int[][] ch = plate.getContent().glyphPlane();
       BooleanArea mask = plate.getMask();
       if (mask != null) {
          boolean[][] m = mask.getContent();
@@ -39,7 +39,7 @@ public class FlipDynamicAction extends JaveAlgorithm {
       }
 
       for (int y = 0; y < h / 2; y++) {
-         char[] t = ch[y];
+         int[] t = ch[y];
          ch[y] = ch[h - y - 1];
          ch[h - y - 1] = t;
       }

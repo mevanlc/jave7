@@ -5,6 +5,7 @@ import de.jave.jave.filter.Filter;
 import de.jave.jave.icon.JaveIcons;
 import de.jave.jave.plate.JaveMainPanel;
 import de.jave.jave.preferences.ColorScheme;
+import de.jave.jave.rendering.GlyphRenderer;
 import de.jave.jave.tool.dialog.IInlineToolOptions;
 import java.awt.Component;
 import java.awt.Graphics2D;
@@ -57,7 +58,7 @@ public class CloneTool extends EraserTool {
 
    @Override
    public void paintCursorFeature(Graphics2D g, Point plateOrigin, ColorScheme colorScheme) {
-      char[][] brush = this.getBrush();
+      int[][] brush = this.getBrush();
       if (this.cursorLocation != null) {
          g.setColor(colorScheme.getColorTool());
          this.paintBrushBorder(g, brush, this.cursorLocation.x, this.cursorLocation.y);
@@ -91,12 +92,12 @@ public class CloneTool extends EraserTool {
 
          for (int x = 0; x < w; x++) {
             for (int y = 0; y < h; y++) {
-               char pixel = brush[y][x];
+               int pixel = brush[y][x];
                if (pixel > 0) {
                   int xx = x0 - cx + x;
                   int yy = y0 - cy + y;
                   if (this.getPlate().isInside(xx, yy)) {
-                     g.drawString(String.valueOf(this.getPlate().getChar(xx, yy)), p0.x + x * characterWidth, p0.y + y * characterHeight + ascent);
+                     GlyphRenderer.drawCell(g, this.getPlate().getChar(xx, yy), p0.x, x, p0.y + y * characterHeight + ascent, characterWidth);
                   }
                }
             }
@@ -107,7 +108,7 @@ public class CloneTool extends EraserTool {
    @Override
    protected void paint(int x0, int y0) {
       if (this.cursorLocation != null && this.cloneLocation != null) {
-         char[][] brush = this.getBrush();
+         int[][] brush = this.getBrush();
          int h = brush.length;
          int w = brush[0].length;
          int cx = (w - 1) / 2;
@@ -116,7 +117,7 @@ public class CloneTool extends EraserTool {
 
          for (int x = 0; x < w; x++) {
             for (int y = 0; y < h; y++) {
-               char pixel = brush[y][x];
+               int pixel = brush[y][x];
                if (pixel > 0) {
                   int xx = x0 - cx + x;
                   int yy = y0 - cy + y;

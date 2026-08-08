@@ -5,6 +5,7 @@ import de.jave.awt.clipboard.JaveClipboardSelection;
 import de.jave.gfx.GfxTools;
 import de.jave.jave.algorithm.rectangle.RectangleStyle;
 import de.jave.jave.preferences.ColorScheme;
+import de.jave.jave.rendering.GlyphRenderer;
 import de.jave.lib.CharacterPlate;
 import de.jave.lib.area.BooleanArea;
 import java.awt.Color;
@@ -64,7 +65,7 @@ public class Selection {
 
    public RectangleStyle getTextboxStyle() {
       if (this.textboxStyle == null) {
-         this.textboxStyle = TextboxDialog.getTextboxStyle(this.content.getContent());
+         this.textboxStyle = TextboxDialog.getTextboxStyle(this.content.glyphPlane());
       }
 
       return this.textboxStyle;
@@ -202,7 +203,7 @@ public class Selection {
    }
 
    public void resizeByCursorS_UP() {
-      char[][] line = this.content.getCopy(0, this.region.height - 1, this.region.width, 1).getContent();
+      int[][] line = this.content.getCopy(0, this.region.height - 1, this.region.width, 1).glyphPlane();
 
       try {
          this.plate.getContent().paste(line, this.region.x, this.region.y + this.region.height - 1, this.region.width, 1);
@@ -217,7 +218,7 @@ public class Selection {
    }
 
    public void resizeByCursorN_DOWN() {
-      char[][] line = this.content.getCopy(0, 0, this.region.width, 1).getContent();
+      int[][] line = this.content.getCopy(0, 0, this.region.width, 1).glyphPlane();
 
       try {
          this.plate.getContent().paste(line, this.region.x, this.region.y, this.region.width, 1);
@@ -254,7 +255,7 @@ public class Selection {
    }
 
    public void resizeByCursorE_LEFT() {
-      char[][] line = this.content.getCopy(this.region.width - 1, 0, 1, this.region.height).getContent();
+      int[][] line = this.content.getCopy(this.region.width - 1, 0, 1, this.region.height).glyphPlane();
 
       try {
          this.plate.getContent().paste(line, this.region.x + this.region.width - 1, this.region.y, 1, this.region.width);
@@ -269,7 +270,7 @@ public class Selection {
    }
 
    public void resizeByCursorW_RIGHT() {
-      char[][] line = this.content.getCopy(0, 0, 1, this.region.height).getContent();
+      int[][] line = this.content.getCopy(0, 0, 1, this.region.height).glyphPlane();
 
       try {
          this.plate.getContent().paste(line, this.region.x, this.region.y, 1, this.region.height);
@@ -319,7 +320,7 @@ public class Selection {
       this.originalContent = content.getClone();
    }
 
-   public void set(Point origin, char[][] content, BooleanArea mask) {
+   public void set(Point origin, int[][] content, BooleanArea mask) {
       if (origin != null && !isEmptySelectionContent(content)) {
          this.set(new Rectangle(origin.x, origin.y, content[0].length, content.length), new CharacterPlate(content), mask);
       } else {
@@ -328,7 +329,7 @@ public class Selection {
       }
    }
 
-   private static boolean isEmptySelectionContent(char[][] content) {
+   private static boolean isEmptySelectionContent(int[][] content) {
       return content == null || content.length == 0 || content[0] == null || content[0].length == 0;
    }
 
@@ -437,7 +438,7 @@ public class Selection {
                int maskY = addRegion.y - this.region.y + y;
                if (!this.mask.isSet(maskX, maskY) && (effectiveAddMask == null || effectiveAddMask.isSet(xx, y))) {
                   this.mask.set(maskX, maskY, true);
-                  this.content.setForce(maskX, maskY, addContent.get(xx, y));
+                  this.content.setForce(maskX, maskY, addContent.glyphAt(xx, y));
                   success = true;
                }
             }
@@ -499,7 +500,7 @@ public class Selection {
                int maskY = removeRegion.y - this.region.y + y;
                if (this.mask.isSet(maskX, maskY) && (removeMask == null || removeMask.isSet(x + rdx, y + rdy))) {
                   this.mask.set(maskX, maskY, false);
-                  char ch = this.content.get(maskX, maskY);
+                  int ch = this.content.glyphAt(maskX, maskY);
                   this.content.setForce(maskX, maskY, ' ');
                   this.plate.setCharForce(removeRegion.x + x, removeRegion.y + y, ch);
                   success = true;
@@ -576,7 +577,7 @@ public class Selection {
       for (int y = 0; y < this.region.height; y++) {
          for (int x = 0; x < this.region.width; x++) {
             if (this.mask == null || this.mask.isSet(x, y)) {
-               plate1.set(this.region.x + x, this.region.y + y, this.content.get(x, y));
+               plate1.set(this.region.x + x, this.region.y + y, this.content.glyphAt(x, y));
             }
          }
       }
@@ -587,8 +588,8 @@ public class Selection {
 
       for (int x = 0; x < this.region.width; x++) {
          for (int y = 0; y < this.region.height; y++) {
-            if ((this.mask == null || this.mask.isSet(x, y)) && this.content.get(x, y) != ' ') {
-               plateContent.set(this.region.x + x, this.region.y + y, this.content.get(x, y));
+            if ((this.mask == null || this.mask.isSet(x, y)) && this.content.glyphAt(x, y) != ' ') {
+               plateContent.set(this.region.x + x, this.region.y + y, this.content.glyphAt(x, y));
             }
          }
       }
@@ -601,8 +602,8 @@ public class Selection {
 
       for (int y = 0; y < this.region.height; y++) {
          for (int x = 0; x < this.region.width; x++) {
-            if ((this.mask == null || this.mask.isSet(x, y)) && this.content.get(x, y) != ' ' && plateContent.get(this.region.x + x, this.region.y + y) == ' ') {
-               plateContent.set(this.region.x + x, this.region.y + y, this.content.get(x, y));
+            if ((this.mask == null || this.mask.isSet(x, y)) && this.content.glyphAt(x, y) != ' ' && plateContent.glyphAt(this.region.x + x, this.region.y + y) == ' ') {
+               plateContent.set(this.region.x + x, this.region.y + y, this.content.glyphAt(x, y));
             }
          }
       }
@@ -615,9 +616,9 @@ public class Selection {
 
       for (int y = 0; y < this.region.height; y++) {
          for (int x = 0; x < this.region.width; x++) {
-            if ((this.mask == null || this.mask.isSet(x, y)) && this.content.get(x, y) != ' ') {
-               char ch = this.content.get(x, y);
-               if (ch == plateContent.get(this.region.x + x, this.region.y + y)) {
+            if ((this.mask == null || this.mask.isSet(x, y)) && this.content.glyphAt(x, y) != ' ') {
+               int ch = this.content.glyphAt(x, y);
+               if (ch == plateContent.glyphAt(this.region.x + x, this.region.y + y)) {
                   plateContent.setForce(this.region.x + x, this.region.y + y, ' ');
                } else if (ch != ' ') {
                   plateContent.setForce(this.region.x + x, this.region.y + y, ch);
@@ -886,7 +887,7 @@ public class Selection {
                for (int y = 0; y < height; y++) {
                   int ix = this.region.x + x;
                   int iy = this.region.y + y;
-                  if (ix < 0 || ix >= plateWidth || iy < 0 || iy >= plateHeight || this.content.get(x, y) != ' ') {
+                  if (ix < 0 || ix >= plateWidth || iy < 0 || iy >= plateHeight || this.content.glyphAt(x, y) != ' ') {
                      g.fillRect(p0.x + x * charWidth, p0.y + y * charHeight, charWidth + 1, charHeight + 1);
                   }
                }
@@ -900,14 +901,14 @@ public class Selection {
 
             for (int x = 0; x < width; x++) {
                for (int yx = 0; yx < height; yx++) {
-                  char ch = this.content.get(x, yx);
+                  int ch = this.content.glyphAt(x, yx);
                   if (ch != ' ') {
                      int ix = this.region.x + x;
                      int iy = this.region.y + yx;
                      if (ix < 0 || ix >= plateWidth || iy < 0 || iy >= plateHeight || this.plate.getChar(ix, iy) != ch) {
                         int xx = p0.x + x * charWidth;
                         int yy = p0.y + yx * charHeight;
-                        g.drawString(String.valueOf(ch), xx, yy + charAscent);
+                        GlyphRenderer.drawCell(g, ch, xx, 0, yy + charAscent, charWidth);
                      }
                   }
                }
@@ -923,7 +924,7 @@ public class Selection {
 
             for (int x = 0; x < widthx; x++) {
                for (int yxx = 0; yxx < heightx; yxx++) {
-                  if (this.content.get(x, yxx) > ' ') {
+                  if (this.content.glyphAt(x, yxx) != ' ') {
                      g.fillRect(p0.x + x * charWidth, p0.y + yxx * charHeight, charWidth + 1, charHeight + 1);
                   }
                }
@@ -935,25 +936,25 @@ public class Selection {
 
                for (int x = 0; x < widthx; x++) {
                   for (int yxxx = 0; yxxx < heightx; yxxx++) {
-                     if (this.content.get(x, yxxx) > ' ') {
+                     if (this.content.glyphAt(x, yxxx) != ' ') {
                         int xx = p0.x + x * charWidth;
                         int yy = p0.y + yxxx * charHeight;
-                        if (x >= widthx - 1 || this.content.get(x + 1, yxxx) == ' ') {
+                        if (x >= widthx - 1 || this.content.glyphAt(x + 1, yxxx) == ' ') {
                            g.setColor(shade);
                            g.drawLine(xx + charWidth, yy + 1, xx + charWidth, yy + charHeight);
                         }
 
-                        if (yxxx >= heightx - 1 || this.content.get(x, yxxx + 1) == ' ') {
+                        if (yxxx >= heightx - 1 || this.content.glyphAt(x, yxxx + 1) == ' ') {
                            g.setColor(shade);
                            g.drawLine(xx + 1, yy + charHeight, xx + charWidth, yy + charHeight);
                         }
 
-                        if (x == 0 || this.content.get(x - 1, yxxx) == ' ') {
+                        if (x == 0 || this.content.glyphAt(x - 1, yxxx) == ' ') {
                            g.setColor(light);
                            g.drawLine(xx, yy + 1, xx, yy + charHeight);
                         }
 
-                        if (yxxx == 0 || this.content.get(x, yxxx - 1) == ' ') {
+                        if (yxxx == 0 || this.content.glyphAt(x, yxxx - 1) == ' ') {
                            g.setColor(light);
                            g.drawLine(xx, yy, xx + charWidth, yy);
                         }
@@ -969,7 +970,7 @@ public class Selection {
             }
 
             for (int yxxxx = 0; yxxxx < heightx; yxxxx++) {
-               g.drawString(String.valueOf(this.content.getContent()[yxxxx]), p0.x, p0.y + yxxxx * charHeight + charAscent);
+               GlyphRenderer.drawRow(g, this.content.glyphPlane()[yxxxx], p0.x, p0.y + yxxxx * charHeight + charAscent, charWidth);
             }
          } else if (this.layer == 1) {
             int widthxx = this.content.getWidth();
@@ -1000,15 +1001,15 @@ public class Selection {
 
             if (this.mask == null) {
                for (int yxxxxx = 0; yxxxxx < heightxx; yxxxxx++) {
-                  g.drawString(String.valueOf(this.content.getContent()[yxxxxx]), p0.x, p0.y + yxxxxx * charHeight + charAscent);
+                  GlyphRenderer.drawRow(g, this.content.glyphPlane()[yxxxxx], p0.x, p0.y + yxxxxx * charHeight + charAscent, charWidth);
                }
             } else {
                for (int yxxxxx = 0; yxxxxx < heightxx; yxxxxx++) {
                   for (int x = 0; x < widthxx; x++) {
                      if (this.mask.isSet(x, yxxxxx)) {
-                        char ch = this.content.get(x, yxxxxx);
+                        int ch = this.content.glyphAt(x, yxxxxx);
                         if (ch != ' ') {
-                           g.drawString(String.valueOf(ch), p0.x + x * charWidth, p0.y + yxxxxx * charHeight + charAscent);
+                           GlyphRenderer.drawCell(g, ch, p0.x, x, p0.y + yxxxxx * charHeight + charAscent, charWidth);
                         }
                      }
                   }
@@ -1037,14 +1038,14 @@ public class Selection {
                         g.fillRect(xxx, yyx, charWidth + 1, charHeight + 1);
                      }
 
-                     if (this.content.get(x, yxxxxx) > ' ') {
+                     if (this.content.glyphAt(x, yxxxxx) != ' ') {
                         if (this.d3View) {
                            g.setColor(colorScheme.getColorSelectionText());
                         } else {
                            g.setColor(colorScheme.getColorText());
                         }
 
-                        g.drawString(String.valueOf(this.content.get(x, yxxxxx)), xxx, yyx + charAscent);
+                        GlyphRenderer.drawCell(g, this.content.glyphAt(x, yxxxxx), xxx, 0, yyx + charAscent, charWidth);
                      }
                   }
                }
@@ -1131,31 +1132,31 @@ public class Selection {
          if (dx > 0) {
             for (int x = 0; x < w - dx - 1; x++) {
                for (int y = 0; y < h; y++) {
-                  newContent.setForce(x, y, this.content.get(x, y));
+                  newContent.setForce(x, y, this.content.glyphAt(x, y));
                }
             }
 
             for (int y = 0; y < h; y++) {
-               newContent.setForce(w - 1, y, this.content.get(w - dx - 1, y));
+               newContent.setForce(w - 1, y, this.content.glyphAt(w - dx - 1, y));
             }
 
             for (int x = w - dx - 1; x < w - 1; x++) {
                for (int y = 1; y < h - 1; y++) {
-                  newContent.setForce(x, y, this.getStretchedCharAt(x, y, this.content.get(w - dx - 2, y), BoxDrawingPalette.Piece.HORIZONTAL));
+                  newContent.setForce(x, y, this.getStretchedCharAt(x, y, this.content.glyphAt(w - dx - 2, y), BoxDrawingPalette.Piece.HORIZONTAL));
                }
 
-               newContent.setForce(x, 0, this.content.get(w - dx - 2, 0));
-               newContent.setForce(x, h - 1, this.content.get(w - dx - 2, h - 1));
+               newContent.setForce(x, 0, this.content.glyphAt(w - dx - 2, 0));
+               newContent.setForce(x, h - 1, this.content.glyphAt(w - dx - 2, h - 1));
             }
          } else {
             for (int x = 0; x < w - 1; x++) {
                for (int y = 0; y < h; y++) {
-                  newContent.setForce(x, y, this.content.get(x, y));
+                  newContent.setForce(x, y, this.content.glyphAt(x, y));
                }
             }
 
             for (int y = 0; y < h; y++) {
-               newContent.setForce(w - 1, y, this.content.get(w - dx - 1, y));
+               newContent.setForce(w - 1, y, this.content.glyphAt(w - dx - 1, y));
             }
          }
 
@@ -1172,31 +1173,31 @@ public class Selection {
          CharacterPlate newContent = new CharacterPlate(w, h);
          if (dx > 0) {
             for (int y = 0; y < h; y++) {
-               newContent.setForce(0, y, this.content.get(0, y));
+               newContent.setForce(0, y, this.content.glyphAt(0, y));
             }
 
             for (int x = 1; x < w; x++) {
                for (int y = 0; y < h; y++) {
-                  newContent.setForce(x, y, this.content.get(x + dx, y));
+                  newContent.setForce(x, y, this.content.glyphAt(x + dx, y));
                }
             }
          } else {
             for (int y = 0; y < h; y++) {
-               newContent.setForce(0, y, this.content.get(0, y));
+               newContent.setForce(0, y, this.content.glyphAt(0, y));
             }
 
             for (int x = 1; x < -dx + 1; x++) {
                for (int y = 1; y < h - 1; y++) {
-                  newContent.setForce(x, y, this.getStretchedCharAt(x + dx, y, this.content.get(1, y), BoxDrawingPalette.Piece.HORIZONTAL));
+                  newContent.setForce(x, y, this.getStretchedCharAt(x + dx, y, this.content.glyphAt(1, y), BoxDrawingPalette.Piece.HORIZONTAL));
                }
 
-               newContent.setForce(x, 0, this.content.get(1, 0));
-               newContent.setForce(x, h - 1, this.content.get(1, h - 1));
+               newContent.setForce(x, 0, this.content.glyphAt(1, 0));
+               newContent.setForce(x, h - 1, this.content.glyphAt(1, h - 1));
             }
 
             for (int x = -dx + 1; x < w; x++) {
                for (int y = 0; y < h; y++) {
-                  newContent.setForce(x, y, this.content.get(x + dx, y));
+                  newContent.setForce(x, y, this.content.glyphAt(x + dx, y));
                }
             }
          }
@@ -1216,31 +1217,31 @@ public class Selection {
          CharacterPlate newContent = new CharacterPlate(w, h);
          if (dy > 0) {
             for (int x = 0; x < w; x++) {
-               newContent.setForce(x, 0, this.content.get(x, 0));
+               newContent.setForce(x, 0, this.content.glyphAt(x, 0));
             }
 
             for (int y = 1; y < h; y++) {
                for (int x = 0; x < w; x++) {
-                  newContent.setForce(x, y, this.content.get(x, y + dy));
+                  newContent.setForce(x, y, this.content.glyphAt(x, y + dy));
                }
             }
          } else {
             for (int x = 0; x < w; x++) {
-               newContent.setForce(x, 0, this.content.get(x, 0));
+               newContent.setForce(x, 0, this.content.glyphAt(x, 0));
             }
 
             for (int y = 1; y < -dy + 1; y++) {
                for (int x = 1; x < w - 1; x++) {
-                  newContent.setForce(x, y, this.getStretchedCharAt(x, y + dy, this.content.get(x, 1), BoxDrawingPalette.Piece.VERTICAL));
+                  newContent.setForce(x, y, this.getStretchedCharAt(x, y + dy, this.content.glyphAt(x, 1), BoxDrawingPalette.Piece.VERTICAL));
                }
 
-               newContent.setForce(0, y, this.content.get(0, 1));
-               newContent.setForce(w - 1, y, this.content.get(w - 1, 1));
+               newContent.setForce(0, y, this.content.glyphAt(0, 1));
+               newContent.setForce(w - 1, y, this.content.glyphAt(w - 1, 1));
             }
 
             for (int y = -dy + 1; y < h; y++) {
                for (int x = 0; x < w; x++) {
-                  newContent.setForce(x, y, this.content.get(x, y + dy));
+                  newContent.setForce(x, y, this.content.glyphAt(x, y + dy));
                }
             }
          }
@@ -1261,31 +1262,31 @@ public class Selection {
          if (dy > 0) {
             for (int y = 0; y < h - dy - 1; y++) {
                for (int x = 0; x < w; x++) {
-                  newContent.setForce(x, y, this.content.get(x, y));
+                  newContent.setForce(x, y, this.content.glyphAt(x, y));
                }
             }
 
             for (int x = 0; x < w; x++) {
-               newContent.setForce(x, h - 1, this.content.get(x, h - dy - 1));
+               newContent.setForce(x, h - 1, this.content.glyphAt(x, h - dy - 1));
             }
 
             for (int y = h - dy - 1; y < h - 1; y++) {
                for (int x = 1; x < w - 1; x++) {
-                  newContent.setForce(x, y, this.getStretchedCharAt(x, y, this.content.get(x, h - dy - 2), BoxDrawingPalette.Piece.VERTICAL));
+                  newContent.setForce(x, y, this.getStretchedCharAt(x, y, this.content.glyphAt(x, h - dy - 2), BoxDrawingPalette.Piece.VERTICAL));
                }
 
-               newContent.setForce(0, y, this.content.get(0, h - dy - 2));
-               newContent.setForce(w - 1, y, this.content.get(w - 1, h - dy - 2));
+               newContent.setForce(0, y, this.content.glyphAt(0, h - dy - 2));
+               newContent.setForce(w - 1, y, this.content.glyphAt(w - 1, h - dy - 2));
             }
          } else {
             for (int y = 0; y < h - 1; y++) {
                for (int x = 0; x < w; x++) {
-                  newContent.setForce(x, y, this.content.get(x, y));
+                  newContent.setForce(x, y, this.content.glyphAt(x, y));
                }
             }
 
             for (int x = 0; x < w; x++) {
-               newContent.setForce(x, h - 1, this.content.get(x, h - dy - 1));
+               newContent.setForce(x, h - 1, this.content.glyphAt(x, h - dy - 1));
             }
          }
 
@@ -1300,25 +1301,25 @@ public class Selection {
     * seam where the cells are inserted is continued, so that internal lines stay connected to the
     * border; every other cell falls back to the content the textbox covered before it was shrunk.
     */
-   private char getStretchedCharAt(int x, int y, char seamCharacter, BoxDrawingPalette.Piece line) {
+   private int getStretchedCharAt(int x, int y, int seamCharacter, BoxDrawingPalette.Piece line) {
       if (isLineCharacter(seamCharacter, line)) {
          return seamCharacter;
       } else {
-         char chOld = this.getOriginalCharAt(x, y);
+         int chOld = this.getOriginalCharAt(x, y);
          return chOld == 0 ? ' ' : chOld;
       }
    }
 
-   private static boolean isLineCharacter(char ch, BoxDrawingPalette.Piece line) {
+   private static boolean isLineCharacter(int ch, BoxDrawingPalette.Piece line) {
       String asciiLines = line == BoxDrawingPalette.Piece.HORIZONTAL ? ASCII_HORIZONTAL_LINES : ASCII_VERTICAL_LINES;
-      return asciiLines.indexOf(ch) >= 0 || BoxDrawingPalette.getPiece(ch) == line;
+      return asciiLines.indexOf(ch) >= 0 || ch <= Character.MAX_VALUE && BoxDrawingPalette.getPiece((char)ch) == line;
    }
 
-   private char getOriginalCharAt(int x, int y) {
+   private int getOriginalCharAt(int x, int y) {
       x += this.originalContentX;
       y += this.originalContentY;
       return x >= 1 && y >= 1 && x < this.originalContent.getWidth() - 1 && y < this.originalContent.getHeight() - 1
-         ? this.originalContent.get(x, y)
+         ? this.originalContent.glyphAt(x, y)
          : '\u0000';
    }
 }

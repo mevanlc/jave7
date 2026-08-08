@@ -18,7 +18,14 @@ public class CharacterMergeRulesConfiguration {
       INSTANCE = this;
    }
 
-   public char getMergeResult(char previousCharacter, char newCharacter) {
+   public int getMergeResult(int previousCharacter, int newCharacter) {
+      if (previousCharacter < Character.MIN_VALUE
+         || previousCharacter > Character.MAX_VALUE
+         || newCharacter < Character.MIN_VALUE
+         || newCharacter > Character.MAX_VALUE) {
+         return newCharacter;
+      }
+
       for (int i = 0; i < this.mixCharacters1.length; i++) {
          if (this.mixCharacters1[i] == previousCharacter && this.mixCharacters2[i] == newCharacter
             || this.mixCharacters2[i] == previousCharacter && this.mixCharacters1[i] == newCharacter) {

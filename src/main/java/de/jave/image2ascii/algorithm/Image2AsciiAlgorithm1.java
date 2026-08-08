@@ -114,7 +114,7 @@ public class Image2AsciiAlgorithm1 extends AbstractImage2AsciiAlgorithm {
                oldError += 0.09523809523809523 * (double)lastLineErrors[x][y2];
                oldError += 0.19047619047619047 * (double)lastLineErrors[x + 1][y2];
                int value = (int)((double)pixels.getValueAt(x, y) - oldError);
-               char ch = table.getCharForBrightness(value);
+               int ch = table.getCharForBrightness(value);
                cp.setForce(x, y, ch);
                lastLineErrors[x + 2][y2] = table.getBrightnessForChar(ch) - value;
             }

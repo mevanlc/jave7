@@ -9,8 +9,9 @@ import de.jave.javeplayer.JavePlayerUtilities;
 import java.awt.Color;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import net.dizzy.commons.core.io.IOUtilities;
 
 public class JaveAnimationFileWriter {
@@ -18,8 +19,7 @@ public class JaveAnimationFileWriter {
       BufferedWriter writer = null;
 
       try {
-         FileWriter fileWriter = new FileWriter(file);
-         writer = new BufferedWriter(fileWriter);
+         writer = Files.newBufferedWriter(file.toPath(), StandardCharsets.UTF_8);
          int lastCursorX = -1;
          int lastCursorY = -1;
          int lastScrollX = -1;
@@ -29,11 +29,11 @@ public class JaveAnimationFileWriter {
 
          for (int i = 0; i < animation.getFrameCount(); i++) {
             JaveAnimationFrame currentFrame = animation.getFrame(i);
-            char[][] content = currentFrame.getContent();
+            int[][] content = currentFrame.getContent();
             writer.write("J:");
             writer.write(AsciiPacker.encodeOptimized(content));
             writer.newLine();
-            char[][] selection = currentFrame.getSelection();
+            int[][] selection = currentFrame.getSelection();
             if (selection != null) {
                writer.write("S:");
                writer.write(String.valueOf(currentFrame.getSelectionX()));

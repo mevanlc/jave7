@@ -5,7 +5,8 @@ import de.jave.jave.configuration.IJavaInitializationContext;
 import de.jave.jave.configuration.IJaveInitializable;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,7 +21,7 @@ public class PatternListInitializable implements IJaveInitializable<PatternList>
       BufferedReader reader = null;
 
       try {
-         reader = new BufferedReader(new FileReader(configurationFile));
+         reader = Files.newBufferedReader(configurationFile.toPath(), StandardCharsets.UTF_8);
          String s1 = null;
          String s2 = null;
          String s3 = null;

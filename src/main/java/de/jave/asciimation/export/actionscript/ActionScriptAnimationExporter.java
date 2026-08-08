@@ -12,8 +12,9 @@ import de.jave.lib.net.HtmlUtilities;
 import de.jave.text.TextTools;
 import java.awt.Dimension;
 import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import net.dizzy.commons.core.io.IOUtilities;
 import net.dizzy.commons.core.util.Ensure;
 
@@ -45,7 +46,7 @@ public class ActionScriptAnimationExporter extends AbstractAnimationExporter {
       BufferedWriter writer = null;
 
       try {
-         writer = new BufferedWriter(new FileWriter(this.options.getFile()));
+         writer = Files.newBufferedWriter(this.options.getFile().toPath(), StandardCharsets.UTF_8);
          writeToActionScript(writer, this.animationFile, this.options.getAdditionalOptions().isLoop());
       } finally {
          IOUtilities.close(writer);
@@ -64,7 +65,7 @@ public class ActionScriptAnimationExporter extends AbstractAnimationExporter {
 
       for (int i = 0; i < animationFile.getFrameCount(); i++) {
          JaveAnimationFrame frame = animationFile.getFrame(i);
-         char[][] content = frame.getContent();
+         int[][] content = frame.getContent();
          CharacterPlate contentPlate = new CharacterPlate(content);
          if (frame.getSelection() != null) {
             CharacterPlate selectionPlate = new CharacterPlate(frame.getSelection());
@@ -236,6 +237,45 @@ public class ActionScriptAnimationExporter extends AbstractAnimationExporter {
       writer.write("  \n");
       writer.write("    return chars;\n");
       writer.write("  }\n");
+      writer.write("""
+         static function decodeC(code){
+           var widthEnd=code.indexOf(" ",1);
+           var heightEnd=code.indexOf(" ",widthEnd+1);
+           var w=Number(code.substring(1,widthEnd));
+           var h=Number(code.substring(widthEnd+1,heightEnd));
+           var index=heightEnd+1;
+           var chars=new String();
+           for(var y=0;y<h;++y){
+             for(var x=0;x<w;++x){
+               if(index>=code.length){
+                 chars+=' ';
+                 continue;
+               }
+               var ch=code.charAt(index++);
+               if(ch=='%'){
+                 ch=code.charAt(index++);
+                 if(ch=='%'){
+                   chars+='%';
+                 }else if(ch=='{'){
+                   var separator=code.indexOf(':',index);
+                   var count=Number(code.substring(index,separator));
+                   var textStart=separator+1;
+                   chars+=code.substr(textStart,count);
+                   index=textStart+count+1;
+                 }
+               }else{
+                 chars+=ch;
+                 var codeUnit=ch.charCodeAt(0);
+                 if(codeUnit>=55296 && codeUnit<=56319)
+                   chars+=code.charAt(index++);
+               }
+             }
+             if(y<h-1)
+               chars+="\\n";
+           }
+           return chars;
+         }
+         """);
       writer.write("   static function decode(code){\n");
       writer.write("     var algorithm = code.charAt(0);\n");
       writer.write("     switch (algorithm){\n");
@@ -243,6 +283,8 @@ public class ActionScriptAnimationExporter extends AbstractAnimationExporter {
       writer.write("         return decodeA(code);\n");
       writer.write("       case 'B':\n");
       writer.write("         return decodeB(code);\n");
+      writer.write("       case 'C':\n");
+      writer.write("         return decodeC(code);\n");
       writer.write("       default:\n");
       writer.write("         return \"ERROR\";\n");
       writer.write("     }\n");
@@ -255,7 +297,7 @@ public class ActionScriptAnimationExporter extends AbstractAnimationExporter {
    }
 
    public static final String encodeFrame(CharacterPlate content) {
-      return encodeLine(AsciiPacker.encodeOptimized(content.getContent()));
+      return encodeLine(AsciiPacker.encodeOptimized(content.glyphPlane()));
    }
 
    private static final String encodeLine(String line) {

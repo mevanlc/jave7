@@ -1,6 +1,7 @@
 package de.jave.jave;
 
 import de.jave.jave.preferences.ColorScheme;
+import de.jave.lib.CharacterPlate;
 import java.awt.Point;
 import org.junit.Assert;
 import org.junit.Test;
@@ -9,9 +10,9 @@ public class CompressedDocumentStateTest {
    @Test
    public void constructorIgnoresZeroHeightSelection() {
       CompressedDocumentState state = new CompressedDocumentState(
-         new char[][]{{'a'}},
+         new int[][]{{'a'}},
          new Point(0, 0),
-         new char[0][0],
+         new int[0][0],
          new Point(2, 3),
          null,
          new Point(0, 0),
@@ -50,5 +51,24 @@ public class CompressedDocumentStateTest {
       Assert.assertEquals(new Point(2, 3), state.getSelectionLocation());
       Assert.assertEquals(5, state.getSelectionContent().length);
       Assert.assertEquals(5, state.getSelectionContent()[0].length);
+   }
+
+   @Test
+   public void clustersRoundTripThroughUndoStatePacking() {
+      CharacterPlate content = new CharacterPlate("Ae\u20DD\uD83D\uDE00");
+      CompressedDocumentState state = new CompressedDocumentState(
+         content.glyphPlane(),
+         new Point(0, 0),
+         null,
+         null,
+         null,
+         new Point(2, 0),
+         "text",
+         "type",
+         ColorScheme.BLACK_ON_WHITE
+      );
+
+      Assert.assertTrue(state.getPackedContent().startsWith("C"));
+      Assert.assertEquals(content, new CharacterPlate(state.getContent()));
    }
 }

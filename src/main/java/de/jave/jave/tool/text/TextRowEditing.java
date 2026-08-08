@@ -68,78 +68,86 @@ final class TextRowEditing {
       return true;
    }
 
-   private static void insertRightward(CharacterPlate content, int cursorX, int cursorY) {
+   static void insertRightward(CharacterPlate content, int cursorX, int cursorY) {
       int width = content.getWidth();
-      if (content.get(width - 1, cursorY) != ' ') {
+      if (content.glyphAt(width - 1, cursorY) != ' ') {
          content.addColumnsRight(1);
       }
 
       for (int x = content.getWidth() - 1; x > cursorX; x--) {
-         content.setForce(x, cursorY, content.get(x - 1, cursorY));
+         content.setForce(x, cursorY, content.glyphAt(x - 1, cursorY));
       }
       content.setForce(cursorX, cursorY, ' ');
    }
 
-   private static void deleteRightward(CharacterPlate content, int cursorX, int cursorY) {
+   static void deleteRightward(CharacterPlate content, int cursorX, int cursorY) {
       for (int x = cursorX; x < content.getWidth() - 1; x++) {
-         content.setForce(x, cursorY, content.get(x + 1, cursorY));
+         content.setForce(x, cursorY, content.glyphAt(x + 1, cursorY));
       }
       content.setForce(content.getWidth() - 1, cursorY, ' ');
    }
 
+   static int lastNonSpaceColumn(CharacterPlate content, int row) {
+      int x = content.getWidth() - 1;
+      while (x >= 0 && content.glyphAt(x, row) == ' ') {
+         x--;
+      }
+      return x;
+   }
+
    private static void insertLeftward(CharacterPlate content, Point cursor) {
-      if (content.get(0, cursor.y) != ' ') {
+      if (content.glyphAt(0, cursor.y) != ' ') {
          content.addColumnsLeft(1);
          cursor.x++;
       }
 
       for (int x = 0; x < cursor.x; x++) {
-         content.setForce(x, cursor.y, content.get(x + 1, cursor.y));
+         content.setForce(x, cursor.y, content.glyphAt(x + 1, cursor.y));
       }
       content.setForce(cursor.x, cursor.y, ' ');
    }
 
    private static void deleteLeftward(CharacterPlate content, int cursorX, int cursorY) {
       for (int x = cursorX; x > 0; x--) {
-         content.setForce(x, cursorY, content.get(x - 1, cursorY));
+         content.setForce(x, cursorY, content.glyphAt(x - 1, cursorY));
       }
       content.setForce(0, cursorY, ' ');
    }
 
    private static void insertUpward(CharacterPlate content, Point cursor) {
-      if (content.get(cursor.x, 0) != ' ') {
+      if (content.glyphAt(cursor.x, 0) != ' ') {
          content.addLinesTop(1);
          cursor.y++;
       }
 
       for (int y = 0; y < cursor.y; y++) {
-         content.setForce(cursor.x, y, content.get(cursor.x, y + 1));
+         content.setForce(cursor.x, y, content.glyphAt(cursor.x, y + 1));
       }
       content.setForce(cursor.x, cursor.y, ' ');
    }
 
    private static void deleteUpward(CharacterPlate content, int cursorX, int cursorY) {
       for (int y = cursorY; y > 0; y--) {
-         content.setForce(cursorX, y, content.get(cursorX, y - 1));
+         content.setForce(cursorX, y, content.glyphAt(cursorX, y - 1));
       }
       content.setForce(cursorX, 0, ' ');
    }
 
    private static void insertDownward(CharacterPlate content, int cursorX, int cursorY) {
       int height = content.getHeight();
-      if (content.get(cursorX, height - 1) != ' ') {
+      if (content.glyphAt(cursorX, height - 1) != ' ') {
          content.addLinesBottom(1);
       }
 
       for (int y = content.getHeight() - 1; y > cursorY; y--) {
-         content.setForce(cursorX, y, content.get(cursorX, y - 1));
+         content.setForce(cursorX, y, content.glyphAt(cursorX, y - 1));
       }
       content.setForce(cursorX, cursorY, ' ');
    }
 
    private static void deleteDownward(CharacterPlate content, int cursorX, int cursorY) {
       for (int y = cursorY; y < content.getHeight() - 1; y++) {
-         content.setForce(cursorX, y, content.get(cursorX, y + 1));
+         content.setForce(cursorX, y, content.glyphAt(cursorX, y + 1));
       }
       content.setForce(cursorX, content.getHeight() - 1, ' ');
    }

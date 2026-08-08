@@ -25,7 +25,7 @@ public class Pattern {
       return this.code;
    }
 
-   public char[][] getContent() {
+   public int[][] getContent() {
       return AsciiPacker.decode(this.code);
    }
 

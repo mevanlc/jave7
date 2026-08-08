@@ -11,7 +11,7 @@ import net.dizzy.commons.core.io.IOUtilities;
 public class AsciiGreyscaleTableReader {
    public static AsciiGreyscaleTable load(File file) throws ConfigurationException {
       char[] greyscales = new char[95];
-      char[][] greyscales4 = new char[95][4];
+      int[][] greyscales4 = new int[95][4];
       boolean[] defaultIgnores = new boolean[95];
       boolean[] defaultIgnores4 = new boolean[95];
       BufferedReader br = null;
@@ -68,7 +68,7 @@ public class AsciiGreyscaleTableReader {
          }
 
          int size = lines.size();
-         char[][] characters4 = new char[size][5];
+         int[][] characters4 = new int[size][5];
 
          for (int i = 0; i < size; i++) {
             line = lines.get(i);

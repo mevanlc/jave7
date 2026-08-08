@@ -1063,11 +1063,15 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
    }
 
    public void switchToTextTool(char ch, int x, int y) {
+      this.switchToTextTool(String.valueOf(ch), x, y);
+   }
+
+   public void switchToTextTool(String text, int x, int y) {
       this.setTool(ToolBar.TEXT_TOOL_INDEX);
       TextTool textTool = (TextTool)this.mainPanel.getCurrentTool();
       textTool.setCursorLocation(x, y);
       textTool.checkSize();
-      textTool.charEntered(ch);
+      textTool.textEntered(text);
    }
 
    public void switchToTextTool() {

@@ -38,7 +38,7 @@ public class PasteIntoSelectionAction extends AbstractJaveAction {
       CharacterPlate newContent = new CharacterPlate(region.width, region.height);
       for (int dy = 0; dy < region.height; dy++) {
          for (int dx = 0; dx < region.width; dx++) {
-            newContent.set(dx, dy, clipContent.get(dx % clipW, dy % clipH));
+            newContent.set(dx, dy, clipContent.glyphAt(dx % clipW, dy % clipH));
          }
       }
       editor.getPlate().getSelection().set(new Rectangle(region.x, region.y, region.width, region.height), newContent);

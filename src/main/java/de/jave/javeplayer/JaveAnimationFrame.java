@@ -50,16 +50,16 @@ public class JaveAnimationFrame {
       System.err.println("Tool: " + this.tool);
    }
 
-   public char[][] getContent() {
+   public int[][] getContent() {
       return AsciiPacker.decode(this.content);
    }
 
-   public char[][] getSelection() {
+   public int[][] getSelection() {
       return this.selection == null ? null : AsciiPacker.decode(this.selection);
    }
 
    public boolean isEmpty() {
-      char[][] ch = this.getContent();
+      int[][] ch = this.getContent();
       if (ch.length != 0 && ch[0].length != 0) {
          int w = ch[0].length;
          int h = ch.length;
@@ -155,7 +155,7 @@ public class JaveAnimationFrame {
    }
 
    public void setContent(CharacterPlate plate) {
-      this.setContent(AsciiPacker.encode(plate.getContent()));
+      this.setContent(AsciiPacker.encode(plate.glyphPlane()));
    }
 
    public Dimension getSize() {

@@ -7,8 +7,8 @@ public class AscTrisBlock {
    public static final String GRADIENT = " :=8OSXZBEW#M";
    public int xPos;
    public int yPos;
-   private char[][] pattern;
-   private static final char[][][] PATTERNS = new char[][][]{
+   private int[][] pattern;
+   private static final int[][][] PATTERNS = new int[][][]{
       {{'#', '#', ' '}, {' ', '#', '#'}},
       {{' ', '#', '#'}, {'#', '#', ' '}},
       {{' ', ' ', ' ', ' '}, {'#', '#', '#', '#'}, {' ', ' ', ' ', ' '}},
@@ -43,7 +43,7 @@ public class AscTrisBlock {
    public void rotateRight() {
       int w = this.pattern[0].length;
       int h = this.pattern.length;
-      char[][] newPattern = new char[w][h];
+      int[][] newPattern = new int[w][h];
 
       for (int y = 0; y < h; y++) {
          for (int x = 0; x < w; x++) {
@@ -57,7 +57,7 @@ public class AscTrisBlock {
    public void rotateLeft() {
       int w = this.pattern[0].length;
       int h = this.pattern.length;
-      char[][] newPattern = new char[w][h];
+      int[][] newPattern = new int[w][h];
 
       for (int y = 0; y < h; y++) {
          for (int x = 0; x < w; x++) {
@@ -99,7 +99,7 @@ public class AscTrisBlock {
                   return false;
                }
 
-               if (this.yPos + y >= 0 && cp.get(this.xPos + x, this.yPos + y) != ' ') {
+               if (this.yPos + y >= 0 && cp.glyphAt(this.xPos + x, this.yPos + y) != ' ') {
                   return false;
                }
             }

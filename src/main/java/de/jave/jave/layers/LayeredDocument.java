@@ -277,7 +277,7 @@ public final class LayeredDocument {
       return newIndex >= 0 && newIndex < this.secondaryLayers.size();
    }
 
-   public void setActiveChar(int x, int y, char ch) {
+   public void setActiveGlyph(int x, int y, int ch) {
       if (!this.isInsideDocument(x, y)) {
          return;
       }
@@ -285,11 +285,11 @@ public final class LayeredDocument {
       if (active instanceof DocumentLayer) {
          this.documentLayer.getContent().set(x, y, ch);
       } else {
-         ((SecondaryLayer)active).setCharAtDocument(x, y, ch);
+         ((SecondaryLayer)active).setGlyphAtDocument(x, y, ch);
       }
    }
 
-   public void setActiveCharForce(int x, int y, char ch) {
+   public void setActiveGlyphForce(int x, int y, int ch) {
       if (!this.isInsideDocument(x, y)) {
          return;
       }
@@ -297,19 +297,19 @@ public final class LayeredDocument {
       if (active instanceof DocumentLayer) {
          this.documentLayer.getContent().setForce(x, y, ch);
       } else {
-         ((SecondaryLayer)active).setCharAtDocument(x, y, ch);
+         ((SecondaryLayer)active).setGlyphAtDocument(x, y, ch);
       }
    }
 
-   public char getActiveChar(int x, int y) {
+   public int getActiveGlyph(int x, int y) {
       if (!this.isInsideDocument(x, y)) {
          return ' ';
       }
       Layer active = this.getActiveLayer();
       if (active instanceof DocumentLayer) {
-         return this.documentLayer.getContent().get(x, y);
+         return this.documentLayer.getContent().glyphAt(x, y);
       }
-      return ((SecondaryLayer)active).getCharAtDocument(x, y);
+      return ((SecondaryLayer)active).getGlyphAtDocument(x, y);
    }
 
    public CharacterPlate getActiveContentProjection() {
@@ -340,7 +340,7 @@ public final class LayeredDocument {
          for (int x = 0; x < region.width; x++) {
             int documentX = region.x + x;
             if (bounds.contains(documentX, documentY)) {
-               char ch = layer.getCharAtDocument(documentX, documentY);
+               int ch = layer.getGlyphAtDocument(documentX, documentY);
                mask.set(x, y, layer.isOpaque() || ch != ' ');
             }
          }
@@ -352,7 +352,7 @@ public final class LayeredDocument {
       Ensure.ensureArgumentNotNull(projection);
       Layer active = this.getActiveLayer();
       if (active instanceof DocumentLayer) {
-         this.documentLayer.getContent().setContent(projection.getContentClone());
+         this.documentLayer.getContent().setContent(projection.glyphPlaneClone());
          return;
       }
       ((SecondaryLayer)active).replaceContent(new Point(0, 0), projection);
@@ -387,7 +387,7 @@ public final class LayeredDocument {
             if (documentX < 0 || documentX >= composite.getWidth()) {
                continue;
             }
-            char ch = content.get(x, y);
+            int ch = content.glyphAt(x, y);
             if (ch != ' ' || layer.isOpaque()) {
                composite.setForce(documentX, documentY, ch);
             }

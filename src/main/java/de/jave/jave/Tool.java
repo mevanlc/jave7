@@ -259,6 +259,14 @@ public abstract class Tool implements ItemListener, ActionListener {
    public void keyTyped(char ch, KeyEvent evt) {
    }
 
+   public void textTyped(String text, KeyEvent evt) {
+      text.chars().forEach(codePoint -> {
+         if (Character.isBmpCodePoint(codePoint)) {
+            this.keyTyped((char)codePoint, evt);
+         }
+      });
+   }
+
    public void paintCursorFeature(Graphics2D g, Point plateOrigin, ColorScheme colorScheme) {
    }
 

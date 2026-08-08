@@ -17,13 +17,13 @@ public class FillMatcher {
       this.plate = plate;
    }
 
-   private boolean matches(int x, int y, char previousChar) {
+   private boolean matches(int x, int y, int previousChar) {
       if (x >= 0 && y >= 0 && x < this.plate.getWidth() && y < this.plate.getHeight()) {
-         if (this.matchMode == FillMatchMode.EQUAL_CHARACTER && this.plate.get(x, y) != previousChar) {
+         if (this.matchMode == FillMatchMode.EQUAL_CHARACTER && this.plate.glyphAt(x, y) != previousChar) {
             return false;
          } else {
             if (this.matchMode != FillMatchMode.EQUAL_CHARACTER) {
-               char c = this.plate.get(x, y);
+               int c = this.plate.glyphAt(x, y);
                if (c == ' ' || c == 2) {
                   return false;
                }
@@ -37,7 +37,7 @@ public class FillMatcher {
    }
 
    public Rectangle markAreaForFill(int x0, int y0) {
-      char previousChar = this.plate.get(x0, y0);
+      int previousChar = this.plate.glyphAt(x0, y0);
       if (!this.matches(x0, y0, previousChar)) {
          return null;
       } else {

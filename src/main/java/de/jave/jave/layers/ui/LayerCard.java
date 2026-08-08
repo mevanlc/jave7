@@ -5,6 +5,7 @@ import de.jave.jave.PlateDocument;
 import de.jave.jave.layers.DocumentLayer;
 import de.jave.jave.layers.Layer;
 import de.jave.jave.layers.SecondaryLayer;
+import de.jave.jave.rendering.GlyphRenderer;
 import de.jave.lib.CharacterPlate;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -326,9 +327,9 @@ public final class LayerCard extends JPanel {
             int rows = Math.min(PREVIEW_ROWS, content.getHeight());
             for (int y = 0; y < rows; y++) {
                for (int x = 0; x < columns; x++) {
-                  char ch = content.get(x, y);
+                  int ch = content.glyphAt(x, y);
                   if (ch != ' ') {
-                     g.drawString(String.valueOf(ch), 4 + x * 4, 9 + y * 6);
+                     GlyphRenderer.drawCell(g, ch, 4, x, 9 + y * 6, 4);
                   }
                }
             }

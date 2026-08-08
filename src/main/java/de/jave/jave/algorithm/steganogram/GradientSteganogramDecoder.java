@@ -13,7 +13,7 @@ public class GradientSteganogramDecoder {
          char lastChar = 0;
 
          for (int i = 0; i < 8; i++) {
-            boolean bit = gradient.indexOf(plate.get(x, y)) % 2 == 1;
+            boolean bit = gradient.indexOf(plate.glyphAt(x, y)) % 2 == 1;
             if (bit) {
                lastChar = (char)(lastChar | 1 << i);
             }

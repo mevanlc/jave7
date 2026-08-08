@@ -29,7 +29,7 @@ public abstract class AbstractPencilTool extends Tool {
    @Override
    public void paintCursorFeature(Graphics2D g, Point plateOrigin, ColorScheme colorScheme) {
       if (this.cursorLocation != null) {
-         char[][] brush = this.getBrush();
+         int[][] brush = this.getBrush();
          if (brush != null) {
             g.setColor(colorScheme.getColorTool());
             this.paintBrushBorder(g, brush, this.cursorLocation.x, this.cursorLocation.y);
@@ -37,9 +37,9 @@ public abstract class AbstractPencilTool extends Tool {
       }
    }
 
-   protected abstract char[][] getBrush();
+   protected abstract int[][] getBrush();
 
-   protected final void paintBrushBorder(Graphics g, char[][] brush, int x0, int y0) {
+   protected final void paintBrushBorder(Graphics g, int[][] brush, int x0, int y0) {
       int h = brush.length;
       int w = brush[0].length;
       int cx = (w - 1) / 2;

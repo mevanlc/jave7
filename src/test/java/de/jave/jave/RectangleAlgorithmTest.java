@@ -42,7 +42,7 @@ public class RectangleAlgorithmTest {
             CharacterPlate plate = new CharacterPlate(6, 5);
             RectangleAlgorithm.drawRectangle(plate, new Rectangle(0, 0, 6, 5), style);
 
-            Assert.assertEquals(style, RectangleAlgorithm.getRectangleStyle(plate.getContent()));
+            Assert.assertEquals(style, RectangleAlgorithm.getRectangleStyle(plate.glyphPlane()));
          }
       }
    }

@@ -7,12 +7,12 @@ import java.awt.Insets;
 import java.awt.Rectangle;
 
 public class FilterMatrix {
-   private final char[][] mask;
+   private final int[][] mask;
    private final int maskWidth;
    private final int maskHeight;
    private final int maskCenterX;
    private final int maskCenterY;
-   private final char[][] result;
+   private final int[][] result;
    private final int resultWidth;
    private final int resultHeight;
    private final int resultCenterX;
@@ -28,7 +28,7 @@ public class FilterMatrix {
       this.maskHeight = originalMaskHeight - maskInsets.top - maskInsets.bottom;
       this.maskCenterX = (originalMaskWidth - 1) / 2 - maskInsets.left;
       this.maskCenterY = (originalMaskHeight - 1) / 2 - maskInsets.top;
-      this.mask = mask.getCopy(maskInsets.left, maskInsets.top, this.maskWidth, this.maskHeight).getContent();
+      this.mask = mask.getCopy(maskInsets.left, maskInsets.top, this.maskWidth, this.maskHeight).glyphPlane();
       int originalResultWidth = result.getWidth();
       int originalResultHeight = result.getHeight();
       Insets resultInsets = result.getEmptyInsets('?');
@@ -36,7 +36,7 @@ public class FilterMatrix {
       this.resultHeight = originalResultHeight - resultInsets.top - resultInsets.bottom;
       this.resultCenterX = (originalResultWidth - 1) / 2 - resultInsets.left;
       this.resultCenterY = (originalResultHeight - 1) / 2 - resultInsets.top;
-      this.result = result.getCopy(resultInsets.left, resultInsets.top, this.resultWidth, this.resultHeight).getContent();
+      this.result = result.getCopy(resultInsets.left, resultInsets.top, this.resultWidth, this.resultHeight).glyphPlane();
       this.optionalNearest9CharacterCount = 0;
       this.minimumNearest9CharacterCount = 0;
 
@@ -81,9 +81,9 @@ public class FilterMatrix {
                         for (int plateY = minPlateY; plateY <= maxPlateY; plateY++) {
                            int maskX = plateX - x + this.maskCenterX;
                            int maskY = plateY - y + this.maskCenterY;
-                           char maskCharacter = this.mask[maskY][maskX];
+                           int maskCharacter = this.mask[maskY][maskX];
                            if (maskCharacter != '?') {
-                              char plateCharacter = plate.get(plateX, plateY);
+                              int plateCharacter = plate.glyphAt(plateX, plateY);
                               if ((maskCharacter != '!' || plateCharacter == ' ') && plateCharacter != maskCharacter) {
                                  return false;
                               }
@@ -122,7 +122,7 @@ public class FilterMatrix {
 
       for (int i = x0; i <= x1; i++) {
          for (int j = y0; j <= y1; j++) {
-            char ch = this.result[j - y + this.resultCenterY][i - x + this.resultCenterX];
+            int ch = this.result[j - y + this.resultCenterY][i - x + this.resultCenterX];
             if (ch != '?') {
                cp.setForce(i, j, ch);
             }

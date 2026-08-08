@@ -1,20 +1,22 @@
 package de.jave.jave.algorithm.compress;
 
 import de.jave.lib.CharacterPlate;
+import de.jave.lib.cell.Cell;
+import de.jave.lib.cell.GlyphEncoding;
 
 public class AsciiPacker {
    private AsciiPacker() {
    }
 
    public static String encodeOptimized(CharacterPlate ch) {
-      return encodeOptimized(ch.getContent());
+      return encodeOptimized(ch.glyphPlane());
    }
 
    public static String encode(CharacterPlate ch) {
-      return encode(ch.getContent());
+      return encode(ch.glyphPlane());
    }
 
-   public static String encodeOptimized(char[][] ch) {
+   public static String encodeOptimized(int[][] ch) {
       int h = ch.length;
       if (h == 0) {
          return "B0 0";
@@ -22,6 +24,8 @@ public class AsciiPacker {
          int w = ch[0].length;
          if (w == 0) {
             return "B0 " + h;
+         } else if (requiresC(ch)) {
+            return encodeC(ch);
          } else {
             String code = encodeA(ch);
             String prefix = "A";
@@ -36,19 +40,19 @@ public class AsciiPacker {
       }
    }
 
-   private static String encodeB(char[][] ch) {
+   private static String encodeB(int[][] ch) {
       StringBuffer sb = new StringBuffer();
       encodeB(sb, ch);
       return sb.toString();
    }
 
-   private static String encodeA(char[][] ch) {
+   private static String encodeA(int[][] ch) {
       StringBuffer sb = new StringBuffer();
       encodeA(sb, ch);
       return sb.toString();
    }
 
-   public static String encode(char[][] ch) {
+   public static String encode(int[][] ch) {
       int h = ch.length;
       if (h == 0) {
          return "B0 0";
@@ -56,6 +60,8 @@ public class AsciiPacker {
          int w = ch[0].length;
          if (w == 0) {
             return "B0 " + h;
+         } else if (requiresC(ch)) {
+            return encodeC(ch);
          } else {
             StringBuffer sb = new StringBuffer(w * h + 10);
             if (w * h < 41) {
@@ -79,7 +85,7 @@ public class AsciiPacker {
       }
    }
 
-   public static final char[][] decode(String code) {
+   public static final int[][] decode(String code) {
       if (code != null && code.length() >= 4) {
          char algorithm = code.charAt(0);
          switch (algorithm) {
@@ -87,6 +93,8 @@ public class AsciiPacker {
                return decodeA(code);
             case 'B':
                return decodeB(code);
+            case 'C':
+               return decodeC(code);
             default:
                throw new RuntimeException(
                   "Unable to decode compressed ASCII: Algorithm '" + algorithm + "' not known by this program version! " + "Please download a new release."
@@ -97,7 +105,7 @@ public class AsciiPacker {
       }
    }
 
-   private static final char[][] decodeA(String code) {
+   private static final int[][] decodeA(String code) {
       int length = code.length();
       int index = 1;
       int w = 0;
@@ -114,7 +122,7 @@ public class AsciiPacker {
          h += var14 - '0';
       }
 
-      char[][] chars = new char[h][w];
+      int[][] chars = new int[h][w];
       int x = 0;
       int y = 0;
 
@@ -165,7 +173,7 @@ public class AsciiPacker {
       return chars;
    }
 
-   private static final char[][] decodeB(String code) {
+   private static final int[][] decodeB(String code) {
       int index = 1;
       int w = 0;
 
@@ -189,7 +197,7 @@ public class AsciiPacker {
          h += ch - '0';
       }
 
-      char[][] chars = new char[h][w];
+      int[][] chars = new int[h][w];
       int i = index;
       int l = code.length();
 
@@ -208,7 +216,7 @@ public class AsciiPacker {
       return chars;
    }
 
-   private static void encodeA(StringBuffer sc, char[][] ch) {
+   private static void encodeA(StringBuffer sc, int[][] ch) {
       int w = ch[0].length;
       if (w != 0) {
          int h = ch.length;
@@ -216,7 +224,7 @@ public class AsciiPacker {
             int state = 1;
             int x = 1;
             int y = 0;
-            char cc = ch[0][0];
+            int cc = ch[0][0];
             int count = 1;
             int eolCount = 0;
 
@@ -300,18 +308,18 @@ public class AsciiPacker {
       }
    }
 
-   private static final void printA(StringBuffer sb, char ch, int count) {
+   private static final void printA(StringBuffer sb, int ch, int count) {
       if (count > 2) {
          sb.append('%');
          sb.append(count);
          if (ch >= '0' && ch <= '9') {
             sb.append('%');
-            sb.append(ch);
+            sb.append((char)ch);
          } else if (ch == '%') {
             sb.append('%');
             sb.append('%');
          } else {
-            sb.append(ch);
+            sb.append((char)ch);
          }
       } else if (count == 2) {
          if (ch == '%') {
@@ -320,22 +328,24 @@ public class AsciiPacker {
             sb.append('%');
             sb.append('%');
          } else {
-            sb.append(ch);
-            sb.append(ch);
+            sb.append((char)ch);
+            sb.append((char)ch);
          }
       } else if (ch == '%') {
          sb.append('%');
          sb.append('%');
       } else {
-         sb.append(ch);
+         sb.append((char)ch);
       }
    }
 
-   private static void encodeB(StringBuffer sc, char[][] chars) {
+   private static void encodeB(StringBuffer sc, int[][] chars) {
       int h = chars.length;
 
       for (int y = 0; y < h; y++) {
-         sc.append(chars[y]);
+         for (int glyph : chars[y]) {
+            sc.append((char)glyph);
+         }
       }
 
       int size = sc.length();
@@ -345,5 +355,104 @@ public class AsciiPacker {
       }
 
       sc.setLength(size);
+   }
+
+   private static boolean requiresC(int[][] glyphs) {
+      for (int[] row : glyphs) {
+         for (int glyph : row) {
+            if (!GlyphEncoding.isCodePoint(glyph) && !GlyphEncoding.isCluster(glyph)) {
+               throw new IllegalArgumentException("Invalid glyph encoding: " + glyph);
+            }
+            if (GlyphEncoding.isCluster(glyph) || glyph > Character.MAX_VALUE) {
+               return true;
+            }
+         }
+      }
+      return false;
+   }
+
+   private static String encodeC(int[][] glyphs) {
+      int height = glyphs.length;
+      int width = height == 0 ? 0 : glyphs[0].length;
+      StringBuffer result = new StringBuffer(width * height + 10);
+      result.append('C').append(width).append(' ').append(height).append(' ');
+      for (int[] row : glyphs) {
+         for (int glyph : row) {
+            if (GlyphEncoding.isCluster(glyph)) {
+               String text = new Cell(glyph).text();
+               result.append("%{").append(text.length()).append(':').append(text).append('}');
+            } else if (glyph == '%') {
+               result.append("%%");
+            } else if (GlyphEncoding.isCodePoint(glyph)) {
+               result.appendCodePoint(glyph);
+            } else {
+               throw new IllegalArgumentException("Invalid glyph encoding: " + glyph);
+            }
+         }
+      }
+      return result.toString();
+   }
+
+   private static int[][] decodeC(String code) {
+      Header header = parseHeader(code);
+      int[][] glyphs = new int[header.height()][header.width()];
+      int payloadIndex = header.payloadIndex();
+      for (int y = 0; y < header.height(); y++) {
+         for (int x = 0; x < header.width(); x++) {
+            if (payloadIndex >= code.length()) {
+               glyphs[y][x] = ' ';
+               continue;
+            }
+
+            int codePoint = code.codePointAt(payloadIndex);
+            if (codePoint != '%') {
+               glyphs[y][x] = codePoint;
+               payloadIndex += Character.charCount(codePoint);
+               continue;
+            }
+
+            payloadIndex++;
+            if (payloadIndex >= code.length()) {
+               throw new IllegalArgumentException("Truncated C payload escape");
+            }
+            char escape = code.charAt(payloadIndex++);
+            if (escape == '%') {
+               glyphs[y][x] = '%';
+               continue;
+            }
+            if (escape != '{') {
+               throw new IllegalArgumentException("Unknown C payload escape: " + escape);
+            }
+
+            int separator = code.indexOf(':', payloadIndex);
+            if (separator < 0) {
+               throw new IllegalArgumentException("Cluster length is missing from C payload");
+            }
+            int length = Integer.parseInt(code.substring(payloadIndex, separator));
+            int textStart = separator + 1;
+            int textEnd = textStart + length;
+            if (textEnd >= code.length() || code.charAt(textEnd) != '}') {
+               throw new IllegalArgumentException("Truncated cluster in C payload");
+            }
+            glyphs[y][x] = Cell.fromText(code.substring(textStart, textEnd)).glyph();
+            payloadIndex = textEnd + 1;
+         }
+      }
+      return glyphs;
+   }
+
+   private static Header parseHeader(String code) {
+      int index = 1;
+      int widthEnd = code.indexOf(' ', index);
+      int heightEnd = widthEnd < 0 ? -1 : code.indexOf(' ', widthEnd + 1);
+      if (widthEnd < 0 || heightEnd < 0) {
+         throw new IllegalArgumentException("Invalid packed-content header");
+      }
+      int width = Integer.parseInt(code.substring(index, widthEnd));
+      int height = Integer.parseInt(code.substring(widthEnd + 1, heightEnd));
+      return new Header(width, height, heightEnd + 1);
+   }
+
+   private record Header(int width, int height, int payloadIndex) {
    }
 }

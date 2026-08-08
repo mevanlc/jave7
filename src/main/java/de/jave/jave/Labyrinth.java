@@ -12,7 +12,7 @@ import java.awt.event.KeyEvent;
 public class Labyrinth extends JaveGame {
    protected int width = 5;
    protected int height = 5;
-   protected char[][] field;
+   protected int[][] field;
    protected static final char WALL = ' ';
    protected static final char WAY = '.';
    protected static final char START = 'O';
@@ -68,7 +68,7 @@ public class Labyrinth extends JaveGame {
    }
 
    protected void create() {
-      this.field = new char[this.height * 2 + 1][this.width * 2 + 1];
+      this.field = new int[this.height * 2 + 1][this.width * 2 + 1];
 
       for (int y = 0; y < this.height * 2 + 1; y++) {
          for (int x = 0; x < this.width * 2 + 1; x++) {
@@ -180,7 +180,7 @@ public class Labyrinth extends JaveGame {
       int y0 = this.position.y + DY[(this.direction + 3) % 4];
       int x2 = this.position.x + DX[(this.direction + 1) % 4];
       int y2 = this.position.y + DY[(this.direction + 1) % 4];
-      char[][] map = new char[5][3];
+      int[][] map = new int[5][3];
 
       for (int y = 0; x1 >= 0 && y1 >= 0 && x1 < this.width * 2 + 1 && y1 < this.height * 2 + 1 && this.field[y1][x1] != ' '; y++) {
          if (y < 5) {

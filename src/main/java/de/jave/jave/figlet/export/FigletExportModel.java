@@ -119,13 +119,13 @@ public class FigletExportModel extends AbstractChangeableModel {
       return this.characterArrangement;
    }
 
-   public char[][] getRaster() {
-      char[][] ch = TextTools.toCharField(this.characterArrangement);
+   public int[][] getRaster() {
+      int[][] ch = TextTools.toCharField(this.characterArrangement);
       HashSet table = new HashSet();
 
       for (int y = 0; y < ch.length; y++) {
          for (int x = 0; x < ch[0].length; x++) {
-            Character c = ch[y][x];
+            Integer c = ch[y][x];
             if (table.contains(c)) {
                ch[y][x] = 0;
             } else {

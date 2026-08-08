@@ -107,7 +107,7 @@ public final class SecondaryLayer implements Layer {
       this.trimToNonSpaceBounds();
    }
 
-   public void setCharAtDocument(int x, int y, char ch) {
+   public void setGlyphAtDocument(int x, int y, int ch) {
       if (this.content.getWidth() == 0 || this.content.getHeight() == 0) {
          if (ch == ' ') {
             return;
@@ -130,12 +130,12 @@ public final class SecondaryLayer implements Layer {
       this.trimToNonSpaceBounds();
    }
 
-   public char getCharAtDocument(int x, int y) {
+   public int getGlyphAtDocument(int x, int y) {
       Rectangle bounds = this.getBounds();
       if (!bounds.contains(x, y)) {
          return ' ';
       }
-      return this.content.get(x - this.position.x, y - this.position.y);
+      return this.content.glyphAt(x - this.position.x, y - this.position.y);
    }
 
    public SecondaryLayer duplicate(String newId, String newName) {
@@ -186,7 +186,7 @@ public final class SecondaryLayer implements Layer {
       int maxY = Integer.MIN_VALUE;
       for (int y = 0; y < plate.getHeight(); y++) {
          for (int x = 0; x < plate.getWidth(); x++) {
-            if (plate.get(x, y) != ' ') {
+            if (plate.glyphAt(x, y) != ' ') {
                minX = Math.min(minX, x);
                minY = Math.min(minY, y);
                maxX = Math.max(maxX, x);

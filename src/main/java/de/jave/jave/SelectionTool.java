@@ -454,11 +454,16 @@ public class SelectionTool extends Tool {
 
    @Override
    public void keyTyped(char ch, KeyEvent evt) {
-      if (!controlDown || ch == '@' || ch == '~' || ch == '|' || ch == '\\') {
+      this.textTyped(String.valueOf(ch), evt);
+   }
+
+   @Override
+   public void textTyped(String text, KeyEvent evt) {
+      if (!controlDown || "@".equals(text) || "~".equals(text) || "|".equals(text) || "\\".equals(text)) {
          if (this.hasSelection()) {
             Rectangle r = this.getPlate().getSelectionRegion();
             this.application.doSelectionDelete();
-            this.application.switchToTextTool(ch, r.x, r.y);
+            this.application.switchToTextTool(text, r.x, r.y);
          }
       }
    }
@@ -667,8 +672,8 @@ public class SelectionTool extends Tool {
       if (evt.getClickCount() == 2 && this.hasSelection()) {
          Selection sel = this.getPlate().getSelection();
          if (sel.contains(location) && sel.isTextbox()) {
-            char[][] ch = sel.getContent().getContent();
-            char[][] content = new char[ch.length - 2][ch[0].length - 2];
+            int[][] ch = sel.getContent().glyphPlane();
+            int[][] content = new int[ch.length - 2][ch[0].length - 2];
 
             for (int x = 0; x < content.length; x++) {
                 System.arraycopy(ch[x + 1], 1, content[x], 0, content[0].length);

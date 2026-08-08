@@ -157,7 +157,7 @@ public class DynamicalGreyScaleTableCreator {
          }
       }
 
-      char[][] greyscales4 = new char[95][4];
+      int[][] greyscales4 = new int[95][4];
       char[] greyscales = new char[95];
 
       for (int i = 32; i < 127; i++) {
@@ -168,7 +168,7 @@ public class DynamicalGreyScaleTableCreator {
          greyscales4[i - 32][3] = (char)((int)Math.round((tableSE[i - 32] - min4) / (max4 - min4) * 255.0));
       }
 
-      char[][] reverseTable = new char[95][5];
+      int[][] reverseTable = new int[95][5];
 
       for (int i = 0; i < reverseTable.length; i++) {
          reverseTable[i][0] = greyscales4[i][0];

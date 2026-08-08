@@ -179,7 +179,7 @@ public class TextboxDialog {
       this.dialog.setVisible(visible);
    }
 
-   public static RectangleStyle getTextboxStyle(char[][] content) {
+   public static RectangleStyle getTextboxStyle(int[][] content) {
       return RectangleAlgorithm.getRectangleStyle(content);
    }
 

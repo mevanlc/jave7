@@ -4,9 +4,11 @@ import de.jave.ascii.plate.CharacterMetrics;
 import de.jave.image.greyscale.GGreyscaleImage;
 import de.jave.jave.export.Ascii2ImageOptions;
 import de.jave.jave.rendering.ConnectedLinesViewRenderer;
+import de.jave.jave.rendering.GlyphRenderer;
 import de.jave.javeplayer.JaveAnimationFile;
 import de.jave.javeplayer.JaveAnimationFrame;
 import de.jave.lib.CharacterPlate;
+import de.jave.lib.cell.GlyphEncoding;
 import de.jave.text.TextTools;
 import java.awt.Color;
 import java.awt.Font;
@@ -318,9 +320,20 @@ public class AsciiToThumbnailConverter {
 
    @Deprecated
    public static BufferedImage convert(CharacterPlate cp, int scale, Font font, Color backgroundColor, Color foregroundColor, boolean connectedLinesView) {
-      return scale >= 4
+      return scale >= 4 || requiresGlyphRendering(cp)
          ? createFontRenderedImage(cp, font, backgroundColor, foregroundColor, connectedLinesView)
          : createThumbnailRenderedImage(cp, scale, backgroundColor, foregroundColor);
+   }
+
+   private static boolean requiresGlyphRendering(CharacterPlate plate) {
+      for (int[] row : plate.glyphPlane()) {
+         for (int glyph : row) {
+            if (!GlyphEncoding.isCodePoint(glyph) || glyph > Character.MAX_VALUE) {
+               return true;
+            }
+         }
+      }
+      return false;
    }
 
    private static BufferedImage createThumbnailRenderedImage(CharacterPlate cp, int scale, Color backgroundColor, Color foregroundColor) {
@@ -346,7 +359,7 @@ public class AsciiToThumbnailConverter {
          ConnectedLinesViewRenderer.paintConnectedLinesView(g, cp, characterSize);
       } else {
          for (int y = 0; y < cp.getHeight(); y++) {
-            g.drawString(cp.getLine(y), 0, charAscent + y * characterSize.getHeight());
+            GlyphRenderer.drawRow(g, cp.glyphPlane()[y], 0, charAscent + y * characterSize.getHeight(), characterSize.getWidth());
          }
       }
 
@@ -354,11 +367,11 @@ public class AsciiToThumbnailConverter {
       return image;
    }
 
-   public static MemoryImageSource ascii2Image(char[][] ch, int scale, boolean negative) {
+   public static MemoryImageSource ascii2Image(int[][] ch, int scale, boolean negative) {
       return ascii2Image(new CharacterPlate(ch), scale, negative);
    }
 
-   public static int[][] ascii2Pixels(char[][] ch, int resolution, boolean negative) {
+   public static int[][] ascii2Pixels(int[][] ch, int resolution, boolean negative) {
       int width = ch[0].length;
       int height = ch.length;
       int[][] pixels = new int[width * resolution][height * resolution];
@@ -388,7 +401,7 @@ public class AsciiToThumbnailConverter {
          case 3:
             for (int x = 0; x < width; x++) {
                for (int y = 0; y < height; y++) {
-                  char c = ch[y][x];
+                  int c = ch[y][x];
                   if (c >= ' ' && c <= '~') {
                      pixels[3 * x][3 * y] = TABLE_THUMB_9[c - ' '][0];
                      pixels[3 * x + 1][3 * y] = TABLE_THUMB_9[c - ' '][1];
@@ -427,7 +440,7 @@ public class AsciiToThumbnailConverter {
          fg = Color.black;
       }
 
-      char[][] ch = plate.getContent();
+      int[][] ch = plate.glyphPlane();
       int width = plate.getWidth();
       int height = plate.getHeight();
       int[][] pixels = ascii2Pixels(ch, scale, false);
@@ -460,7 +473,7 @@ public class AsciiToThumbnailConverter {
    }
 
    public static MemoryImageSource ascii2Image(CharacterPlate plate, int scale, boolean negative) {
-      char[][] ch = plate.getContent();
+      int[][] ch = plate.glyphPlane();
       int width = plate.getWidth();
       int height = plate.getHeight();
       int[][] pixels = ascii2Pixels(ch, scale, negative);
@@ -524,7 +537,7 @@ public class AsciiToThumbnailConverter {
          frame = jmov.getFrame(index++);
       } while (frame.isEmpty() && index < jmov.getFrameCount());
 
-      char[][] ch = frame.getContent();
+      int[][] ch = frame.getContent();
       fileDim[0] = ch[0].length;
       fileDim[1] = ch.length;
       Color bg = jmov.getProperties().getBackgroundColor();
@@ -536,7 +549,7 @@ public class AsciiToThumbnailConverter {
       return convert(TextTools.toCharField(text), maxWidth, maxHeight, bg, fg);
    }
 
-   public static MemoryImageSource convert(char[][] ch, int maxWidth, int maxHeight, Color bg, Color fg) {
+   public static MemoryImageSource convert(int[][] ch, int maxWidth, int maxHeight, Color bg, Color fg) {
       int height = ch.length;
       int width = ch[0].length;
       int scale = 2;

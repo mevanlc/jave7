@@ -51,14 +51,14 @@ public class SelectionAlgorithms {
       Insets insets = ch.getEmptyInsets();
       int w = ch.getWidth();
       int h = ch.getHeight();
-      if (insets.top + insets.bottom < h && insets.right + insets.left < w && (h != 1 || w != 1 || ch.get(0, 0) != ' ')) {
+      if (insets.top + insets.bottom < h && insets.right + insets.left < w && (h != 1 || w != 1 || ch.glyphAt(0, 0) != ' ')) {
          int w2 = w - insets.left - insets.right;
          int h2 = h - insets.bottom - insets.top;
          CharacterPlate chNew = new CharacterPlate(w2, h2);
 
          for (int y = 0; y < h2; y++) {
             for (int x = 0; x < w2; x++) {
-               chNew.set(x, y, ch.get(x + insets.left, y + insets.top));
+               chNew.set(x, y, ch.glyphAt(x + insets.left, y + insets.top));
             }
          }
 
@@ -95,7 +95,7 @@ public class SelectionAlgorithms {
    }
 
    static Rectangle findConnectedRegion(CharacterPlate content, Point location) {
-      if (location == null || !content.contains(location.x, location.y) || content.get(location.x, location.y) == ' ') {
+      if (location == null || !content.contains(location.x, location.y) || content.glyphAt(location.x, location.y) == ' ') {
          return null;
       }
 
@@ -114,7 +114,7 @@ public class SelectionAlgorithms {
          }
 
          visited[current.x][current.y] = true;
-         if (content.get(current.x, current.y) == ' ') {
+         if (content.glyphAt(current.x, current.y) == ' ') {
             continue;
          }
 

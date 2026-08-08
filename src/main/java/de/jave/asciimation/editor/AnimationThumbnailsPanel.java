@@ -138,9 +138,9 @@ public class AnimationThumbnailsPanel extends JComponent {
       if (frame == null) {
          return null;
       } else {
-         char[][] chContent = frame.getContent();
+         int[][] chContent = frame.getContent();
          CharacterPlate content = new CharacterPlate(chContent);
-         char[][] chSelection = frame.getSelection();
+         int[][] chSelection = frame.getSelection();
          if (chSelection != null) {
             new CharacterPlate(chSelection).pasteInto(content, frame.getSelectionX(), frame.getSelectionY());
          }

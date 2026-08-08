@@ -25,7 +25,7 @@ public class EraserTool extends AbstractPencilTool {
    private static int DEFAULT_SIZE = 3;
    private static final int MIN_SIZE = 1;
    private static final int MAX_SIZE = 6;
-   private static final char[][][][] BRUSHES = new char[][][][]{
+   private static final int[][][][] BRUSHES = new int[][][][]{
       {
             {{'X'}},
             {{'X', 'X'}, {'X', 'X'}},
@@ -195,7 +195,7 @@ public class EraserTool extends AbstractPencilTool {
          ch = ' ';
       }
 
-      char[][] brush = this.getBrush();
+      int[][] brush = this.getBrush();
       int h = brush.length;
       int w = brush[0].length;
       int cx = (w - 1) / 2;
@@ -213,7 +213,7 @@ public class EraserTool extends AbstractPencilTool {
    }
 
    @Override
-   protected char[][] getBrush() {
+   protected int[][] getBrush() {
       int style = this.chStyle.getSelectedIndex();
       int size = this.sizeModel.getNumber().intValue() - 1;
       return BRUSHES[style][size];

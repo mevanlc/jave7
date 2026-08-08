@@ -1,6 +1,10 @@
 package de.jave.text;
 
+import de.jave.lib.cell.Cell;
+import de.jave.lib.cell.GraphemeSplitter;
 import java.awt.Dimension;
+import java.text.Normalizer;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class TextTools {
@@ -44,12 +48,12 @@ public class TextTools {
       }
    }
 
-   public static final String[] toStringArray(char[][] ch) {
-      int height = ch.length;
+   public static final String[] toStringArray(int[][] glyphs) {
+      int height = glyphs.length;
       String[] result = new String[height];
 
       for (int y = 0; y < height; y++) {
-         result[y] = trimRight(new String(ch[y]));
+         result[y] = trimRight(toString(glyphs[y]));
       }
 
       return result;
@@ -65,13 +69,13 @@ public class TextTools {
       return line.substring(0, i0 + 1);
    }
 
-   public static final String toString(char[][] ch) {
-      int height = ch.length;
-      int width = height == 0 ? 0 : ch[0].length;
+   public static final String toString(int[][] glyphs) {
+      int height = glyphs.length;
+      int width = height == 0 ? 0 : glyphs[0].length;
       StringBuffer sb = new StringBuffer(height * width + height);
 
       for (int y = 0; y < height; y++) {
-         sb.append(trimRight(new String(ch[y])));
+         sb.append(trimRight(toString(glyphs[y])));
          if (y < height - 1) {
             sb.append('\n');
          }
@@ -80,110 +84,71 @@ public class TextTools {
       return sb.toString();
    }
 
+   public static String toString(int[] glyphs) {
+      StringBuilder result = new StringBuilder(glyphs.length);
+      for (int glyph : glyphs) {
+         result.append(new Cell(glyph).text());
+      }
+      return result.toString();
+   }
+
    public static final Dimension getDimensionOf(String text) {
-      int h = 1;
+      String normalized = Normalizer.normalize(text, Normalizer.Form.NFC);
+      String[] lines = normalized.split("\\n", -1);
+      int h = lines.length;
       int w = 0;
-      int currentW = 0;
-
-      for (int i = 0; i < text.length(); i++) {
-         if (text.charAt(i) == '\n') {
-            if (currentW > w) {
-               w = currentW;
-            }
-
-            currentW = 0;
-            h++;
-         } else {
-            currentW++;
-         }
+      for (String line : lines) {
+         w = Math.max(w, GraphemeSplitter.split(line).size());
       }
-
-      if (currentW > w) {
-         w = currentW;
-      }
-
       return new Dimension(w, h);
    }
 
-   public static final char[][] toCharField(String[] lines) {
+   public static final int[][] toCharField(String[] lines) {
       int h = lines.length;
       int w = 0;
+      int[][] encodedLines = new int[h][];
 
       for (int y = 0; y < h; y++) {
-         if (lines[y].length() > w) {
-            w = lines[y].length();
+         encodedLines[y] = toGlyphs(lines[y]);
+         w = Math.max(w, encodedLines[y].length);
+      }
+
+      int[][] glyphs = new int[h][w];
+
+      for (int y = 0; y < h; y++) {
+         System.arraycopy(encodedLines[y], 0, glyphs[y], 0, encodedLines[y].length);
+         for (int x = encodedLines[y].length; x < w; x++) {
+            glyphs[y][x] = ' ';
          }
       }
 
-      char[][] ch = new char[h][w];
-
-      for (int yx = 0; yx < h; yx++) {
-         for (int x = 0; x < lines[yx].length(); x++) {
-            ch[yx][x] = lines[yx].charAt(x);
-         }
-
-         for (int x = lines[yx].length(); x < w; x++) {
-            ch[yx][x] = ' ';
-         }
-      }
-
-      return ch;
+      return glyphs;
    }
 
-   public static final char[][] toCharField(String text) {
-      Dimension d = getDimensionOf(text);
-      if (d.width == 0 && d.height > 0) {
-         d.width = 1;
-      } else if (d.height == 0 && d.width > 0) {
-         d.height = 1;
+   public static int[] toGlyphs(String text) {
+      String normalized = Normalizer.normalize(text, Normalizer.Form.NFC);
+      List<String> graphemes = GraphemeSplitter.split(normalized);
+      int[] glyphs = new int[graphemes.size()];
+      for (int i = 0; i < graphemes.size(); i++) {
+         glyphs[i] = Cell.fromText(graphemes.get(i)).glyph();
       }
+      return glyphs;
+   }
 
-      char[][] ch = new char[d.height][d.width];
-      int y = 0;
-      int x = 0;
-
-      for (int i = 0; i < text.length(); i++) {
-         if (text.charAt(i) != '\n') {
-            ch[y][x] = text.charAt(i);
-            x++;
-         } else {
-            for (int xx = x; xx < d.width; xx++) {
-               ch[y][xx] = ' ';
-            }
-
-            x = 0;
-            y++;
+   public static final int[][] toCharField(String text) {
+      String normalized = Normalizer.normalize(text, Normalizer.Form.NFC);
+      int[][] glyphs = toCharField(normalized.split("\\n", -1));
+      if (glyphs.length > 0 && glyphs[0].length == 0) {
+         glyphs = new int[glyphs.length][1];
+         for (int y = 0; y < glyphs.length; y++) {
+            glyphs[y][0] = ' ';
          }
       }
-
-      for (int xx = x; xx < d.width; xx++) {
-         ch[y][xx] = ' ';
-      }
-
-      return ch;
+      return glyphs;
    }
 
    public static final String[] toStringArray(String text) {
-      Dimension d = getDimensionOf(text);
-      if (d.height <= 1) {
-         return new String[]{text};
-      } else {
-         String[] result = new String[d.height];
-         int y = 0;
-         int x1 = 0;
-         int x2 = 0;
-
-         for (int l = text.length(); y < d.height; x2++) {
-            while (x2 < l && text.charAt(x2) != '\n') {
-               x2++;
-            }
-
-            result[y++] = text.substring(x1, x2);
-            x1 = x2 + 1;
-         }
-
-         return result;
-      }
+      return Normalizer.normalize(text, Normalizer.Form.NFC).split("\\n", -1);
    }
 
    public static String center(String s, int length) {

@@ -4,15 +4,15 @@ import net.dizzy.commons.core.util.Ensure;
 
 public class AsciiGreyscaleTable {
    private final char[] greyscales;
-   private final char[][] greyscales4;
+   private final int[][] greyscales4;
    private final boolean[] defaultIgnores;
    private final boolean[] defaultIgnores4;
    private final boolean[] ignores;
    private final boolean[] ignores4;
    private char[] characters;
-   private final char[][] characters4;
+   private final int[][] characters4;
 
-   public AsciiGreyscaleTable(boolean[] defaultIgnores, boolean[] defaultIgnores4, char[] greyscales, char[][] greyscales4, char[][] characters4) {
+   public AsciiGreyscaleTable(boolean[] defaultIgnores, boolean[] defaultIgnores4, char[] greyscales, int[][] greyscales4, int[][] characters4) {
       Ensure.ensureArgumentTrue("Expected 95 greyscales, but was " + greyscales.length, greyscales.length == 95);
       Ensure.ensureArgumentTrue("Expected 95 greyscales4, but was " + greyscales4.length, greyscales4.length == 95);
       Ensure.ensureArgumentTrue("Expected at most 95 characters4, but was " + characters4.length, characters4.length <= 95);
@@ -76,7 +76,7 @@ public class AsciiGreyscaleTable {
       }
    }
 
-   public char getCharForBrightness(int i) {
+   public int getCharForBrightness(int i) {
       if (i > 255) {
          return this.characters[255];
       } else {
@@ -84,7 +84,7 @@ public class AsciiGreyscaleTable {
       }
    }
 
-   public int getBrightnessForChar(char ch) {
+   public int getBrightnessForChar(int ch) {
       if (ch < ' ') {
          return this.greyscales[0];
       } else {
@@ -92,7 +92,7 @@ public class AsciiGreyscaleTable {
       }
    }
 
-   public char[] getBrightness4ForChar(char ch) {
+   public int[] getBrightness4ForChar(int ch) {
       int index = ch - ' ';
       if (ch < ' ') {
          index = 0;
@@ -102,22 +102,22 @@ public class AsciiGreyscaleTable {
          index = 94;
       }
 
-      return new char[]{this.greyscales4[index][0], this.greyscales4[index][1], this.greyscales4[index][2], this.greyscales4[index][3]};
+      return new int[]{this.greyscales4[index][0], this.greyscales4[index][1], this.greyscales4[index][2], this.greyscales4[index][3]};
    }
 
-   public char getCharForBrightness(char[] brightness) {
+   public int getCharForBrightness(int[] brightness) {
       return this.getCharForBrightness(brightness[0], brightness[1], brightness[2], brightness[3]);
    }
 
-   public char getCharForBrightness(int nw, int ne, int sw, int se) {
+   public int getCharForBrightness(int nw, int ne, int sw, int se) {
       return findNearestMaxQuick(nw, ne, sw, se, this.characters4, this.ignores4);
    }
 
-   public char[][] getCharacters4() {
+   public int[][] getCharacters4() {
       return this.characters4;
    }
 
-   private static final char findNearestMaxQuick(int nw, int ne, int sw, int se, char[][] table, boolean[] ignores4) {
+   private static final int findNearestMaxQuick(int nw, int ne, int sw, int se, int[][] table, boolean[] ignores4) {
       int length = (table.length + 1) / 2;
       if (nw <= 0 && ne <= 0 && sw <= 0 && se <= 0 && !ignores4[table[0][4] - ' ']) {
          return table[0][4];

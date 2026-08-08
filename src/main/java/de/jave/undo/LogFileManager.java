@@ -4,8 +4,10 @@ import de.jave.jave.JaveStatusFile;
 import de.jave.util.Queue;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import net.dizzy.commons.core.io.IOUtilities;
 
 public class LogFileManager extends Thread {
@@ -51,7 +53,12 @@ public class LogFileManager extends Thread {
       BufferedWriter writer = null;
 
       try {
-         writer = new BufferedWriter(new FileWriter(entry.getFile(), true));
+         writer = Files.newBufferedWriter(
+            entry.getFile().toPath(),
+            StandardCharsets.UTF_8,
+            StandardOpenOption.CREATE,
+            StandardOpenOption.APPEND
+         );
          writer.write(s);
          writer.newLine();
       } catch (IOException var8) {

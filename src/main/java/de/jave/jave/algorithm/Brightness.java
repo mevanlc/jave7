@@ -63,7 +63,7 @@ public class Brightness extends JaveOptionsAlgorithm {
                for (int y = 0; y < height; y++) {
                   for (int xxx = 0; xxx < width; xxx++) {
                      if (sourceMask == null || sourceMask.isSet(xxx, y)) {
-                        char ch = sourcePlate.get(xxx, y);
+                        int ch = sourcePlate.glyphAt(xxx, y);
                         int brightness = greyscaleTable.getBrightnessForChar(ch);
                         brightness += (int)(brighten * 255.0);
                         result.set(xxx, y, greyscaleTable.getCharForBrightness(brightness));
@@ -75,8 +75,8 @@ public class Brightness extends JaveOptionsAlgorithm {
                for (int y = 0; y < height; y++) {
                   for (int xx = 0; xx < width; xx++) {
                      if (sourceMask == null || sourceMask.isSet(xx, y)) {
-                        char ch = sourcePlate.get(xx, y);
-                        char[] brightness = greyscaleTable.getBrightness4ForChar(ch);
+                        int ch = sourcePlate.glyphAt(xx, y);
+                        int[] brightness = greyscaleTable.getBrightness4ForChar(ch);
 
                         for (int i = 0; i < 4; i++) {
                            int newBrightness = brightness[i] + (int)(brighten * 255.0);
@@ -102,10 +102,10 @@ public class Brightness extends JaveOptionsAlgorithm {
                      if (sourceMask == null || sourceMask.isSet(x, y)) {
                         double random = r.nextDouble();
                         if (brighten > 0.0 && random > brighten) {
-                           result.set(x, y, sourcePlate.get(x, y));
+                           result.set(x, y, sourcePlate.glyphAt(x, y));
                         } else if (brighten < 0.0) {
                            if (random > -brighten) {
-                              result.set(x, y, sourcePlate.get(x, y));
+                              result.set(x, y, sourcePlate.glyphAt(x, y));
                            } else {
                               result.set(x, y, fillChar);
                            }

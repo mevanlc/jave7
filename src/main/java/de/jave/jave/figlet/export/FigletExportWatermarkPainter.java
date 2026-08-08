@@ -1,5 +1,6 @@
 package de.jave.jave.figlet.export;
 
+import de.jave.lib.cell.Cell;
 import de.jave.jave.JaveGlobalRessources;
 import de.jave.jave.preferences.ColorScheme;
 import de.jave.jave.watermark.IWatermarkPainter;
@@ -22,7 +23,7 @@ public class FigletExportWatermarkPainter implements IWatermarkPainter {
       g.setFont(JaveGlobalRessources.FONT_SMALL);
       FontMetrics fm = g.getFontMetrics(JaveGlobalRessources.FONT_SMALL);
       int fontHeight = fm.getAscent();
-      char[][] ch = this.model.getRaster();
+      int[][] ch = this.model.getRaster();
       int figCharWidth = this.model.getCharacterWidth();
       int figCharHeight = this.model.getCharacterHeight();
       int figCharDescent = this.model.getCharacterDescent();
@@ -46,7 +47,7 @@ public class FigletExportWatermarkPainter implements IWatermarkPainter {
                g.drawLine(xx + ww, y2, xx + ww - charWidth, y2);
                g.drawLine(xx + 1, y2, xx + 1, yy);
                g.drawLine(xx + ww - 1, y2, xx + ww - 1, yy);
-               String text = String.valueOf(ch[y][x]);
+               String text = new Cell(ch[y][x]).text();
                if (ch[y][x] == ' ') {
                   text = "[space]";
                }

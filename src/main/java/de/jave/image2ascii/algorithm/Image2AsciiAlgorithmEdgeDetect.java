@@ -107,7 +107,7 @@ public class Image2AsciiAlgorithmEdgeDetect extends AbstractImage2AsciiAlgorithm
 
    private CharacterPlate convertLowRes(IProgressMonitor progressMonitor, GMonochromeImage monochromeImage, int width, int height) {
       int[][] ps = monochromeImage.getPixels();
-      char[][] ch = new char[height][width];
+      int[][] ch = new int[height][width];
       progressMonitor.worked(1);
 
       for (int y = 0; y < height; y++) {
@@ -143,7 +143,7 @@ public class Image2AsciiAlgorithmEdgeDetect extends AbstractImage2AsciiAlgorithm
       progressMonitor.worked(1);
       CharacterPlate converted = plate.convert();
       progressMonitor.worked(1);
-      char[][] ch = converted.getContent();
+      int[][] ch = converted.glyphPlane();
 
       for (int y = 0; y < ch.length; y++) {
          for (int xx = 0; xx < ch[0].length; xx++) {

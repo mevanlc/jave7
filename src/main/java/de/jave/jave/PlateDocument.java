@@ -16,11 +16,11 @@ import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Vector;
 import net.dizzy.commons.core.io.IOUtilities;
 
@@ -256,7 +256,7 @@ public class PlateDocument {
 
       String[] lineStrings;
       try {
-         reader = new BufferedReader(new FileReader(file));
+         reader = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8);
          List<String> lines = new ArrayList<>();
 
          String s;
@@ -302,7 +302,7 @@ public class PlateDocument {
       BufferedWriter bw = null;
 
       try {
-         bw = new BufferedWriter(new FileWriter(file));
+         bw = Files.newBufferedWriter(file.toPath(), StandardCharsets.UTF_8);
          String[] lines = this.content.toStringArray();
 
          for (int i = 0; i < lines.length - 1; i++) {

@@ -11,7 +11,7 @@ public class SelectionTest {
    public void restoringZeroHeightSelectionClearsSelection() {
       Selection selection = new Selection();
 
-      selection.set(new Point(2, 3), new char[0][0], null);
+      selection.set(new Point(2, 3), new int[0][0], null);
 
       Assert.assertFalse(selection.hasSelection());
       Assert.assertNull(selection.getContent());
@@ -22,7 +22,7 @@ public class SelectionTest {
    public void restoringZeroWidthSelectionClearsSelection() {
       Selection selection = new Selection();
 
-      selection.set(new Point(2, 3), new char[1][0], null);
+      selection.set(new Point(2, 3), new int[1][0], null);
 
       Assert.assertFalse(selection.hasSelection());
       Assert.assertNull(selection.getContent());

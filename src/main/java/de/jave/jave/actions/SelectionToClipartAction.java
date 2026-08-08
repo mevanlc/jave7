@@ -52,7 +52,7 @@ public class SelectionToClipartAction extends AbstractJaveAction {
             );
             IDialogResult result = dialog.show();
             if (!result.isCanceled()) {
-               Clipart newClipart = new Clipart(model.getName(), AsciiPacker.encode(model.getCode().getContent()), model.getAuthor());
+               Clipart newClipart = new Clipart(model.getName(), AsciiPacker.encode(model.getCode().glyphPlane()), model.getAuthor());
                ClipartGroup newGroup = groupSelectionModel.getValue();
                newGroup.add(newClipart);
                clipartManager.performSave(parentComponent, group);

@@ -24,9 +24,9 @@ public class CompressedDocumentState implements UndoState {
    }
 
    public CompressedDocumentState(
-      char[][] content,
+      int[][] content,
       Point scrollOrigin,
-      char[][] selectionContent,
+      int[][] selectionContent,
       Point selectionLocation,
       BooleanArea selectionMask,
       Point cursorLocation,
@@ -170,7 +170,7 @@ public class CompressedDocumentState implements UndoState {
       return this.actionName;
    }
 
-   public char[][] getContent() {
+   public int[][] getContent() {
       return this.content == null ? null : AsciiPacker.decode(this.content);
    }
 
@@ -198,7 +198,7 @@ public class CompressedDocumentState implements UndoState {
       return this.selectionContent != null && this.selectionLocation != null;
    }
 
-   public char[][] getSelectionContent() {
+   public int[][] getSelectionContent() {
       return this.hasSelection() ? AsciiPacker.decode(this.selectionContent) : null;
    }
 
@@ -274,7 +274,7 @@ public class CompressedDocumentState implements UndoState {
       return sb.toString();
    }
 
-   private static boolean isEmptySelectionContent(char[][] selectionContent) {
+   private static boolean isEmptySelectionContent(int[][] selectionContent) {
       return selectionContent == null || selectionContent.length == 0 || selectionContent[0] == null || selectionContent[0].length == 0;
    }
 

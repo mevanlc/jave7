@@ -6,6 +6,7 @@ import de.jave.image.greyscale.GreyscaleImageFactory;
 import de.jave.image.monochrome.GMonochromeImage;
 import de.jave.jave.algorithm.GeneralAlgorithm;
 import de.jave.lib.CharacterPlate;
+import de.jave.text.TextTools;
 import java.awt.Component;
 import java.awt.Image;
 import java.awt.MediaTracker;
@@ -95,7 +96,7 @@ public class Camelizer {
    }
 
    private CharacterPlate camelizePreserveWords(CamelizeImageOptions imageOptions, char fillCharacter) {
-      int charCount = this.textPure.length();
+      int charCount = cellLength(this.textPure);
 
       WordsToShapeResult result;
       do {
@@ -132,7 +133,7 @@ public class Camelizer {
    }
 
    private CharacterPlate camelizePreserveWhitespace(CamelizeImageOptions imageOptions) {
-      int charCount = this.textPreserveSpaces.length();
+      int charCount = cellLength(this.textPreserveSpaces);
       GMonochromeImage imageShape = getShapeImage(this.imageRawInternal, imageOptions, charCount);
       CharacterPlate cp = textToShape(this.textPreserveSpaces, imageShape);
       this.imagePreview = imageShape.scaleY2();
@@ -140,7 +141,7 @@ public class Camelizer {
    }
 
    private CharacterPlate camelizePreserveNone(CamelizeImageOptions imageOptions) {
-      int charCount = this.textPure.length();
+      int charCount = cellLength(this.textPure);
       GMonochromeImage imageShape = getShapeImage(this.imageRawInternal, imageOptions, charCount);
       CharacterPlate cp = textToShape(this.textPure, imageShape);
       this.imagePreview = imageShape.scaleY2();
@@ -148,7 +149,8 @@ public class Camelizer {
    }
 
    private static CharacterPlate textToShape(String sourceText, GMonochromeImage shapeImage) {
-      int charCount = sourceText.length();
+      int[] glyphs = TextTools.toGlyphs(sourceText);
+      int charCount = glyphs.length;
       int w = shapeImage.getWidth();
       int h = shapeImage.getHeight();
       CharacterPlate result = new CharacterPlate(w, h);
@@ -157,7 +159,7 @@ public class Camelizer {
       for (int y = 0; y < h; y++) {
          for (int x = 0; x < w; x++) {
             if (shapeImage.get(x, y) == 0 && i < charCount) {
-               result.set(x, y, sourceText.charAt(i++));
+               result.set(x, y, glyphs[i++]);
             }
          }
       }
@@ -186,14 +188,14 @@ public class Camelizer {
             difference += var14.getLength();
          } else {
             int length = var14.getLength();
-            if (words[wordIndex].length() <= length) {
+            if (cellLength(words[wordIndex]) <= length) {
                var14.setText(words[wordIndex]);
-               length -= words[wordIndex].length();
+               length -= cellLength(words[wordIndex]);
                wordIndex++;
 
-               while (wordIndex < wordCount && words[wordIndex].length() + 1 <= length) {
+               while (wordIndex < wordCount && cellLength(words[wordIndex]) + 1 <= length) {
                   var14.setText(var14.getText() + fillChar + words[wordIndex]);
-                  length -= words[wordIndex].length() + 1;
+                  length -= cellLength(words[wordIndex]) + 1;
                   wordIndex++;
                }
             }
@@ -201,7 +203,7 @@ public class Camelizer {
       }
 
       for (int ix = wordIndex; ix < wordCount; ix++) {
-         difference -= words[ix].length();
+         difference -= cellLength(words[ix]);
       }
 
       CharacterPlate cp = new CharacterPlate(w, h);
@@ -221,7 +223,7 @@ public class Camelizer {
    }
 
    private static final String stretch(String text, int length, char fillChar) {
-      int diff = length - text.length();
+      int diff = length - cellLength(text);
       if (diff == 0) {
          return text;
       } else {
@@ -251,6 +253,10 @@ public class Camelizer {
       }
 
       return new String(ch);
+   }
+
+   private static int cellLength(String text) {
+      return TextTools.toGlyphs(text).length;
    }
 
    private static CamelRun getNextRun(int x, int y, int w, int h, GMonochromeImage shapeImage) {

@@ -41,7 +41,7 @@ public class AlignLeft extends JaveAlgorithm {
 
          if (left < width && left > 0) {
             for (int x = 0; x < width - left; x++) {
-               plate.setForce(x, y, plate.get(x + left, y));
+               plate.setForce(x, y, plate.glyphAt(x + left, y));
             }
 
             for (int x = width - left; x < width; x++) {

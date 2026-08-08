@@ -41,10 +41,10 @@ public class FlipStatic extends JaveAlgorithm {
          }
       }
 
-      char[][] ch = plate.getContent().getContent();
+      int[][] ch = plate.getContent().glyphPlane();
 
       for (int y = 0; y < h / 2; y++) {
-         char[] t = ch[y];
+         int[] t = ch[y];
          ch[y] = ch[h - y - 1];
          ch[h - y - 1] = t;
       }

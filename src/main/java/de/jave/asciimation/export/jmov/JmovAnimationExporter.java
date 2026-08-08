@@ -10,7 +10,8 @@ import de.jave.lib.CharacterPlate;
 import java.awt.Dimension;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import net.dizzy.commons.core.io.IOUtilities;
 import net.dizzy.commons.core.util.Ensure;
 
@@ -37,7 +38,7 @@ public class JmovAnimationExporter extends AbstractAnimationExporter {
    public void init(Dimension maxFrameSize, AnimationProperties animationProperties, int frameCount, AnimationMetaData metaData) throws Exception {
       this.frameSize = maxFrameSize;
       this.metaData = metaData;
-      this.bw = new BufferedWriter(new FileWriter(this.getJmovOutputFile()));
+      this.bw = Files.newBufferedWriter(this.getJmovOutputFile().toPath(), StandardCharsets.UTF_8);
       JaveAnimationFileWriter.writeMetaDataTags(this.bw, metaData);
       JaveAnimationFileWriter.writeAnimationPropertiesTags(this.bw, animationProperties);
    }
@@ -53,7 +54,7 @@ public class JmovAnimationExporter extends AbstractAnimationExporter {
    @Override
    public void writeFrame(CharacterPlate content) throws Exception {
       this.bw.write("J:");
-      this.bw.write(AsciiPacker.encode(content.getContent()));
+      this.bw.write(AsciiPacker.encode(content.glyphPlane()));
       this.bw.newLine();
    }
 

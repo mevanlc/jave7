@@ -36,7 +36,7 @@ public class RepairIllegalRemoveAction extends SmartAction {
 
          for (int y = 0; y < h; y++) {
             for (int x = 0; x < w; x++) {
-               if (!this.characterSets.isLegal(cp.get(x, y))) {
+               if (!this.characterSets.isLegal(cp.glyphAt(x, y))) {
                   cp.setForce(x, y, ' ');
                   count++;
                }

@@ -32,11 +32,11 @@ public class Rotate90RightStaticAction extends AbstractJaveUndoableAction {
 
    public static JaveSelection applyTo(JaveSelection selection) {
       CharacterPlate plate = selection.getContent();
-      char[][] ch1 = plate.getContent();
+      int[][] ch1 = plate.glyphPlane();
       int h = plate.getSize().height;
       int w = plate.getSize().width;
       plate.setSize(h, w);
-      char[][] ch2 = plate.getContent();
+      int[][] ch2 = plate.glyphPlane();
 
       for (int y = 0; y < h; y++) {
          for (int x = 0; x < w; x++) {

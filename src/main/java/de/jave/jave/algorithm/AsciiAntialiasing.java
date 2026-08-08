@@ -13,11 +13,11 @@ public class AsciiAntialiasing extends JaveAlgorithm {
       return "Antialias";
    }
 
-   protected static boolean isEmpty(char[][] ch, int x, int y) {
+   protected static boolean isEmpty(int[][] ch, int x, int y) {
       return ch[y][x] == ' ';
    }
 
-   protected static boolean isSet(char[][] ch, int x, int y) {
+   protected static boolean isSet(int[][] ch, int x, int y) {
       return ch[y][x] != ' '
          && ch[y][x] != '"'
          && ch[y][x] != '`'
@@ -30,7 +30,7 @@ public class AsciiAntialiasing extends JaveAlgorithm {
 
    @Override
    public CharacterPlate apply(CharacterPlate plate) {
-      char[][] ch = plate.getContent();
+      int[][] ch = plate.glyphPlane();
       int height = plate.getHeight();
       int width = plate.getWidth();
 

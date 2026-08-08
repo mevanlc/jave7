@@ -14,6 +14,7 @@ public class GraphemeSplitterTest {
       assertOneCluster("\u2764\uFE0F");
       assertOneCluster("\uD83D\uDC4D\uD83C\uDFFB");
       assertOneCluster("\uD83D\uDC69\u200D\uD83D\uDC69\u200D\uD83D\uDC67\u200D\uD83D\uDC66");
+      assertOneCluster("\uD83C\uDFF4\uDB40\uDC67\uDB40\uDC62\uDB40\uDC65\uDB40\uDC6E\uDB40\uDC67\uDB40\uDC7F");
       assertOneCluster("\uD83C\uDDFA\uD83C\uDDF8");
       assertOneCluster("\u1100\u1161\u11A8");
    }

@@ -103,7 +103,7 @@ public class Image2AsciiAlgorithmEdgeTracing extends AbstractImage2AsciiAlgorith
       if (this.optionsModel.isFill()) {
          for (int y = -1; y < height - 1; y++) {
             for (int xx = 0; xx < width; xx++) {
-               if (result.get(xx, y + 1) == ' ' && isSet(raster, xx, y)) {
+               if (result.glyphAt(xx, y + 1) == ' ' && isSet(raster, xx, y)) {
                   result.set(xx, y + 1, ':');
                }
             }

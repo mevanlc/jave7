@@ -26,7 +26,18 @@ public class ClipboardTransfererTest {
       Assert.assertNotNull(selection);
       Assert.assertEquals(1, selection.getContent().getWidth());
       Assert.assertEquals(1, selection.getContent().getHeight());
-      Assert.assertEquals(' ', selection.getContent().get(0, 0));
+      Assert.assertEquals(' ', selection.getContent().glyphAt(0, 0));
+   }
+
+   @Test
+   public void pgaClipboardContentRoundTripsAsOneCell() throws Exception {
+      String text = "Ae\u20DD\uD83D\uDE00";
+
+      JaveClipboardSelection selection = ClipboardTransferer.createSelection(new StringSelection(text));
+
+      Assert.assertNotNull(selection);
+      Assert.assertEquals(3, selection.getContent().getWidth());
+      Assert.assertEquals(text, selection.getTransferData(DataFlavor.stringFlavor));
    }
 
    @Test

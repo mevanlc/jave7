@@ -1,5 +1,6 @@
 package de.jave.jave;
 
+import de.jave.lib.cell.GlyphEncoding;
 import net.dizzy.commons.core.util.Ensure;
 
 public class CharacterSets {
@@ -23,25 +24,31 @@ public class CharacterSets {
       currentCharsetIndex = index;
    }
 
-   public boolean isLegal(char ch) {
+   public boolean isLegal(int ch) {
       if (currentCharsetIndex == 0) {
          return true;
       } else {
          if (currentCharsetIndex == PURE_ASCII) {
             return ch >= ' ' && ch <= '~';
          } else if (currentCharsetIndex == UNICODE) {
-            return isLegalUnicodeBmpCharacter(ch);
+            return GlyphEncoding.isCluster(ch) || isLegalUnicodeCharacter(ch);
          }
 
          return this.configuration.getCharSetChatacters(currentCharsetIndex).indexOf(ch) != -1;
       }
    }
 
-   private static boolean isLegalUnicodeBmpCharacter(char ch) {
-      return !isAsciiControlCharacter(ch) && !Character.isSurrogate(ch) && Character.UnicodeBlock.of(ch) != Character.UnicodeBlock.PRIVATE_USE_AREA;
+   private static boolean isLegalUnicodeCharacter(int ch) {
+      Character.UnicodeBlock block = Character.UnicodeBlock.of(ch);
+      return GlyphEncoding.isCodePoint(ch)
+         && !isAsciiControlCharacter(ch)
+         && !(ch <= Character.MAX_VALUE && Character.isSurrogate((char)ch))
+         && block != Character.UnicodeBlock.PRIVATE_USE_AREA
+         && block != Character.UnicodeBlock.SUPPLEMENTARY_PRIVATE_USE_AREA_A
+         && block != Character.UnicodeBlock.SUPPLEMENTARY_PRIVATE_USE_AREA_B;
    }
 
-   private static boolean isAsciiControlCharacter(char ch) {
+   private static boolean isAsciiControlCharacter(int ch) {
       return ch < ' ' || ch == '\u007f';
    }
 

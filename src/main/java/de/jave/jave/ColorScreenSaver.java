@@ -8,6 +8,7 @@ import de.jave.jave.pixelplate.PixelPlate;
 import de.jave.jave.pixelplate.PixelPlateConfiguration;
 import de.jave.jave.pixelplate.PixelPlateConfigurationInitializable;
 import de.jave.jave.pixelplate.PixelPlateMode;
+import de.jave.jave.rendering.GlyphRenderer;
 import de.jave.lib.CharacterPlate;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -218,13 +219,13 @@ public class ColorScreenSaver extends Window implements MouseListener, MouseMoti
       this.offGraphics.setColor(this.getForeground());
       CharacterPlate pt = this.pixelPlate1.convert();
       GeneralAlgorithm.replace(pt, '\u0000', ' ');
-      char[][] ch = pt.getContent();
+      int[][] ch = pt.glyphPlane();
 
       for (int y = 0; y < this.plateHeight; y++) {
          for (int x = 0; x < this.plateWidth; x++) {
             if (ch[y][x] != ' ') {
                this.offGraphics.setColor(COLORS[this.colors[y][x] % COLORS.length]);
-               this.offGraphics.drawString(String.valueOf(ch[y][x]), 2 + x * this.charWidth, 2 + y * this.charHeight + this.charHeight * 3 / 4);
+               GlyphRenderer.drawCell(this.offGraphics, ch[y][x], 2, x, 2 + y * this.charHeight + this.charHeight * 3 / 4, this.charWidth);
             }
          }
       }

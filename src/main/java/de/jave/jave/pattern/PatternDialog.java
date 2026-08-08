@@ -156,7 +156,7 @@ public class PatternDialog {
       int index = this.list.getSelectedIndex();
       this.currentPattern = this.patternList.getPattern(index);
       this.previewComponent.setPattern(this.currentPattern);
-      char[][] ch = AsciiPacker.decode(this.currentPattern.getCode());
+      int[][] ch = AsciiPacker.decode(this.currentPattern.getCode());
       this.taPattern.setText(TextTools.toString(ch));
       this.tfAuthor.setText(this.currentPattern.getAuthor());
    }

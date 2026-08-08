@@ -40,7 +40,7 @@ public class Filter {
 
       for (int y = 0; y < height; y++) {
          for (int x = 0; x < width; x++) {
-            if (plate.get(x, y) != ' ') {
+            if (plate.glyphAt(x, y) != ' ') {
                for (int yy = y - 1; yy <= y + 1; yy++) {
                   for (int xx = x - 1; xx <= x + 1; xx++) {
                      if (yy >= 0 && yy < height && xx >= 0 && xx < width) {
@@ -72,7 +72,7 @@ public class Filter {
 
       for (int y = 0; y < h; y++) {
          for (int x = 0; x < w; x++) {
-            char character = cp.get(x, y);
+            int character = cp.glyphAt(x, y);
             if (character == '#') {
                for (int filterIndex = 0; filterIndex < filters.length; filterIndex++) {
                   if (filters[filterIndex].fits(cp, w, h, x, y, -1)) {

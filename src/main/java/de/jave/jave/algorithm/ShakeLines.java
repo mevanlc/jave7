@@ -16,10 +16,10 @@ public class ShakeLines extends JaveAlgorithm {
 
    @Override
    public CharacterPlate apply(CharacterPlate plate) {
-      char[][] ch = plate.getContent();
+      int[][] ch = plate.glyphPlane();
       int h = plate.getHeight();
       int w = plate.getWidth();
-      char[][] chNew = new char[h][w];
+      int[][] chNew = new int[h][w];
 
       for (int y = 0; y < h; y++) {
          int x0 = 0;

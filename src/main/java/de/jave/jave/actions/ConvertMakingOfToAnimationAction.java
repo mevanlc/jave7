@@ -98,13 +98,13 @@ public class ConvertMakingOfToAnimationAction extends AbstractJaveAction {
             CharacterPlate cp = new CharacterPlate(frames[i].getContent());
             if (frames[i].hasSelectionMask()) {
                BooleanArea mask = frames[i].getSelectionMask();
-               char[][] content = frames[i].getSelectionContent();
+               int[][] content = frames[i].getSelectionContent();
                Point location = frames[i].getSelectionLocation();
                Selection sel = new Selection();
                sel.set(location, content, mask);
                sel.pasteIntoNormal(cp);
             } else {
-               char[][] content = frames[i].getSelectionContent();
+               int[][] content = frames[i].getSelectionContent();
                Point location = frames[i].getSelectionLocation();
                Selection sel = new Selection();
                sel.set(location, new CharacterPlate(content));

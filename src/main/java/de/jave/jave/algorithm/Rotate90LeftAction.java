@@ -29,7 +29,7 @@ public class Rotate90LeftAction extends AbstractJaveUndoableAction {
    protected JaveSelection apply(Component parentComponent, JaveSelection selection) {
       selection = Rotate90LeftStaticAction.applyTo(selection);
       Dimension size = selection.getSize();
-      char[][] ch = selection.getContent().getContent();
+      int[][] ch = selection.getContent().glyphPlane();
       char[] table = this.configuration.getRotate90Right().toCharArray();
 
       for (int y = 0; y < size.height; y++) {

@@ -37,28 +37,28 @@ public class RectangleAlgorithm {
       }
    }
 
-   public static RectangleStyle getRectangleStyle(char[][] content) {
+   public static RectangleStyle getRectangleStyle(int[][] content) {
       if (content == null) {
          return null;
       } else {
          int h = content.length;
          int w = content[0].length;
          if (w >= 3 && h >= 3) {
-            char ch1 = content[0][0];
-            char ch2 = content[0][1];
-            char ch3 = content[0][w - 2];
-            char ch4 = content[0][w - 1];
-            char ch5 = content[1][0];
-            char ch6 = content[1][w - 1];
-            char ch7 = content[h - 2][0];
-            char ch8 = content[h - 2][w - 1];
-            char ch9 = content[h - 1][0];
-            char ch10 = content[h - 1][1];
-            char ch11 = content[h - 1][w - 2];
-            char ch12 = content[h - 1][w - 1];
+            int ch1 = content[0][0];
+            int ch2 = content[0][1];
+            int ch3 = content[0][w - 2];
+            int ch4 = content[0][w - 1];
+            int ch5 = content[1][0];
+            int ch6 = content[1][w - 1];
+            int ch7 = content[h - 2][0];
+            int ch8 = content[h - 2][w - 1];
+            int ch9 = content[h - 1][0];
+            int ch10 = content[h - 1][1];
+            int ch11 = content[h - 1][w - 2];
+            int ch12 = content[h - 1][w - 1];
             if (ch2 == ch3 && ch5 == ch7 && ch6 == ch8 && ch10 == ch11) {
                if (ch2 != ' ' && ch5 != ' ' && ch6 != ' ' && ch10 != ' ') {
-                  char[] patternChars = new char[]{ch1, ch2, ch4, ch5, ch6, ch9, ch10, ch12};
+                  int[] patternChars = new int[]{ch1, ch2, ch4, ch5, ch6, ch9, ch10, ch12};
                   RectangleStyle[] styles = RectangleStyle.values();
 
                   for (int i = 0; i < styles.length; i++) {

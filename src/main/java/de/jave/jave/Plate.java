@@ -12,9 +12,11 @@ import de.jave.jave.layers.SecondaryLayer;
 import de.jave.jave.preferences.ColorScheme;
 import de.jave.jave.preferences.PlatePreferences;
 import de.jave.jave.rendering.ConnectedLinesViewRenderer;
+import de.jave.jave.rendering.GlyphRenderer;
 import de.jave.jave.tool.text.RowRange;
 import de.jave.jave.watermark.IWatermarkPainter;
 import de.jave.lib.CharacterPlate;
+import de.jave.lib.cell.Cell;
 import de.jave.lib.area.BooleanArea;
 import de.jave.lib.gui.IStatusDisplay;
 import de.jave.text.TextTools;
@@ -33,12 +35,15 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.InputMethodListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.text.AttributedCharacterIterator;
 import javax.swing.JComponent;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -49,7 +54,7 @@ import net.dizzy.commons.swing.fontchooser.model.FontModel;
 import net.dizzy.commons.swing.mousecursor.CursorId;
 import net.dizzy.commons.swing.mousecursor.CursorProvider;
 
-public class Plate extends JComponent implements MouseListener, MouseMotionListener, KeyListener {
+public class Plate extends JComponent implements MouseListener, MouseMotionListener, KeyListener, InputMethodListener {
    private final JScrollPane scrollPanel;
    private IXorPainter xorPainter = null;
    private boolean xorPainterDisplayed = false;
@@ -66,6 +71,7 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
    private boolean controlDown = false;
    private boolean altDown = false;
    private boolean mouseRightButton = false;
+   private char pendingHighSurrogate;
    private final AsciiRulerProperties rulerProperties;
    private final ToolManager toolManager;
    private final PlatePreferences platePreferences;
@@ -123,6 +129,8 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
       this.addMouseListener(this);
       this.addMouseMotionListener(this);
       this.addKeyListener(this);
+      this.enableInputMethods(true);
+      this.addInputMethodListener(this);
       this.scrollPanel = new JScrollPane(this);
       this.horizontalRulerComponent = new RulerComponent(new HorizontalRulerRenderingStrategy(), this, this.rulerProperties);
       this.scrollPanel.setColumnHeaderView(this.horizontalRulerComponent);
@@ -265,13 +273,13 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
    }
 
    public CompressedDocumentState getDocumentState(String actionName) {
-      char[][] cContent = this.document.getCompositeContent().getContent();
+      int[][] cContent = this.document.getCompositeContent().glyphPlane();
       Point cLocation = this.getScrollPoint();
-      char[][] cSelectionContent = null;
+      int[][] cSelectionContent = null;
       Point cSelectionLocation = null;
       BooleanArea cSelectionMask = null;
       if (this.hasSelection()) {
-         cSelectionContent = this.selection.getContent().getContent();
+         cSelectionContent = this.selection.getContent().glyphPlane();
          cSelectionLocation = this.selection.getLocation();
          cSelectionMask = this.selection.getMask();
       }
@@ -415,7 +423,7 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
    }
 
    @Deprecated
-   public void setSelectionContent(char[][] ch) {
+   public void setSelectionContent(int[][] ch) {
       this.setSelectionContent(new CharacterPlate(ch));
    }
 
@@ -505,8 +513,8 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
       return this.getPreferredSize();
    }
 
-   public char[][] copy(Rectangle rectangle) {
-      return this.getContent().getCopy(rectangle).getContent();
+   public int[][] copy(Rectangle rectangle) {
+      return this.getContent().getCopy(rectangle).glyphPlane();
    }
 
    public CharacterPlate cut(Rectangle rectangle) {
@@ -526,7 +534,7 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
          for (int y = 0; y < rectangle.height; y++) {
             int yy = y + rectangle.y;
             if ((mask == null || mask.isSet(x, y)) && xx >= 0 && xx < width && yy >= 0 && yy < height) {
-               sel.setForce(x, y, content.get(xx, yy));
+               sel.setForce(x, y, content.glyphAt(xx, yy));
                content.set(xx, yy, ' ');
             }
          }
@@ -597,19 +605,10 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
    public void setText(String text) {
       // Layers: full-document text replacement remains DL-oriented for now.
       // Revisit if paste/import flows should target the active layer.
-      this.setPlateSize(TextTools.getDimensionOf(text));
+      CharacterPlate parsed = new CharacterPlate(text);
+      this.setPlateSize(parsed.getSize());
       CharacterPlate content = this.document.getContent();
-      int height = content.getHeight();
-      int width = content.getWidth();
-      int y = 0;
-
-      for (StringTokenizer st = new StringTokenizer(text, "\n\r\f"); st.hasMoreTokens() && y < height; y++) {
-         String s = st.nextToken();
-
-         for (int x = 0; x < s.length() && x < width; x++) {
-            content.setForce(x, y, s.charAt(x));
-         }
-      }
+      parsed.pasteIntoForce(content, 0, 0);
 
       this.repaint();
    }
@@ -833,10 +832,12 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
          CharacterPlate content = this.getRenderedContent();
 
          for (int y = rowRange.getRowStartIndex(); y <= rowRange.getRowEndIndex(); y++) {
-            g.drawString(
-               new String(content.getContent()[y]),
+            GlyphRenderer.drawRow(
+               g,
+               content.glyphPlane()[y],
                plateOrigin.x,
-               plateOrigin.y + y * this.getCharHeight() + this.characterSizeModel.getCharacterSize().getAscent()
+               plateOrigin.y + y * this.getCharHeight() + this.characterSizeModel.getCharacterSize().getAscent(),
+               this.getCharWidth()
             );
          }
       }
@@ -870,7 +871,7 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
 
          for (int y = rowRange.getRowStartIndex(); y <= rowRange.getRowEndIndex(); y++) {
             for (int x = 0; x < documentWidth; x++) {
-               char ch = content.get(x, y);
+               int ch = content.glyphAt(x, y);
                if (!this.characterSets.isLegal(ch)) {
                   g.drawOval(
                      plateOrigin.x + x * this.getCharWidth() - 2,
@@ -930,7 +931,7 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
       int height = pl.getHeight();
 
       for (int y = 0; y < height; y++) {
-         char[] line = pl.getContent()[y];
+         int[] line = pl.glyphPlane()[y];
          boolean empty = true;
 
          for (int i = 0; empty && i < line.length; i++) {
@@ -948,10 +949,12 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
          }
 
          if (!empty) {
-            g.drawString(
-               new String(line),
+            GlyphRenderer.drawRow(
+               g,
+               line,
                p0.x - x0 * this.getCharWidth(),
-               p0.y + (y - y0) * this.getCharHeight() + this.characterSizeModel.getCharacterSize().getAscent()
+               p0.y + (y - y0) * this.getCharHeight() + this.characterSizeModel.getCharacterSize().getAscent(),
+               this.getCharWidth()
             );
          }
       }
@@ -1027,9 +1030,9 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
          this.showCoordinates(location);
          boolean markIllegal = this.platePreferences.getMarkIllegalModel().getValue();
          if (location != null && markIllegal && this.isInside(location)) {
-            char ch = this.getChar(location.x, location.y);
+            int ch = this.getChar(location.x, location.y);
             if (!this.characterSets.isLegal(ch)) {
-               this.showStatus("Illegal Character: " + ch);
+               this.showStatus("Illegal Character: " + new Cell(ch).text());
             }
          }
 
@@ -1162,8 +1165,38 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
             this.keyMark3 = false;
          }
 
-         this.getCurrentTool().keyTyped(ch, evt);
+         if (Character.isHighSurrogate(ch)) {
+            this.pendingHighSurrogate = ch;
+            return;
+         }
+         if (Character.isLowSurrogate(ch) && this.pendingHighSurrogate != 0) {
+            this.getCurrentTool().textTyped(new String(new char[]{this.pendingHighSurrogate, ch}), evt);
+            this.pendingHighSurrogate = 0;
+            return;
+         }
+         this.pendingHighSurrogate = 0;
+         this.getCurrentTool().textTyped(String.valueOf(ch), evt);
       }
+   }
+
+   @Override
+   public void inputMethodTextChanged(InputMethodEvent evt) {
+      AttributedCharacterIterator text = evt.getText();
+      int committedCount = evt.getCommittedCharacterCount();
+      if (this.document != null && text != null && committedCount > 0) {
+         StringBuilder committed = new StringBuilder(committedCount);
+         char ch = text.first();
+         for (int i = 0; i < committedCount && ch != AttributedCharacterIterator.DONE; i++) {
+            committed.append(ch);
+            ch = text.next();
+         }
+         this.getCurrentTool().textTyped(committed.toString(), null);
+      }
+      evt.consume();
+   }
+
+   @Override
+   public void caretPositionChanged(InputMethodEvent evt) {
    }
 
    @Override
@@ -1320,8 +1353,9 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
    }
 
    public void drawString(String text, int x0, int y0) {
-      for (int i = 0; i < text.length(); i++) {
-         this.setChar(x0 + i, y0, text.charAt(i));
+      int[] glyphs = TextTools.toGlyphs(text);
+      for (int i = 0; i < glyphs.length; i++) {
+         this.setChar(x0 + i, y0, glyphs[i]);
       }
    }
 
@@ -1404,35 +1438,35 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
       cursorLocation.y = d.getCursorLocation().y;
    }
 
-   public char getChar(int x, int y) {
-      return this.getContent().get(x, y);
+   public int getChar(int x, int y) {
+      return this.getContent().glyphAt(x, y);
    }
 
-   public void setChar(Point location, char ch) {
+   public void setChar(Point location, int ch) {
       if (location != null) {
          this.setChar(location.x, location.y, ch);
       }
    }
 
-   public void setChar(int x, int y, char ch) {
+   public void setChar(int x, int y, int ch) {
       if (x >= 0 && y >= 0 && x < this.getDocumentWidth() && y < this.getDocumentHeight()) {
          CharacterPlate content = this.getContent();
-         if (ch != content.get(x, y)) {
+         if (ch != content.glyphAt(x, y)) {
             content.set(x, y, ch);
          }
       }
    }
 
-   public void setCharForce(Point location, char ch) {
+   public void setCharForce(Point location, int ch) {
       if (location != null) {
          this.setCharForce(location.x, location.y, ch);
       }
    }
 
-   public void setCharForce(int x, int y, char ch) {
+   public void setCharForce(int x, int y, int ch) {
       if (x >= 0 && y >= 0 && x < this.getDocumentWidth() && y < this.getDocumentHeight()) {
          CharacterPlate content = this.getContent();
-         if (ch != content.get(x, y)) {
+         if (ch != content.glyphAt(x, y)) {
             content.setForce(x, y, ch);
          }
       }

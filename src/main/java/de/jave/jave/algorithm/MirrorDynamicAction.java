@@ -26,12 +26,12 @@ public class MirrorDynamicAction extends JaveAlgorithm {
    public JaveSelection apply(JaveSelection plate) {
       int h = plate.getHeight();
       int w = plate.getWidth();
-      char[][] ch = plate.getContent().getContent();
+      int[][] ch = plate.getContent().glyphPlane();
       String replacements = this.configuration.getMirror();
 
       for (int y = 0; y < h; y++) {
          for (int x = 0; x < w / 2; x++) {
-            char t = ch[y][x];
+            int t = ch[y][x];
             ch[y][x] = ch[y][w - x - 1];
             ch[y][w - x - 1] = t;
          }

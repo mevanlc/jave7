@@ -1,6 +1,7 @@
 package de.jave.javeplayer;
 
 import de.jave.ascii.plate.CharacterMetrics;
+import de.jave.jave.rendering.GlyphRenderer;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -9,8 +10,8 @@ import java.awt.SystemColor;
 import javax.swing.JComponent;
 
 public class JavePlate extends JComponent {
-   private char[][] content;
-   private char[][] selection;
+   private int[][] content;
+   private int[][] selection;
    private JaveAnimationFrame currentFrame;
    private int width;
    private int height;
@@ -127,7 +128,13 @@ public class JavePlate extends JComponent {
          }
 
          for (int y = 0; y < this.height; y++) {
-            g.drawString(new String(this.content[y]), x0, y0 + y * this.characterMetrics.getHeight() + this.characterMetrics.getHeight() * 3 / 4);
+            GlyphRenderer.drawRow(
+               g,
+               this.content[y],
+               x0,
+               y0 + y * this.characterMetrics.getHeight() + this.characterMetrics.getHeight() * 3 / 4,
+               this.characterMetrics.getWidth()
+            );
          }
 
          if (this.selection != null) {
@@ -138,10 +145,12 @@ public class JavePlate extends JComponent {
             int selectionY = this.currentFrame.getSelectionY();
 
             for (int y = 0; y < this.selectionHeight; y++) {
-               g.drawString(
-                  new String(this.selection[y]),
+               GlyphRenderer.drawRow(
+                  g,
+                  this.selection[y],
                   x0 + selectionX * this.characterMetrics.getWidth(),
-                  y0 + (selectionY + y) * this.characterMetrics.getHeight() + this.characterMetrics.getHeight() * 3 / 4
+                  y0 + (selectionY + y) * this.characterMetrics.getHeight() + this.characterMetrics.getHeight() * 3 / 4,
+                  this.characterMetrics.getWidth()
                );
             }
 

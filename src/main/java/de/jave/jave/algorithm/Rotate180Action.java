@@ -28,7 +28,7 @@ public class Rotate180Action extends AbstractJaveUndoableAction {
    @Override
    protected JaveSelection apply(Component parentComponent, JaveSelection selection) {
       selection = Rotate180StaticAction.applyTo(selection);
-      char[][] ch = selection.getContent().getContent();
+      int[][] ch = selection.getContent().glyphPlane();
       Dimension size = selection.getSize();
       String replacements = this.configuration.getRotate180();
 

@@ -52,7 +52,7 @@ public class AnimationFileExporter {
                      monitor.subTask("Writing frame " + (i + 1));
                      JaveAnimationFrame framex = animationFile.getFrame(i);
                      content = new CharacterPlate(framex.getContent());
-                     char[][] chSelection = framex.getSelection();
+                     int[][] chSelection = framex.getSelection();
                      if (chSelection != null) {
                         new CharacterPlate(chSelection).pasteInto(content, framex.getSelectionX(), framex.getSelectionY());
                      }

@@ -28,13 +28,13 @@ public class Rotate180StaticAction extends AbstractJaveUndoableAction {
 
    public static JaveSelection applyTo(JaveSelection selection) {
       CharacterPlate plate = selection.getContent();
-      char[][] ch = plate.getContent();
+      int[][] ch = plate.glyphPlane();
       int h = plate.getHeight();
       int w = plate.getWidth();
 
       for (int y = 0; y < h; y++) {
          for (int x = 0; x < w / 2; x++) {
-            char t = ch[y][x];
+            int t = ch[y][x];
             ch[y][x] = ch[h - y - 1][w - x - 1];
             ch[h - y - 1][w - x - 1] = t;
          }
@@ -44,7 +44,7 @@ public class Rotate180StaticAction extends AbstractJaveUndoableAction {
          int x = w / 2;
 
          for (int y = 0; y < h / 2; y++) {
-            char t = ch[y][x];
+            int t = ch[y][x];
             ch[y][x] = ch[h - y - 1][x];
             ch[h - y - 1][x] = t;
          }

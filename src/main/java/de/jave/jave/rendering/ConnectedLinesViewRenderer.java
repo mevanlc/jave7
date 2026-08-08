@@ -17,25 +17,25 @@ public class ConnectedLinesViewRenderer {
 
       for (int i = rowRange.getRowStartIndex(); i <= rowRange.getRowEndIndex(); i++) {
          for (int j = 0; j < width; j++) {
-            char ch = content.get(j, i);
-            char chN = ' ';
+            int ch = content.glyphAt(j, i);
+            int chN = ' ';
             if (i > 0) {
-               chN = content.get(j, i - 1);
+               chN = content.glyphAt(j, i - 1);
             }
 
-            char chS = ' ';
+            int chS = ' ';
             if (i < height - 1) {
-               chS = content.get(j, i + 1);
+               chS = content.glyphAt(j, i + 1);
             }
 
-            char chW = ' ';
+            int chW = ' ';
             if (j > 0) {
-               chW = content.get(j - 1, i);
+               chW = content.glyphAt(j - 1, i);
             }
 
-            char chE = ' ';
+            int chE = ' ';
             if (j < width - 1) {
-               chE = content.get(j + 1, i);
+               chE = content.glyphAt(j + 1, i);
             }
 
             if (!paintPixelChar(
@@ -50,14 +50,14 @@ public class ConnectedLinesViewRenderer {
                   chW,
                   chE
                )
-               && ch > ' ') {
-               g.drawString(String.valueOf(ch), plateOrigin.x + j * metrics.getWidth(), plateOrigin.y + i * metrics.getHeight() + metrics.getAscent());
+               && ch != ' ') {
+               GlyphRenderer.drawCell(g, ch, plateOrigin.x, j, plateOrigin.y + i * metrics.getHeight() + metrics.getAscent(), metrics.getWidth());
             }
          }
       }
    }
 
-   private static final boolean paintPixelChar(Graphics g, int x0, int y0, int charWidth, int charHeight, char ch, char chN, char chS, char chW, char chE) {
+   private static final boolean paintPixelChar(Graphics g, int x0, int y0, int charWidth, int charHeight, int ch, int chN, int chS, int chW, int chE) {
       boolean painted = false;
       if (ch == '.' && chS == '|' && chE == '-') {
          paintRoundCornerNW(g, x0, y0, charWidth, charHeight);

@@ -28,8 +28,8 @@ public class LayeredDocumentTest {
       LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{"abcde"}));
       SecondaryLayer layer = document.addSecondaryLayerAboveActive();
 
-      document.setActiveChar(1, 0, 'X');
-      document.setActiveChar(3, 0, 'Y');
+      document.setActiveGlyph(1, 0, 'X');
+      document.setActiveGlyph(3, 0, 'Y');
 
       Assert.assertArrayEquals(new String[]{"aX Ye"}, document.getComposite(false).toStringArray());
       Assert.assertEquals(new Rectangle(1, 0, 3, 1), layer.getBounds());
@@ -41,8 +41,8 @@ public class LayeredDocumentTest {
       SecondaryLayer layer = document.addSecondaryLayerAboveActive();
       layer.setOpaque(false);
 
-      document.setActiveChar(1, 0, 'X');
-      document.setActiveChar(3, 0, 'Y');
+      document.setActiveGlyph(1, 0, 'X');
+      document.setActiveGlyph(3, 0, 'Y');
 
       Assert.assertArrayEquals(new String[]{"aXcYe"}, document.getComposite(false).toStringArray());
    }
@@ -58,8 +58,8 @@ public class LayeredDocumentTest {
    public void opaqueSecondaryLayerSelectionCoverageIncludesInternalSpacesOnlyInsideBounds() {
       LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{"abcde"}));
       document.addSecondaryLayerAboveActive();
-      document.setActiveChar(1, 0, 'X');
-      document.setActiveChar(3, 0, 'Y');
+      document.setActiveGlyph(1, 0, 'X');
+      document.setActiveGlyph(3, 0, 'Y');
 
       BooleanArea mask = document.getActiveLayerCoverageMask(new Rectangle(0, 0, 5, 1));
 
@@ -75,8 +75,8 @@ public class LayeredDocumentTest {
       LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{"abcde"}));
       SecondaryLayer layer = document.addSecondaryLayerAboveActive();
       layer.setOpaque(false);
-      document.setActiveChar(1, 0, 'X');
-      document.setActiveChar(3, 0, 'Y');
+      document.setActiveGlyph(1, 0, 'X');
+      document.setActiveGlyph(3, 0, 'Y');
 
       BooleanArea mask = document.getActiveLayerCoverageMask(new Rectangle(0, 0, 5, 1));
 
@@ -92,7 +92,7 @@ public class LayeredDocumentTest {
       LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{".....", ".....", "....."}));
       SecondaryLayer layer = document.addSecondaryLayerAboveActive();
 
-      document.setActiveChar(3, 2, 'Z');
+      document.setActiveGlyph(3, 2, 'Z');
 
       Assert.assertEquals(new Rectangle(3, 2, 1, 1), layer.getBounds());
       Assert.assertArrayEquals(new String[]{".....", ".....", "...Z."}, document.getComposite(false).toStringArray());
@@ -103,7 +103,7 @@ public class LayeredDocumentTest {
       LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{"abc"}));
       SecondaryLayer layer = document.addSecondaryLayerAboveActive();
 
-      document.setActiveChar(1, 0, ' ');
+      document.setActiveGlyph(1, 0, ' ');
 
       Assert.assertEquals(new Rectangle(0, 0, 0, 0), layer.getBounds());
       Assert.assertArrayEquals(new String[]{"abc"}, document.getComposite(false).toStringArray());
@@ -145,7 +145,7 @@ public class LayeredDocumentTest {
    public void duplicatingSecondaryLayerPreservesPositionAndContent() {
       LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{"abcde"}));
       SecondaryLayer original = document.addSecondaryLayerAboveActive();
-      document.setActiveChar(3, 0, 'Z');
+      document.setActiveGlyph(3, 0, 'Z');
 
       SecondaryLayer duplicate = document.duplicateActiveLayer();
 
@@ -180,9 +180,9 @@ public class LayeredDocumentTest {
    public void activeSecondaryLayerCanMoveDownAndChangeCompositeOrder() {
       LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{"."}));
       SecondaryLayer lower = document.addSecondaryLayerAboveActive();
-      document.setActiveChar(0, 0, 'A');
+      document.setActiveGlyph(0, 0, 'A');
       SecondaryLayer upper = document.addSecondaryLayerAboveActive();
-      document.setActiveChar(0, 0, 'B');
+      document.setActiveGlyph(0, 0, 'B');
 
       Assert.assertTrue(document.canMoveActiveLayerDown());
       Assert.assertTrue(document.moveActiveLayerDown());
@@ -197,9 +197,9 @@ public class LayeredDocumentTest {
    public void activeSecondaryLayerCanMoveUpAndChangeCompositeOrder() {
       LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{"."}));
       SecondaryLayer lower = document.addSecondaryLayerAboveActive();
-      document.setActiveChar(0, 0, 'A');
+      document.setActiveGlyph(0, 0, 'A');
       SecondaryLayer upper = document.addSecondaryLayerAboveActive();
-      document.setActiveChar(0, 0, 'B');
+      document.setActiveGlyph(0, 0, 'B');
       document.activateLayerNumber(2);
 
       Assert.assertTrue(document.canMoveActiveLayerUp());
@@ -240,7 +240,7 @@ public class LayeredDocumentTest {
    public void activeSecondaryLayerVisibilityCanBeToggled() {
       LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{"abc"}));
       document.addSecondaryLayerAboveActive();
-      document.setActiveChar(1, 0, 'X');
+      document.setActiveGlyph(1, 0, 'X');
 
       Assert.assertTrue(document.canToggleActiveLayerVisibility());
       Assert.assertTrue(document.isActiveLayerVisible());
@@ -257,8 +257,8 @@ public class LayeredDocumentTest {
    public void activeSecondaryLayerOpacityCanBeToggled() {
       LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{"abcde"}));
       document.addSecondaryLayerAboveActive();
-      document.setActiveChar(1, 0, 'X');
-      document.setActiveChar(3, 0, 'Y');
+      document.setActiveGlyph(1, 0, 'X');
+      document.setActiveGlyph(3, 0, 'Y');
 
       Assert.assertTrue(document.canToggleActiveLayerOpacity());
       Assert.assertTrue(document.isActiveLayerOpaque());
@@ -289,7 +289,7 @@ public class LayeredDocumentTest {
    public void hiddenSecondaryLayerIsIncludedOnlyWhenRequested() {
       LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{"abc"}));
       SecondaryLayer layer = document.addSecondaryLayerAboveActive();
-      document.setActiveChar(1, 0, 'X');
+      document.setActiveGlyph(1, 0, 'X');
       layer.setVisible(false);
 
       Assert.assertArrayEquals(new String[]{"abc"}, document.getComposite(false).toStringArray());
@@ -314,7 +314,7 @@ public class LayeredDocumentTest {
    public void resizingDocumentClipsSecondaryLayersWithoutMovingThem() {
       LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{"abcde", "fghij"}));
       document.addSecondaryLayerAboveActive();
-      document.setActiveChar(3, 1, 'Z');
+      document.setActiveGlyph(3, 1, 'Z');
 
       document.resizeDocument(3, 1);
 
@@ -326,7 +326,7 @@ public class LayeredDocumentTest {
    public void flattenVisibleDropsHiddenSecondaryLayers() {
       LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{"abc"}));
       SecondaryLayer layer = document.addSecondaryLayerAboveActive();
-      document.setActiveChar(1, 0, 'X');
+      document.setActiveGlyph(1, 0, 'X');
       layer.setVisible(false);
 
       document.flatten(false);
@@ -339,7 +339,7 @@ public class LayeredDocumentTest {
    public void flattenIncludesHiddenSecondaryLayersWhenRequested() {
       LayeredDocument document = LayeredDocument.fromContent(new CharacterPlate(new String[]{"abc"}));
       SecondaryLayer layer = document.addSecondaryLayerAboveActive();
-      document.setActiveChar(1, 0, 'X');
+      document.setActiveGlyph(1, 0, 'X');
       layer.setVisible(false);
 
       document.flatten(true);
@@ -354,11 +354,11 @@ public class LayeredDocumentTest {
       SecondaryLayer first = document.addSecondaryLayerAboveActive();
       first.setName("Speech Bubble!");
       first.setOpaque(false);
-      document.setActiveChar(3, 1, 'Z');
+      document.setActiveGlyph(3, 1, 'Z');
       SecondaryLayer second = document.addSecondaryLayerAboveActive();
       second.setName("Speech Bubble!");
       second.setVisible(false);
-      document.setActiveChar(0, 0, 'Q');
+      document.setActiveGlyph(0, 0, 'Q');
       File archive = this.temporaryFolder.newFile("roundtrip.javedoc");
 
       JaveDocArchive.write(document, archive);

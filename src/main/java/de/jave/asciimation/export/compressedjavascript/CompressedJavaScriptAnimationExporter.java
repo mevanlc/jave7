@@ -6,12 +6,14 @@ import de.jave.jave.algorithm.compress.AsciiPacker;
 import de.jave.javeplayer.AnimationMetaData;
 import de.jave.javeplayer.AnimationProperties;
 import de.jave.lib.CharacterPlate;
+import de.jave.lib.cell.GlyphEncoding;
 import de.jave.lib.net.HtmlUtilities;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -39,7 +41,7 @@ public class CompressedJavaScriptAnimationExporter extends AbstractAnimationExpo
       this.maxFrameSize = maxFrameSize;
       this.animationProperties = animationProperties;
       this.metaData = metaData;
-      this.bw = new BufferedWriter(new FileWriter(this.options.getFile()));
+      this.bw = Files.newBufferedWriter(this.options.getFile().toPath(), StandardCharsets.UTF_8);
    }
 
    @Override
@@ -88,7 +90,7 @@ public class CompressedJavaScriptAnimationExporter extends AbstractAnimationExpo
       }
 
       writeLine(bw, "</title>");
-      writeLine(bw, "\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\" />");
+      writeLine(bw, "\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
       writeLine(bw, "\t</head>");
       writeLine(bw, "<body onload=\"Play()\">");
       writeLine(bw, "<form name=\"f\">");
@@ -142,7 +144,7 @@ public class CompressedJavaScriptAnimationExporter extends AbstractAnimationExpo
       if (difference != null) {
          this.writeAsJavaScript(bw, difference);
       } else {
-         this.writeAsJavaScript(bw, AsciiPacker.encodeOptimized(content.getContent()));
+         this.writeAsJavaScript(bw, AsciiPacker.encodeOptimized(content.glyphPlane()));
       }
 
       bw.write("\"");
@@ -171,6 +173,9 @@ public class CompressedJavaScriptAnimationExporter extends AbstractAnimationExpo
 
    private static String getDifferenceCode(CharacterPlate cp1, CharacterPlate cp2) {
       if (cp1 != null && cp2 != null) {
+         if (requiresCellAwareEncoding(cp1) || requiresCellAwareEncoding(cp2)) {
+            return null;
+         }
          int w = cp1.getWidth();
          int h = cp1.getHeight();
          if (cp2.getWidth() == w && cp2.getHeight() == h) {
@@ -213,6 +218,17 @@ public class CompressedJavaScriptAnimationExporter extends AbstractAnimationExpo
       } else {
          return null;
       }
+   }
+
+   private static boolean requiresCellAwareEncoding(CharacterPlate plate) {
+      for (int[] row : plate.glyphPlane()) {
+         for (int glyph : row) {
+            if (!GlyphEncoding.isCodePoint(glyph) || glyph > Character.MAX_VALUE) {
+               return true;
+            }
+         }
+      }
+      return false;
    }
 
    private void writeCompressedJavascriptAnimationFooter(BufferedWriter bw) throws IOException {
@@ -460,6 +476,46 @@ public class CompressedJavaScriptAnimationExporter extends AbstractAnimationExpo
       bw.write("}");
       bw.newLine();
       bw.newLine();
+      bw.write("""
+         function decodeC(code){
+           var widthEnd=code.indexOf(" ",1);
+           var heightEnd=code.indexOf(" ",widthEnd+1);
+           var w=Number(code.substring(1,widthEnd));
+           var h=Number(code.substring(widthEnd+1,heightEnd));
+           var index=heightEnd+1;
+           var chars=new String();
+           for(var y=0;y<h;++y){
+             for(var x=0;x<w;++x){
+               if(index>=code.length){
+                 chars+=' ';
+                 continue;
+               }
+               var ch=code.charAt(index++);
+               if(ch=='%'){
+                 ch=code.charAt(index++);
+                 if(ch=='%'){
+                   chars+='%';
+                 }else if(ch=='{'){
+                   var separator=code.indexOf(':',index);
+                   var count=Number(code.substring(index,separator));
+                   var textStart=separator+1;
+                   chars+=code.substr(textStart,count);
+                   index=textStart+count+1;
+                 }
+               }else{
+                 chars+=ch;
+                 var codeUnit=ch.charCodeAt(0);
+                 if(codeUnit>=55296 && codeUnit<=56319)
+                   chars+=code.charAt(index++);
+               }
+             }
+             if(y<h-1)
+               chars+="\\r\\n";
+           }
+           return chars;
+         }
+
+         """);
       bw.write("preFrame = \"\";");
       bw.newLine();
       bw.newLine();
@@ -554,6 +610,12 @@ public class CompressedJavaScriptAnimationExporter extends AbstractAnimationExpo
       bw.write("    case 'B':");
       bw.newLine();
       bw.write("      preFrame = decodeB(code);");
+      bw.newLine();
+      bw.write("      break;");
+      bw.newLine();
+      bw.write("    case 'C':");
+      bw.newLine();
+      bw.write("      preFrame = decodeC(code);");
       bw.newLine();
       bw.write("      break;");
       bw.newLine();

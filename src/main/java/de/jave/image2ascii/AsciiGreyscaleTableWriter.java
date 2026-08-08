@@ -34,7 +34,7 @@ public class AsciiGreyscaleTableWriter {
          writer.newLine();
       }
 
-      char[][] characters4 = table.getCharacters4();
+      int[][] characters4 = table.getCharacters4();
 
       for (int i = 0; i < characters4.length; i++) {
          writer.write(String.valueOf(characters4[i][0]));

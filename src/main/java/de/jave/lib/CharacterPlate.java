@@ -1,6 +1,7 @@
 package de.jave.lib;
 
 import de.jave.jave.ICharacterDrawable;
+import de.jave.lib.cell.Cell;
 import de.jave.text.TextTools;
 import java.awt.Dimension;
 import java.awt.Insets;
@@ -8,7 +9,7 @@ import java.awt.Rectangle;
 import net.dizzy.commons.core.util.Ensure;
 
 public class CharacterPlate implements ICharacterDrawable {
-   private char[][] chars;
+   private int[][] glyphs;
    private boolean mix;
    private Dimension size;
 
@@ -17,16 +18,16 @@ public class CharacterPlate implements ICharacterDrawable {
    }
 
    public CharacterPlate(int width, int height) {
-      this.chars = new char[height][width];
+      this.glyphs = new int[height][width];
       this.size = new Dimension(width, height);
       this.clear();
       this.mix = false;
    }
 
-   public CharacterPlate(char[][] ch) {
-      this.chars = ch;
-      int height = this.chars.length;
-      int width = height == 0 ? 0 : this.chars[0].length;
+   public CharacterPlate(int[][] ch) {
+      this.glyphs = ch;
+      int height = this.glyphs.length;
+      int width = height == 0 ? 0 : this.glyphs[0].length;
       this.size = new Dimension(width, height);
       this.mix = false;
    }
@@ -34,10 +35,10 @@ public class CharacterPlate implements ICharacterDrawable {
    public CharacterPlate(String text) {
       if (text.length() == 0) {
          this.size = new Dimension(0, 0);
-         this.chars = new char[0][0];
+         this.glyphs = new int[0][0];
       } else {
-         this.chars = TextTools.toCharField(text);
-         this.size = new Dimension(this.chars[0].length, this.chars.length);
+         this.glyphs = TextTools.toCharField(text);
+         this.size = new Dimension(this.glyphs[0].length, this.glyphs.length);
       }
 
       this.mix = false;
@@ -45,22 +46,22 @@ public class CharacterPlate implements ICharacterDrawable {
 
    public CharacterPlate(String[] text) {
       if (text != null && text.length != 0) {
-         this.chars = TextTools.toCharField(text);
-         this.size = new Dimension(this.chars[0].length, this.chars.length);
+         this.glyphs = TextTools.toCharField(text);
+         this.size = new Dimension(this.glyphs[0].length, this.glyphs.length);
       } else {
          this.size = new Dimension(0, 0);
-         this.chars = new char[0][0];
+         this.glyphs = new int[0][0];
       }
 
       this.mix = false;
    }
 
-   public char[][] getContent() {
-      return this.chars;
+   public int[][] glyphPlane() {
+      return this.glyphs;
    }
 
-   public char[][] getContentClone() {
-      return getClone(this.chars);
+   public int[][] glyphPlaneClone() {
+      return getClone(this.glyphs);
    }
 
    public boolean contains(int x, int y) {
@@ -68,12 +69,13 @@ public class CharacterPlate implements ICharacterDrawable {
    }
 
    public boolean equals(String pattern, int x, int y) {
-      for (int i = 0; i < pattern.length(); i++) {
+      int[] patternGlyphs = TextTools.toGlyphs(pattern);
+      for (int i = 0; i < patternGlyphs.length; i++) {
          if (!this.contains(x + i, y)) {
             return false;
          }
 
-         if (this.get(x + i, y) != pattern.charAt(i)) {
+         if (this.glyphAt(x + i, y) != patternGlyphs[i]) {
             return false;
          }
       }
@@ -81,10 +83,10 @@ public class CharacterPlate implements ICharacterDrawable {
       return true;
    }
 
-   public static final char[][] getClone(char[][] original) {
+   public static final int[][] getClone(int[][] original) {
       int h = original.length;
       int w = h == 0 ? 0 : original[0].length;
-      char[][] result = new char[h][w];
+      int[][] result = new int[h][w];
 
       for (int y = 0; y < h; y++) {
          System.arraycopy(original[y], 0, result[y], 0, w);
@@ -100,7 +102,7 @@ public class CharacterPlate implements ICharacterDrawable {
    public CharacterPlate getCopy(int x0, int y0, int width, int height) {
       Ensure.ensureArgumentTrue("height may not be less than 0, but was " + height, height >= 0);
       Ensure.ensureArgumentTrue("width may not be less than 0, but was " + width, width >= 0);
-      char[][] sel = new char[height][width];
+      int[][] sel = new int[height][width];
 
       for (int x = 0; x < width; x++) {
          int xx = x + x0;
@@ -108,7 +110,7 @@ public class CharacterPlate implements ICharacterDrawable {
          for (int y = 0; y < height; y++) {
             int yy = y + y0;
             if (xx >= 0 && xx < this.size.width && yy >= 0 && yy < this.size.height) {
-               sel[y][x] = this.get(xx, yy);
+               sel[y][x] = this.glyphAt(xx, yy);
             } else {
                sel[y][x] = ' ';
             }
@@ -119,38 +121,25 @@ public class CharacterPlate implements ICharacterDrawable {
    }
 
    public CharacterPlate getClone() {
-      char[][] c = getClone(this.chars);
+      int[][] c = getClone(this.glyphs);
       return new CharacterPlate(c);
    }
 
    public static CharacterPlate tabelize(String s) {
       String[] lines = TextTools.toStringArray(s);
       int columnCount = 1;
+      String[][] rows = new String[lines.length][];
 
-      for (int i = 0; i < lines.length; i++) {
-         int currentColumnCount = 1 + TextTools.count(lines[i], '\t');
-         if (currentColumnCount > columnCount) {
-            columnCount = currentColumnCount;
-         }
+      for (int row = 0; row < lines.length; row++) {
+         rows[row] = lines[row].split("\\t", -1);
+         columnCount = Math.max(columnCount, rows[row].length);
       }
 
       int[] columnWidths = new int[columnCount];
 
-      for (int row = 0; row < lines.length; row++) {
-         int col = 0;
-         int oldIndex = 0;
-
-         for (int index = lines[row].indexOf(9); index != -1; index = lines[row].indexOf(9, index + 1)) {
-            if (columnWidths[col] < index - oldIndex) {
-               columnWidths[col] = index - oldIndex;
-            }
-
-            col++;
-            oldIndex = index;
-         }
-
-         if (columnWidths[col] < lines[row].length() - oldIndex) {
-            columnWidths[col] = lines[row].length() - oldIndex;
+      for (String[] row : rows) {
+         for (int col = 0; col < row.length; col++) {
+            columnWidths[col] = Math.max(columnWidths[col], TextTools.toGlyphs(row[col]).length);
          }
       }
 
@@ -160,29 +149,20 @@ public class CharacterPlate implements ICharacterDrawable {
          resultWidth += columnWidths[col] + 1;
       }
 
-      CharacterPlate cp = new CharacterPlate(--resultWidth, lines.length);
+      CharacterPlate cp = new CharacterPlate(Math.max(0, --resultWidth), lines.length);
 
-      for (int row = 0; row < lines.length; row++) {
-         int col = 0;
+      for (int row = 0; row < rows.length; row++) {
          int x = 0;
-         int oldIndex = 0;
-
-         for (int index = lines[row].indexOf(9); index != -1; index = lines[row].indexOf(9, oldIndex)) {
-            String cell = lines[row].substring(oldIndex, index);
-            cp.paste(cell, x, row);
+         for (int col = 0; col < rows[row].length; col++) {
+            cp.paste(rows[row][col], x, row);
             x += columnWidths[col] + 1;
-            col++;
-            oldIndex = index + 1;
          }
-
-         String cell = lines[row].substring(oldIndex);
-         cp.paste(cell, x, row);
       }
 
       return cp;
    }
 
-   public boolean isEmpty(char emptyChar) {
+   public boolean isEmpty(int emptyChar) {
       return this.isEmpty(0, 0, this.size.width - 1, this.size.height - 1, emptyChar);
    }
 
@@ -194,10 +174,10 @@ public class CharacterPlate implements ICharacterDrawable {
       return this.isEmpty(x0, y0, x1, y1, ' ');
    }
 
-   public boolean isEmpty(int x0, int y0, int x1, int y1, char emptyChar) {
+   public boolean isEmpty(int x0, int y0, int x1, int y1, int emptyChar) {
       for (int x = x0; x <= x1; x++) {
          for (int y = y0; y <= y1; y++) {
-            if (this.chars[y][x] != emptyChar) {
+            if (this.glyphs[y][x] != emptyChar) {
                return false;
             }
          }
@@ -211,7 +191,7 @@ public class CharacterPlate implements ICharacterDrawable {
 
       for (int x = 0; x < this.size.width; x++) {
          for (int y = 0; y < this.size.height; y++) {
-            if (this.chars[y][x] != ' ') {
+            if (this.glyphs[y][x] != ' ') {
                result++;
             }
          }
@@ -224,7 +204,7 @@ public class CharacterPlate implements ICharacterDrawable {
       return this.getEmptyInsets(' ');
    }
 
-   public Insets getEmptyInsets(char emptyChar) {
+   public Insets getEmptyInsets(int emptyChar) {
       int top = 0;
 
       while (top < this.size.height && this.isEmpty(0, top, this.size.width - 1, top, emptyChar)) {
@@ -252,22 +232,22 @@ public class CharacterPlate implements ICharacterDrawable {
       return new Insets(top, left, bottom, right);
    }
 
-   public void setContent(char[][] ch) {
-      this.chars = ch;
-      this.size = new Dimension(this.chars[0].length, this.chars.length);
+   public void setContent(int[][] ch) {
+      this.glyphs = ch;
+      this.size = new Dimension(this.glyphs[0].length, this.glyphs.length);
    }
 
    public void setSize(int width, int height) {
       if (width != this.size.width || height != this.size.height) {
-         char[][] oldChars = this.chars;
-         this.chars = new char[height][width];
+         int[][] oldChars = this.glyphs;
+         this.glyphs = new int[height][width];
 
          for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                if (y < this.size.height && x < this.size.width) {
-                  this.chars[y][x] = oldChars[y][x];
+                  this.glyphs[y][x] = oldChars[y][x];
                } else {
-                  this.chars[y][x] = ' ';
+                  this.glyphs[y][x] = ' ';
                }
             }
          }
@@ -277,55 +257,55 @@ public class CharacterPlate implements ICharacterDrawable {
    }
 
    public void removeColumnsLeft(int count) {
-      char[][] oldChars = this.chars;
-      this.chars = new char[this.size.height][this.size.width - count];
+      int[][] oldChars = this.glyphs;
+      this.glyphs = new int[this.size.height][this.size.width - count];
 
       for (int y = 0; y < this.size.height; y++) {
           if (this.size.width - count >= 0)
-              System.arraycopy(oldChars[y], 0 + count, this.chars[y], 0, this.size.width - count);
+              System.arraycopy(oldChars[y], 0 + count, this.glyphs[y], 0, this.size.width - count);
       }
 
       this.size = new Dimension(this.size.width - count, this.size.height);
    }
 
    public void removeColumnsRight(int count) {
-      char[][] oldChars = this.chars;
-      this.chars = new char[this.size.height][this.size.width - count];
+      int[][] oldChars = this.glyphs;
+      this.glyphs = new int[this.size.height][this.size.width - count];
 
       for (int y = 0; y < this.size.height; y++) {
-          if (this.size.width - count >= 0) System.arraycopy(oldChars[y], 0, this.chars[y], 0, this.size.width - count);
+          if (this.size.width - count >= 0) System.arraycopy(oldChars[y], 0, this.glyphs[y], 0, this.size.width - count);
       }
 
       this.size = new Dimension(this.size.width - count, this.size.height);
    }
 
    public void removeLinesBottom(int count) {
-      char[][] oldChars = this.chars;
+      int[][] oldChars = this.glyphs;
       this.size = new Dimension(this.size.width, this.size.height - count);
-      this.chars = new char[this.size.height][this.size.width];
+      this.glyphs = new int[this.size.height][this.size.width];
 
-       System.arraycopy(oldChars, 0, this.chars, 0, this.size.height);
+       System.arraycopy(oldChars, 0, this.glyphs, 0, this.size.height);
    }
 
    public void removeLinesTop(int count) {
-      char[][] oldChars = this.chars;
+      int[][] oldChars = this.glyphs;
       this.size = new Dimension(this.size.width, this.size.height - count);
-      this.chars = new char[this.size.height][this.size.width];
+      this.glyphs = new int[this.size.height][this.size.width];
 
-       System.arraycopy(oldChars, 0 + count, this.chars, 0, this.size.height);
+       System.arraycopy(oldChars, 0 + count, this.glyphs, 0, this.size.height);
    }
 
    public void addLinesBottom(int count) {
-      char[][] oldChars = this.chars;
-      this.chars = new char[this.size.height + count][this.size.width];
+      int[][] oldChars = this.glyphs;
+      this.glyphs = new int[this.size.height + count][this.size.width];
 
       for (int y = 0; y < this.size.height; y++) {
-          System.arraycopy(oldChars[y], 0, this.chars[y], 0, this.size.width);
+          System.arraycopy(oldChars[y], 0, this.glyphs[y], 0, this.size.width);
       }
 
       for (int y = 0; y < count; y++) {
          for (int x = 0; x < this.size.width; x++) {
-            this.chars[y + this.size.height][x] = ' ';
+            this.glyphs[y + this.size.height][x] = ' ';
          }
       }
 
@@ -333,16 +313,16 @@ public class CharacterPlate implements ICharacterDrawable {
    }
 
    public void addLinesTop(int count) {
-      char[][] oldChars = this.chars;
-      this.chars = new char[this.size.height + count][this.size.width];
+      int[][] oldChars = this.glyphs;
+      this.glyphs = new int[this.size.height + count][this.size.width];
 
       for (int y = 0; y < this.size.height; y++) {
-          System.arraycopy(oldChars[y], 0, this.chars[y + count], 0, this.size.width);
+          System.arraycopy(oldChars[y], 0, this.glyphs[y + count], 0, this.size.width);
       }
 
       for (int y = 0; y < count; y++) {
          for (int x = 0; x < this.size.width; x++) {
-            this.chars[y][x] = ' ';
+            this.glyphs[y][x] = ' ';
          }
       }
 
@@ -350,16 +330,16 @@ public class CharacterPlate implements ICharacterDrawable {
    }
 
    public void addColumnsRight(int count) {
-      char[][] oldChars = this.chars;
-      this.chars = new char[this.size.height][this.size.width + count];
+      int[][] oldChars = this.glyphs;
+      this.glyphs = new int[this.size.height][this.size.width + count];
 
       for (int y = 0; y < this.size.height; y++) {
-          if (this.size.width >= 0) System.arraycopy(oldChars[y], 0, this.chars[y], 0, this.size.width);
+          if (this.size.width >= 0) System.arraycopy(oldChars[y], 0, this.glyphs[y], 0, this.size.width);
       }
 
       for (int y = 0; y < this.size.height; y++) {
          for (int x = 0; x < count; x++) {
-            this.chars[y][x + this.size.width] = ' ';
+            this.glyphs[y][x + this.size.width] = ' ';
          }
       }
 
@@ -367,16 +347,16 @@ public class CharacterPlate implements ICharacterDrawable {
    }
 
    public void addColumnsLeft(int count) {
-      char[][] oldChars = this.chars;
-      this.chars = new char[this.size.height][this.size.width + count];
+      int[][] oldChars = this.glyphs;
+      this.glyphs = new int[this.size.height][this.size.width + count];
 
       for (int y = 0; y < this.size.height; y++) {
-          if (this.size.width >= 0) System.arraycopy(oldChars[y], 0, this.chars[y], 0 + count, this.size.width);
+          if (this.size.width >= 0) System.arraycopy(oldChars[y], 0, this.glyphs[y], 0 + count, this.size.width);
       }
 
       for (int y = 0; y < this.size.height; y++) {
          for (int x = 0; x < count; x++) {
-            this.chars[y][x] = ' ';
+            this.glyphs[y][x] = ' ';
          }
       }
 
@@ -384,49 +364,50 @@ public class CharacterPlate implements ICharacterDrawable {
    }
 
    public void insertLine(int line) {
-      char[][] oldChars = this.chars;
-      this.chars = new char[this.size.height + 1][this.size.width];
+      int[][] oldChars = this.glyphs;
+      this.glyphs = new int[this.size.height + 1][this.size.width];
 
-       if (line >= 0) System.arraycopy(oldChars, 0, this.chars, 0, line);
+       if (line >= 0) System.arraycopy(oldChars, 0, this.glyphs, 0, line);
 
       for (int x = 0; x < this.size.width; x++) {
-         this.chars[line][x] = ' ';
+         this.glyphs[line][x] = ' ';
       }
 
        if (this.size.height - line >= 0)
-           System.arraycopy(oldChars, line, this.chars, line + 1, this.size.height - line);
+           System.arraycopy(oldChars, line, this.glyphs, line + 1, this.size.height - line);
 
       this.size = new Dimension(this.size.width, this.size.height + 1);
    }
 
    public void insertLine(int line, String text) {
-      char[][] oldChars = this.chars;
-      this.chars = new char[this.size.height + 1][this.size.width];
+      int[][] oldChars = this.glyphs;
+      this.glyphs = new int[this.size.height + 1][this.size.width];
+      int[] textGlyphs = TextTools.toGlyphs(text);
 
-       if (line >= 0) System.arraycopy(oldChars, 0, this.chars, 0, line);
+       if (line >= 0) System.arraycopy(oldChars, 0, this.glyphs, 0, line);
 
       for (int x = 0; x < this.size.width; x++) {
-         if (x < text.length()) {
-            this.chars[line][x] = text.charAt(x);
+         if (x < textGlyphs.length) {
+            this.glyphs[line][x] = textGlyphs[x];
          } else {
-            this.chars[line][x] = ' ';
+            this.glyphs[line][x] = ' ';
          }
       }
 
        if (this.size.height - line >= 0)
-           System.arraycopy(oldChars, line, this.chars, line + 1, this.size.height - line);
+           System.arraycopy(oldChars, line, this.glyphs, line + 1, this.size.height - line);
 
       this.size = new Dimension(this.size.width, this.size.height + 1);
    }
 
    public void removeLine(int line) {
-      char[][] oldChars = this.chars;
-      this.chars = new char[this.size.height - 1][this.size.width];
+      int[][] oldChars = this.glyphs;
+      this.glyphs = new int[this.size.height - 1][this.size.width];
 
-       if (line >= 0) System.arraycopy(oldChars, 0, this.chars, 0, line);
+       if (line >= 0) System.arraycopy(oldChars, 0, this.glyphs, 0, line);
 
        if (this.size.height - (line + 1) >= 0)
-           System.arraycopy(oldChars, line + 1, this.chars, line + 1 - 1, this.size.height - (line + 1));
+           System.arraycopy(oldChars, line + 1, this.glyphs, line + 1 - 1, this.size.height - (line + 1));
 
       this.size = new Dimension(this.size.width, this.size.height - 1);
    }
@@ -436,7 +417,11 @@ public class CharacterPlate implements ICharacterDrawable {
    }
 
    public String getLine(int lineNo, int xStart) {
-      return xStart == 0 ? new String(this.chars[lineNo]) : new String(this.chars[lineNo], xStart, this.size.width - xStart);
+      StringBuilder line = new StringBuilder(this.size.width - xStart);
+      for (int x = xStart; x < this.size.width; x++) {
+         line.append(this.textAt(x, lineNo));
+      }
+      return line.toString();
    }
 
    @Override
@@ -452,7 +437,7 @@ public class CharacterPlate implements ICharacterDrawable {
          } else {
             for (int x = 0; x < this.size.width; x++) {
                for (int y = 0; y < this.size.height; y++) {
-                  if (this.chars[y][x] != o.chars[y][x]) {
+                  if (this.glyphs[y][x] != o.glyphs[y][x]) {
                      return false;
                   }
                }
@@ -465,11 +450,11 @@ public class CharacterPlate implements ICharacterDrawable {
 
    public void delete(int x0, int y0, int x1, int y1) {
       for (int x = x0; x <= x1; x++) {
-         this.chars[y0][x] = ' ';
+         this.glyphs[y0][x] = ' ';
       }
 
       for (int y = y0 + 1; y <= y1; y++) {
-         System.arraycopy(this.chars[y0], x0, this.chars[y], x0, x1 - x0 + 1);
+         System.arraycopy(this.glyphs[y0], x0, this.glyphs[y], x0, x1 - x0 + 1);
       }
    }
 
@@ -484,14 +469,14 @@ public class CharacterPlate implements ICharacterDrawable {
    }
 
    public String[] toStringArray() {
-      return TextTools.toStringArray(this.chars);
+      return TextTools.toStringArray(this.glyphs);
    }
 
    public void pasteInto(CharacterPlate plate, int x0, int y0) {
       for (int y = 0; y < this.size.height; y++) {
          for (int x = 0; x < this.size.width; x++) {
-            if (this.chars[y][x] != ' ') {
-               plate.set(x + x0, y + y0, this.chars[y][x]);
+            if (this.glyphs[y][x] != ' ') {
+               plate.set(x + x0, y + y0, this.glyphs[y][x]);
             }
          }
       }
@@ -519,11 +504,11 @@ public class CharacterPlate implements ICharacterDrawable {
       }
 
       for (int y = yStart; y < h; y++) {
-         System.arraycopy(this.chars[y], xStart, plate.chars[y + y0], x0 + xStart, w - xStart);
+         System.arraycopy(this.glyphs[y], xStart, plate.glyphs[y + y0], x0 + xStart, w - xStart);
       }
    }
 
-   public void paste(char[][] ch, int x, int y) {
+   public void paste(int[][] ch, int x, int y) {
       this.paste(new CharacterPlate(ch), x, y);
    }
 
@@ -532,12 +517,12 @@ public class CharacterPlate implements ICharacterDrawable {
    }
 
    public void paste(CharacterPlate ch, int x, int y, int width, int height) {
-      this.paste(ch.getContent(), x, y, width, height);
+      this.paste(ch.glyphPlane(), x, y, width, height);
    }
 
-   public void paste(char[][] ch, int x, int y, int width, int height) {
+   public void paste(int[][] ch, int x, int y, int width, int height) {
       for (int currentY = 0; currentY < height; currentY++) {
-         System.arraycopy(ch[currentY], 0, this.chars[y + currentY], x, width);
+         System.arraycopy(ch[currentY], 0, this.glyphs[y + currentY], x, width);
       }
    }
 
@@ -553,20 +538,32 @@ public class CharacterPlate implements ICharacterDrawable {
       this.mix = what;
    }
 
-   public char get(int x, int y) {
-      return this.chars[y][x];
+   public int glyphAt(int x, int y) {
+      return this.glyphs[y][x];
    }
 
-   public void setForce(int x, int y, char ch) {
+   public String textAt(int x, int y) {
+      return this.cellAt(x, y).text();
+   }
+
+   public Cell cellAt(int x, int y) {
+      return new Cell(this.glyphAt(x, y));
+   }
+
+   public void setText(int x, int y, String text) {
+      this.set(x, y, Cell.fromText(text).glyph());
+   }
+
+   public void setForce(int x, int y, int ch) {
       if (ch == 1) {
-         this.chars[y][x] = (char)(this.chars[y][x] % 255);
-         this.chars[y][x] = (char)(this.chars[y][x] + 255);
+         this.glyphs[y][x] = (this.glyphs[y][x] % 255);
+         this.glyphs[y][x] = (this.glyphs[y][x] + 255);
       } else {
-         this.chars[y][x] = ch;
+         this.glyphs[y][x] = ch;
       }
    }
 
-   public void fill(int x, int y, int w, int h, char ch) {
+   public void fill(int x, int y, int w, int h, int ch) {
       for (int yy = y; yy < y + h; yy++) {
          for (int xx = x; xx < x + w; xx++) {
             this.setForce(xx, yy, ch);
@@ -575,29 +572,29 @@ public class CharacterPlate implements ICharacterDrawable {
    }
 
    @Override
-   public void set(int x, int y, char ch) {
+   public void set(int x, int y, int ch) {
       if (x >= 0 && y >= 0 && x < this.size.width && y < this.size.height) {
          if (ch == 1) {
-            this.chars[y][x] = (char)(this.chars[y][x] % 255);
-            this.chars[y][x] = (char)(this.chars[y][x] + 255);
-         } else if (this.chars[y][x] != ch) {
+            this.glyphs[y][x] = (this.glyphs[y][x] % 255);
+            this.glyphs[y][x] = (this.glyphs[y][x] + 255);
+         } else if (this.glyphs[y][x] != ch) {
             if (!this.mix || ch != ' ') {
                if (this.mix && ch != ' ') {
                   CharacterMergeRulesConfiguration mergeRulesConfiguration = CharacterMergeRulesConfiguration.INSTANCE;
-                  char mergeResult = mergeRulesConfiguration.getMergeResult(this.chars[y][x], ch);
-                  this.chars[y][x] = mergeResult;
+                  int mergeResult = mergeRulesConfiguration.getMergeResult(this.glyphs[y][x], ch);
+                  this.glyphs[y][x] = mergeResult;
                } else {
-                  this.chars[y][x] = ch;
+                  this.glyphs[y][x] = ch;
                }
             }
          }
       }
    }
 
-   public char getPasteResult(char ch, int x, int y) {
+   public int getPasteResult(int ch, int x, int y) {
       if (this.mix && ch != ' ') {
          CharacterMergeRulesConfiguration mergeRulesConfiguration = CharacterMergeRulesConfiguration.INSTANCE;
-         return mergeRulesConfiguration.getMergeResult(this.chars[y][x], ch);
+         return mergeRulesConfiguration.getMergeResult(this.glyphs[y][x], ch);
       } else {
          return ch;
       }
@@ -614,20 +611,20 @@ public class CharacterPlate implements ICharacterDrawable {
    public void clear() {
       if (this.size.height != 0) {
          for (int x = 0; x < this.size.width; x++) {
-            this.chars[0][x] = ' ';
+            this.glyphs[0][x] = ' ';
          }
 
          for (int y = 1; y < this.size.height; y++) {
-            System.arraycopy(this.chars[0], 0, this.chars[y], 0, this.size.width);
+            System.arraycopy(this.glyphs[0], 0, this.glyphs[y], 0, this.size.width);
          }
       }
    }
 
-   public void replace(char ch, char chNew) {
+   public void replace(int ch, int chNew) {
       for (int y = 0; y < this.size.height; y++) {
          for (int x = 0; x < this.size.width; x++) {
-            if (this.chars[y][x] == ch) {
-               this.chars[y][x] = chNew;
+            if (this.glyphs[y][x] == ch) {
+               this.glyphs[y][x] = chNew;
             }
          }
       }
@@ -635,40 +632,40 @@ public class CharacterPlate implements ICharacterDrawable {
 
    public void panLeft() {
       for (int y = 0; y < this.size.height; y++) {
-         char t = this.chars[y][0];
-         System.arraycopy(this.chars[y], 1, this.chars[y], 0, this.size.width - 1);
-         this.chars[y][this.size.width - 1] = t;
+         int t = this.glyphs[y][0];
+         System.arraycopy(this.glyphs[y], 1, this.glyphs[y], 0, this.size.width - 1);
+         this.glyphs[y][this.size.width - 1] = t;
       }
    }
 
    public void panRight() {
       for (int y = 0; y < this.size.height; y++) {
-         char t = this.chars[y][this.size.width - 1];
-         System.arraycopy(this.chars[y], 0, this.chars[y], 1, this.size.width - 1);
-         this.chars[y][0] = t;
+         int t = this.glyphs[y][this.size.width - 1];
+         System.arraycopy(this.glyphs[y], 0, this.glyphs[y], 1, this.size.width - 1);
+         this.glyphs[y][0] = t;
       }
    }
 
    public void panUp() {
-      char[] t = new char[this.size.width];
-      System.arraycopy(this.chars[0], 0, t, 0, this.size.width);
+      int[] t = new int[this.size.width];
+      System.arraycopy(this.glyphs[0], 0, t, 0, this.size.width);
 
       for (int y = 1; y < this.size.height; y++) {
-         System.arraycopy(this.chars[y], 0, this.chars[y - 1], 0, this.size.width);
+         System.arraycopy(this.glyphs[y], 0, this.glyphs[y - 1], 0, this.size.width);
       }
 
-      System.arraycopy(t, 0, this.chars[this.size.height - 1], 0, this.size.width);
+      System.arraycopy(t, 0, this.glyphs[this.size.height - 1], 0, this.size.width);
    }
 
    public void panDown() {
-      char[] t = new char[this.size.width];
-      System.arraycopy(this.chars[this.size.height - 1], 0, t, 0, this.size.width);
+      int[] t = new int[this.size.width];
+      System.arraycopy(this.glyphs[this.size.height - 1], 0, t, 0, this.size.width);
 
       for (int y = this.size.height - 1; y > 0; y--) {
-         System.arraycopy(this.chars[y - 1], 0, this.chars[y], 0, this.size.width);
+         System.arraycopy(this.glyphs[y - 1], 0, this.glyphs[y], 0, this.size.width);
       }
 
-      System.arraycopy(t, 0, this.chars[0], 0, this.size.width);
+      System.arraycopy(t, 0, this.glyphs[0], 0, this.size.width);
    }
 
    public Dimension getSize() {
@@ -723,6 +720,6 @@ public class CharacterPlate implements ICharacterDrawable {
    }
 
    public String asString() {
-      return TextTools.toString(this.chars);
+      return TextTools.toString(this.glyphs);
    }
 }

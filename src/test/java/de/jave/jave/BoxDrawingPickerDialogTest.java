@@ -91,8 +91,8 @@ public class BoxDrawingPickerDialogTest {
          target, new Point(0, 0), BoxDrawingPickerDialog.createPaletteLayoutRows()
       );
 
-      Assert.assertEquals('x', target.get(5, 0));
-      Assert.assertEquals('┌', target.get(0, 0));
-      Assert.assertEquals('╏', target.get(11, 9));
+      Assert.assertEquals('x', target.glyphAt(5, 0));
+      Assert.assertEquals('┌', target.glyphAt(0, 0));
+      Assert.assertEquals('╏', target.glyphAt(11, 9));
    }
 }

@@ -204,7 +204,7 @@ public class AscTris extends JaveGame implements Runnable {
                   boolean full = true;
 
                   for (int x = 3; x <= 32 && full; x++) {
-                     if (this.plate.get(x, y) == ' ') {
+                     if (this.plate.glyphAt(x, y) == ' ') {
                         full = false;
                      }
                   }
@@ -216,7 +216,7 @@ public class AscTris extends JaveGame implements Runnable {
 
                      for (int yy = y - 1; yy >= 0; yy--) {
                         for (int xx = 3; xx <= 32; xx++) {
-                           this.plate.setForce(xx, yy + 2, this.plate.get(xx, yy));
+                           this.plate.setForce(xx, yy + 2, this.plate.glyphAt(xx, yy));
                         }
                      }
                   }
@@ -272,7 +272,7 @@ public class AscTris extends JaveGame implements Runnable {
       for (int i = 0; i < 6; i++) {
          for (int x = 3; x <= 32; x++) {
             for (int line = 0; line <= 1; line++) {
-               int shade = " :=8OSXZBEW#M".indexOf(this.plate.get(x, y + line));
+               int shade = " :=8OSXZBEW#M".indexOf(this.plate.glyphAt(x, y + line));
                if (shade < 0) {
                   shade = 0;
                }

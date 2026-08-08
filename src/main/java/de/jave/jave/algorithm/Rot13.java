@@ -20,7 +20,7 @@ public class Rot13 extends JaveAlgorithm {
 
       for (int y = 0; y < h; y++) {
          for (int x = 0; x < w; x++) {
-            char c = plate.get(x, y);
+            int c = plate.glyphAt(x, y);
             if ((c < 'a' || c > 'm') && (c < 'A' || c > 'M')) {
                if (c >= 'n' && c <= 'z' || c >= 'N' && c <= 'Z') {
                   plate.setForce(x, y, (char)(c - '\r'));

@@ -19,7 +19,7 @@ public class Clipart {
       this.name = name;
       this.code = code;
       this.author = author;
-      char[][] content = AsciiPacker.decode(code);
+      int[][] content = AsciiPacker.decode(code);
       this.width = content[0].length;
       this.height = content.length;
    }

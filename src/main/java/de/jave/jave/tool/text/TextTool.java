@@ -13,6 +13,7 @@ import de.jave.jave.preferences.BooleanPreferenceModel;
 import de.jave.jave.preferences.ColorScheme;
 import de.jave.jave.tool.dialog.IInlineToolOptions;
 import de.jave.lib.CharacterPlate;
+import de.jave.lib.cell.GraphemeSplitter;
 import de.jave.lib.Toolbox;
 import de.jave.text.TextTools;
 import java.awt.Dimension;
@@ -259,7 +260,7 @@ public class TextTool extends Tool {
       int x = cursorLocation.x;
       int y = cursorLocation.y;
       if (x + 1 < this.getPlate().getDocumentWidth()) {
-         char c = this.getPlate().getChar(x + 1, y);
+         int c = this.getPlate().getChar(x + 1, y);
          if (c != ' ' && !this.lastDirection.isOpposite(Direction.RIGHT)) {
             this.moveCursorRight();
             return;
@@ -267,7 +268,7 @@ public class TextTool extends Tool {
       }
 
       if (y + 1 < this.getPlate().getDocumentHeight()) {
-         char c = this.getPlate().getChar(x, y + 1);
+         int c = this.getPlate().getChar(x, y + 1);
          if (c != ' ' && !isOppositeDirection(this.lastDirection, Direction.DOWN)) {
             this.moveCursorDown();
             return;
@@ -275,7 +276,7 @@ public class TextTool extends Tool {
       }
 
       if (x > 0) {
-         char c = this.getPlate().getChar(x - 1, y);
+         int c = this.getPlate().getChar(x - 1, y);
          if (c != ' ' && !isOppositeDirection(this.lastDirection, Direction.LEFT)) {
             this.moveCursorLeft();
             return;
@@ -283,7 +284,7 @@ public class TextTool extends Tool {
       }
 
       if (y > 0) {
-         char c = this.getPlate().getChar(x, y - 1);
+         int c = this.getPlate().getChar(x, y - 1);
          if (c != ' ' && !isOppositeDirection(this.lastDirection, Direction.UP)) {
             this.moveCursorUp();
             return;
@@ -291,7 +292,7 @@ public class TextTool extends Tool {
       }
 
       if (x + 1 < this.getPlate().getDocumentWidth() && y > 0) {
-         char c = this.getPlate().getChar(x + 1, y - 1);
+         int c = this.getPlate().getChar(x + 1, y - 1);
          if (c != ' ' && !isOppositeDirection(this.lastDirection, Direction.RIGHT_UP)) {
             this.moveCursorRightUp();
             return;
@@ -299,7 +300,7 @@ public class TextTool extends Tool {
       }
 
       if (x + 1 < this.getPlate().getDocumentWidth() && y + 1 < this.getPlate().getDocumentHeight()) {
-         char c = this.getPlate().getChar(x + 1, y + 1);
+         int c = this.getPlate().getChar(x + 1, y + 1);
          if (c != ' ' && !isOppositeDirection(this.lastDirection, Direction.RIGHT_DOWN)) {
             this.moveCursorRightDown();
             return;
@@ -307,7 +308,7 @@ public class TextTool extends Tool {
       }
 
       if (x > 0 && y > 0) {
-         char c = this.getPlate().getChar(x - 1, y - 1);
+         int c = this.getPlate().getChar(x - 1, y - 1);
          if (c != ' ' && !isOppositeDirection(this.lastDirection, Direction.LEFT_UP)) {
             this.moveCursorLeftUp();
             return;
@@ -315,7 +316,7 @@ public class TextTool extends Tool {
       }
 
       if (x > 0 && y + 1 < this.getPlate().getDocumentHeight()) {
-         char c = this.getPlate().getChar(x - 1, y + 1);
+         int c = this.getPlate().getChar(x - 1, y + 1);
          if (c != ' ' && !isOppositeDirection(this.lastDirection, Direction.LEFT_DOWN)) {
             this.moveCursorLeftDown();
             return;
@@ -326,66 +327,70 @@ public class TextTool extends Tool {
    }
 
    public void charEntered(char ch) {
-      if (ch >= ' ' && ch <= 255 && (ch <= '~' || ch >= 145)) {
-         Point cursorLocation = this.getCursorLocation();
-         if (insert) {
-            this.setMixMode(false);
-            if (cursorLocation.x == this.getPlate().getDocumentWidth() - 1) {
-               this.getPlate().setChar(cursorLocation, ch);
-               this.getPlate().addColumnsRight(1);
-            } else {
-               CharacterPlate cp = this.getPlate().getContent();
-               String lineContent = cp.getLine(cursorLocation.y, cursorLocation.x);
-               if (lineContent.charAt(lineContent.length() - 1) != ' ') {
-                  this.getPlate().addColumnsRight(1);
-               } else {
-                  lineContent = lineContent.substring(0, lineContent.length() - 1);
-               }
+      this.textEntered(String.valueOf(ch));
+   }
 
-               cp.paste(lineContent, cursorLocation.x + 1, cursorLocation.y);
-               this.getPlate().setChar(cursorLocation, ch);
-            }
-         } else {
-            this.setMixMode(this.mergeCharactersModel.getValue());
-            this.getPlate().setChar(cursorLocation, ch);
+   public void textEntered(String text) {
+      Point cursorLocation = this.getCursorLocation();
+      Dimension previousSize = this.getPlate().getDocumentSize();
+      CharacterPlate content = this.getPlate().getContent();
+      boolean changed = false;
+      this.setMixMode(insert ? false : this.mergeCharactersModel.getValue());
+
+      for (String grapheme : GraphemeSplitter.split(text)) {
+         int firstCodePoint = grapheme.codePointAt(0);
+         if (Character.isISOControl(firstCodePoint)) {
+            continue;
          }
+         if (TextCellEditing.enterGrapheme(content, cursorLocation, grapheme, insert)) {
+            this.moveAfterEnteredCell();
+         }
+         changed = true;
+      }
 
-         CursorMovement movement = (CursorMovement)this.chMovement.getSelectedItem();
-         movement.accept(new ICursorMovementVisitor() {
-            @Override
-            public void visitNormal(CursorMovement cursorMovement) {
-               TextTool.this.moveCursorRight();
-            }
-
-            @Override
-            public void visitDirected(CursorMovement cursorMovement) {
-               if (TextTool.this.lastDirection == Direction.UP) {
-                  TextTool.this.moveCursorUp();
-               } else if (TextTool.this.lastDirection == Direction.DOWN) {
-                  TextTool.this.moveCursorDown();
-               } else if (TextTool.this.lastDirection == Direction.RIGHT) {
-                  TextTool.this.moveCursorRight();
-               } else if (TextTool.this.lastDirection == Direction.LEFT) {
-                  TextTool.this.moveCursorLeft();
-               } else if (TextTool.this.lastDirection == null) {
-                  TextTool.this.moveCursorRight();
-               }
-            }
-
-            @Override
-            public void visitTrackFollowing(CursorMovement cursorMovement) {
-               TextTool.this.moveToTrack();
-            }
-
-            @Override
-            public void visitNone(CursorMovement cursorMovement) {
-            }
-         });
+      if (changed) {
+         if (!previousSize.equals(this.getPlate().getDocumentSize())) {
+            this.getPlate().handleDocumentSizeChanged();
+         }
          this.getPlate().ensureVisible(cursorLocation);
          this.blinkThread.updateCursor();
          this.repaintAll();
          this.getPlate().saveCurrentState(JaveMessages.Tool_Text_UndoName);
       }
+   }
+
+   private void moveAfterEnteredCell() {
+      CursorMovement movement = (CursorMovement)this.chMovement.getSelectedItem();
+      movement.accept(new ICursorMovementVisitor() {
+         @Override
+         public void visitNormal(CursorMovement cursorMovement) {
+            TextTool.this.moveCursorRight();
+         }
+
+         @Override
+         public void visitDirected(CursorMovement cursorMovement) {
+            if (TextTool.this.lastDirection == Direction.UP) {
+               TextTool.this.moveCursorUp();
+            } else if (TextTool.this.lastDirection == Direction.DOWN) {
+               TextTool.this.moveCursorDown();
+            } else if (TextTool.this.lastDirection == Direction.RIGHT) {
+               TextTool.this.moveCursorRight();
+            } else if (TextTool.this.lastDirection == Direction.LEFT) {
+               TextTool.this.moveCursorLeft();
+            } else if (TextTool.this.lastDirection == null) {
+               TextTool.this.moveCursorRight();
+            }
+         }
+
+         @Override
+         public void visitTrackFollowing(CursorMovement cursorMovement) {
+            TextTool.this.moveToTrack();
+         }
+
+         @Override
+         public void visitNone(CursorMovement cursorMovement) {
+         }
+      });
    }
 
    @Override
@@ -414,38 +419,22 @@ public class TextTool extends Tool {
             this.moveCursorLeft();
             this.getPlate().setCharForce(cursorLocation, ' ');
          } else {
-            if (cursorLocation.x == 0) {
-               CharacterPlate cp = this.getPlate().getContent();
-               String currentLine = TextTools.trimRight(cp.getLine(cursorLocation.y));
-               String prevLine = TextTools.trimRight(cp.getLine(cursorLocation.y - 1));
-               if (prevLine.length() == 0) {
-                  this.getPlate().removeLine(cursorLocation.y - 1);
-                  cursorLocation.y--;
-               } else {
-                  if (prevLine.length() + currentLine.length() >= cp.getWidth()) {
-                     this.getPlate().addColumnsRight(prevLine.length() + currentLine.length() - cp.getWidth());
-                  }
-
-                  cp.paste(currentLine, prevLine.length(), cursorLocation.y - 1);
-                  this.getPlate().removeLine(cursorLocation.y);
-                  cursorLocation.y--;
-                  cursorLocation.x = prevLine.length();
-               }
-
-               this.blinkThread.updateCursor();
-               return;
-            }
-
             CharacterPlate cp = this.getPlate().getContent();
-            String lineContent = TextTools.trimRight(cp.getLine(cursorLocation.y, cursorLocation.x));
-            boolean lineEnd = lineContent.length() == 0;
-            if (!lineEnd) {
-               this.moveCursorLeft();
-               cp.paste(lineContent, cursorLocation.x, cursorLocation.y);
-               this.getPlate().setCharForce(cursorLocation.x + lineContent.length(), cursorLocation.y, ' ');
+            if (cursorLocation.x == 0) {
+               int previousEnd = TextRowEditing.lastNonSpaceColumn(cp, cursorLocation.y - 1) + 1;
+               int currentEnd = TextRowEditing.lastNonSpaceColumn(cp, cursorLocation.y) + 1;
+               if (previousEnd + currentEnd > cp.getWidth()) {
+                  this.getPlate().addColumnsRight(previousEnd + currentEnd - cp.getWidth());
+               }
+               for (int x = 0; x < currentEnd; x++) {
+                  cp.setForce(previousEnd + x, cursorLocation.y - 1, cp.glyphAt(x, cursorLocation.y));
+               }
+               this.getPlate().removeLine(cursorLocation.y);
+               cursorLocation.y--;
+               cursorLocation.x = previousEnd;
             } else {
                this.moveCursorLeft();
-               this.getPlate().setCharForce(cursorLocation, ' ');
+               TextRowEditing.deleteRightward(cp, cursorLocation.x, cursorLocation.y);
             }
          }
 
@@ -462,34 +451,7 @@ public class TextTool extends Tool {
          this.getPlate().setCharForce(cursorLocation, ' ');
       } else {
          CharacterPlate cp = this.getPlate().getContent();
-         if (cursorLocation.x == this.getPlate().getDocumentWidth()) {
-            String lineContent = cp.getLine(cursorLocation.y, cursorLocation.x + 1);
-            int x = lineContent.length() - 1;
-
-            while (x > 0 && lineContent.charAt(x) == ' ') {
-               x--;
-            }
-
-            lineContent = lineContent.substring(0, x + 1);
-            this.getPlate().removeLine(cursorLocation.y);
-            x = cp.getWidth();
-
-            while (cp.get(x - 1, cursorLocation.y - 1) == ' ') {
-               x--;
-            }
-
-            if (x + lineContent.length() >= cp.getWidth()) {
-               this.getPlate().addColumnsRight(x + lineContent.length() - cp.getWidth());
-            }
-
-            cp.paste(lineContent, x, cursorLocation.y - 1);
-            cursorLocation.x = x;
-            cursorLocation.y--;
-         } else {
-            String lineContent = cp.getLine(cursorLocation.y, cursorLocation.x + 1);
-            cp.paste(lineContent, cursorLocation.x, cursorLocation.y);
-            cp.delete(cp.getWidth() - 1, cursorLocation.y, cp.getWidth() - 1, cursorLocation.y);
-         }
+         TextRowEditing.deleteRightward(cp, cursorLocation.x, cursorLocation.y);
       }
 
       this.getPlate().ensureVisible(cursorLocation);
@@ -502,9 +464,13 @@ public class TextTool extends Tool {
       Point cursorLocation = this.getCursorLocation();
       if (insert && !shiftDown) {
          CharacterPlate cp = this.getPlate().getContent();
-         String lineContent = cp.getLine(cursorLocation.y, cursorLocation.x);
-         cp.delete(cursorLocation.x, cursorLocation.y, cp.getWidth() - 1, cursorLocation.y);
-         this.getPlate().insertLine(cursorLocation.y + 1, lineContent);
+         int sourceRow = cursorLocation.y;
+         int splitColumn = cursorLocation.x;
+         this.getPlate().insertLine(sourceRow + 1);
+         for (int x = splitColumn; x < cp.getWidth(); x++) {
+            cp.setForce(x - splitColumn, sourceRow + 1, cp.glyphAt(x, sourceRow));
+            cp.setForce(x, sourceRow, ' ');
+         }
          this.moveCursorNewline();
          this.getPlate().ensureVisible(cursorLocation);
          this.getPlate().saveCurrentState(JaveMessages.Tool_Text_UndoName);
@@ -518,8 +484,13 @@ public class TextTool extends Tool {
 
    @Override
    public void keyTyped(char ch, KeyEvent evt) {
-      if (ch != ' ' || !evt.isControlDown()) {
-         this.charEntered(ch);
+      this.textTyped(String.valueOf(ch), evt);
+   }
+
+   @Override
+   public void textTyped(String text, KeyEvent evt) {
+      if (!" ".equals(text) || evt == null || !evt.isControlDown()) {
+         this.textEntered(text);
       }
    }
 
@@ -748,8 +719,7 @@ public class TextTool extends Tool {
       Point cursorLocation = this.getCursorLocation();
       if (insert) {
          CharacterPlate cp = this.getPlate().getContent();
-         String lineContent = TextTools.trimRight(cp.getLine(cursorLocation.y));
-         int newX = lineContent.length();
+         int newX = TextRowEditing.lastNonSpaceColumn(cp, cursorLocation.y) + 1;
          if (newX > this.getPlate().getDocumentWidth() - 1) {
             this.getPlate().addColumnsRight(1);
          }

@@ -66,7 +66,7 @@ public class CompressExpand extends JaveOptionsAlgorithm {
             for (int x = 0; x < sourceWidth; x++) {
                int xx = (int)Math.round((double)x * xScale);
                int yy = (int)Math.round((double)y * yScale);
-               char ch = sourcePlate.get(x, y);
+               int ch = sourcePlate.glyphAt(x, y);
                if (ch != ' ') {
                   resultContent.set(xx, yy, ch);
                }
@@ -81,7 +81,7 @@ public class CompressExpand extends JaveOptionsAlgorithm {
             for (int x = 0; x < sourceWidth; x++) {
                int y = (int)((double)yyx / yScale);
                int xxx = (int)Math.round((double)x * xScale);
-               char chx = sourcePlate.get(x, y);
+               int chx = sourcePlate.glyphAt(x, y);
                if (chx != ' ') {
                   resultContent.set(xxx, yyx, chx);
                }
@@ -96,7 +96,7 @@ public class CompressExpand extends JaveOptionsAlgorithm {
             for (int xxxx = 0; xxxx < newWidth; xxxx++) {
                int yyx = (int)Math.round((double)yx * yScale);
                int x = (int)((double)xxxx / xScale);
-               char chxx = sourcePlate.get(x, yx);
+               int chxx = sourcePlate.glyphAt(x, yx);
                if (chxx != ' ') {
                   resultContent.set(xxxx, yyx, chxx);
                }
@@ -111,7 +111,7 @@ public class CompressExpand extends JaveOptionsAlgorithm {
             for (int xxxx = 0; xxxx < newWidth; xxxx++) {
                int yx = (int)((double)yyxx / yScale);
                int xxxxx = (int)((double)xxxx / xScale);
-               char chxxx = sourcePlate.get(xxxxx, yx);
+               int chxxx = sourcePlate.glyphAt(xxxxx, yx);
                if (chxxx != ' ') {
                   resultContent.set(xxxx, yyxx, chxxx);
                }

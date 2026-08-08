@@ -36,12 +36,12 @@ public class Center extends JaveAlgorithm {
       if (dx == 0 && dy == 0) {
          return plate;
       } else {
-         char[][] chNew = new char[h][w];
+         int[][] chNew = new int[h][w];
 
          for (int x = 0; x < w; x++) {
             for (int y = 0; y < h; y++) {
                if (x - dx >= 0 && x - dx < w && y - dy >= 0 && y - dy < h) {
-                  chNew[y][x] = plate.get(x - dx, y - dy);
+                  chNew[y][x] = plate.glyphAt(x - dx, y - dy);
                } else {
                   chNew[y][x] = ' ';
                }

@@ -25,7 +25,7 @@ public class AsciiReplaceIllegal {
 
       for (int y = 0; y < h; y++) {
          for (int x = 0; x < w; x++) {
-            if (sel.isActive(x, y) && cp.get(x, y) == 175 && sel.isActive(x, y - 1) && cp.get(x, y - 1) == ' ') {
+            if (sel.isActive(x, y) && cp.glyphAt(x, y) == 175 && sel.isActive(x, y - 1) && cp.glyphAt(x, y - 1) == ' ') {
                illegalCharacterCount++;
                replacedCharacterCount++;
                cp.setForce(x, y, ' ');
@@ -40,7 +40,7 @@ public class AsciiReplaceIllegal {
       for (int y = 0; y < h; y++) {
          for (int xx = 0; xx < w; xx++) {
             if (sel.isActive(xx, y)) {
-               char ch = cp.get(xx, y);
+               int ch = cp.glyphAt(xx, y);
                if (!this.characterSets.isLegal(ch)) {
                   illegalCharacterCount++;
 

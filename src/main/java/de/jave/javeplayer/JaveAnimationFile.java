@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import net.dizzy.commons.core.util.Ensure;
@@ -56,7 +57,7 @@ public class JaveAnimationFile {
       BufferedReader reader = null;
 
       try {
-         reader = new BufferedReader(new InputStreamReader(ZIPTool.openPossiblyZipped(url.openStream())));
+         reader = new BufferedReader(new InputStreamReader(ZIPTool.openPossiblyZipped(url.openStream()), StandardCharsets.UTF_8));
          int frameCount = 0;
          this.setProperties(new AnimationProperties());
          JaveAnimationFrame currentFrame = null;

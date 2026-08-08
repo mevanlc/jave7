@@ -136,7 +136,7 @@ public class AnimationEditorPanel {
          frame = this.getFrame(i);
          CharacterPlate con = new CharacterPlate(frame.getContent());
          Insets in = con.getEmptyInsets();
-         char[][] ch = frame.getSelection();
+         int[][] ch = frame.getSelection();
          if (ch != null) {
             CharacterPlate sel = new CharacterPlate(ch);
             int selX = frame.getSelectionX();

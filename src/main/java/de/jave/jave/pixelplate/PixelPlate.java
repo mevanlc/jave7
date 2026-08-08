@@ -480,7 +480,7 @@ public class PixelPlate implements ICharacterDrawable {
    }
 
    public LocatedCharacterPlate convert() {
-      char[][] result = new char[this.bounds.height][this.bounds.width];
+      int[][] result = new int[this.bounds.height][this.bounds.width];
       if (this.mode.getConverterMode() == PixelPlateConverterMode.LINE) {
          for (int y = 0; y < this.bounds.height; y++) {
             for (int x = 0; x < this.bounds.width; x++) {
@@ -698,8 +698,8 @@ public class PixelPlate implements ICharacterDrawable {
    }
 
    @Override
-   public void set(int x, int y, char ch) {
-      this.setCharacter(ch);
+   public void set(int x, int y, int ch) {
+      this.setCharacter((char)ch);
       this.set(x, y);
    }
 

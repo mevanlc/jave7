@@ -19,7 +19,7 @@ public class FillAlgorithm {
 
          for (int xx = boundsMinX; xx <= boundsMaxX; xx++) {
             for (int yy = boundsMinY; yy <= boundsMaxY; yy++) {
-               if (characterPlate.get(xx, yy) == 2) {
+               if (characterPlate.glyphAt(xx, yy) == 2) {
                   characterPlate.setForce(xx, yy, fillChar);
                }
             }
@@ -29,7 +29,7 @@ public class FillAlgorithm {
 
    public static void fillPattern(CharacterPlate characterPlate, int x, int y, Pattern pattern, FillMatchMode fillMatchMode) {
       if (pattern != null) {
-         char[][] fillPattern = pattern.getContent();
+         int[][] fillPattern = pattern.getContent();
          int fillPatternHeight = fillPattern.length;
          if (fillPatternHeight != 0) {
             int fillPatternWidth = fillPattern[0].length;
@@ -54,7 +54,7 @@ public class FillAlgorithm {
 
                   for (int xx = boundsMinX; xx <= boundsMaxX; xx++) {
                      for (int yy = boundsMinY; yy <= boundsMaxY; yy++) {
-                        if (characterPlate.get(xx, yy) == 2) {
+                        if (characterPlate.glyphAt(xx, yy) == 2) {
                            characterPlate.setForce(xx, yy, fillPattern[(yy + poy) % fillPatternHeight][(xx + pox) % fillPatternWidth]);
                         }
                      }
@@ -88,7 +88,7 @@ public class FillAlgorithm {
 
          for (int xx = boundsMinX; xx <= boundsMaxX; xx++) {
             for (int yy = boundsMinY; yy <= boundsMaxY; yy++) {
-               if (characterPlate.get(xx, yy) == 2) {
+               if (characterPlate.glyphAt(xx, yy) == 2) {
                   double d = (double)(y - yy) * n1 - (double)(x - xx) * n2;
                   if (d < min) {
                      min = d;
@@ -108,7 +108,7 @@ public class FillAlgorithm {
 
          for (int yyx = boundsMinY; yyx <= boundsMaxY; yyx++) {
             for (int xx = boundsMinX; xx <= boundsMaxX; xx++) {
-               if (characterPlate.get(xx, yyx) == 2) {
+               if (characterPlate.glyphAt(xx, yyx) == 2) {
                   double index = 0.0;
                   if (style == GradientStyle.LINEAR) {
                      double dx = (double)(y - yyx) * n1 - (double)(x - xx) * n2;

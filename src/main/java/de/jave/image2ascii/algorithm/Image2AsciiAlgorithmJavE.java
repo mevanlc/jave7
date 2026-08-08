@@ -139,8 +139,8 @@ public class Image2AsciiAlgorithmJavE extends AbstractImage2AsciiAlgorithm {
             ProgressUtilities.checkInterrupted(cancelable);
 
             for (int xx = 0; xx < width; xx++) {
-               if (result.get(xx, y) == 0) {
-                  result.setForce(xx, y, p1.get(xx, y));
+               if (result.glyphAt(xx, y) == 0) {
+                  result.setForce(xx, y, p1.glyphAt(xx, y));
                }
             }
          }

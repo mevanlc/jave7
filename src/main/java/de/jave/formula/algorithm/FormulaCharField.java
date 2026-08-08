@@ -3,7 +3,7 @@ package de.jave.formula.algorithm;
 import de.jave.text.TextTools;
 
 public class FormulaCharField {
-   private final char[][] ch;
+   private final int[][] ch;
    private int ascent;
 
    public FormulaCharField(int width, int height) {
@@ -11,12 +11,11 @@ public class FormulaCharField {
    }
 
    public FormulaCharField(String line) {
-      this.ch = new char[1][line.length()];
-      System.arraycopy(line.toCharArray(), 0, this.ch[0], 0, line.length());
+      this.ch = TextTools.toCharField(line);
    }
 
    public FormulaCharField(int width, int height, int ascent) {
-      this.ch = new char[height][width];
+      this.ch = new int[height][width];
       this.ascent = ascent;
       this.setAll(' ');
    }
@@ -34,19 +33,17 @@ public class FormulaCharField {
       if (height == 0) {
          return 0;
       } else {
-         int width = lines[0].length();
+         int width = TextTools.toGlyphs(lines[0]).length;
 
          for (int i = 1; i < height; i++) {
-            if (lines[i].length() > width) {
-               width = lines[i].length();
-            }
+            width = Math.max(width, TextTools.toGlyphs(lines[i]).length);
          }
 
          return width;
       }
    }
 
-   private void setAll(char character) {
+   private void setAll(int character) {
       for (int x = 0; x < this.getWidth(); x++) {
          this.ch[0][x] = character;
       }
@@ -56,19 +53,19 @@ public class FormulaCharField {
       }
    }
 
-   public void set(int x, int y, char c) {
+   public void set(int x, int y, int c) {
       this.ch[y][x] = c;
    }
 
-   public char get(int x, int y) {
+   public int get(int x, int y) {
       return this.ch[y][x];
    }
 
    public void insert(String s, int x, int y) {
-      this.insert(s.toCharArray(), x, y);
+      this.insert(TextTools.toGlyphs(s), x, y);
    }
 
-   public void insert(char[] c, int x, int y) {
+   public void insert(int[] c, int x, int y) {
       System.arraycopy(c, 0, this.ch[y], x, c.length);
    }
 

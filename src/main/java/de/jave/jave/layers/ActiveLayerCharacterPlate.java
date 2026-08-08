@@ -15,21 +15,21 @@ public final class ActiveLayerCharacterPlate extends CharacterPlate {
    }
 
    @Override
-   public char get(int x, int y) {
-      return this.document.getActiveChar(x, y);
+   public int glyphAt(int x, int y) {
+      return this.document.getActiveGlyph(x, y);
    }
 
    @Override
-   public void set(int x, int y, char ch) {
+   public void set(int x, int y, int ch) {
       if (this.isMix() && ch != ' ') {
-         ch = CharacterMergeRulesConfiguration.INSTANCE.getMergeResult(this.document.getActiveChar(x, y), ch);
+         ch = CharacterMergeRulesConfiguration.INSTANCE.getMergeResult(this.document.getActiveGlyph(x, y), ch);
       }
-      this.document.setActiveChar(x, y, ch);
+      this.document.setActiveGlyph(x, y, ch);
    }
 
    @Override
-   public void setForce(int x, int y, char ch) {
-      this.document.setActiveCharForce(x, y, ch);
+   public void setForce(int x, int y, int ch) {
+      this.document.setActiveGlyphForce(x, y, ch);
    }
 
    @Override
@@ -48,13 +48,13 @@ public final class ActiveLayerCharacterPlate extends CharacterPlate {
    }
 
    @Override
-   public char[][] getContent() {
-      return this.document.getActiveContentProjection().getContent();
+   public int[][] glyphPlane() {
+      return this.document.getActiveContentProjection().glyphPlane();
    }
 
    @Override
-   public char[][] getContentClone() {
-      return this.document.getActiveContentProjection().getContentClone();
+   public int[][] glyphPlaneClone() {
+      return this.document.getActiveContentProjection().glyphPlaneClone();
    }
 
    @Override
@@ -103,9 +103,9 @@ public final class ActiveLayerCharacterPlate extends CharacterPlate {
    }
 
    @Override
-   public char getPasteResult(char ch, int x, int y) {
+   public int getPasteResult(int ch, int x, int y) {
       if (this.isMix() && ch != ' ') {
-         return CharacterMergeRulesConfiguration.INSTANCE.getMergeResult(this.document.getActiveChar(x, y), ch);
+         return CharacterMergeRulesConfiguration.INSTANCE.getMergeResult(this.document.getActiveGlyph(x, y), ch);
       }
       return ch;
    }
@@ -129,7 +129,7 @@ public final class ActiveLayerCharacterPlate extends CharacterPlate {
       CharacterPlate projection = this.document.getActiveContentProjection();
       for (int y = 0; y < projection.getHeight(); y++) {
          for (int x = 0; x < projection.getWidth(); x++) {
-            this.document.setActiveCharForce(x, y, ' ');
+            this.document.setActiveGlyphForce(x, y, ' ');
          }
       }
    }
@@ -204,7 +204,7 @@ public final class ActiveLayerCharacterPlate extends CharacterPlate {
    }
 
    @Override
-   public void paste(char[][] ch, int x, int y) {
+   public void paste(int[][] ch, int x, int y) {
       this.paste(new CharacterPlate(ch), x, y);
    }
 
@@ -215,15 +215,15 @@ public final class ActiveLayerCharacterPlate extends CharacterPlate {
 
    @Override
    public void paste(CharacterPlate ch, int x, int y, int width, int height) {
-      this.paste(ch.getContent(), x, y, width, height);
+      this.paste(ch.glyphPlane(), x, y, width, height);
    }
 
    @Override
-   public void paste(char[][] ch, int x, int y, int width, int height) {
+   public void paste(int[][] ch, int x, int y, int width, int height) {
       for (int currentY = 0; currentY < height; currentY++) {
          for (int currentX = 0; currentX < width; currentX++) {
             if (this.contains(x + currentX, y + currentY)) {
-               this.document.setActiveCharForce(x + currentX, y + currentY, ch[currentY][currentX]);
+               this.document.setActiveGlyphForce(x + currentX, y + currentY, ch[currentY][currentX]);
             }
          }
       }
@@ -232,20 +232,20 @@ public final class ActiveLayerCharacterPlate extends CharacterPlate {
    @Override
    public void delete(int x0, int y0, int x1, int y1) {
       for (int x = x0; x <= x1; x++) {
-         this.document.setActiveCharForce(x, y0, ' ');
+         this.document.setActiveGlyphForce(x, y0, ' ');
       }
       for (int y = y0 + 1; y <= y1; y++) {
          for (int x = x0; x <= x1; x++) {
-            this.document.setActiveCharForce(x, y, this.document.getActiveChar(x, y0));
+            this.document.setActiveGlyphForce(x, y, this.document.getActiveGlyph(x, y0));
          }
       }
    }
 
    @Override
-   public void fill(int x, int y, int w, int h, char ch) {
+   public void fill(int x, int y, int w, int h, int ch) {
       for (int yy = y; yy < y + h; yy++) {
          for (int xx = x; xx < x + w; xx++) {
-            this.document.setActiveCharForce(xx, yy, ch);
+            this.document.setActiveGlyphForce(xx, yy, ch);
          }
       }
    }

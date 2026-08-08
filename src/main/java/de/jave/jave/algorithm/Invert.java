@@ -26,7 +26,7 @@ public class Invert extends JaveAlgorithm {
       for (int x = 0; x < width; x++) {
          for (int y = 0; y < height; y++) {
             if (sel.isActive(x, y)) {
-               int index = "M! 8_\"d'P,.YL`o[]bF".indexOf(plate.get(x, y));
+               int index = "M! 8_\"d'P,.YL`o[]bF".indexOf(plate.glyphAt(x, y));
                if (index != -1) {
                   plate.setForce(x, y, " !8 \"_'d,PY.`b\"][`,".charAt(index));
                }

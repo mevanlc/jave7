@@ -4,9 +4,9 @@ import java.awt.Component;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,7 +54,7 @@ public class ClipartGroup {
 
       try {
          File file = new File(baseDir, this.name + ".jcf");
-         writer = new BufferedWriter(new FileWriter(file));
+         writer = Files.newBufferedWriter(file.toPath(), StandardCharsets.UTF_8);
 
          for (int i = 0; i < this.cliparts.size(); i++) {
             Clipart clipart = this.cliparts.get(i);
@@ -106,7 +106,7 @@ public class ClipartGroup {
 
       ClipartGroup var14;
       try {
-         br = new BufferedReader(new FileReader(file));
+         br = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8);
          List<Clipart> clipartList = new ArrayList<>();
 
          String s1;

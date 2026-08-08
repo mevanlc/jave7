@@ -8,6 +8,8 @@ public class GlyphEncodingTest {
    public void partitionsCodePointsClustersAndReservedGlyphs() {
       Assert.assertTrue(GlyphEncoding.isCodePoint(0x10FFFF));
       Assert.assertFalse(GlyphEncoding.isCodePoint(0x11_0000));
+      Assert.assertFalse(GlyphEncoding.isCodePoint(0xD800));
+      Assert.assertFalse(GlyphEncoding.isCodePoint(0xDFFF));
       Assert.assertTrue(GlyphEncoding.isCluster(-1));
       Assert.assertTrue(GlyphEncoding.isCluster(-0x3FFF_FFFF));
       Assert.assertFalse(GlyphEncoding.isCluster(GlyphEncoding.FIRST_RESERVED));

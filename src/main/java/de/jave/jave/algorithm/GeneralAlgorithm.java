@@ -13,7 +13,7 @@ public class GeneralAlgorithm {
 
       for (int y = 0; y < h; y++) {
          for (int x = 0; x < w; x++) {
-            char c = plate.get(x, y);
+            int c = plate.glyphAt(x, y);
             if (c == ch1) {
                plate.setForce(x, y, ch2);
                count++;
@@ -57,7 +57,7 @@ public class GeneralAlgorithm {
 
       for (int y = 0; y < h; y++) {
          for (int x = 0; x < w; x++) {
-            if ((!wildcard || pattern.get(x, y) != wildcardChar) && pattern.get(x, y) != plate.get(x0 + x, y0 + y)) {
+            if ((!wildcard || pattern.glyphAt(x, y) != wildcardChar) && pattern.glyphAt(x, y) != plate.glyphAt(x0 + x, y0 + y)) {
                return false;
             }
          }
@@ -72,8 +72,8 @@ public class GeneralAlgorithm {
 
       for (int y = 0; y < h; y++) {
          for (int x = 0; x < w; x++) {
-            if (plate.contains(x0 + x, y0 + y) && (!wildcard || wildcardChar != pattern.get(x, y))) {
-               plate.setForce(x0 + x, y0 + y, pattern.get(x, y));
+            if (plate.contains(x0 + x, y0 + y) && (!wildcard || wildcardChar != pattern.glyphAt(x, y))) {
+               plate.setForce(x0 + x, y0 + y, pattern.glyphAt(x, y));
             }
          }
       }

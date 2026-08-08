@@ -2,7 +2,8 @@ package de.jave.jave.pattern;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.List;
 import net.dizzy.commons.core.io.IOUtilities;
 import net.dizzy.commons.core.util.Ensure;
@@ -48,7 +49,7 @@ public class PatternList {
       BufferedWriter br = null;
 
       try {
-         br = new BufferedWriter(new FileWriter(this.configurationFile));
+         br = Files.newBufferedWriter(this.configurationFile.toPath(), StandardCharsets.UTF_8);
 
          for (int i = 0; i < this.patterns.size(); i++) {
             Pattern pattern = this.patterns.get(i);

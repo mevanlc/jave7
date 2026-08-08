@@ -15,7 +15,7 @@ public class FigletFileExporter {
 
    public static void export(FigletExportModel model, File file) {
       CharacterPlate plate = model.getCharacterPlate();
-      char[][] raster = model.getRaster();
+      int[][] raster = model.getRaster();
       boolean[] charUsed = new boolean[128];
       CharacterPlate[] figChars = new CharacterPlate[255];
       int figCharWidth = model.getCharacterWidth();
@@ -30,11 +30,11 @@ public class FigletFileExporter {
                figChars[raster[y][x]] = plate.getCopy(
                   new Rectangle(x * figCharHSpacing + x * figCharWidth, y * figCharVSpacing + y * figCharHeight, figCharWidth, figCharHeight)
                );
-               char[][] ch = figChars[raster[y][x]].getContent();
+               int[][] ch = figChars[raster[y][x]].glyphPlane();
 
                for (int yy = 0; yy < figCharHeight; yy++) {
                   for (int xx = 0; xx < figCharWidth; xx++) {
-                     if (ch[yy][xx] <= 128) {
+                     if (ch[yy][xx] >= 0 && ch[yy][xx] <= 128) {
                         charUsed[ch[yy][xx]] = true;
                      }
                   }
@@ -89,7 +89,7 @@ public class FigletFileExporter {
             int w = figCharWidth - insets.right + 2;
             figChars[ixxx].setSize(w, figCharHeight);
             if (ixxx != 32 && figChars[ixxx].isEmpty()) {
-               figChars[ixxx].set(0, 0, (char)ixxx);
+               figChars[ixxx].set(0, 0, ixxx);
             }
 
             LineAlgorithm.drawLineBresenham(figChars[ixxx], w - 2, 0, w - 2, figCharHeight - 1, endmark);

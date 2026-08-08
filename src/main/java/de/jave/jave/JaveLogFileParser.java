@@ -4,8 +4,9 @@ import de.jave.jave.preferences.ColorScheme;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import net.dizzy.commons.core.io.IOUtilities;
@@ -17,7 +18,7 @@ public class JaveLogFileParser {
 
       CompressedDocumentState currentFrame;
       try {
-         reader = new BufferedReader(new FileReader(file));
+         reader = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8);
          if (reader == null) {
             throw new IOException("Unable to open file '" + file.getAbsolutePath() + "'");
          }
