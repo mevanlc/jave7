@@ -277,18 +277,60 @@ down D2, the one decision that is expensive to change later. β+γ should land a
 a single commit; a half-converted tree has no value and does not compile.
 δ, ε, ζ are independent of each other once γ is in.
 
+## Resolved during planning
+
+### D6 — Delete `char get(int,int)`; no lossy shim
+
+Callers move to `glyphAt(x,y)` / `textAt(x,y)` / `cellAt(x,y)`. Keeping a
+narrowing shim would shorten unit γ, but silent lossy narrowing is precisely the
+failure mode this encoding was chosen to avoid (R&D §10.5). Every caller becomes
+a compile error and gets looked at. Same reasoning applies to `setForce(int,int,
+char)` and `fill(…, char)` — widen to `int`, do not overload.
+
+### D7 — Cluster cells pass through merge rules unmerged
+
+`CharacterMergeRulesConfiguration` (`config/mix.txt`, backing the Foreground
+paste mode and the "Merge Characters" tickbox) is keyed by `char` pairs. A
+cluster cell participates in no rule and is copied verbatim. Rationale: the merge
+table encodes ASCII line-art joins (`-` + `|` → `+`); a base glyph carrying
+assimilators is not a line-art primitive, and silently merging on its base code
+point would drop the assimilators. Pass-through preserves data, which is the
+PHASE1 invariant everywhere else too.
+
+### D8 — Cluster table: no eviction in PHASE1; instrument and leave an escape hatch
+
+The R&D doc's original rationale for append-only ("undo snapshots hold handles")
+**was wrong** and has been corrected in R&D §7: `CompressedDocumentState` stores
+`AsciiPacker` strings, and `AsciiPacker` expands handles to text, so the undo
+stack holds no handles.
+
+The corrected bound is stronger. Table growth is bounded by **distinct cluster
+texts seen in the session** — not by operations, documents, or undo depth, since
+`intern` deduplicates and undo/redo of identical content adds nothing. A
+realistic session interning a few hundred distinct clusters costs tens of
+kilobytes.
+
+Therefore:
+
+1. **No eviction.** Implementing it now is real complexity against a problem
+   with no evidence of existing.
+2. **Instrument it.** `ClusterTable` exposes `size()` and total interned-text
+   bytes, and logs a one-time warning past a threshold (suggest 100,000 entries,
+   ~15 MB). If this ever fires in the wild there is a breadcrumb instead of a
+   mystery.
+3. **Escape hatch is mark-sweep, not refcounting.** Live handles reside only in
+   enumerable in-memory plates — document, layers, selection, internal clipboard,
+   tool previews. If eviction is ever needed, walk those roots, collect reachable
+   handles, and rebuild the table at a safe point such as document close.
+   Refcounting across every plate mutation would be fragile; mark-sweep is
+   obviously correct and can be added later without changing the encoding.
+
+Deliberately **not** doing (2) via a `WeakHashMap` or similar: handles are `int`s
+with no identity, so weak references cannot express reachability here.
+
 ## Open questions (resolve during PHASE1, not now)
 
-1. **`char get(int,int)` shim** — keep it, narrowing lossily for clusters and
-   non-BMP, or delete it and force all callers to `glyphAt`/`textAt`? Deleting is
-   truer to the model; keeping it shortens unit γ. Lean delete, since silent
-   lossy narrowing is the failure mode this whole design avoids.
-2. **`CharacterMergeRulesConfiguration`** (`config/mix.txt`, the Foreground paste
-   mode) is keyed by `char` pairs. Decide whether cluster cells participate in
-   merge rules or pass through unmerged. Lean pass-through.
-3. **Cluster table growth over a long session** — append-only with no eviction is
-   sound (R&D §7) but unmeasured in practice. Add a counter and revisit if a real
-   session gets anywhere near interesting.
+None outstanding. D6–D8 above closed the three that were open at planning time.
 
 ## What PHASE2+ inherits
 

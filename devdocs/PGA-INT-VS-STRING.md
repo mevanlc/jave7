@@ -256,11 +256,30 @@ rather than a hand-wave.
   real text on the way out and re-intern on the way in. The table is a
   session-local interning cache, not persistent state. This keeps document
   formats self-describing and means a handle can never leak to disk or clipboard.
-- **Never evicted.** Undo snapshots hold handles, so eviction would need
-  refcounting across every snapshot and document — not worth it. Append-only is
-  safe because the space is 2.1 billion, not 2,048: at ~60 B/entry, 10,000
-  distinct clusters is well under 1 MB, and the ceiling is unreachable in
-  practice rather than one emoji palette away.
+- **Never evicted — but not for the reason first given here.** An earlier
+  revision argued "undo snapshots hold handles, so eviction would need
+  refcounting". **That premise is wrong**: `CompressedDocumentState` stores each
+  snapshot as an `AsciiPacker` string, and per the bullet above `AsciiPacker`
+  expands handles to text. **The undo stack holds text, not handles.**
+
+  The correct characterisation is better news. Table growth is bounded by the
+  number of **distinct cluster texts seen in the session** — not by the number of
+  operations, documents, or undo steps, since `intern` deduplicates and
+  undo/redo of the same content adds nothing. Handles are live only in
+  in-memory plates (document, layers, selection, internal clipboard, tool
+  previews).
+
+  At ~100 B/entry, a realistic session interning a few hundred distinct clusters
+  costs tens of kilobytes. Reaching 100,000 entries — ~15 MB — requires
+  deliberately pasting large volumes of *distinct* multi-mark content. So
+  append-only is safe in practice, and the 2.1-billion handle space is
+  unreachable rather than one emoji palette away.
+
+  Eviction is therefore **deferred, not foreclosed**: because live handles reside
+  only in enumerable in-memory plates, the escape hatch is a mark-sweep
+  compaction at a safe point (e.g. document close) rather than fragile
+  refcounting. See `PLAN-CELL-MODEL-PHASE1.md` for the instrumentation that
+  would tell us it is ever needed.
 - **Cost to a reader:** the `cell < 0` convention is a thing you must know.
   Mitigate by never letting raw cells escape — funnel access through
   `CharacterPlate.textAt(x, y)` / `setText(x, y, String)` so the encoding stays
