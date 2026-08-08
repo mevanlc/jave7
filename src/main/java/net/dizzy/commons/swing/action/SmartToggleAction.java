@@ -1,5 +1,6 @@
 package net.dizzy.commons.swing.action;
 
+import javax.swing.AbstractButton;
 import javax.swing.Icon;
 
 import net.dizzy.commons.core.model.BooleanModel;
@@ -34,8 +35,12 @@ public class SmartToggleAction extends SmartAction {
    }
 
    @Override
-   protected void execute(java.awt.Component parent) {
-      setSelected(!isSelected());
+   protected void execute(java.awt.Component source) {
+      // An AbstractButton flips its own selected state - and mirrors it into
+      // SELECTED_KEY - before it fires this action, so adopt that state instead
+      // of flipping again, which would cancel the click out. A source that is
+      // not a button (programmatic invocation) still needs the flip.
+      setSelected(source instanceof AbstractButton ? ((AbstractButton)source).isSelected() : !isSelected());
    }
 
    public boolean isSelected() {

@@ -186,6 +186,12 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
             JavEApplication.this.mainPanel.repaint();
          }
       });
+      this.applicationPreferences.getToolsPaletteVisibleModel().addChangeListener(new IChangeListener() {
+         @Override
+         public void stateChanged() {
+            JavEApplication.this.updateToolsPaletteVisibility();
+         }
+      });
       this.toolSelectorBarOptionsHost.setTool(this.mainPanel.getCurrentTool());
       JaveDropFileOpener.attachTo(this, this.mainPanel.getContent());
       JComponent bottomPanel = this.statusBar.getContent();
@@ -194,8 +200,20 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
       this.frame.getContentPane().add(this.toolBar.getContent(), "West");
       this.frame.getContentPane().add(this.mainPanel.getContent(), "Center");
       this.frame.getContentPane().add(bottomPanel, "South");
+      this.updateToolsPaletteVisibility();
       this.installToolShortcuts();
       this.frame.pack();
+   }
+
+   private void updateToolsPaletteVisibility() {
+      boolean visible = this.applicationPreferences.getToolsPaletteVisibleModel().getValue();
+      JComponent content = this.toolBar.getContent();
+      if (content.isVisible() == visible) {
+         return;
+      }
+      content.setVisible(visible);
+      this.frame.getContentPane().revalidate();
+      this.frame.getContentPane().repaint();
    }
 
    private void installToolShortcuts() {

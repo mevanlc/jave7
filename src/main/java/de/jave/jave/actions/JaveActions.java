@@ -43,6 +43,7 @@ public class JaveActions {
    private final SmartToggleAction rulerToggleAction;
    private final SmartToggleAction watermarkVisibilityToggleAction;
    private final SmartToggleAction auxLinesVisibilityToggleAction;
+   private final SmartToggleAction toolsPaletteToggleAction;
    private final ShowFigletEditorAction figletAction;
    private final ResizeDocumentAction resizeAction;
    private final ClipartLibraryAction clipartLibraryAction;
@@ -165,6 +166,7 @@ public class JaveActions {
       this.auxLinesVisibilityToggleAction = new SmartToggleAction(
          jave.getAuxLinesVisibilityModel(), "Show Auxiliary Lines", JaveIcons.TOOL_AUXILIARY_LINES_ICON
       );
+      this.toolsPaletteToggleAction = new SmartToggleAction(applicationPreferences.getToolsPaletteVisibleModel(), "Tools");
       this.clipartLibraryAction = new ClipartLibraryAction(jave, mainPanel);
       this.mathematicalExpressionsAction = new MathematicalExpressionsAction(jave, mainPanel);
       this.textBoxAction = new TextBoxAction(jave, mainPanel);
@@ -228,6 +230,10 @@ public class JaveActions {
 
    public SmartToggleAction getRulerToggleAction() {
       return this.rulerToggleAction;
+   }
+
+   public SmartToggleAction getToolsPaletteToggleAction() {
+      return this.toolsPaletteToggleAction;
    }
 
    public Image2AsciiAction getImage2AsciiAction() {

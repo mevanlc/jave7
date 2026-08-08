@@ -37,6 +37,8 @@ public class JaveApplicationPreferences extends SmartPreferences {
    private static final String KEY_SELECTIONLESS_CUT_COPY_ON_CELL = "selectionlessCutCopyOnCell";
    private static final String KEY_PASTE_V_FILLS_SELECTION = "pasteVFillsSelection";
    private static final String KEY_SHOW_QUICK_START_ON_STARTUP = "showQuickStartOnStartup";
+   private static final String KEY_TOOLS_PALETTE_VISIBLE = "toolsPaletteVisible";
+   private static final boolean DEFAULT_TOOLS_PALETTE_VISIBLE = true;
    private static final boolean DEFAULT_USE_AWT_FILECHOOSER = false;
    private static final int DEFAULT_FRAME_X = 0;
    private static final int DEFAULT_FRAME_Y = 10;
@@ -62,6 +64,9 @@ public class JaveApplicationPreferences extends SmartPreferences {
    private final FontModel displayFontModel;
    private final ObjectModel<ColorScheme> defaultColorSchemeModel;
    private final BooleanModel useAwtFileChooserModel = new BooleanModel(this.getBoolean("useAwtFileChooser", false));
+   private final BooleanModel toolsPaletteVisibleModel = new BooleanModel(
+      this.getBoolean(KEY_TOOLS_PALETTE_VISIBLE, DEFAULT_TOOLS_PALETTE_VISIBLE)
+   );
 
    public JaveApplicationPreferences(JavePreferences javePreferences) {
       super(javePreferences.getSubPreferences("application"));
@@ -75,6 +80,13 @@ public class JaveApplicationPreferences extends SmartPreferences {
          }
       });
       FileChooserUtilities.useAwtFileChooser = this.useAwtFileChooserModel.getValue();
+      this.toolsPaletteVisibleModel.addChangeListener(new IChangeListener() {
+         @Override
+         public void stateChanged() {
+            JaveApplicationPreferences.this.put(KEY_TOOLS_PALETTE_VISIBLE, JaveApplicationPreferences.this.toolsPaletteVisibleModel.getValue());
+            JaveApplicationPreferences.this.flush();
+         }
+      });
       this.currentDirectoryModel = new FileModel();
       String directory = this.get("currentDirectory", null);
       if (directory != null) {
@@ -121,6 +133,10 @@ public class JaveApplicationPreferences extends SmartPreferences {
 
    public BooleanModel getUseAwtFileChooserModel() {
       return this.useAwtFileChooserModel;
+   }
+
+   public BooleanModel getToolsPaletteVisibleModel() {
+      return this.toolsPaletteVisibleModel;
    }
 
    private void putFont(String keyPrefix, Font font) {

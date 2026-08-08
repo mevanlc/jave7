@@ -421,6 +421,7 @@ public class JaveMenuBar extends HelpImplementedMenuBar implements ActionListene
       this.menuView.add(ActionWidgetFactory.createToggleMenuItem(actions.getAuxLinesVisibilityToggleAction()));
       this.menuView.addSeparator();
       this.menuView.add(ActionWidgetFactory.createToggleMenuItem(actions.getWatermarkVisibilityToggleAction()));
+      this.menuView.add(ActionWidgetFactory.createToggleMenuItem(actions.getToolsPaletteToggleAction()));
       this.miLayersPanel = new JCheckBoxMenuItem("Layers Panel");
       this.miLayersPanel.addActionListener(this);
       this.menuView.add(this.miLayersPanel);
