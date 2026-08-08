@@ -1,6 +1,5 @@
 package de.jave.jave.application.startup;
 
-import de.jave.gui.splash.SplashScreenManager;
 import de.jave.jave.JaveMessages;
 import de.jave.jave.version.JaveVersion;
 import de.jave.maxosx.MacOsXInitializer;
@@ -31,10 +30,23 @@ public class JaveMainApplicationStarter {
             }
 
             JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-            SplashScreenManager splash = new SplashScreenManager(new JavESplashScreenSetup());
-            splash.startup(new JaveStartupRunnable(arguments));
+            try {
+               new JaveStartup().start();
+            } catch (Throwable exception) {
+               handleStartupFailure(exception);
+            }
          }
       });
+   }
+
+   private static void handleStartupFailure(Throwable exception) {
+      exception.printStackTrace();
+      String message = exception.getLocalizedMessage();
+      if (message == null || message.length() == 0) {
+         message = exception.toString();
+      }
+      MessageDialogFactory.showMessageDialog(null, new Message(message, exception));
+      System.exit(1);
    }
 
    static class DefaultExceptionHandler implements IExceptionHandler {

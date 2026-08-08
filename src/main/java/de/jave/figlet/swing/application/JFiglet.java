@@ -2,13 +2,11 @@ package de.jave.figlet.swing.application;
 
 import de.jave.figlet.Figlet;
 import de.jave.figlet.util.FigException;
-import de.jave.gui.splash.IStartupMonitor;
-import de.jave.gui.splash.IStartupRunnable;
-import de.jave.gui.splash.SplashScreenManager;
-import de.jave.gui.splash.StartupException;
 import de.jave.lib.CodeBaseTool;
 import java.io.File;
 import javax.swing.UIManager;
+import net.dizzy.commons.core.message.Message;
+import net.dizzy.commons.swing.dialog.message.MessageDialogFactory;
 
 public class JFiglet {
    private JFiglet() {
@@ -20,68 +18,72 @@ public class JFiglet {
       } catch (Exception var2) {
       }
 
-      SplashScreenManager splash = new SplashScreenManager(new FigletSplashScreenSetup());
-      splash.startup(createStartUpRunnable(args));
+      try {
+         startUp(args);
+      } catch (Throwable exception) {
+         handleStartupFailure(exception);
+      }
    }
 
-   private static IStartupRunnable createStartUpRunnable(final String[] args) {
-      return new IStartupRunnable() {
-         @Override
-         public void startUp(IStartupMonitor monitor) throws StartupException {
-            monitor.beginTask("Starting up JFIGlet 0.3...", -1);
-            monitor.subTask("Initializing FIGlet font library...");
-            File codeBase = CodeBaseTool.getCodeBase(JFiglet.class);
-            Figlet figlet = null;
-            if (args.length == 0) {
-               File fontFolder = null;
+   private static void startUp(String[] args) throws FigException {
+      File codeBase = CodeBaseTool.getCodeBase(JFiglet.class);
+      Figlet figlet;
+      if (args.length == 0) {
+         File fontFolder = null;
 
-               try {
-                  fontFolder = new File(codeBase, "fonts");
-                  figlet = new Figlet(fontFolder);
-               } catch (FigException var7) {
-                  if (fontFolder != null) {
-                     throw new StartupException(
-                        "Unable to load FIGlet fonts from program folder '"
-                           + fontFolder.getAbsolutePath()
-                           + "'.\n"
-                           + "You can either install the FIGlet font library to the program folder or specify\n"
-                           + "a font library location as program argument.\n"
-                           + "Exiting.",
-                        var7
-                     );
-                  }
-
-                  throw new StartupException(
-                     "Unable to determin the FIGlet fonts folder.\nYou can either install the FIGlet font library to the program folder or specify\na font library location as program argument.\nExiting.",
-                     var7
-                  );
-               }
-            } else {
-               if (args.length != 1) {
-                  throw new StartupException("Invalid arguments. Only one optional argument pointing to the\nFIGlet fonts library is supported.");
-               }
-
-               try {
-                  figlet = new Figlet(args[0]);
-               } catch (FigException var6) {
-                  throw new StartupException(
-                     "Unable to load FIGlet fonts from the specified lirary location '"
-                        + args[0]
-                        + "'.\n"
-                        + "You can either install the FIGlet font library to the program folder or specify\n"
-                        + "a valid font library location as program argument.\n"
-                        + "Exiting.",
-                     var6
-                  );
-               }
+         try {
+            fontFolder = new File(codeBase, "fonts");
+            figlet = new Figlet(fontFolder);
+         } catch (FigException exception) {
+            if (fontFolder != null) {
+               throw new FigException(
+                  "Unable to load FIGlet fonts from program folder '"
+                     + fontFolder.getAbsolutePath()
+                     + "'.\n"
+                     + "You can either install the FIGlet font library to the program folder or specify\n"
+                     + "a font library location as program argument.\n"
+                     + "Exiting.",
+                  exception
+               );
             }
 
-            monitor.subTask("Building application...");
-            File tmpFolder = new File(codeBase, "tmp");
-            JFigletApplication application = new JFigletApplication(figlet.getFigDriver(), tmpFolder);
-            monitor.subTask("Running application...");
-            application.start();
+            throw new FigException(
+               "Unable to determin the FIGlet fonts folder.\nYou can either install the FIGlet font library to the program folder or specify\na font library location as program argument.\nExiting.",
+               exception
+            );
          }
-      };
+      } else {
+         if (args.length != 1) {
+            throw new FigException("Invalid arguments. Only one optional argument pointing to the\nFIGlet fonts library is supported.");
+         }
+
+         try {
+            figlet = new Figlet(args[0]);
+         } catch (FigException exception) {
+            throw new FigException(
+               "Unable to load FIGlet fonts from the specified lirary location '"
+                  + args[0]
+                  + "'.\n"
+                  + "You can either install the FIGlet font library to the program folder or specify\n"
+                  + "a valid font library location as program argument.\n"
+                  + "Exiting.",
+               exception
+            );
+         }
+      }
+
+      File tmpFolder = new File(codeBase, "tmp");
+      JFigletApplication application = new JFigletApplication(figlet.getFigDriver(), tmpFolder);
+      application.start();
+   }
+
+   private static void handleStartupFailure(Throwable exception) {
+      exception.printStackTrace();
+      String message = exception.getLocalizedMessage();
+      if (message == null || message.length() == 0) {
+         message = exception.toString();
+      }
+      MessageDialogFactory.showMessageDialog(null, new Message(message, exception));
+      System.exit(1);
    }
 }

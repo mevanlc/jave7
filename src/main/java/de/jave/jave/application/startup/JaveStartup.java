@@ -1,8 +1,5 @@
 package de.jave.jave.application.startup;
 
-import de.jave.gui.splash.IStartupMonitor;
-import de.jave.gui.splash.IStartupRunnable;
-import de.jave.gui.splash.StartupException;
 import de.jave.image2ascii.AsciiGreyscaleTableConfigurationInitializable;
 import de.jave.jave.CharSetsConfigurationInitializable;
 import de.jave.jave.JavEApplication;
@@ -24,34 +21,21 @@ import de.jave.jave.pixelplate.PixelPlateConfigurationInitializable;
 import de.jave.jave.preferences.JaveApplicationPreferences;
 import de.jave.lib.CharacterMergeRulesConfigurationInitializable;
 import de.jave.maxosx.MacOsXInitializer;
-import java.awt.Component;
 import net.dizzy.commons.swing.dialog.core.DialogDefaults;
 
-public class JaveStartupRunnable implements IStartupRunnable {
-   public JaveStartupRunnable(String[] arguments) {
-   }
-
-   @Override
-   public void startUp(IStartupMonitor monitor) throws StartupException {
+final class JaveStartup {
+   public void start() throws JaveStartupException {
       JavEApplication jave = null;
 
       try {
-         monitor.beginTask(JaveMessages.StartUp_Task_Starting, -1);
          DialogDefaults.getInstance().setFrameIconImages(JaveIcons.JAVE_ICON_IMAGES);
-         monitor.subTask(JaveMessages.StartUp_SubTask_LoadConfig);
-         ConfigurationList configurationList = initConfigFiles(monitor.getParentComponent());
-         monitor.subTask(JaveMessages.StartUp_SubTask_CreatingUI);
+         ConfigurationList configurationList = initConfigFiles();
          jave = new JavEApplication(configurationList);
-         monitor.subTask(JaveMessages.StartUp_SubTask_HalfwayPoint);
          jave.setTool(jave.getApplicationPreferences().getStartupToolIndex());
-         monitor.subTask(JaveMessages.StartUp_SubTask_CrashRecovery);
-         boolean recovered = jave.startupRecovery(monitor);
-         monitor.subTask(JaveMessages.StartUp_SubTask_CreateMenu);
+         boolean recovered = jave.startupRecovery();
          jave.startupMenuBar();
-         monitor.subTask(JaveMessages.StartUp_SubTask_Cleanup);
          jave.startupFinish2();
          MacOsXInitializer.initializeApplicationCallbacks(jave.getMaxOsXApplicationCallbacks());
-         monitor.subTask(JaveMessages.StartUp_SubTask_Finished);
          jave.startupFinish3();
          jave.getMainPanel().requestFocus();
          jave.getFrame().toFront();
@@ -59,7 +43,6 @@ public class JaveStartupRunnable implements IStartupRunnable {
             JaveApplicationPreferences applicationPreferences = jave.getApplicationPreferences();
             boolean showQuickStartOnStartup = applicationPreferences.isShowQuickStartOnStartup();
             if (showQuickStartOnStartup && !JavEApplication.isDumpModeActive()) {
-               monitor.dispose();
                QuickStartAction quickStartAction = new QuickStartAction(jave);
                quickStartAction.performQuickStart(jave.getFrame());
             }
@@ -68,25 +51,25 @@ public class JaveStartupRunnable implements IStartupRunnable {
                jave.doNew();
             }
          }
-      } catch (StartupException var8) {
-         throw var8;
-      } catch (Exception var9) {
+      } catch (JaveStartupException exception) {
+         throw exception;
+      } catch (Exception exception) {
          if (jave != null) {
             jave.dispose();
          }
 
-         throw new StartupException(JaveMessages.StartUp_ErrorOccured, var9);
+         throw new JaveStartupException(JaveMessages.StartUp_ErrorOccured, exception);
       }
    }
 
-   public static ConfigurationList initConfigFiles(Component parentComponent) throws StartupException {
-      MessageDialogConfigurationFileErrorHandler errorHandler = new MessageDialogConfigurationFileErrorHandler(parentComponent);
+   private static ConfigurationList initConfigFiles() throws JaveStartupException {
+      MessageDialogConfigurationFileErrorHandler errorHandler = new MessageDialogConfigurationFileErrorHandler(null);
       JaveConfigurationFileLoader loader = new JaveConfigurationFileLoader(errorHandler);
 
       try {
          loader.checkConfigurationFolderExistant();
-      } catch (ConfigurationException var10) {
-         throw new StartupException(JaveMessages.StartUp_ErrorMessage_ProbablyConfigFoldersMissing, var10);
+      } catch (ConfigurationException exception) {
+         throw new JaveStartupException(JaveMessages.StartUp_ErrorMessage_ProbablyConfigFoldersMissing, exception);
       }
 
       ConfigurationList configurationList = new ConfigurationList();
@@ -110,5 +93,11 @@ public class JaveStartupRunnable implements IStartupRunnable {
       }
 
       return configurationList;
+   }
+
+   private static class JaveStartupException extends Exception {
+      JaveStartupException(String message, Throwable cause) {
+         super(message, cause);
+      }
    }
 }

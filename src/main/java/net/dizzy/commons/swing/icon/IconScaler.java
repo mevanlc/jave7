@@ -21,10 +21,10 @@ import javax.swing.ImageIcon;
  * (see {@link #isScalablePixelIcon}). Two guards keep everything else untouched:
  * <ul>
  *   <li><b>Upscale-only</b> &mdash; an icon is only enlarged when its longest edge is smaller than
- *       {@code targetSize}. Genuinely large artwork that shares these loading paths (the splash
- *       image, the 75&times;66 export-wizard/camelizer/quick-start dialog icons, the 95&times;72
- *       quick-start item icons) is already as large as, or larger than, the target and is returned
- *       as-is instead of being shrunk to a thumbnail.</li>
+ *       {@code targetSize}. Genuinely large artwork that shares these loading paths (the
+ *       75&times;66 export-wizard/camelizer/quick-start dialog icons and the 95&times;72 quick-start
+ *       item icons) is already as large as, or larger than, the target and is returned as-is
+ *       instead of being shrunk to a thumbnail.</li>
  *   <li><b>Roughly square</b> &mdash; the longest edge may be at most {@link #MAX_ASPECT_RATIO}
  *       times the shortest. Elongated art (e.g. tall tool-type strips) is left alone rather than
  *       stretched, matching the "approximately 16px, approximately square" intent of the source

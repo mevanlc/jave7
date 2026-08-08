@@ -3,7 +3,6 @@ package de.jave.jave.application.about;
 import de.jave.gui.GHyperlink;
 import de.jave.gui.layout.CenterLayout;
 import de.jave.jave.JaveGlobalRessources;
-import de.jave.jave.application.startup.JaveSplashComponentFactory;
 import de.jave.jave.version.JaveTitleProvider;
 import de.jave.jave.version.JaveVersion;
 import java.awt.BorderLayout;
@@ -11,7 +10,6 @@ import java.awt.Component;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 import net.dizzy.commons.core.message.IBasicMessage;
 import net.dizzy.commons.swing.dialog.core.DialogHeaderPanelConfiguration;
 import net.dizzy.commons.swing.dialog.core.IDialogHeaderPanelConfiguration;
@@ -41,13 +39,10 @@ public class JaveAboutDialog {
 
          @Override
          public JComponent createContent() {
-            JTabbedPane tabbedPane = new JTabbedPane();
-            tabbedPane.addTab("Splash Screen", JaveSplashComponentFactory.createAboutLogoComponent());
-            tabbedPane.addTab("Details", JaveAboutDialog.createDetailsPanel());
             JPanel content = new JPanel();
             content.setLayout(new BorderLayout(LayoutUtilities.getComponentSpacing(), LayoutUtilities.getComponentGroupsSpacing()));
             content.add(JaveAboutDialog.createTitle(), "North");
-            content.add(tabbedPane, "Center");
+            content.add(JaveAboutDialog.createDetailsPanel(), "Center");
             return content;
          }
       };

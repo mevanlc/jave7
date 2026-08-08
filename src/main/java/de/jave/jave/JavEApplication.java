@@ -10,7 +10,6 @@ import de.jave.gui.io.FileChooserUtilities;
 import de.jave.gui.io.FileSelection;
 import de.jave.gui.io.IFileChooserConfiguration;
 import de.jave.gui.io.SmartFileFilter;
-import de.jave.gui.splash.IStartupMonitor;
 import de.jave.jave.actions.JaveActions;
 import de.jave.jave.actions.JaveMenuBar;
 import de.jave.jave.actions.JaveTopToolbar;
@@ -260,7 +259,7 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
       this.mainPanel.repaint();
    }
 
-   public boolean startupRecovery(IStartupMonitor startupMonitor) {
+   public boolean startupRecovery() {
       if (isDumpModeActive()) {
          return false;
       }
@@ -280,7 +279,6 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
 
             Component parentComponent = null;
             IMessage message = new Message(JaveMessages.CrashRecovery_DialogTitle, question, MessageType.WARNING);
-            startupMonitor.dispose();
             YesNoCancel result = MessageDialogUtilities.showYesNoCancelDialog(parentComponent, message);
             if (result == YesNoCancel.CANCEL) {
                System.exit(0);

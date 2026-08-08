@@ -55,10 +55,10 @@ public class IconScalerTest {
 
    @Test
    public void neverDownscalesLargeArtworkSharingThePath() {
-      // javesplash.png (400x300), export-wizard/camelizer/quick-start dialog icons (75x66),
-      // and the quick-start item icons (95x72) must be returned untouched.
-      Icon splash = icon(400, 300);
-      assertSame(splash, IconScaler.scaleToPreferredSize(splash, 32));
+      // Large artwork, export-wizard/camelizer/quick-start dialog icons (75x66), and the
+      // quick-start item icons (95x72) must be returned untouched.
+      Icon largeArtwork = icon(400, 300);
+      assertSame(largeArtwork, IconScaler.scaleToPreferredSize(largeArtwork, 32));
 
       Icon dialog = icon(75, 66);
       assertSame(dialog, IconScaler.scaleToPreferredSize(dialog, 32));

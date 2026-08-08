@@ -34,7 +34,6 @@ public class JaveIcons implements IIconResources {
    public static final Icon CAMEL_ICON = loadIcon("camel.gif");
    public static final Icon CLIPART_ICON = loadIcon("clipart.gif");
    public static final Icon CONNECTED_LINES_VIEW_ICON = loadIcon("pixel_toggle.gif");
-   public static final Icon SPLASH_IMAGE_ICON = loadIcon("javesplash.png");
    public static final Icon CLIPART_ITEM_ICON = loadIcon("clipart_small.gif");
    public static final Icon MOUSE_ICON = loadIcon("mouse.gif");
    public static final Icon FORMULA_ICON = loadIcon("formula.gif");

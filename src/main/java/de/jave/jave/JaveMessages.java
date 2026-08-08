@@ -6,14 +6,6 @@ public class JaveMessages extends NLS {
    public static String JavE;
    public static String DefaultExceptionHandler_Title;
    public static String DefaultExceptionHandler_Text;
-   public static String StartUp_Task_Starting;
-   public static String StartUp_SubTask_Finished;
-   public static String StartUp_SubTask_CreatingUI;
-   public static String StartUp_SubTask_Cleanup;
-   public static String StartUp_SubTask_CreateMenu;
-   public static String StartUp_SubTask_CrashRecovery;
-   public static String StartUp_SubTask_HalfwayPoint;
-   public static String StartUp_SubTask_LoadConfig;
    public static String StartUp_ErrorMessage_ProbablyConfigFoldersMissing;
    public static String StartUp_ErrorOccured;
    public static String CrashRecovery_OneDocumentOpenMessageText;
