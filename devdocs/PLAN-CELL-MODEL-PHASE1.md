@@ -1,7 +1,8 @@
 # Cell Model — PHASE1: `int[][]` glyph plane and PGA support
 
-> **Status:** to be implemented. Class names below are conceptual placeholders
-> unless noted as "exists today" with a file path.
+> **Status:** implemented on 2026-08-08 in commits `a59aea1` and `0c0eef8`.
+> The class names below now refer to the resulting implementation unless a
+> section explicitly describes a later phase.
 >
 > **R&D basis:** `devdocs/PGA-INT-VS-STRING.md` — the decision document. It
 > establishes, with measurements, why the cell becomes an `int` rather than a
@@ -258,6 +259,20 @@ files, `.jmov` animations, saved patterns, and the JS/ActionScript exporters.
   `CompressedDocumentStateTest`, `ClipboardTransfererTest`, `SelectionTest`.
 - Manual: paste the corpus into a running canvas and confirm row alignment for
   Group A.
+
+Implementation verification completed on 2026-08-08:
+
+- `./gradlew clean test --no-configuration-cache` passed: 148 tests in 34 test
+  classes, with zero failures and zero errors.
+- The corpus and round-trip coverage includes `Mn`, `Me`, stacked marks, `Mc`,
+  VS16, emoji modifiers, ZWJ sequences, emoji tags, regional indicators,
+  conjoining jamo, supplementary code points, clipboard, undo state, `.jmov`,
+  and algorithm-C exporter output.
+- `./gradlew macDeployToApplications --no-configuration-cache` produced and
+  installed `/Applications/JavE.app` (`de.jave.JavE`, version 7.0.0).
+- In that packaged app, pasting the Group A corpus showed each cluster occupying
+  one cell; the trailing sentinel rendered in the same column for the `Mn`,
+  `Me`, and stacked-mark rows.
 
 ## Cross-unit ordering
 
