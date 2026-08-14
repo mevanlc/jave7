@@ -1,8 +1,16 @@
 package net.dizzy.commons.swing.dialog.message;
 
 import java.awt.Component;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
+import javax.swing.AbstractAction;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JRootPane;
+import javax.swing.KeyStroke;
 
 import net.dizzy.commons.core.message.IBasicMessage;
 
@@ -10,6 +18,7 @@ public final class MessageDialogUtilities {
    private static final String SAVE_OPTION = "Save";
    private static final String DISCARD_OPTION = "Don't Save";
    private static final String CANCEL_OPTION = "Cancel";
+   private static final String DISCARD_ACTION = "messageDialog.discardChanges";
 
    private MessageDialogUtilities() {
    }
@@ -27,27 +36,51 @@ public final class MessageDialogUtilities {
 
    public static YesNoCancel showSaveDiscardCancelDialog(Component parent, IBasicMessage message) {
       Object[] options = {SAVE_OPTION, DISCARD_OPTION, CANCEL_OPTION};
-      int result = JOptionPane.showOptionDialog(
-         parent,
+      JOptionPane optionPane = new JOptionPane(
          message.getText(),
-         message.getTitle(),
-         JOptionPane.YES_NO_CANCEL_OPTION,
          MessageDialogFactory.optionType(message.getType()),
+         JOptionPane.YES_NO_CANCEL_OPTION,
          null,
          options,
          SAVE_OPTION
       );
-      return saveDiscardCancelResult(result);
+      JDialog dialog = optionPane.createDialog(parent, message.getTitle());
+      installDiscardShortcut(
+         dialog.getRootPane(),
+         optionPane,
+         DISCARD_OPTION,
+         Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()
+      );
+      optionPane.selectInitialValue();
+      dialog.setVisible(true);
+      dialog.dispose();
+      return saveDiscardCancelResult(optionPane.getValue());
    }
 
-   static YesNoCancel saveDiscardCancelResult(int result) {
-      if (result == 0) {
+   static YesNoCancel saveDiscardCancelResult(Object result) {
+      if (SAVE_OPTION.equals(result)) {
          return YesNoCancel.YES;
       }
-      if (result == 1) {
+      if (DISCARD_OPTION.equals(result)) {
          return YesNoCancel.NO;
       }
       return YesNoCancel.CANCEL;
+   }
+
+   static void installDiscardShortcut(
+      JRootPane rootPane,
+      JOptionPane optionPane,
+      Object discardOption,
+      int menuShortcutMask
+   ) {
+      rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+         .put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, menuShortcutMask), DISCARD_ACTION);
+      rootPane.getActionMap().put(DISCARD_ACTION, new AbstractAction() {
+         @Override
+         public void actionPerformed(ActionEvent event) {
+            optionPane.setValue(discardOption);
+         }
+      });
    }
 
    public static boolean showOkCancelDialog(Component parent, IBasicMessage message) {
