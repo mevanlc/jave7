@@ -4,6 +4,10 @@ plugins {
     id 'maven-publish'
 }
 
+application {
+    mainClass = 'de.jave.jave.Jave'
+}
+
 group = 'de.jave'
 version = '7.0.0'
 
