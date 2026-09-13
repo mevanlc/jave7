@@ -9,6 +9,7 @@ public enum RectangleStyle {
    STYLE_3,
    STYLE_4,
    UNICODE_REGULAR,
+   UNICODE_ROUNDED,
    UNICODE_BOLD,
    UNICODE_DOUBLE,
    CHARACTERS;

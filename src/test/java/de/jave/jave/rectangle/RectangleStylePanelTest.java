@@ -35,12 +35,14 @@ public class RectangleStylePanelTest {
    public void switchingBackAndForthBetweenStylesKeepsTheStyleSelected() {
       RectangleStylePanel panel = new RectangleStylePanel(new MouseCharacterModel());
 
-      panel.setStyle(RectangleStyle.UNICODE_BOLD);
-      panel.setStyle(RectangleStyle.NORMAL);
-      panel.setStyle(RectangleStyle.UNICODE_BOLD);
+      for (RectangleStyle style : new RectangleStyle[]{RectangleStyle.UNICODE_BOLD, RectangleStyle.UNICODE_ROUNDED}) {
+         panel.setStyle(style);
+         panel.setStyle(RectangleStyle.NORMAL);
+         panel.setStyle(style);
 
-      Assert.assertEquals(RectangleStyle.UNICODE_BOLD, panel.getStyle());
-      Assert.assertArrayEquals(RectangleAlgorithm.getCharsForStyle(RectangleStyle.UNICODE_BOLD), panel.getCurrentChars());
+         Assert.assertEquals(style, panel.getStyle());
+         Assert.assertArrayEquals(RectangleAlgorithm.getCharsForStyle(style), panel.getCurrentChars());
+      }
    }
 
    @Test

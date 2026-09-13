@@ -3,7 +3,11 @@ package de.jave.jave;
 import de.jave.jave.algorithm.rectangle.RectangleStyle;
 import de.jave.jave.rectangle.RectangleStyleObjectUi;
 import de.jave.lib.CharacterPlate;
+import java.awt.Point;
 import java.awt.Rectangle;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
 import org.junit.Assert;
@@ -23,9 +27,12 @@ public class RectangleAlgorithmTest {
    }
 
    @Test
-   public void theUnicodeStylesDrawLightBoldAndDoubleBoxes() {
+   public void theUnicodeStylesDrawLightRoundedBoldAndDoubleBoxes() {
       Assert.assertArrayEquals(
          new String[]{"┌──┐", "│  │", "└──┘"}, drawBox(RectangleStyle.UNICODE_REGULAR)
+      );
+      Assert.assertArrayEquals(
+         new String[]{"╭──╮", "│  │", "╰──╯"}, drawBox(RectangleStyle.UNICODE_ROUNDED)
       );
       Assert.assertArrayEquals(
          new String[]{"┏━━┓", "┃  ┃", "┗━━┛"}, drawBox(RectangleStyle.UNICODE_BOLD)
@@ -44,6 +51,23 @@ public class RectangleAlgorithmTest {
 
             Assert.assertEquals(style, RectangleAlgorithm.getRectangleStyle(plate.glyphPlane()));
          }
+      }
+   }
+
+   @Test
+   public void roundedSettingsScreenIsRecognizedAsARoundedTextbox() throws IOException {
+      try (InputStream input = getClass().getResourceAsStream("rounded-settings-box.txt")) {
+         Assert.assertNotNull("missing rounded settings screen fixture", input);
+         String[] rows = new String(input.readAllBytes(), StandardCharsets.UTF_8).lines().toArray(String[]::new);
+         CharacterPlate plate = new CharacterPlate(rows);
+
+         Assert.assertEquals(RectangleStyle.UNICODE_ROUNDED, RectangleAlgorithm.getRectangleStyle(plate.glyphPlane()));
+
+         Selection selection = new Selection();
+         selection.set(new Point(0, 0), plate);
+         Assert.assertTrue(selection.isTextbox());
+         Assert.assertEquals(RectangleStyle.UNICODE_ROUNDED, selection.getTextboxStyle());
+         Assert.assertArrayEquals(rows, selection.getContent().toStringArray());
       }
    }
 
