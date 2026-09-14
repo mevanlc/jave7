@@ -158,3 +158,21 @@ tasks.register('macDeployToApplications', Copy) {
         applicationsDir.mkdirs()
     }
 }
+
+def menuProbeDir = layout.buildDirectory.dir('menu-search-probe')
+tasks.register('prepareMenuSearchUiProbe', Sync) {
+    into menuProbeDir
+    appBundleResourceDirs.each { resourceDir ->
+        from(resourceDir) { into resourceDir }
+    }
+}
+
+tasks.register('menuSearchUiProbe', JavaExec) {
+    group = 'verification'
+    description = 'Runs the interactive menu search probe with isolated preferences and recovery files.'
+    dependsOn tasks.named('testClasses'), tasks.named('prepareMenuSearchUiProbe')
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'de.jave.jave.menu.MenuSearchUiProbe'
+    workingDir = menuProbeDir.get().asFile
+    systemProperty 'jave.probeOutput', menuProbeDir.get().dir('output').asFile.absolutePath
+}

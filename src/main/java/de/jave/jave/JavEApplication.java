@@ -343,7 +343,7 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
          this.characterSets,
          this.undoRedoModel
       );
-      this.frame.setJMenuBar(this.menuBar);
+      this.menuBar.install(this.frame);
       this.updateUndoRedo();
       this.updateSelectionMenu();
    }
@@ -417,6 +417,9 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
 
    public void updateFrameTitle() {
       this.mainPanel.updateAllDocumentTitles();
+      if (this.menuBar != null) {
+         this.menuBar.updateWindowsMenu();
+      }
       IDocumentEditor activeEditor = this.mainPanel.getActiveEditorModel().getActiveEditor();
       if (activeEditor == null) {
          this.frame.setTitle(JaveTitleProvider.TITLE);

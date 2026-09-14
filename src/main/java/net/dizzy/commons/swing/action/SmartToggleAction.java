@@ -18,20 +18,23 @@ public class SmartToggleAction extends SmartAction {
 
    public SmartToggleAction(BooleanModel model, Icon icon) {
       super(icon);
-      this.model = model;
-      setSelected(Boolean.TRUE.equals(model.getValue()));
+      bindModel(model);
    }
 
    public SmartToggleAction(BooleanModel model, String name) {
       super(name);
-      this.model = model;
-      setSelected(Boolean.TRUE.equals(model.getValue()));
+      bindModel(model);
    }
 
    public SmartToggleAction(BooleanModel model, String name, Icon icon) {
       super(name, icon);
+      bindModel(model);
+   }
+
+   private void bindModel(BooleanModel model) {
       this.model = model;
       setSelected(Boolean.TRUE.equals(model.getValue()));
+      model.addChangeListener(() -> putValue(SELECTED_KEY, Boolean.TRUE.equals(model.getValue())));
    }
 
    @Override
