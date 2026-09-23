@@ -57,7 +57,6 @@ import net.dizzy.commons.swing.mousecursor.CursorProvider;
 public class Plate extends JComponent implements MouseListener, MouseMotionListener, KeyListener, InputMethodListener {
    private final JScrollPane scrollPanel;
    private IXorPainter xorPainter = null;
-   private boolean xorPainterDisplayed = false;
    private final CharacterSizeModel characterSizeModel = new CharacterSizeModel();
    private IStatusDisplay status;
    private List<IWatermarkPainter> watermarkPainters;
@@ -226,23 +225,15 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
    }
 
    public synchronized void setXORPainter(IXorPainter newPainter) {
-      if (this.xorPainterDisplayed && this.xorPainter != null) {
-         Graphics g = this.getGraphics();
-         if (g != null) {
-            this.xorPainter.paintXor(g);
-            this.xorPainterDisplayed = false;
-         }
-      }
-
+      IXorPainter previousPainter = this.xorPainter;
       this.xorPainter = newPainter;
-      if (newPainter == null) {
-         this.xorPainterDisplayed = false;
-      } else {
-         Graphics g = this.getGraphics();
-         if (g != null) {
-            this.xorPainter.paintXor(g);
-            this.xorPainterDisplayed = true;
-         }
+      // Use Swing's buffered presentation path. Direct getGraphics() drawing can
+      // sit in the Metal queue until its periodic flush, batching cursor moves.
+      if (previousPainter != null) {
+         this.repaint(previousPainter.getBounds());
+      }
+      if (newPainter != null) {
+         this.repaint(newPainter.getBounds());
       }
    }
 
@@ -791,14 +782,12 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
          this.paintActiveSecondaryLayerBounds(g, plateOrigin, colorScheme);
          this.paintIllegalCharacterMarks(g, plateOrigin);
          this.selection.paint(g, colorScheme);
-         this.xorPainterDisplayed = false;
          this.selection.paintBorder((Graphics2D)g, colorScheme);
          g.setFont(this.zoomFontModel.getFont());
          this.getCurrentTool().paintCursorFeature((Graphics2D)g, plateOrigin, colorScheme);
          synchronized (this) {
-            if (!this.xorPainterDisplayed && this.xorPainter != null) {
+            if (this.xorPainter != null) {
                this.xorPainter.paintXor(g);
-               this.xorPainterDisplayed = true;
             }
          }
       }

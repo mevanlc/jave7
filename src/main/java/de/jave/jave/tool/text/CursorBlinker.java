@@ -23,6 +23,9 @@ public class CursorBlinker implements FocusListener {
    private boolean hasSelection = false;
    private boolean insert = false;
    private final Timer timer;
+   private final Runnable putCursorAction = this::putCursorOnEventDispatchThread;
+   private final Runnable removeCursorAction = this::removeCursorOnEventDispatchThread;
+   private final Runnable updateCursorAction = this::updateCursorOnEventDispatchThread;
 
    public CursorBlinker(final ActiveEditorModel activePlateModel, BooleanPreferenceModel cursorBlockStyle) {
       Ensure.ensureArgumentNotNull(activePlateModel);
@@ -49,7 +52,6 @@ public class CursorBlinker implements FocusListener {
          }
       );
       this.timer.start();
-      this.timer.setInitialDelay(0);
       activePlateModel.addChangeListener(new IChangeListener() {
          @Override
          public void stateChanged() {
@@ -76,7 +78,7 @@ public class CursorBlinker implements FocusListener {
 
    @Override
    public void focusGained(FocusEvent evt) {
-      this.timer.restart();
+      this.updateCursor();
    }
 
    @Override
@@ -87,13 +89,17 @@ public class CursorBlinker implements FocusListener {
    public synchronized void setActive(boolean active) {
       this.active = active;
       if (active) {
-         this.putCursor();
+         this.updateCursor();
       } else {
          this.removeCursor();
       }
    }
 
    private synchronized void putCursor() {
+      runOnEventDispatchThread(this.putCursorAction);
+   }
+
+   private void putCursorOnEventDispatchThread() {
       if (this.currentPlate != null) {
          Point cursorLocation = this.currentPlate.getDocument().getCursorLocation();
          if (cursorLocation == null) {
@@ -106,36 +112,47 @@ public class CursorBlinker implements FocusListener {
                style = TextCursorStyle.BLOCK;
             }
 
-            final JaveTextCursor newPainter = new JaveTextCursor(
+            JaveTextCursor newPainter = new JaveTextCursor(
                this.currentPlate.getScreenPointFor(cursorLocation), style, this.currentPlate.getCharacterMetrics()
             );
-            SwingUtilities.invokeLater(new Runnable() {
-               @Override
-               public void run() {
-                  CursorBlinker.this.currentPlate.setXORPainter(newPainter);
-                  CursorBlinker.this.cursorShowing = true;
-               }
-            });
+            this.currentPlate.setXORPainter(newPainter);
+            this.cursorShowing = true;
          }
       }
    }
 
    private synchronized void removeCursor() {
-      SwingUtilities.invokeLater(new Runnable() {
-         @Override
-         public void run() {
-            if (CursorBlinker.this.currentPlate != null) {
-               CursorBlinker.this.currentPlate.setXORPainter(null);
-            }
+      runOnEventDispatchThread(this.removeCursorAction);
+   }
 
-            CursorBlinker.this.cursorShowing = false;
-         }
-      });
+   private void removeCursorOnEventDispatchThread() {
+      if (this.currentPlate != null) {
+         this.currentPlate.setXORPainter(null);
+      }
+      this.cursorShowing = false;
    }
 
    public synchronized void updateCursor() {
-      this.removeCursor();
-      this.timer.restart();
+      runOnEventDispatchThread(this.updateCursorAction);
+   }
+
+   private void updateCursorOnEventDispatchThread() {
+      if (this.currentPlate != null && this.active && this.currentPlate.isFocusOwner() && !this.hasSelection) {
+         // Replace the old cursor in the same EDT turn, without a queued hidden phase.
+         this.putCursor();
+         // Keep the cursor visible for a full blink interval after the latest movement.
+         this.timer.restart();
+      } else {
+         this.removeCursor();
+      }
+   }
+
+   private static void runOnEventDispatchThread(Runnable action) {
+      if (SwingUtilities.isEventDispatchThread()) {
+         action.run();
+      } else {
+         SwingUtilities.invokeLater(action);
+      }
    }
 
    public void setHasSelection(boolean hasSelection) {

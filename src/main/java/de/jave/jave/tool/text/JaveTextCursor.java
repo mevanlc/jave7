@@ -5,6 +5,7 @@ import de.jave.gui.xor.IXorPainter;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Rectangle;
 import net.dizzy.commons.core.util.Ensure;
 import net.dizzy.commons.swing.util.EventDispatchThreadUtilities;
 
@@ -23,6 +24,14 @@ public class JaveTextCursor implements IXorPainter {
       this.location = location;
       this.characterMetrics = characterMetrics;
       this.id = ++counter;
+   }
+
+   @Override
+   public Rectangle getBounds() {
+      Rectangle bounds = new Rectangle(this.location.x, this.location.y, this.characterMetrics.getWidth() + 1, this.characterMetrics.getHeight() + 1);
+      // Line cursors can extend outside very small cells at low zoom levels.
+      bounds.grow(2, 2);
+      return bounds;
    }
 
    @Override
