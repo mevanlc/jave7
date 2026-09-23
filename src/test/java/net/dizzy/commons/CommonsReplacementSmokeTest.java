@@ -123,4 +123,72 @@ public class CommonsReplacementSmokeTest {
       assertEquals(0, tabbedPane.getSelectedTabIndex());
       assertEquals(2, selections.get());
    }
+
+   @Test
+   public void smartTabbedPaneActiveTabLighterThanInactiveTab() {
+      java.awt.Color activeBg = SmartTabbedPane.TabButton.getActiveBackground();
+      java.awt.Color inactiveBg = SmartTabbedPane.TabButton.getInactiveBackground();
+
+      double activeBrightness = (0.299 * activeBg.getRed() + 0.587 * activeBg.getGreen() + 0.114 * activeBg.getBlue()) / 255.0;
+      double inactiveBrightness = (0.299 * inactiveBg.getRed() + 0.587 * inactiveBg.getGreen() + 0.114 * inactiveBg.getBlue()) / 255.0;
+
+      assertTrue("Active tab background must be lighter than inactive tab background", activeBrightness > inactiveBrightness);
+   }
+
+   @Test
+   public void smartTabbedPanePreventsDeselectionOfActiveTab() {
+      SmartTabbedPane tabbedPane = new SmartTabbedPane((pane, index) -> {});
+      tabbedPane.addTab("Tab 1", new JPanel());
+      tabbedPane.addTab("Tab 2", new JPanel());
+
+      JPanel tabBar = (JPanel)tabbedPane.getContent().getComponent(0);
+      JToggleButton tab1Button = (JToggleButton) tabBar.getComponent(0);
+      JToggleButton tab2Button = (JToggleButton) tabBar.getComponent(1);
+
+      assertTrue(tab1Button.isSelected());
+      assertFalse(tab2Button.isSelected());
+
+      // Clicking already active tab must NOT deselect it
+      tab1Button.doClick();
+      assertTrue("Active tab must remain selected after clicking it", tab1Button.isSelected());
+      assertFalse(tab2Button.isSelected());
+      assertEquals(0, tabbedPane.getSelectedTabIndex());
+
+      // Clicking inactive tab selects it
+      tab2Button.doClick();
+      assertFalse(tab1Button.isSelected());
+      assertTrue(tab2Button.isSelected());
+      assertEquals(1, tabbedPane.getSelectedTabIndex());
+
+      // Clicking active tab again must remain selected
+      tab2Button.doClick();
+      assertTrue(tab2Button.isSelected());
+      assertEquals(1, tabbedPane.getSelectedTabIndex());
+   }
+
+   @Test
+   public void smartTabbedPaneClosingAndRecreatingTabs() {
+      SmartTabbedPane tabbedPane = new SmartTabbedPane((pane, index) -> {});
+      tabbedPane.addTab("Tab 1", new JPanel());
+      tabbedPane.addTab("Tab 2", new JPanel());
+      tabbedPane.addTab("Tab 3", new JPanel());
+
+      assertEquals(0, tabbedPane.getSelectedTabIndex());
+
+      // Close middle tab
+      tabbedPane.removeTab(1);
+      assertEquals(0, tabbedPane.getSelectedTabIndex());
+
+      // Close remaining tabs
+      tabbedPane.removeTab(0);
+      tabbedPane.removeTab(0);
+      assertEquals(-1, tabbedPane.getSelectedTabIndex());
+
+      // Create new tab after emptying
+      tabbedPane.addTab("New Tab", new JPanel());
+      assertEquals(0, tabbedPane.getSelectedTabIndex());
+      JPanel tabBar = (JPanel)tabbedPane.getContent().getComponent(0);
+      assertTrue(((JToggleButton)tabBar.getComponent(0)).isSelected());
+   }
 }
+

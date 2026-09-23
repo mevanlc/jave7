@@ -176,3 +176,21 @@ tasks.register('menuSearchUiProbe', JavaExec) {
     workingDir = menuProbeDir.get().asFile
     systemProperty 'jave.probeOutput', menuProbeDir.get().dir('output').asFile.absolutePath
 }
+
+def tabProbeDir = layout.buildDirectory.dir('tab-ui-probe')
+tasks.register('prepareDocumentTabUiProbe', Sync) {
+    into tabProbeDir
+    appBundleResourceDirs.each { resourceDir ->
+        from(resourceDir) { into resourceDir }
+    }
+}
+
+tasks.register('documentTabUiProbe', JavaExec) {
+    group = 'verification'
+    description = 'Runs the interactive document tab UI probe with isolated preferences and recovery files.'
+    dependsOn tasks.named('testClasses'), tasks.named('prepareDocumentTabUiProbe')
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'de.jave.jave.tab.DocumentTabUiProbe'
+    workingDir = tabProbeDir.get().asFile
+    systemProperty 'jave.probeOutput', tabProbeDir.get().dir('output').asFile.absolutePath
+}

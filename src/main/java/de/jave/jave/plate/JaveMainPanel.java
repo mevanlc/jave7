@@ -51,6 +51,12 @@ public class JaveMainPanel {
       this.tabbedPane.addTabSelectionChangeListener(new IChangeListener() {
          @Override
          public void stateChanged() {
+            int selectedIndex = JaveMainPanel.this.tabbedPane.getSelectedTabIndex();
+            if (selectedIndex >= 0 && selectedIndex < JaveMainPanel.this.editors.size()) {
+               if (jave.getDocumentManager().getCurrentDocumentIndex() != selectedIndex) {
+                  jave.setCurrentDocument(selectedIndex);
+               }
+            }
             JaveMainPanel.this.activeEditorModel.setActiveEditor(JaveMainPanel.this.getEditor());
          }
       });
@@ -281,6 +287,9 @@ public class JaveMainPanel {
 
    public synchronized void closeCurrentEditor() {
       int index = this.tabbedPane.getSelectedTabIndex();
+      if (index < 0 || index >= this.editors.size()) {
+         return;
+      }
       IDocumentEditor editor = this.editors.remove(index);
       editor.dispose();
       this.tabbedPane.removeTab(index);

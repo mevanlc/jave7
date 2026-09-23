@@ -533,6 +533,9 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
 
    public boolean doClose(Component parentComponent) {
       IDocumentEditor editor = this.mainPanel.getEditor();
+      if (editor == null) {
+         return true;
+      }
       if (!editor.isModified()) {
          this.documentManager.closeCurrentDocument();
          this.mainPanel.closeCurrentEditor();
@@ -1017,9 +1020,9 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
    }
 
    public void setCurrentDocument(int index) {
-      PlateDocument d = this.mainPanel.getDocument();
-      if (d != null) {
-         d.documentHiding();
+      PlateDocument previousDoc = this.documentManager.getCurrentDocument();
+      if (previousDoc != null) {
+         previousDoc.documentHiding();
       }
 
       if (index >= 0 && index < this.documentManager.getSize()) {
@@ -1028,7 +1031,9 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
          this.mainPanel.setCurrentEditor(index);
          this.updateUndoRedo();
          this.mainPanel.repaint();
-         currentDoc.documentShowing();
+         if (currentDoc != null) {
+            currentDoc.documentShowing();
+         }
       } else {
          this.updateUndoRedo();
       }
