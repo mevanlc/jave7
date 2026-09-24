@@ -15,6 +15,7 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
@@ -111,42 +112,25 @@ public abstract class Tool implements ItemListener, ActionListener {
       return this.mainPanel.getCurrentTool() == this;
    }
 
-   public static final void setMetaDown(boolean what) {
-      metaDown = what;
-   }
-
-   public void shiftReleased() {
-      if (shiftDown) {
-         shiftDown = false;
-         if (this.markPlate != null) {
-            this.repaintCursor();
-         }
+   public final void updateModifiers(int modifiersEx) {
+      boolean shift = (modifiersEx & InputEvent.SHIFT_DOWN_MASK) != 0;
+      boolean control = (modifiersEx & InputEvent.CTRL_DOWN_MASK) != 0;
+      boolean alt = (modifiersEx & InputEvent.ALT_DOWN_MASK) != 0;
+      boolean meta = (modifiersEx & InputEvent.META_DOWN_MASK) != 0;
+      boolean changed = shiftDown != shift || controlDown != control || altDown != alt || metaDown != meta;
+      shiftDown = shift;
+      controlDown = control;
+      altDown = alt;
+      metaDown = meta;
+      if (changed) {
+         this.modifiersChanged();
       }
    }
 
-   public void shiftPressed() {
-      if (!shiftDown) {
-         shiftDown = true;
-         if (this.markPlate != null) {
-            this.repaintCursor();
-         }
+   protected void modifiersChanged() {
+      if (this.markPlate != null) {
+         this.repaintCursor();
       }
-   }
-
-   public void altReleased() {
-      altDown = false;
-   }
-
-   public void altPressed() {
-      altDown = true;
-   }
-
-   public final void controlReleased() {
-      controlDown = false;
-   }
-
-   public final void controlPressed() {
-      controlDown = true;
    }
 
    public static final Point getQuadraticLocation(Point location1, Point location2, boolean isShiftDown) {

@@ -17,6 +17,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Line2D;
 import javax.swing.Icon;
 import net.dizzy.commons.core.model.listener.IChangeListener;
 import net.dizzy.commons.swing.mousecursor.CursorId;
@@ -65,18 +66,18 @@ public class LineAlgorithmicTool extends Tool {
    @Override
    public void takeToHand() {
       this.setCursor(CursorProvider.getInstance().getCursor(CursorId.CROSSHAIR_SELECTION));
-      shiftDown = false;
    }
 
    @Override
    public void putAside(boolean nextToolIsSelectionTool) {
+      this.clearGesture();
    }
 
    @Override
    public void mousePressed(Point point, Point location, MouseEvent evt) {
       if (location != null) {
-         this.point1 = point;
-         this.point2 = point;
+         this.point1 = new Point(point);
+         this.point2 = new Point(point);
          this.markPlate = this.createMarkPlate(location);
          this.markPlate.setMode(PixelPlateMode.CHAR);
          this.markPlate.setCharacter(this.getMouseChar());
@@ -90,8 +91,7 @@ public class LineAlgorithmicTool extends Tool {
          this.point2 = null;
          this.repaintCursor();
       } else if (!point.equals(this.point2)) {
-         this.point2 = point;
-         shiftDown = evt.isShiftDown();
+         this.point2 = new Point(point);
          this.repaintCursor();
       }
    }
@@ -100,25 +100,30 @@ public class LineAlgorithmicTool extends Tool {
    public void mouseReleased(Point point, Point location, MouseEvent evt) {
       if (this.point1 != null && point != null && location != null) {
          if (this.markPlate != null) {
+            this.point2 = new Point(point);
             this.setMixMode(this.isMix());
             this.drawResult();
             LocatedCharacterPlate result = this.markPlate.convert();
             result.pasteInto(this.getPlate().getContent());
-            this.markPlate = null;
             this.saveCurrentState("draw line");
             this.repaintAll();
          }
       }
+      this.clearGesture();
+   }
+
+   private void clearGesture() {
+      this.point1 = null;
+      this.point2 = null;
+      this.markPlate = null;
+      this.repaintCursor();
    }
 
    @Override
    public void keyPressed(int code, KeyEvent evt) {
       if (this.markPlate != null) {
          if (code == 27) {
-            this.point1 = null;
-            this.point2 = null;
-            this.markPlate = null;
-            this.repaintCursor();
+            this.clearGesture();
          } else if (code == 38 && this.point1 != null) {
             this.point1.y--;
             this.repaintCursor();
@@ -159,19 +164,40 @@ public class LineAlgorithmicTool extends Tool {
    @Override
    public void paintCursorFeature(Graphics2D g, Point plateOrigin, ColorScheme colorScheme) {
       if (this.markPlate != null && this.point1 != null && this.point2 != null) {
+         Point2d start = this.getEndpoint(this.point1, controlDown);
+         Point2d end = this.getEndpoint(this.point2, altDown);
          g.setColor(colorScheme.getColorToolHelping());
-         g.drawLine(this.point1.x, this.point1.y, this.point2.x, this.point2.y);
-         this.drawResult();
+         g.draw(new Line2D.Double(
+            plateOrigin.x + start.getX() * this.getPlate().getCharWidth(),
+            plateOrigin.y + start.getY() * this.getPlate().getCharHeight(),
+            plateOrigin.x + end.getX() * this.getPlate().getCharWidth(),
+            plateOrigin.y + end.getY() * this.getPlate().getCharHeight()
+         ));
+         this.drawResult(start, end);
          LocatedCharacterPlate result = this.markPlate.convert();
          PixelPlateRenderer.paint(g, this.getPlate(), colorScheme, result, plateOrigin);
       }
    }
 
    private void drawResult() {
+      this.drawResult(this.getEndpoint(this.point1, controlDown), this.getEndpoint(this.point2, altDown));
+   }
+
+   private Point2d getEndpoint(Point point, boolean snap) {
+      return snapEndpoint(this.getPlate().getRealLocationForScreenPoint(point), snap);
+   }
+
+   static Point2d snapEndpoint(Point2d point, boolean snap) {
+      return snap
+         ? new Point2d(Math.floor(point.getX()) + 0.5, Math.floor(point.getY()) + 0.5)
+         : new Point2d(point);
+   }
+
+   private void drawResult(Point2d start, Point2d end) {
       AlgorithmicLineStyle style = this.options.getStyle();
       this.markPlate.clear();
-      Point2d pp1 = this.getPlate().getRealLocationForScreenPoint(this.point1);
-      Point2d pp2 = this.getPlate().getRealLocationForScreenPoint(this.point2);
+      Point2d pp1 = new Point2d(start);
+      Point2d pp2 = new Point2d(end);
       pp1.translate(-0.5, -0.5);
       pp2.translate(-0.5, -0.5);
       this.drawConfiguredLine(pp1.getX(), pp1.getY(), pp2.getX(), pp2.getY(), style, shiftDown);

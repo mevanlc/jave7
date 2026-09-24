@@ -109,7 +109,6 @@ public class RectangleAlgorithmicTool extends Tool {
    @Override
    public void mousePressed(Point point, Point location, MouseEvent evt) {
       if (location != null) {
-         shiftDown = evt.isShiftDown();
          this.clickLocation = location;
          this.dragLocation = location;
          this.markPlate = this.createMarkPlate(location);

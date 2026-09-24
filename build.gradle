@@ -194,3 +194,21 @@ tasks.register('documentTabUiProbe', JavaExec) {
     workingDir = tabProbeDir.get().asFile
     systemProperty 'jave.probeOutput', tabProbeDir.get().dir('output').asFile.absolutePath
 }
+
+def drawingProbeDir = layout.buildDirectory.dir('drawing-modifiers-probe')
+tasks.register('prepareDrawingModifiersUiProbe', Sync) {
+    into drawingProbeDir
+    appBundleResourceDirs.each { resourceDir ->
+        from(resourceDir) { into resourceDir }
+    }
+}
+
+tasks.register('drawingModifiersUiProbe', JavaExec) {
+    group = 'verification'
+    description = 'Checks shared modifiers and endpoint snapping with isolated preferences and native input.'
+    dependsOn tasks.named('testClasses'), tasks.named('prepareDrawingModifiersUiProbe')
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'de.jave.jave.DrawingModifiersUiProbe'
+    workingDir = drawingProbeDir.get().asFile
+    systemProperty 'jave.probeOutput', drawingProbeDir.get().dir('output').asFile.absolutePath
+}

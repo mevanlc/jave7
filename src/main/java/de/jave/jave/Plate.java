@@ -33,6 +33,9 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.InputMethodEvent;
@@ -66,9 +69,6 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
    private boolean keyMark1 = false;
    private boolean keyMark2 = false;
    private boolean keyMark3 = false;
-   private boolean shiftDown = false;
-   private boolean controlDown = false;
-   private boolean altDown = false;
    private boolean mouseRightButton = false;
    private char pendingHighSurrogate;
    private final AsciiRulerProperties rulerProperties;
@@ -128,6 +128,15 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
       this.addMouseListener(this);
       this.addMouseMotionListener(this);
       this.addKeyListener(this);
+      this.addFocusListener(new FocusAdapter() {
+         @Override
+         public void focusLost(FocusEvent evt) {
+            Tool tool = Plate.this.getCurrentTool();
+            if (tool != null) {
+               tool.updateModifiers(0);
+            }
+         }
+      });
       this.enableInputMethods(true);
       this.addInputMethodListener(this);
       this.scrollPanel = new JScrollPane(this);
@@ -959,7 +968,7 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
 
    @Override
    public void mouseClicked(MouseEvent evt) {
-      Tool.setMetaDown(evt.isMetaDown());
+      this.updateModifiers(evt);
       if (this.document != null) {
          this.getCurrentTool().mouseClicked(evt.getPoint(), this.getLocationForScreenPoint(evt.getPoint()), evt);
       }
@@ -967,8 +976,8 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
 
    @Override
    public void mousePressed(MouseEvent evt) {
+      this.updateModifiers(evt);
       this.requestFocus();
-      Tool.setMetaDown(evt.isMetaDown());
       this.mouseRightButton = evt.isMetaDown();
       if (this.document != null) {
          this.getCurrentTool().mousePressed(evt.getPoint(), this.getLocationForScreenPoint(evt.getPoint()), evt);
@@ -977,25 +986,16 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
 
    @Override
    public void mouseReleased(MouseEvent evt) {
+      this.updateModifiers(evt);
       if (this.document != null) {
-         Tool.setMetaDown(evt.isMetaDown());
          this.getCurrentTool().mouseReleased(evt.getPoint(), this.getLocationForScreenPointAnywhere(evt.getPoint()), evt);
-         if (this.shiftDown) {
-            this.shiftDown = false;
-            this.getCurrentTool().shiftReleased();
-         }
-
-         if (this.controlDown) {
-            this.controlDown = false;
-            this.getCurrentTool().controlReleased();
-         }
-
          this.mouseRightButton = false;
       }
    }
 
    @Override
    public void mouseEntered(MouseEvent evt) {
+      this.updateModifiers(evt);
       if (this.document == null) {
          this.setCursor(Cursor.getDefaultCursor());
       } else {
@@ -1006,6 +1006,7 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
 
    @Override
    public void mouseExited(MouseEvent evt) {
+      this.updateModifiers(evt);
       if (this.document != null) {
          this.showStatus("");
          this.getCurrentTool().mouseExited(evt.getPoint(), this.getLocationForScreenPoint(evt.getPoint()), evt);
@@ -1014,6 +1015,7 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
 
    @Override
    public void mouseMoved(MouseEvent evt) {
+      this.updateModifiers(evt);
       if (this.document != null) {
          Point location = this.getLocationForScreenPoint(evt.getPoint());
          this.showCoordinates(location);
@@ -1036,6 +1038,7 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
 
    @Override
    public void mouseDragged(MouseEvent evt) {
+      this.updateModifiers(evt);
       if (this.document != null) {
          this.scrollRectToVisible(new Rectangle(evt.getX(), evt.getY(), 1, 1));
          Point location = this.getLocationForScreenPointAnywhere(evt.getPoint());
@@ -1050,6 +1053,7 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
 
    @Override
    public void keyTyped(KeyEvent evt) {
+      this.updateModifiers(evt);
       if (this.document != null) {
          char ch = evt.getKeyChar();
          if (this.keyMark1) {
@@ -1190,6 +1194,7 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
 
    @Override
    public void keyPressed(KeyEvent evt) {
+      this.updateModifiers(evt);
       if (this.document != null) {
          int code = evt.getKeyCode();
          switch (code) {
@@ -1266,21 +1271,6 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
                this.keyMark3 = true;
             }
 
-            if (!this.shiftDown && evt.isShiftDown()) {
-               this.shiftDown = true;
-               this.getCurrentTool().shiftPressed();
-            }
-
-            if (!this.controlDown && evt.isControlDown()) {
-               this.controlDown = true;
-               this.getCurrentTool().controlPressed();
-            }
-
-            if (!this.altDown && evt.isAltDown()) {
-               this.altDown = true;
-               this.getCurrentTool().altPressed();
-            }
-
             this.getCurrentTool().keyPressed(code, evt);
          }
       }
@@ -1318,22 +1308,16 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
 
    @Override
    public void keyReleased(KeyEvent evt) {
+      this.updateModifiers(evt);
       if (this.document != null) {
          this.getCurrentTool().keyReleased(evt);
-         if (this.shiftDown) {
-            this.shiftDown = false;
-            this.getCurrentTool().shiftReleased();
-         }
+      }
+   }
 
-         if (this.controlDown) {
-            this.controlDown = false;
-            this.getCurrentTool().controlReleased();
-         }
-
-         if (this.altDown) {
-            this.altDown = false;
-            this.getCurrentTool().altReleased();
-         }
+   private void updateModifiers(InputEvent evt) {
+      Tool tool = this.getCurrentTool();
+      if (tool != null) {
+         tool.updateModifiers(evt.getModifiersEx());
       }
    }
 

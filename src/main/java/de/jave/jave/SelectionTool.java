@@ -151,7 +151,7 @@ public class SelectionTool extends Tool {
 
    @Override
    public void takeToHand() {
-      this.setCursor(CursorProvider.getInstance().getCursor(CursorId.CROSSHAIR_SELECTION));
+      this.updateModifierCursor();
       this.setMixMode(this.mergeCharactersModel.getValue());
       this.timer.start();
    }
@@ -231,14 +231,6 @@ public class SelectionTool extends Tool {
 
    @Override
    public void keyPressed(int code, KeyEvent evt) {
-      if (this.hasSelection()) {
-         if (shiftDown) {
-            this.setCursor(CursorProvider.getInstance().getCursor(CursorId.CROSSHAIR_SELECTION_PLUS));
-         } else if (controlDown) {
-            this.setCursor(CursorProvider.getInstance().getCursor(CursorId.CROSSHAIR_SELECTION_MINUS));
-         }
-      }
-
       if (code != 27 || this.hasSelection() && this.mode != 11 && this.mode != 12) {
          if (this.hasSelection()) {
             if (altDown && code == 38) {
@@ -441,15 +433,30 @@ public class SelectionTool extends Tool {
          this.resizedByCursor = false;
          this.saveCurrentState("resize selection");
       }
+   }
 
-      if (this.mode == 11 || this.mode == 12) {
-         this.mode = 1;
+   @Override
+   protected void modifiersChanged() {
+      super.modifiersChanged();
+      if ((this.mode == SELECT_PLUS && !shiftDown) || (this.mode == SELECT_MINUS && !controlDown)) {
+         this.mode = NONE;
          this.location1 = null;
          this.location2 = null;
          this.repaintCursor();
       }
+      this.updateModifierCursor();
+   }
 
-      this.setCursor(CursorProvider.getInstance().getCursor(CursorId.CROSSHAIR_SELECTION));
+   private void updateModifierCursor() {
+      CursorId cursorId = CursorId.CROSSHAIR_SELECTION;
+      if (this.hasSelection()) {
+         if (shiftDown) {
+            cursorId = CursorId.CROSSHAIR_SELECTION_PLUS;
+         } else if (controlDown) {
+            cursorId = CursorId.CROSSHAIR_SELECTION_MINUS;
+         }
+      }
+      this.setCursor(CursorProvider.getInstance().getCursor(cursorId));
    }
 
    @Override

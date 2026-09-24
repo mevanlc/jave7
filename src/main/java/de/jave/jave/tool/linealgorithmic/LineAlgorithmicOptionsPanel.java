@@ -111,7 +111,7 @@ public class LineAlgorithmicOptionsPanel implements IInlineToolOptions {
       arrowPanel.add(createSpinnerPanel("Size:", arrowheadSizeSpinner), GridDialogLayoutData.FILL_HORIZONTAL);
       arrowPanel.add(createSpinnerPanel("Angle:", arrowheadAngleSpinner), GridDialogLayoutData.FILL_HORIZONTAL);
       arrowPanel.add(cardinalTipsCheckBox, GridDialogLayoutData.FILL_HORIZONTAL);
-      arrowPanel.add(snapArrowAngleCheckBox, GridDialogLayoutData.FILL_HORIZONTAL);
+      arrowPanel.add(snapArrowAngleCheckBox, "growx, pushx, gaptop 4px");
       optionsPanel.add(arrowPanel, GridDialogLayoutData.FILL_HORIZONTAL);
       this.content = optionsPanel;
    }
