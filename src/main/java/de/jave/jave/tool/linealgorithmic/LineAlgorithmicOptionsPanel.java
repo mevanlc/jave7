@@ -53,6 +53,7 @@ public class LineAlgorithmicOptionsPanel implements IInlineToolOptions {
       );
       final JSpinner arrowheadAngleSpinner = new JSpinner(arrowheadAngleModel);
       final JCheckBox cardinalTipsCheckBox = new JCheckBox("Cardinal tips", options.isCardinalTips());
+      final JCheckBox snapArrowAngleCheckBox = new JCheckBox("Snap Arrow Angle", options.isSnapArrowAngle());
 
       arrowheadPlacementComboBox.addActionListener(new ActionListener() {
          @Override
@@ -78,6 +79,12 @@ public class LineAlgorithmicOptionsPanel implements IInlineToolOptions {
             options.setCardinalTips(cardinalTipsCheckBox.isSelected());
          }
       });
+      snapArrowAngleCheckBox.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e) {
+            options.setSnapArrowAngle(snapArrowAngleCheckBox.isSelected());
+         }
+      });
       options.addChangeListener(new IChangeListener() {
          @Override
          public void stateChanged() {
@@ -85,6 +92,7 @@ public class LineAlgorithmicOptionsPanel implements IInlineToolOptions {
             arrowheadSizeModel.setValue(Integer.valueOf(options.getArrowheadSize()));
             arrowheadAngleModel.setValue(Integer.valueOf(options.getArrowheadAngle()));
             cardinalTipsCheckBox.setSelected(options.isCardinalTips());
+            snapArrowAngleCheckBox.setSelected(options.isSnapArrowAngle());
          }
       });
 
@@ -103,6 +111,7 @@ public class LineAlgorithmicOptionsPanel implements IInlineToolOptions {
       arrowPanel.add(createSpinnerPanel("Size:", arrowheadSizeSpinner), GridDialogLayoutData.FILL_HORIZONTAL);
       arrowPanel.add(createSpinnerPanel("Angle:", arrowheadAngleSpinner), GridDialogLayoutData.FILL_HORIZONTAL);
       arrowPanel.add(cardinalTipsCheckBox, GridDialogLayoutData.FILL_HORIZONTAL);
+      arrowPanel.add(snapArrowAngleCheckBox, GridDialogLayoutData.FILL_HORIZONTAL);
       optionsPanel.add(arrowPanel, GridDialogLayoutData.FILL_HORIZONTAL);
       this.content = optionsPanel;
    }

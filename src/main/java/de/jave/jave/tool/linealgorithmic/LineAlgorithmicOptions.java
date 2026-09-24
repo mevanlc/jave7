@@ -10,6 +10,7 @@ public class LineAlgorithmicOptions extends AbstractChangeableModel {
    private static final String KEY_ARROWHEAD_SIZE = "arrowheadSize";
    private static final String KEY_ARROWHEAD_ANGLE = "arrowheadAngle";
    private static final String KEY_CARDINAL_TIPS = "cardinalTips";
+   private static final String KEY_SNAP_ARROW_ANGLE = "snapArrowAngle";
    public static final int ARROWHEAD_SIZE_MIN = 1;
    public static final int ARROWHEAD_SIZE_MAX = 12;
    public static final int ARROWHEAD_ANGLE_MIN = 10;
@@ -19,12 +20,14 @@ public class LineAlgorithmicOptions extends AbstractChangeableModel {
    private static final int DEFAULT_ARROWHEAD_SIZE = 3;
    private static final int DEFAULT_ARROWHEAD_ANGLE = 35;
    private static final boolean DEFAULT_CARDINAL_TIPS = true;
+   private static final boolean DEFAULT_SNAP_ARROW_ANGLE = false;
 
    private AlgorithmicLineStyle style = DEFAULT_STYLE;
    private ArrowheadPlacement arrowheadPlacement = DEFAULT_ARROWHEAD_PLACEMENT;
    private int arrowheadSize = DEFAULT_ARROWHEAD_SIZE;
    private int arrowheadAngle = DEFAULT_ARROWHEAD_ANGLE;
    private boolean cardinalTips = DEFAULT_CARDINAL_TIPS;
+   private boolean snapArrowAngle = DEFAULT_SNAP_ARROW_ANGLE;
 
    public void loadFrom(SmartPreferences preferences) {
       Ensure.ensureArgumentNotNull(preferences);
@@ -37,6 +40,7 @@ public class LineAlgorithmicOptions extends AbstractChangeableModel {
          preferences, KEY_ARROWHEAD_ANGLE, DEFAULT_ARROWHEAD_ANGLE, ARROWHEAD_ANGLE_MIN, ARROWHEAD_ANGLE_MAX
       );
       this.cardinalTips = preferences.getBoolean(KEY_CARDINAL_TIPS, DEFAULT_CARDINAL_TIPS);
+      this.snapArrowAngle = preferences.getBoolean(KEY_SNAP_ARROW_ANGLE, DEFAULT_SNAP_ARROW_ANGLE);
    }
 
    public void saveTo(SmartPreferences preferences) {
@@ -46,6 +50,7 @@ public class LineAlgorithmicOptions extends AbstractChangeableModel {
       preferences.put(KEY_ARROWHEAD_SIZE, this.arrowheadSize);
       preferences.put(KEY_ARROWHEAD_ANGLE, this.arrowheadAngle);
       preferences.put(KEY_CARDINAL_TIPS, this.cardinalTips);
+      preferences.put(KEY_SNAP_ARROW_ANGLE, this.snapArrowAngle);
    }
 
    public AlgorithmicLineStyle getStyle() {
@@ -103,6 +108,17 @@ public class LineAlgorithmicOptions extends AbstractChangeableModel {
    public void setCardinalTips(boolean cardinalTips) {
       if (this.cardinalTips != cardinalTips) {
          this.cardinalTips = cardinalTips;
+         this.fireChangeEvent();
+      }
+   }
+
+   public boolean isSnapArrowAngle() {
+      return this.snapArrowAngle;
+   }
+
+   public void setSnapArrowAngle(boolean snapArrowAngle) {
+      if (this.snapArrowAngle != snapArrowAngle) {
+         this.snapArrowAngle = snapArrowAngle;
          this.fireChangeEvent();
       }
    }

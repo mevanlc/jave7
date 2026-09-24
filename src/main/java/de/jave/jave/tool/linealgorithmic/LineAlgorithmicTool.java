@@ -149,6 +149,9 @@ public class LineAlgorithmicTool extends Tool {
          } else if (code == KeyEvent.VK_C) {
             this.options.setCardinalTips(!this.options.isCardinalTips());
             this.repaintCursor();
+         } else if (code == KeyEvent.VK_S) {
+            this.options.setSnapArrowAngle(!this.options.isSnapArrowAngle());
+            this.repaintCursor();
          }
       }
    }
@@ -192,13 +195,55 @@ public class LineAlgorithmicTool extends Tool {
          return;
       }
 
-      double visualDx = dx / CORRECT_FACTOR;
-      double theta = Math.atan2(dy, visualDx);
+      double visualDx;
+      double arrowDy;
+      double theta;
+      boolean allowCardinalTip = true;
+      if (this.options.isSnapArrowAngle()) {
+         Point2d snappedDirection = getSnappedCardinalDirection(dx, dy);
+         visualDx = snappedDirection.getX() / CORRECT_FACTOR;
+         arrowDy = snappedDirection.getY();
+         theta = Math.atan2(arrowDy, visualDx);
+         allowCardinalTip = snappedDirection.getX() == 0.0 || snappedDirection.getY() == 0.0;
+      } else {
+         visualDx = dx / CORRECT_FACTOR;
+         arrowDy = dy;
+         theta = Math.atan2(dy, visualDx);
+      }
+
       double headAngle = Math.toRadians(this.options.getArrowheadAngle());
       double headLength = this.options.getArrowheadSize();
       this.drawArrowheadLeg(tip, theta + Math.PI - headAngle, headLength, style);
       this.drawArrowheadLeg(tip, theta + Math.PI + headAngle, headLength, style);
-      this.drawCardinalTip(tip, visualDx, dy);
+      if (allowCardinalTip) {
+         this.drawCardinalTip(tip, visualDx, arrowDy);
+      }
+   }
+
+   static Point2d getSnappedCardinalDirection(double dx, double dy) {
+      double angle = Math.atan2(dy, dx);
+      long octant = Math.round(angle / (Math.PI / 4.0));
+      int index = (int)(((octant % 8) + 8) % 8);
+      switch (index) {
+         case 0:
+            return new Point2d(1.0, 0.0);
+         case 1:
+            return new Point2d(1.0, 1.0);
+         case 2:
+            return new Point2d(0.0, 1.0);
+         case 3:
+            return new Point2d(-1.0, 1.0);
+         case 4:
+            return new Point2d(-1.0, 0.0);
+         case 5:
+            return new Point2d(-1.0, -1.0);
+         case 6:
+            return new Point2d(0.0, -1.0);
+         case 7:
+            return new Point2d(1.0, -1.0);
+         default:
+            return new Point2d(1.0, 0.0);
+      }
    }
 
    private void drawArrowheadLeg(Point2d tip, double angle, double headLength, AlgorithmicLineStyle style) {
