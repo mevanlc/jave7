@@ -1,3 +1,3 @@
-# unofficial https://jave.de fork
+# unofficial http://jave.de fork
 
 (hi spoon!)
