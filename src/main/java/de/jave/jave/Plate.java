@@ -723,6 +723,16 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
       this.saveCurrentState(null);
    }
 
+   /** Refresh cursor metadata without adding an undo step or discarding redo. */
+   public void rememberCursorForUndo() {
+      if (this.document != null && this.document.getUndoManager() != null) {
+         CompressedDocumentState state = (CompressedDocumentState)this.document.getUndoManager().getCurrentState();
+         Point cursor = this.document.getCursorLocation();
+         state.setCursorX(cursor.x);
+         state.setCursorY(cursor.y);
+      }
+   }
+
    public void saveCurrentState(String actionName) {
       if (this.document != null) {
          CompressedDocumentState state = this.getDocumentState(actionName);
@@ -1294,6 +1304,9 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
             evt.consume();
          } else if (ch == '-' && evt.isControlDown()) {
             this.zoomFontModel.zoomOut();
+            evt.consume();
+         } else if (code == KeyEvent.VK_0 && evt.isControlDown() && !evt.isShiftDown() && !evt.isAltDown()) {
+            this.zoomFontModel.resetZoom();
             evt.consume();
          } else {
             if (this.keyMark1 && code != 93 && (ch < 'a' || ch > 'z') && ch != ' ') {

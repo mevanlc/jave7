@@ -154,6 +154,22 @@ public final class AutoZoomUiProbe {
          robot.keyRelease(menuModifier);
          await(() -> !autoItem.isSelected() && plate.getZoomableFontModel().getSizeDelta() == shortcutBefore - 1, "native zoom shortcut unchecks and zooms out");
          edt(() -> { autoItem.doClick(); return null; });
+         fit("auto fit before native reset");
+         robot.keyPress(menuModifier);
+         robot.keyPress(KeyEvent.VK_0);
+         robot.keyRelease(KeyEvent.VK_0);
+         robot.keyRelease(menuModifier);
+         await(() -> !autoItem.isSelected() && plate.getZoomableFontModel().getSizeDelta() == 0, "native Cmd/Ctrl-0 resets zoom and unchecks Auto Zoom");
+         edt(() -> { plate.getZoomableFontModel().zoomOut(); viewItem("Reset Zoom").doClick(); return null; });
+         check(edt(() -> plate.getZoomableFontModel().getSizeDelta() == 0), "menu reset restores default zoom");
+         edt(() -> { autoItem.doClick(); return null; });
+         fit("auto fit before Ctrl-0");
+         robot.keyPress(KeyEvent.VK_CONTROL);
+         robot.keyPress(KeyEvent.VK_0);
+         robot.keyRelease(KeyEvent.VK_0);
+         robot.keyRelease(KeyEvent.VK_CONTROL);
+         await(() -> !autoItem.isSelected() && plate.getZoomableFontModel().getSizeDelta() == 0, "canvas Ctrl-0 resets zoom and unchecks Auto Zoom");
+         edt(() -> { autoItem.doClick(); return null; });
          fit("re-enabled before direct canvas shortcut");
          int canvasBefore = edt(() -> plate.getZoomableFontModel().getSizeDelta());
          edt(() -> {

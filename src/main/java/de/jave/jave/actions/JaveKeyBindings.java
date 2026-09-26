@@ -41,6 +41,7 @@ public final class JaveKeyBindings {
 
    public static final KeyStroke ZOOM_IN = KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, MENU);
    public static final KeyStroke ZOOM_OUT = KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, MENU);
+   public static final KeyStroke RESET_ZOOM = KeyStroke.getKeyStroke(KeyEvent.VK_0, MENU);
 
    public static final KeyStroke SEARCH_MENUS = KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, MENU_SHIFT);
 

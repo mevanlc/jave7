@@ -76,6 +76,7 @@ public final class DrawingModifiersUiProbe {
          robot = new Robot();
          robot.setAutoDelay(70);
          await(() -> plate.isFocusOwner(), "canvas focused");
+         edt(() -> { selectionCursorUndo(false); selectionCursorUndo(true); return null; });
          edt(() -> { routedEvents(); return null; });
          nativeInput();
          System.out.println("ALL DRAWING MODIFIER PROBE CHECKS PASSED");
@@ -152,6 +153,51 @@ public final class DrawingModifiersUiProbe {
       key(KEY_RELEASED, VK_SHIFT, 0);
       plate.getContent().clear();
       arrowPlacement(ArrowheadPlacement.BOTH);
+   }
+
+   private static void selectionCursorUndo(boolean clickWithSelectionTool) {
+      app.switchToTextTool(1, 1);
+      plate.setChar(0, 0, 'X');
+      plate.saveCurrentState("fixture");
+      if (clickWithSelectionTool) app.switchToSelectonTool();
+      Point clicked = new Point(8, 6);
+      Point start = plate.getScreenPointFor(8.5, 6.5);
+      mouse(MOUSE_PRESSED, start, 0);
+      mouse(MOUSE_RELEASED, start, 0);
+      check(plate.getDocument().getCursorLocation().equals(clicked), "click moves cursor");
+      check(plate.getUndoActionName().equals("fixture"), "click adds no undo step");
+      app.selectAll();
+      plate.undo();
+      check(!plate.hasSelection() && plate.getDocument().getCursorLocation().equals(clicked), "undo select-all restores clicked cursor");
+      plate.redo();
+      check(plate.hasSelection(), "redo restores selection");
+      plate.undo();
+      app.switchToTextTool();
+      Point redoClick = plate.getScreenPointFor(9.5, 6.5);
+      mouse(MOUSE_PRESSED, redoClick, 0);
+      mouse(MOUSE_RELEASED, redoClick, 0);
+      check(plate.canRedo(), "cursor click preserves redo");
+      Point end = plate.getScreenPointFor(12.5, 9.5);
+      mouse(MOUSE_PRESSED, start, 0);
+      mouse(MOUSE_DRAGGED, end, 0);
+      mouse(MOUSE_RELEASED, end, 0);
+      check(plate.hasSelection() && plate.getUndoActionName().equals("select"), "text-tool drag records a selection undo step");
+      plate.undo();
+      check(!plate.hasSelection() && plate.getDocument().getCursorLocation().equals(clicked), "undo text drag restores clicked cursor");
+      check(plate.getChar(0, 0) == 'X', "undo selection preserves preceding edit");
+      plate.redo();
+      check(plate.hasSelection(), "redo text drag restores selection");
+      plate.undo();
+      app.switchToSelectonTool();
+      Point other = plate.getScreenPointFor(16.5, 6.5);
+      mouse(MOUSE_PRESSED, other, 0);
+      mouse(MOUSE_DRAGGED, end, 0);
+      mouse(MOUSE_RELEASED, end, 0);
+      plate.undo();
+      check(!plate.hasSelection() && plate.getDocument().getCursorLocation().equals(clicked), "undo selection-tool drag preserves prior clicked cursor");
+      plate.undo();
+      check(plate.getChar(0, 0) == ' ', "next undo reaches preceding edit without cursor-only steps");
+      app.setTool(LINE_ALGORITHMIC_TOOL_INDEX);
    }
 
    private static void selectionEvents() {

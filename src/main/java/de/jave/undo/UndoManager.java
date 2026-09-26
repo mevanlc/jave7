@@ -68,6 +68,10 @@ public class UndoManager {
       return this.currentItem.next == null ? null : this.currentItem.next.getUndoState();
    }
 
+   public synchronized UndoState getCurrentState() {
+      return this.currentItem.getUndoState();
+   }
+
    public synchronized boolean canRedo() {
       return this.currentItem.next != null;
    }

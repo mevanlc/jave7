@@ -63,6 +63,12 @@ public class ZoomableFontModel extends AbstractChangeableModel {
       this.assureSizeDeltaIsInRangeAndFireChangeEvent();
    }
 
+   public void resetZoom() {
+      this.autoZoomModel.setValue(false);
+      this.sizeDelta = 0;
+      this.assureSizeDeltaIsInRangeAndFireChangeEvent();
+   }
+
    public Font getFont() {
       Font font = this.getOriginalFont();
       return font.deriveFont((float)font.getSize() + (float)this.sizeDelta);

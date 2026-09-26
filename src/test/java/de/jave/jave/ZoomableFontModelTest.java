@@ -8,6 +8,21 @@ import net.dizzy.commons.swing.fontchooser.model.FontModel;
 import org.junit.Test;
 
 public class ZoomableFontModelTest {
+   @Test public void resetRestoresConfiguredFontAndDisablesAutoZoom() {
+      BooleanModel auto = new BooleanModel(true);
+      FontModel font = new FontModel(new Font(Font.MONOSPACED, Font.BOLD, 18));
+      ZoomableFontModel model = new ZoomableFontModel(font, 25, auto);
+      model.addChangeListener(() -> assertFalse(auto.getValue()));
+      model.resetZoom();
+      assertEquals(0, model.getSizeDelta());
+      assertEquals(font.getFont(), model.getFont());
+      model.setAutoZoomDelta(30);
+      assertEquals(0, model.getSizeDelta());
+      model.zoomOut();
+      model.resetZoom();
+      assertEquals(font.getFont(), model.getFont());
+   }
+
    @Test public void manualZoomDisablesAutoBeforeExecutingItsStep() {
       BooleanModel auto = new BooleanModel(true);
       ZoomableFontModel model = model(auto);

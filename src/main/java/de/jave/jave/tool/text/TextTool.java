@@ -199,6 +199,7 @@ public class TextTool extends Tool {
          Point cursorLocation = this.getCursorLocation();
          cursorLocation.x = location.x;
          cursorLocation.y = location.y;
+         this.getPlate().rememberCursorForUndo();
          this.blinkThread.updateCursor();
       }
    }
@@ -253,6 +254,7 @@ public class TextTool extends Tool {
       this.selectionRegion = null;
       SelectionTool selectionTool = this.application.getSelectionTool();
       selectionTool.synchronizeToSelection();
+      this.getPlate().saveCurrentState("select");
    }
 
    private void moveToTrack() {
@@ -405,6 +407,7 @@ public class TextTool extends Tool {
       Point cursorLocation = this.getCursorLocation();
       cursorLocation.x = x;
       cursorLocation.y = y;
+      this.getPlate().rememberCursorForUndo();
       this.getPlate().ensureVisible(cursorLocation);
       this.blinkThread.updateCursor();
    }
