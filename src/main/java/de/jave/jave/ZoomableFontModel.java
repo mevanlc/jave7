@@ -2,14 +2,17 @@ package de.jave.jave;
 
 import java.awt.Font;
 import net.dizzy.commons.core.model.AbstractChangeableModel;
+import net.dizzy.commons.core.model.BooleanModel;
 import net.dizzy.commons.core.model.listener.IChangeListener;
 import net.dizzy.commons.core.util.Ensure;
 import net.dizzy.commons.swing.fontchooser.model.FontModel;
 
 public class ZoomableFontModel extends AbstractChangeableModel {
-   private static final int MIN_FONT_SIZE = 6;
-   private static final int MAX_FONT_SIZE = 512;
+   // A -10 zoom offset at the default 13-point font must remain reachable.
+   static final int MIN_FONT_SIZE = 1;
+   static final int MAX_FONT_SIZE = 512;
    private final FontModel fontModel;
+   private final BooleanModel autoZoomModel;
    private int sizeDelta = 0;
    private final IChangeListener fontModelChangeListener;
 
@@ -18,8 +21,14 @@ public class ZoomableFontModel extends AbstractChangeableModel {
    }
 
    public ZoomableFontModel(FontModel fontModel, int initialSizeDelta) {
+      this(fontModel, initialSizeDelta, new BooleanModel(false));
+   }
+
+   public ZoomableFontModel(FontModel fontModel, int initialSizeDelta, BooleanModel autoZoomModel) {
       Ensure.ensureArgumentNotNull(fontModel);
+      Ensure.ensureArgumentNotNull(autoZoomModel);
       this.fontModel = fontModel;
+      this.autoZoomModel = autoZoomModel;
       this.sizeDelta = initialSizeDelta;
       this.fontModelChangeListener = new IChangeListener() {
          @Override
@@ -43,11 +52,13 @@ public class ZoomableFontModel extends AbstractChangeableModel {
    }
 
    public void zoomOut() {
+      this.autoZoomModel.setValue(false);
       this.sizeDelta--;
       this.assureSizeDeltaIsInRangeAndFireChangeEvent();
    }
 
    public void zoomIn() {
+      this.autoZoomModel.setValue(false);
       this.sizeDelta++;
       this.assureSizeDeltaIsInRangeAndFireChangeEvent();
    }
@@ -63,6 +74,13 @@ public class ZoomableFontModel extends AbstractChangeableModel {
 
    public int getSizeDelta() {
       return this.sizeDelta;
+   }
+
+   void setAutoZoomDelta(int sizeDelta) {
+      if (this.autoZoomModel.getValue() && this.sizeDelta != sizeDelta) {
+         this.sizeDelta = sizeDelta;
+         this.assureSizeDeltaIsInRangeAndFireChangeEvent();
+      }
    }
 
    public void dispose() {

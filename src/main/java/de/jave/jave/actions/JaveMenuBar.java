@@ -417,6 +417,7 @@ public class JaveMenuBar extends HelpImplementedMenuBar {
 
       this.menuView.add(this.hub.item("view.zoomIn", new ZoomInAction(mainPanel)));
       this.menuView.add(this.hub.item("view.zoomOut", new ZoomOutAction(mainPanel)));
+      this.menuView.add(this.hub.toggle("view.autoZoom", actions.getAutoZoomToggleAction()));
       this.menuView.addSeparator();
       this.menuView.add(this.hub.toggle("view.rulerToggle", actions.getRulerToggleAction()));
       this.menuView.add(this.hub.toggle("view.gridToggle", actions.getGridToggleAction()));

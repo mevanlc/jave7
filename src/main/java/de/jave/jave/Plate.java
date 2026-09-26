@@ -33,8 +33,11 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.HierarchyEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -50,6 +53,7 @@ import java.text.AttributedCharacterIterator;
 import javax.swing.JComponent;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 import net.dizzy.commons.core.model.ObjectModel;
 import net.dizzy.commons.core.model.listener.IChangeListener;
 import net.dizzy.commons.core.util.Ensure;
@@ -77,6 +81,9 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
    private final ObjectModel<ColorScheme> colorSchemeModel;
    private final CharacterSets characterSets;
    private final ZoomableFontModel zoomFontModel;
+   private boolean autoZoomUpdateQueued;
+   private boolean disposed;
+   private final IChangeListener autoZoomChangeListener = this::scheduleAutoZoom;
    private final IChangeListener repaintChangeListener = new IChangeListener() {
       @Override
       public void stateChanged() {
@@ -114,7 +121,7 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
       this.colorSchemeModel = colorSchemeModel;
       this.toolManager = toolManager;
       this.characterSets = characterSets;
-      this.zoomFontModel = new ZoomableFontModel(displayFontModel, platePreferences.getDefaultZoomDelta());
+      this.zoomFontModel = new ZoomableFontModel(displayFontModel, platePreferences.getDefaultZoomDelta(), platePreferences.getAutoZoomModel());
       this.rulerProperties = new AsciiRulerProperties(this.characterSizeModel);
       this.rulerProperties.setShowMouseLocation(true);
       this.updateRulerPropertiesListener = new IChangeListener() {
@@ -145,6 +152,18 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
       this.verticalRulerComponent = new RulerComponent(new VerticalRulerRenderingStrategy(), this, this.rulerProperties);
       this.scrollPanel.setRowHeaderView(this.verticalRulerComponent);
       this.scrollPanel.setAutoscrolls(false);
+      this.scrollPanel.getViewport().addComponentListener(new ComponentAdapter() {
+         @Override
+         public void componentResized(ComponentEvent evt) {
+            Plate.this.scheduleAutoZoom();
+         }
+      });
+      this.addHierarchyListener(evt -> {
+         if ((evt.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && this.isShowing()) {
+            this.scheduleAutoZoom();
+         }
+      });
+      platePreferences.getAutoZoomModel().addChangeListener(this.autoZoomChangeListener);
       this.updateScrollIncrements();
       platePreferences.getGridVisibilityModel().addChangeListener(this.repaintChangeListener);
       platePreferences.getMarkIllegalModel().addChangeListener(this.repaintChangeListener);
@@ -170,9 +189,12 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
    private void updateRulerProperties() {
       this.rulerProperties.setHorizontalRulerVisible(this.platePreferences.getRulerModel().getValue());
       this.rulerProperties.setVerticalRulerVisible(this.platePreferences.getRulerModel().getValue());
+      this.scheduleAutoZoom();
    }
 
    public void dispose() {
+      this.disposed = true;
+      this.platePreferences.getAutoZoomModel().removeChangeListener(this.autoZoomChangeListener);
       this.platePreferences.getGridVisibilityModel().removeChangeListener(this.repaintChangeListener);
       this.platePreferences.getMarkIllegalModel().removeChangeListener(this.repaintChangeListener);
       this.platePreferences.getConnectedLinesViewModel().removeChangeListener(this.repaintChangeListener);
@@ -191,6 +213,49 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
       this.updateScrollIncrements();
       this.revalidate();
       this.repaint();
+      this.scheduleAutoZoom();
+   }
+
+   private void scheduleAutoZoom() {
+      if (this.disposed || this.autoZoomUpdateQueued || !this.platePreferences.getAutoZoomModel().getValue()) {
+         return;
+      }
+      this.autoZoomUpdateQueued = true;
+      SwingUtilities.invokeLater(() -> {
+         this.autoZoomUpdateQueued = false;
+         if (this.disposed || !this.isShowing() || !this.platePreferences.getAutoZoomModel().getValue()) {
+            return;
+         }
+         Dimension available = this.getAutoZoomAvailableSize();
+         if (available.width <= 0 || available.height <= 0) {
+            return;
+         }
+         int delta = AutoZoom.findDelta(this.zoomFontModel.getOriginalFont(), this.getDocumentSize(), available);
+         if (delta != this.zoomFontModel.getSizeDelta()) {
+            this.zoomFontModel.setAutoZoomDelta(delta);
+            this.scrollPanel.getViewport().setViewPosition(new Point());
+         }
+      });
+   }
+
+   private Dimension getAutoZoomAvailableSize() {
+      // Measure the viewport with scrollbars removed: using its current extent
+      // would leave unnecessary slack after zooming out makes the bars disappear.
+      Insets insets = this.scrollPanel.getInsets();
+      int width = this.scrollPanel.getWidth() - insets.left - insets.right;
+      int height = this.scrollPanel.getHeight() - insets.top - insets.bottom;
+      if (this.scrollPanel.getRowHeader() != null && this.scrollPanel.getRowHeader().isVisible()) {
+         width -= this.scrollPanel.getRowHeader().getPreferredSize().width;
+      }
+      if (this.scrollPanel.getColumnHeader() != null && this.scrollPanel.getColumnHeader().isVisible()) {
+         height -= this.scrollPanel.getColumnHeader().getPreferredSize().height;
+      }
+      if (this.scrollPanel.getViewportBorder() != null) {
+         Insets border = this.scrollPanel.getViewportBorder().getBorderInsets(this.scrollPanel);
+         width -= border.left + border.right;
+         height -= border.top + border.bottom;
+      }
+      return new Dimension(width, height);
    }
 
    public PlatePreferences getPlatePreferences() {
@@ -313,6 +378,7 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
       this.revalidate();
       this.repaint();
       this.jave.updateSizeLabelToDocumentSize();
+      this.scheduleAutoZoom();
    }
 
    private void setScrollPoint(Point point) {
@@ -500,7 +566,8 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
    public Dimension getPreferredSize() {
       return this.document == null
          ? new Dimension(80 * this.getCharWidth() + 1, 24 * this.getCharHeight() + 1)
-         : new Dimension(this.getDocumentWidth() * this.getCharWidth() + 4, this.getDocumentHeight() * this.getCharHeight() + 4);
+         : new Dimension(this.getDocumentWidth() * this.getCharWidth() + AutoZoom.CANVAS_BORDER,
+            this.getDocumentHeight() * this.getCharHeight() + AutoZoom.CANVAS_BORDER);
    }
 
    @Override
@@ -742,8 +809,8 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
       int documentPixelHeight = r1.getSize().height * this.getCharHeight();
       int requiredWidth = documentPixelWidth + 4;
       int requiredHeight = documentPixelHeight + 4;
-      int availableWidth = this.scrollPanel.getVisibleRect().width;
-      int availableHeight = this.scrollPanel.getVisibleRect().height;
+      int availableWidth = this.scrollPanel.getViewport().getExtentSize().width;
+      int availableHeight = this.scrollPanel.getViewport().getExtentSize().height;
       int x = 1;
       int y = 1;
       if (availableHeight > requiredHeight) {

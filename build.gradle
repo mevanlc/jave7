@@ -212,3 +212,21 @@ tasks.register('drawingModifiersUiProbe', JavaExec) {
     workingDir = drawingProbeDir.get().asFile
     systemProperty 'jave.probeOutput', drawingProbeDir.get().dir('output').asFile.absolutePath
 }
+
+def autoZoomProbeDir = layout.buildDirectory.dir('auto-zoom-probe')
+tasks.register('prepareAutoZoomUiProbe', Sync) {
+    into autoZoomProbeDir
+    appBundleResourceDirs.each { resourceDir ->
+        from(resourceDir) { into resourceDir }
+    }
+}
+
+tasks.register('autoZoomUiProbe', JavaExec) {
+    group = 'verification'
+    description = 'Checks automatic canvas fitting and manual zoom overrides with isolated preferences.'
+    dependsOn tasks.named('testClasses'), tasks.named('prepareAutoZoomUiProbe')
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'de.jave.jave.AutoZoomUiProbe'
+    workingDir = autoZoomProbeDir.get().asFile
+    systemProperty 'jave.probeOutput', autoZoomProbeDir.get().dir('output').asFile.absolutePath
+}

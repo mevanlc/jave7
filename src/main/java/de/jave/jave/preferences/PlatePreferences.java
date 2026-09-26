@@ -33,6 +33,7 @@ public class PlatePreferences extends SmartPreferences {
    private final BooleanModel markIllegalModel = this.initializeSelectionModel("markIllegalCharacters", true);
    private final BooleanModel connectedLinesViewModel = this.initializeSelectionModel("pixelView", false);
    private final BooleanModel rulerModel = this.initializeSelectionModel("ruler", true);
+   private final BooleanModel autoZoomModel = this.initializeSelectionModel("autoZoom", false);
    private final ObjectModel<CellScalingMode> cellScalingModeModel;
    private final ObjectModel<Float> cellScalingWidthModel;
    private final ObjectModel<Float> cellScalingHeightModel;
@@ -137,6 +138,10 @@ public class PlatePreferences extends SmartPreferences {
 
    public BooleanModel getRulerModel() {
       return this.rulerModel;
+   }
+
+   public BooleanModel getAutoZoomModel() {
+      return this.autoZoomModel;
    }
 
    public int getDefaultZoomDelta() {

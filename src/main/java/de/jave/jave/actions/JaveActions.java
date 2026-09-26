@@ -41,6 +41,7 @@ public class JaveActions {
    private final SmartToggleAction markIllegalToggleAction;
    private final SmartToggleAction connectedLinesViewToggleAction;
    private final SmartToggleAction rulerToggleAction;
+   private final SmartToggleAction autoZoomToggleAction;
    private final SmartToggleAction watermarkVisibilityToggleAction;
    private final SmartToggleAction auxLinesVisibilityToggleAction;
    private final SmartToggleAction toolsPaletteToggleAction;
@@ -160,6 +161,7 @@ public class JaveActions {
          plateViewOptions.getConnectedLinesViewModel(), "Connected Lines View", JaveIcons.CONNECTED_LINES_VIEW_ICON
       );
       this.rulerToggleAction = new SmartToggleAction(plateViewOptions.getRulerModel(), "Rulers", JaveIcons.RULER_ICON);
+      this.autoZoomToggleAction = new SmartToggleAction(plateViewOptions.getAutoZoomModel(), "Auto Zoom");
       this.watermarkVisibilityToggleAction = new SmartToggleAction(
          jave.getWatermarkVisibilityModel(), "Show Watermark", JaveIcons.TOOL_WATERMARK_ICON
       );
@@ -230,6 +232,10 @@ public class JaveActions {
 
    public SmartToggleAction getRulerToggleAction() {
       return this.rulerToggleAction;
+   }
+
+   public SmartToggleAction getAutoZoomToggleAction() {
+      return this.autoZoomToggleAction;
    }
 
    public SmartToggleAction getToolsPaletteToggleAction() {
