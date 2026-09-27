@@ -29,7 +29,7 @@ public class SaveAction extends AbstractJaveAction {
       SavePerformer.performSave(
          parentComponent,
          editor,
-         this.jave.getApplicationPreferences().getRecentFileList(),
+         this.jave.getApplicationPreferences(),
          this.jave.getDocumentManager().getCurrentDirectoryModel(),
          this.jave.getStatusDisplay(),
          this.jave.getDocumentSaveListener()

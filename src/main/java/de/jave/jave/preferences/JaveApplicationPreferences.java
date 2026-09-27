@@ -13,9 +13,13 @@ import net.dizzy.commons.core.io.FileModel;
 import net.dizzy.commons.core.model.BooleanModel;
 import net.dizzy.commons.core.model.ObjectModel;
 import net.dizzy.commons.core.model.listener.IChangeListener;
+import net.dizzy.commons.core.util.Ensure;
 import net.dizzy.commons.swing.fontchooser.model.FontModel;
 
 public class JaveApplicationPreferences extends SmartPreferences {
+   private static final String KEY_DEFAULT_FILENAME_EXTENSION = "defaultFilenameExtension";
+   public static final String DEFAULT_DEFAULT_FILENAME_EXTENSION = "txt";
+   public static final String DEFAULT_FILENAME_EXTENSION = DEFAULT_DEFAULT_FILENAME_EXTENSION;
    private static final String KEY_CLIPART_GROUP_NAME = "clipartGroupName";
    private static final String KEY_FILL_PATTERN_NAME = "fillPatternName";
    private static final String KEY_USE_AWT_FILECHOOSER = "useAwtFileChooser";
@@ -288,6 +292,65 @@ public class JaveApplicationPreferences extends SmartPreferences {
 
    public void setNewFileFillCharacter(char ch) {
       this.put("newFileFillCharacter", ch);
+   }
+
+   public String getDefaultFilenameExtension() {
+      return this.get(KEY_DEFAULT_FILENAME_EXTENSION, DEFAULT_FILENAME_EXTENSION);
+   }
+
+   public void setDefaultFilenameExtension(String extension) {
+      Ensure.ensureArgumentNotNull(extension);
+      String sanitized = extension.replaceAll("\\s+", "");
+      Ensure.ensureArgumentTrue("Invalid default filename extension: " + extension, isValidDefaultFilenameExtension(sanitized));
+      this.put(KEY_DEFAULT_FILENAME_EXTENSION, sanitized);
+   }
+
+   public static boolean isValidDefaultFilenameExtension(String ext) {
+      if (ext == null) {
+         return false;
+      }
+      String cleaned = ext.replaceAll("\\s+", "");
+      if (cleaned.isEmpty()) {
+         return false;
+      }
+      String withoutDots = cleaned.replace(".", "");
+      if (withoutDots.isEmpty()) {
+         return false;
+      }
+      for (int i = 0; i < cleaned.length(); i++) {
+         char c = cleaned.charAt(i);
+         if (c <= 31 || c == 127 || "/\\:*?\"<>|".indexOf(c) != -1) {
+            return false;
+         }
+      }
+      return true;
+   }
+
+   public static String getNamingSuffix(String defaultExtension) {
+      if (defaultExtension == null) {
+         return "." + DEFAULT_FILENAME_EXTENSION;
+      }
+      String cleaned = defaultExtension.replaceAll("\\s+", "");
+      if (cleaned.isEmpty()) {
+         return "." + DEFAULT_FILENAME_EXTENSION;
+      }
+      if (cleaned.startsWith(".")) {
+         return cleaned;
+      }
+      return "." + cleaned;
+   }
+
+   public static File appendDefaultExtensionIfNeeded(File file, String defaultExtension) {
+      if (file == null) {
+         return null;
+      }
+      String name = file.getName();
+      if (!name.contains(".")) {
+         String suffix = getNamingSuffix(defaultExtension);
+         File parent = file.getParentFile();
+         return parent == null ? new File(name + suffix) : new File(parent, name + suffix);
+      }
+      return file;
    }
 
 }

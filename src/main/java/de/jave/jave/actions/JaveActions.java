@@ -161,7 +161,10 @@ public class JaveActions {
          plateViewOptions.getConnectedLinesViewModel(), "Connected Lines View", JaveIcons.CONNECTED_LINES_VIEW_ICON
       );
       this.rulerToggleAction = new SmartToggleAction(plateViewOptions.getRulerModel(), "Rulers", JaveIcons.RULER_ICON);
-      this.autoZoomToggleAction = new SmartToggleAction(plateViewOptions.getAutoZoomModel(), "Auto Zoom");
+      this.autoZoomToggleAction = new SmartToggleAction(
+         plateViewOptions.getAutoZoomModel(), "Auto Zoom", JaveIcons.ZOOM_AUTO_ICON
+      );
+      this.autoZoomToggleAction.setToolTipText("Auto Zoom");
       this.watermarkVisibilityToggleAction = new SmartToggleAction(
          jave.getWatermarkVisibilityModel(), "Show Watermark", JaveIcons.TOOL_WATERMARK_ICON
       );

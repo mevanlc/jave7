@@ -7,6 +7,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
 import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
 
@@ -14,27 +15,40 @@ public class DefaultsPreferencesPanel implements IJavePreferencesPanel {
 
    private final JaveApplicationPreferences preferences;
    private final JComboBox<ToolEntry> startupToolCombo;
+   private final JTextField defaultFilenameExtensionTextField;
    private final JComponent content;
 
    public DefaultsPreferencesPanel(JaveApplicationPreferences preferences, ToolManager toolManager) {
       this.preferences = preferences;
 
-      Tool[] tools = toolManager.getTools();
-      ToolEntry[] entries = new ToolEntry[tools.length];
-      for (int i = 0; i < tools.length; i++) {
-         entries[i] = new ToolEntry(i, tools[i].getName());
-      }
-      this.startupToolCombo = new JComboBox<>(entries);
+      if (toolManager != null) {
+         Tool[] tools = toolManager.getTools();
+         ToolEntry[] entries = new ToolEntry[tools.length];
+         for (int i = 0; i < tools.length; i++) {
+            entries[i] = new ToolEntry(i, tools[i].getName());
+         }
+         this.startupToolCombo = new JComboBox<>(entries);
 
-      int savedIndex = preferences.getStartupToolIndex();
-      if (savedIndex >= 0 && savedIndex < entries.length) {
-         this.startupToolCombo.setSelectedIndex(savedIndex);
+         int savedIndex = preferences.getStartupToolIndex();
+         if (savedIndex >= 0 && savedIndex < entries.length) {
+            this.startupToolCombo.setSelectedIndex(savedIndex);
+         }
+      } else {
+         this.startupToolCombo = new JComboBox<>();
       }
+
+      this.defaultFilenameExtensionTextField = new JTextField(preferences.getDefaultFilenameExtension(), 10);
 
       JPanel panel = new JPanel(new GridDialogLayout(2, false));
       panel.add(new JLabel("Startup Tool:"), GridDialogLayoutData.RIGHT);
       panel.add(this.startupToolCombo);
+      panel.add(new JLabel("Default filename extension:"), GridDialogLayoutData.RIGHT);
+      panel.add(this.defaultFilenameExtensionTextField);
       this.content = panel;
+   }
+
+   public JTextField getDefaultFilenameExtensionTextField() {
+      return this.defaultFilenameExtensionTextField;
    }
 
    @Override
@@ -53,6 +67,18 @@ public class DefaultsPreferencesPanel implements IJavePreferencesPanel {
       if (selected != null) {
          this.preferences.setStartupToolIndex(selected.index);
       }
+      String text = this.defaultFilenameExtensionTextField.getText();
+      String sanitized = text == null ? "" : text.replaceAll("\\s+", "");
+      if (JaveApplicationPreferences.isValidDefaultFilenameExtension(sanitized)) {
+         this.preferences.setDefaultFilenameExtension(sanitized);
+      } else {
+         this.defaultFilenameExtensionTextField.setText(this.preferences.getDefaultFilenameExtension());
+      }
+   }
+
+   @Override
+   public void revert() {
+      this.defaultFilenameExtensionTextField.setText(this.preferences.getDefaultFilenameExtension());
    }
 
    private static final class ToolEntry {

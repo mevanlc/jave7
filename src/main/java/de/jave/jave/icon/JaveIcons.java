@@ -105,6 +105,10 @@ public class JaveIcons implements IIconResources {
    public static final Icon TOOLTYPE_GENERIC_ICON = loadIcon("tool/tool_generic.gif");
    public static final Icon ZOOM_MINUS_ICON = loadIcon("zoomminus.gif");
    public static final Icon ZOOM_PLUS_ICON = loadIcon("zoomplus.gif");
+   public static final Icon ZOOM_ZERO_ICON = loadIcon("zoomzero.gif");
+   public static final Icon ZOOM_AUTO_ICON = loadIcon("zoomauto.gif");
+   public static final Icon RESET_ZOOM_ICON = ZOOM_ZERO_ICON;
+   public static final Icon AUTO_ZOOM_ICON = ZOOM_AUTO_ICON;
    public static final Icon GRADIENT_RADIAL_ICON = loadIcon("gradient/radial.gif");
    public static final Icon GRADIENT_SUNBURST_ICON = loadIcon("gradient/sunburst.gif");
    public static final Icon GRADIENT_LINEAR_ICON = loadIcon("gradient/linear.gif");

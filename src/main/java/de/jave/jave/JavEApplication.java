@@ -545,7 +545,7 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
          boolean success = SavePerformer.performSaveBeforeClose(
             parentComponent,
             editor,
-            this.applicationPreferences.getRecentFileList(),
+            this.applicationPreferences,
             this.documentManager.getCurrentDirectoryModel(),
             this.status,
             this.getDocumentSaveListener()

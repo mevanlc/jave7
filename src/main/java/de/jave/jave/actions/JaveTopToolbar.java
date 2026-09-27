@@ -41,6 +41,10 @@ public class JaveTopToolbar {
       builder.addSeparator();
       builder.add(new ZoomOutAction(application.getMainPanel()));
       builder.add(new ZoomInAction(application.getMainPanel()));
+      builder.add(new ResetZoomAction(application.getMainPanel()));
+      JToggleButton autoZoomToggle = ActionWidgetFactory.createToggleButton(actions.getAutoZoomToggleAction());
+      autoZoomToggle.setToolTipText("Auto Zoom");
+      builder.add(autoZoomToggle);
       builder.addSeparator();
       JToggleButton gridToggle = ActionWidgetFactory.createToggleButton(actions.getGridToggleAction());
       gridToggle.setToolTipText(JaveMessages.ToolCheckBox_Grid_Tooltip);

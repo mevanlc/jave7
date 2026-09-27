@@ -2,11 +2,15 @@ package de.jave.jave.actions.performers;
 
 import de.jave.asciimation.JmovFileChooserConfiguration;
 import de.jave.gui.io.AcceptAllFileFilter;
+import de.jave.gui.io.ExtensionFileFilter;
 import de.jave.gui.io.ExtensionFileFilters;
 import de.jave.gui.io.FileChooserUtilities;
+import de.jave.gui.io.FileExtension;
 import de.jave.gui.io.IFileChooserConfiguration;
 import de.jave.gui.io.SmartFileFilter;
 import de.jave.jave.JaveMessages;
+import de.jave.jave.preferences.JaveApplicationPreferences;
+import de.jave.jave.swing.JaveSwingMessages;
 import de.jave.jave.PlateDocument;
 import de.jave.jave.browser.IJaveDocumentTypeVisitor;
 import de.jave.jave.browser.JaveDocumentType;
@@ -45,6 +49,7 @@ public class SavePerformer {
    private static boolean performSaveDocumentAs(
       Component parentComponent,
       IDocumentEditor editor,
+      final JaveApplicationPreferences preferences,
       RecentFileList recentFileList,
       final FileModel currentDirectoryModel,
       IStatusDisplay statusDisplay,
@@ -72,7 +77,18 @@ public class SavePerformer {
 
          @Override
          public SmartFileFilter[] getFileFilters() {
-            return new SmartFileFilter[]{new AcceptAllFileFilter(), ExtensionFileFilters.TXT};
+            String defaultExt = preferences != null
+               ? preferences.getDefaultFilenameExtension()
+               : JaveApplicationPreferences.DEFAULT_FILENAME_EXTENSION;
+            String suffix = JaveApplicationPreferences.getNamingSuffix(defaultExt);
+            String extWithoutLeadingDots = suffix.replaceFirst("^\\.+", "");
+            SmartFileFilter extFilter;
+            if ("txt".equalsIgnoreCase(extWithoutLeadingDots)) {
+               extFilter = ExtensionFileFilters.TXT;
+            } else {
+               extFilter = new ExtensionFileFilter(JaveSwingMessages.FileFormat_TextFile, new FileExtension(extWithoutLeadingDots));
+            }
+            return new SmartFileFilter[]{new AcceptAllFileFilter(), extFilter};
          }
 
          @Override
@@ -88,9 +104,13 @@ public class SavePerformer {
       if (file == null) {
          return false;
       } else {
+         String defaultExt = preferences != null
+            ? preferences.getDefaultFilenameExtension()
+            : JaveApplicationPreferences.DEFAULT_FILENAME_EXTENSION;
+         file = JaveApplicationPreferences.appendDefaultExtensionIfNeeded(file, defaultExt);
          currentDirectoryModel.setValue(file.getParentFile());
          doc.setFile(file);
-         boolean success = performSaveDocument(parentComponent, editor, recentFileList, currentDirectoryModel, statusDisplay, listener);
+         boolean success = performSaveDocument(parentComponent, editor, preferences, recentFileList, currentDirectoryModel, statusDisplay, listener);
          if (!success) {
             doc.setFile(null);
          }
@@ -98,6 +118,17 @@ public class SavePerformer {
          listener.savePerformed();
          return success;
       }
+   }
+
+   private static boolean performSaveDocumentAs(
+      Component parentComponent,
+      IDocumentEditor editor,
+      RecentFileList recentFileList,
+      final FileModel currentDirectoryModel,
+      IStatusDisplay statusDisplay,
+      IDocumentSaveListener listener
+   ) {
+      return performSaveDocumentAs(parentComponent, editor, null, recentFileList, currentDirectoryModel, statusDisplay, listener);
    }
 
    private static boolean performSaveLayeredDocumentAs(
@@ -161,14 +192,18 @@ public class SavePerformer {
    private static boolean performSaveDocument(
       Component parentComponent,
       IDocumentEditor editor,
+      JaveApplicationPreferences preferences,
       RecentFileList recentFileList,
       FileModel currentDirectoryModel,
       IStatusDisplay statusDisplay,
       IDocumentSaveListener listener
    ) {
+      if (recentFileList == null && preferences != null) {
+         recentFileList = preferences.getRecentFileList();
+      }
       PlateDocument doc = editor.getPlate().getDocument();
       if (!doc.hasFile()) {
-         return performSaveDocumentAs(parentComponent, editor, recentFileList, currentDirectoryModel, statusDisplay, listener);
+         return performSaveDocumentAs(parentComponent, editor, preferences, recentFileList, currentDirectoryModel, statusDisplay, listener);
       } else if (doc.hasSecondaryLayers() && !doc.isJaveDocBacked()) {
          return performSaveLayeredDocumentAs(parentComponent, editor, recentFileList, currentDirectoryModel, statusDisplay, listener, true);
       } else {
@@ -184,6 +219,17 @@ public class SavePerformer {
             return false;
          }
       }
+   }
+
+   private static boolean performSaveDocument(
+      Component parentComponent,
+      IDocumentEditor editor,
+      RecentFileList recentFileList,
+      FileModel currentDirectoryModel,
+      IStatusDisplay statusDisplay,
+      IDocumentSaveListener listener
+   ) {
+      return performSaveDocument(parentComponent, editor, null, recentFileList, currentDirectoryModel, statusDisplay, listener);
    }
 
    private static boolean showLayeredSaveReminder(Component parentComponent) {
@@ -245,6 +291,7 @@ public class SavePerformer {
    public static boolean performSaveAs(
       final Component parentComponent,
       final IDocumentEditor editor,
+      final JaveApplicationPreferences preferences,
       final RecentFileList recentFileList,
       final FileModel currentDirectoryModel,
       final IStatusDisplay statusDisplay,
@@ -255,7 +302,7 @@ public class SavePerformer {
             new IJaveDocumentTypeVisitor<Boolean>() {
                public Boolean visitGame(JaveDocumentType type) {
                   return SavePerformer.performSaveDocumentAs(
-                     parentComponent, editor, recentFileList, currentDirectoryModel, statusDisplay, documentSaveListener
+                     parentComponent, editor, preferences, recentFileList, currentDirectoryModel, statusDisplay, documentSaveListener
                   );
                }
 
@@ -268,16 +315,40 @@ public class SavePerformer {
 
                public Boolean visitText(JaveDocumentType type) {
                   return SavePerformer.performSaveDocumentAs(
-                     parentComponent, editor, recentFileList, currentDirectoryModel, statusDisplay, documentSaveListener
+                     parentComponent, editor, preferences, recentFileList, currentDirectoryModel, statusDisplay, documentSaveListener
                   );
                }
             }
          );
    }
 
+   public static boolean performSaveAs(
+      final Component parentComponent,
+      final IDocumentEditor editor,
+      final JaveApplicationPreferences preferences,
+      final FileModel currentDirectoryModel,
+      final IStatusDisplay statusDisplay,
+      final IDocumentSaveListener documentSaveListener
+   ) {
+      RecentFileList recentFileList = preferences == null ? null : preferences.getRecentFileList();
+      return performSaveAs(parentComponent, editor, preferences, recentFileList, currentDirectoryModel, statusDisplay, documentSaveListener);
+   }
+
+   public static boolean performSaveAs(
+      final Component parentComponent,
+      final IDocumentEditor editor,
+      final RecentFileList recentFileList,
+      final FileModel currentDirectoryModel,
+      final IStatusDisplay statusDisplay,
+      final IDocumentSaveListener documentSaveListener
+   ) {
+      return performSaveAs(parentComponent, editor, (JaveApplicationPreferences)null, recentFileList, currentDirectoryModel, statusDisplay, documentSaveListener);
+   }
+
    public static boolean performSave(
       final Component parentComponent,
       final IDocumentEditor editor,
+      final JaveApplicationPreferences preferences,
       final RecentFileList recentFileList,
       final FileModel currentDirectoryModel,
       final IStatusDisplay statusDisplay,
@@ -287,7 +358,7 @@ public class SavePerformer {
          .accept(
             new IJaveDocumentTypeVisitor<Boolean>() {
                public Boolean visitGame(JaveDocumentType type) {
-                  return SavePerformer.performSaveDocument(parentComponent, editor, recentFileList, currentDirectoryModel, statusDisplay, documentSaveListener);
+                  return SavePerformer.performSaveDocument(parentComponent, editor, preferences, recentFileList, currentDirectoryModel, statusDisplay, documentSaveListener);
                }
 
                public Boolean visitAnimation(JaveDocumentType type) {
@@ -298,15 +369,39 @@ public class SavePerformer {
                }
 
                public Boolean visitText(JaveDocumentType type) {
-                  return SavePerformer.performSaveDocument(parentComponent, editor, recentFileList, currentDirectoryModel, statusDisplay, documentSaveListener);
+                  return SavePerformer.performSaveDocument(parentComponent, editor, preferences, recentFileList, currentDirectoryModel, statusDisplay, documentSaveListener);
                }
             }
          );
    }
 
+   public static boolean performSave(
+      final Component parentComponent,
+      final IDocumentEditor editor,
+      final JaveApplicationPreferences preferences,
+      final FileModel currentDirectoryModel,
+      final IStatusDisplay statusDisplay,
+      final IDocumentSaveListener documentSaveListener
+   ) {
+      RecentFileList recentFileList = preferences == null ? null : preferences.getRecentFileList();
+      return performSave(parentComponent, editor, preferences, recentFileList, currentDirectoryModel, statusDisplay, documentSaveListener);
+   }
+
+   public static boolean performSave(
+      final Component parentComponent,
+      final IDocumentEditor editor,
+      final RecentFileList recentFileList,
+      final FileModel currentDirectoryModel,
+      final IStatusDisplay statusDisplay,
+      final IDocumentSaveListener documentSaveListener
+   ) {
+      return performSave(parentComponent, editor, (JaveApplicationPreferences)null, recentFileList, currentDirectoryModel, statusDisplay, documentSaveListener);
+   }
+
    public static boolean performSaveBeforeClose(
       final Component parentComponent,
       final IDocumentEditor editor,
+      final JaveApplicationPreferences preferences,
       final RecentFileList recentFileList,
       final FileModel currentDirectoryModel,
       final IStatusDisplay statusDisplay,
@@ -317,7 +412,7 @@ public class SavePerformer {
             new IJaveDocumentTypeVisitor<Boolean>() {
                public Boolean visitGame(JaveDocumentType type) {
                   return SavePerformer.performSaveBeforeCloseDocument(
-                     parentComponent, editor, recentFileList, currentDirectoryModel, statusDisplay, documentSaveListener
+                     parentComponent, editor, preferences, recentFileList, currentDirectoryModel, statusDisplay, documentSaveListener
                   );
                }
 
@@ -330,11 +425,34 @@ public class SavePerformer {
 
                public Boolean visitText(JaveDocumentType type) {
                   return SavePerformer.performSaveBeforeCloseDocument(
-                     parentComponent, editor, recentFileList, currentDirectoryModel, statusDisplay, documentSaveListener
+                     parentComponent, editor, preferences, recentFileList, currentDirectoryModel, statusDisplay, documentSaveListener
                   );
                }
             }
          );
+   }
+
+   public static boolean performSaveBeforeClose(
+      final Component parentComponent,
+      final IDocumentEditor editor,
+      final JaveApplicationPreferences preferences,
+      final FileModel currentDirectoryModel,
+      final IStatusDisplay statusDisplay,
+      final IDocumentSaveListener documentSaveListener
+   ) {
+      RecentFileList recentFileList = preferences == null ? null : preferences.getRecentFileList();
+      return performSaveBeforeClose(parentComponent, editor, preferences, recentFileList, currentDirectoryModel, statusDisplay, documentSaveListener);
+   }
+
+   public static boolean performSaveBeforeClose(
+      final Component parentComponent,
+      final IDocumentEditor editor,
+      final RecentFileList recentFileList,
+      final FileModel currentDirectoryModel,
+      final IStatusDisplay statusDisplay,
+      final IDocumentSaveListener documentSaveListener
+   ) {
+      return performSaveBeforeClose(parentComponent, editor, (JaveApplicationPreferences)null, recentFileList, currentDirectoryModel, statusDisplay, documentSaveListener);
    }
 
    private static boolean performSaveBeforeCloseAnimation(
@@ -371,6 +489,7 @@ public class SavePerformer {
    private static boolean performSaveBeforeCloseDocument(
       Component parentComponent,
       IDocumentEditor editor,
+      JaveApplicationPreferences preferences,
       RecentFileList recentFileList,
       FileModel currentDirectoryModel,
       IStatusDisplay statusDisplay,
@@ -388,9 +507,20 @@ public class SavePerformer {
          return true;
       } else {
          return performSaveAfterPrompt(
-            () -> performSaveDocument(parentComponent, editor, recentFileList, currentDirectoryModel, statusDisplay, documentSaveListener)
+            () -> performSaveDocument(parentComponent, editor, preferences, recentFileList, currentDirectoryModel, statusDisplay, documentSaveListener)
          );
       }
+   }
+
+   private static boolean performSaveBeforeCloseDocument(
+      Component parentComponent,
+      IDocumentEditor editor,
+      RecentFileList recentFileList,
+      FileModel currentDirectoryModel,
+      IStatusDisplay statusDisplay,
+      IDocumentSaveListener documentSaveListener
+   ) {
+      return performSaveBeforeCloseDocument(parentComponent, editor, null, recentFileList, currentDirectoryModel, statusDisplay, documentSaveListener);
    }
 
    private static boolean performSaveAfterPrompt(BooleanSupplier saveOperation) {

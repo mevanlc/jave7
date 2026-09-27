@@ -28,7 +28,7 @@ public class SaveAsAction extends AbstractJaveAction {
       SavePerformer.performSaveAs(
          parentComponent,
          editor,
-         this.jave.getApplicationPreferences().getRecentFileList(),
+         this.jave.getApplicationPreferences(),
          this.jave.getDocumentManager().getCurrentDirectoryModel(),
          this.jave.getStatusDisplay(),
          this.jave.getDocumentSaveListener()
