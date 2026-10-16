@@ -1,0 +1,3 @@
+# Expanded by Gradle processResources; keep the tokens in tracked sources.
+Version.version=@JAVE_VERSION@
+Version.buildDate=@JAVE_BUILD_DATE@

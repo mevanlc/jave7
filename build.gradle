@@ -1,3 +1,6 @@
+import groovy.json.JsonOutput
+import org.apache.tools.ant.filters.ReplaceTokens
+
 plugins {
     id 'java'
     id 'application'
@@ -8,25 +11,48 @@ application {
     mainClass = 'de.jave.jave.Jave'
 }
 
+// The tag supplies releaseVersion in CI; ordinary builds are explicitly developmental.
+def releaseVersion = providers.gradleProperty('releaseVersion').orElse('7.0.0-dev').get()
+def semVer = /^(7)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-((?:0|[1-9][0-9]*|[0-9]*[A-Za-z-][0-9A-Za-z-]*)(?:\.(?:0|[1-9][0-9]*|[0-9]*[A-Za-z-][0-9A-Za-z-]*))*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$/
+def versionMatch = releaseVersion =~ semVer
+if (!versionMatch.matches()) {
+    throw new GradleException("Invalid releaseVersion '${releaseVersion}': expected SemVer with major 7, without a v prefix.")
+}
+def nativeVersion = "${versionMatch.group(1)}.${versionMatch.group(2)}.${versionMatch.group(3)}".toString()
+def prerelease = versionMatch.group(4) != null
+def releaseTag = providers.gradleProperty('releaseTag').orElse('').get()
+if (providers.gradleProperty('releaseTag').isPresent() && releaseTag != "v${releaseVersion}") {
+    throw new GradleException("Invalid releaseTag '${releaseTag}': expected v${releaseVersion}.")
+}
+def buildDate = providers.gradleProperty('buildDate').orElse('development').get()
+if (buildDate != 'development') {
+    try {
+        java.time.LocalDate.parse(buildDate)
+    } catch (java.time.format.DateTimeParseException ignored) {
+        throw new GradleException('buildDate must be an ISO date (YYYY-MM-DD) or development.')
+    }
+}
+
 group = 'de.jave'
-version = '7.0.0'
+version = releaseVersion
 
 base {
     archivesName = 'jave7'
 }
 
-application {
-    mainClass = 'de.jave.jave.Jave'
-}
-
 def appName = 'JavE'
 def appBundleResourceDirs = ['clipart', 'config', 'examples', 'ext', 'fonts']
-def appJarFileName = "${project.name}-${project.version}-app.jar"
-def appVersion = project.version.toString()
+def appJarFileName = "jave7-${releaseVersion}-app.jar".toString()
 def appVendor = project.group.toString()
 def mainClassName = application.mainClass.get()
 def applicationsDir = file('/Applications')
 def installedAppImage = new File(applicationsDir, "${appName}.app")
+def osName = providers.systemProperty('os.name').get().toLowerCase(Locale.ROOT)
+def nativePlatform = osName.contains('mac') ? 'macos' : osName.contains('windows') ? 'windows' : 'linux'
+def osArch = providers.systemProperty('os.arch').get()
+def nativeArch = ['aarch64', 'arm64'].contains(osArch) ? 'arm64' : ['amd64', 'x86_64'].contains(osArch) ? 'x64' : osArch
+def packagingJdk = new File(System.getProperty('java.home'))
+def packagingJavaVersion = JavaVersion.current().majorVersion.toInteger()
 
 repositories {
     mavenCentral()
@@ -45,14 +71,45 @@ sourceSets {
             srcDir 'src/main/java'
             include '**/*.*'     // Include all files
             exclude '**/*.java'  // Exclude Java files
+            exclude 'de/jave/jave/version/version.properties.template'
         }
     }
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
 
+tasks.named('processResources') {
+    inputs.property('releaseVersion', releaseVersion)
+    inputs.property('buildDate', buildDate)
+    from('src/main/java/de/jave/jave/version/version.properties.template') {
+        into 'de/jave/jave/version'
+        rename { 'version.properties' }
+        filteringCharset = 'UTF-8'
+        filter(ReplaceTokens, tokens: [JAVE_VERSION: releaseVersion, JAVE_BUILD_DATE: buildDate])
+    }
+}
+
+tasks.named('test') {
+    systemProperty 'jave.expectedVersion', releaseVersion
+    systemProperty 'jave.expectedBuildDate', buildDate
+}
+
+tasks.register('releaseMetadata') {
+    group = 'distribution'
+    description = 'Validates release inputs and writes machine-readable version metadata.'
+    def metadata = [version: releaseVersion, nativeVersion: nativeVersion,
+                    prerelease: prerelease, buildDate: buildDate, tag: releaseTag]
+    def metadataFile = layout.buildDirectory.file('release-metadata.json').get().asFile
+    inputs.properties(metadata)
+    outputs.file(metadataFile)
+    doLast {
+        metadataFile.parentFile.mkdirs()
+        metadataFile.text = JsonOutput.prettyPrint(JsonOutput.toJson(metadata)) + '\n'
+    }
 }
 
 jar {
@@ -60,7 +117,7 @@ jar {
     dependsOn configurations.runtimeClasspath
 
     manifest {
-        attributes 'Main-Class': mainClassName
+        attributes 'Main-Class': mainClassName, 'Implementation-Version': releaseVersion
     }
 
     from sourceSets.main.output
@@ -80,7 +137,7 @@ tasks.register('appJar', Jar) {
     dependsOn configurations.runtimeClasspath
 
     manifest {
-        attributes 'Main-Class': mainClassName
+        attributes 'Main-Class': mainClassName, 'Implementation-Version': releaseVersion
     }
 
     from sourceSets.main.output
@@ -91,9 +148,9 @@ tasks.register('appJar', Jar) {
     exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA'
 }
 
-tasks.register('prepareMacAppBundleInput', Sync) {
+tasks.register('prepareNativeAppInput', Sync) {
     group = 'distribution'
-    description = 'Stages the jar and repo-root data folders used by the macOS app bundle.'
+    description = 'Stages the jar, data folders, documentation, and license for native packaging.'
 
     dependsOn tasks.named('appJar')
     into layout.buildDirectory.dir('jpackage/input')
@@ -101,6 +158,7 @@ tasks.register('prepareMacAppBundleInput', Sync) {
     from(tasks.named('appJar')) {
         rename { appJarFileName }
     }
+    from('README.md', 'LICENSE.txt')
 
     appBundleResourceDirs.each { resourceDir ->
         from(resourceDir) {
@@ -109,34 +167,101 @@ tasks.register('prepareMacAppBundleInput', Sync) {
     }
 }
 
-tasks.register('macAppBundle', Exec) {
+tasks.register('prepareMacAppBundleInput') {
     group = 'distribution'
-    description = 'Creates a macOS .app bundle with jpackage.'
+    description = 'Compatibility alias for prepareNativeAppInput.'
+    dependsOn tasks.named('prepareNativeAppInput')
+}
 
-    dependsOn tasks.named('prepareMacAppBundleInput')
+tasks.register('nativeAppImage', Exec) {
+    group = 'distribution'
+    description = 'Creates a native app image with a bundled Java runtime for the current OS and CPU.'
+
+    dependsOn tasks.named('prepareNativeAppInput')
 
     def outputDir = layout.buildDirectory.dir('jpackage').get().asFile
     def inputDir = layout.buildDirectory.dir('jpackage/input').get().asFile
-    def appImage = new File(outputDir, "${appName}.app")
+    def appImage = new File(outputDir, nativePlatform == 'macos' ? "${appName}.app" : appName)
 
     inputs.dir(inputDir)
+    inputs.file(new File(packagingJdk, 'release'))
+    inputs.properties(platform: nativePlatform, architecture: nativeArch, nativeVersion: nativeVersion)
+    if (nativePlatform != 'macos') {
+        inputs.file(nativePlatform == 'windows' ? 'icons/javeicon.ico' : 'icons/javeicon.png')
+    }
     outputs.dir(appImage)
 
     doFirst {
+        if (packagingJavaVersion != 21) {
+            throw new GradleException('Native packaging requires JDK 21. Check gradle/gradle-daemon-jvm.properties.')
+        }
+        if (!(nativeArch == 'x64' || (nativePlatform == 'macos' && nativeArch == 'arm64'))) {
+            throw new GradleException("Unsupported release target: ${nativePlatform}-${nativeArch}.")
+        }
         appImage.deleteDir()
         outputDir.mkdirs()
     }
 
-    commandLine 'jpackage',
+    commandLine new File(packagingJdk, nativePlatform == 'windows' ? 'bin/jpackage.exe' : 'bin/jpackage').absolutePath,
         '--type', 'app-image',
         '--name', appName,
-        '--app-version', appVersion,
+        '--app-version', nativeVersion,
         '--vendor', appVendor,
         '--input', inputDir.absolutePath,
         '--dest', outputDir.absolutePath,
         '--main-jar', appJarFileName,
         '--main-class', mainClassName,
-        '--mac-package-identifier', 'de.jave.JavE'
+        // Retain java so the packaged runtime and CLI can be checked without a system JDK.
+        '--jlink-options', '--strip-debug --no-man-pages --no-header-files'
+    if (nativePlatform == 'macos') {
+        args '--mac-package-identifier', 'de.jave.JavE'
+    } else {
+        args '--icon', file(nativePlatform == 'windows' ? 'icons/javeicon.ico' : 'icons/javeicon.png').absolutePath
+    }
+}
+
+def releaseArchiveName = "jave7-${releaseVersion}-${nativePlatform}-${nativeArch}".toString()
+if (nativePlatform == 'windows') {
+    tasks.register('releaseBundle', Zip) {
+        group = 'distribution'
+        description = 'Archives the native app image as a portable release bundle.'
+        dependsOn tasks.named('nativeAppImage')
+        from(layout.buildDirectory.dir('jpackage/JavE')) { into appName }
+        destinationDirectory = layout.buildDirectory.dir('distributions')
+        archiveFileName = "${releaseArchiveName}.zip"
+        preserveFileTimestamps = false
+        reproducibleFileOrder = true
+    }
+} else {
+    tasks.register('releaseBundle', Exec) {
+        group = 'distribution'
+        description = 'Archives the native app image, preserving permissions and symlinks.'
+        dependsOn tasks.named('nativeAppImage')
+        def imageName = nativePlatform == 'macos' ? "${appName}.app" : appName
+        def image = layout.buildDirectory.dir("jpackage/${imageName}").get().asFile
+        def archive = layout.buildDirectory.file("distributions/${releaseArchiveName}.${nativePlatform == 'macos' ? 'zip' : 'tar.gz'}").get().asFile
+        inputs.dir(image)
+        outputs.file(archive)
+        doFirst {
+            archive.parentFile.mkdirs()
+            archive.delete()
+        }
+        if (nativePlatform == 'macos') {
+            commandLine 'ditto', '-c', '-k', '--sequesterRsrc', '--keepParent', image.absolutePath, archive.absolutePath
+        } else {
+            commandLine 'tar', '-czf', archive.absolutePath, '-C', image.parentFile.absolutePath, imageName
+        }
+    }
+}
+
+tasks.register('macAppBundle') {
+    group = 'distribution'
+    description = 'Creates a macOS .app bundle with jpackage (compatibility alias).'
+    if (nativePlatform == 'macos') {
+        dependsOn tasks.named('nativeAppImage')
+    } else {
+        doLast { throw new GradleException('macAppBundle requires macOS.') }
+    }
 }
 
 tasks.register('macDeployToApplications', Copy) {

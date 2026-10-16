@@ -1,5 +1,6 @@
 package de.jave.jave;
 
+import de.jave.jave.version.JaveTitleProvider;
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Dimension;
@@ -13,6 +14,10 @@ import java.awt.event.WindowEvent;
 
 public class Jave {
    public static void main(String[] args) {
+      if (args.length == 1 && "--version".equals(args[0])) {
+         System.out.println(JaveTitleProvider.JAVE);
+         return;
+      }
       if (!isJre16OrGreater()) {
          printAndShowJdkOutdatedError();
       } else {

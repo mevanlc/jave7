@@ -26,3 +26,6 @@ gradle-app.setting
 /tmp/
 *.dtmp
 *.bkp
+
+# Python release tooling
+__pycache__/
