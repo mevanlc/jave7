@@ -60,7 +60,7 @@ public class RectangleStylePanelTest {
    }
 
    @Test
-   public void theCustomStyleFollowsTheMouseCharacter() {
+   public void theSingleCharacterStyleFollowsTheMouseCharacter() {
       MouseCharacterModel mouseCharacterModel = new MouseCharacterModel();
       RectangleStylePanel panel = new RectangleStylePanel(mouseCharacterModel);
       char[] expected = new char[RectangleAlgorithm.CHARACTERS];
