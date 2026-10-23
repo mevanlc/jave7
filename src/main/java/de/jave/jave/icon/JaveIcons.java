@@ -90,8 +90,8 @@ public class JaveIcons implements IIconResources {
    public static final Icon TOOL_FREEHAND_GENERIC_ICON = loadIcon("tool/freehand_generic.gif");
    public static final Icon TOOL_FREEHAND_SELECTION_ICON = loadIcon("tool/freehand_selection.gif");
    public static final Icon TOOL_LINE_GENERIC_ICON = loadIcon("tool/line_generic.gif");
-   public static final Icon TOOL_PAN_ICON = loadIcon("tool/pan.gif");
-   public static final Icon TOOL_MOVE_LAYER_ICON = new MoveLayerIcon(ICON_SIZE);
+   public static final Icon TOOL_PAN_ICON = loadIcon("tool/hand16.gif");
+   public static final Icon TOOL_MOVE_LAYER_ICON = loadIcon("tool/move.gif");
    public static final Icon TOOL_RECTANGLE_GENERIC_ICON = loadIcon("tool/rectangle_generic.gif");
    public static final Icon TOOL_SELECTION_ICON = loadIcon("tool/selection.gif");
    public static final Icon TOOL_WATERMARK_ICON = loadIcon("tool/watermark.gif");

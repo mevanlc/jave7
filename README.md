@@ -126,3 +126,5 @@ move. Arrow keys nudge by one character cell, or ten with Shift. Esc cancels a
 drag, as does changing tools, documents, or keyboard focus. Content moved beyond
 the canvas is retained so it can be moved back. Existing selections are dropped
 onto the active layer when entering the tool.
+
+**Pan** uses the hand toolbar icon to scroll the view.
