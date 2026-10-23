@@ -11,7 +11,7 @@ import org.junit.Test;
 
 public class JaveKeyBindingsTest {
    @Test
-   public void replaceUsesMenuOptionFOnMacOs() {
+   public void replaceUsesCmdOptionFOnMacOs() {
       KeyStroke shortcut = ReplaceKeyBinding.create(true, InputEvent.META_DOWN_MASK);
 
       assertEquals(
@@ -21,7 +21,7 @@ public class JaveKeyBindingsTest {
    }
 
    @Test
-   public void replaceKeepsMenuHOnOtherPlatforms() {
+   public void replaceUsesCtrlHOnOtherPlatforms() {
       KeyStroke shortcut = ReplaceKeyBinding.create(false, InputEvent.CTRL_DOWN_MASK);
 
       assertEquals(KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.CTRL_DOWN_MASK), shortcut);

@@ -360,9 +360,9 @@ public final class MenuSearchUiProbe {
    }
 
    private static void searchShortcut() {
-      int modifier = (Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() & InputEvent.META_DOWN_MASK) != 0
+      int cmdOrCtrlKey = (Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() & InputEvent.META_DOWN_MASK) != 0
          ? KeyEvent.VK_META : KeyEvent.VK_CONTROL;
-      chord(modifier, KeyEvent.VK_SHIFT, KeyEvent.VK_SLASH);
+      chord(cmdOrCtrlKey, KeyEvent.VK_SHIFT, KeyEvent.VK_SLASH);
    }
 
    private static void chord(int... keys) {

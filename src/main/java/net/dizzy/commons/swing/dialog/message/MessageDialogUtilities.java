@@ -71,10 +71,10 @@ public final class MessageDialogUtilities {
       JRootPane rootPane,
       JOptionPane optionPane,
       Object discardOption,
-      int menuShortcutMask
+      int cmdOrCtrlMask
    ) {
       rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-         .put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, menuShortcutMask), DISCARD_ACTION);
+         .put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, cmdOrCtrlMask), DISCARD_ACTION);
       rootPane.getActionMap().put(DISCARD_ACTION, new AbstractAction() {
          @Override
          public void actionPerformed(ActionEvent event) {

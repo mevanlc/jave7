@@ -372,16 +372,16 @@ public final class DrawingModifiersUiProbe {
       check(edt(() -> plate.getDocument().getContent().glyphAt(6, 4) == 'a'
          && plate.getDocument().getContent().glyphAt(8, 4) == 'b'), "native layer move preserves document layer");
 
-      int menuKey = (java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() & META_DOWN_MASK) != 0 ? VK_META : VK_CONTROL;
-      robot.keyPress(menuKey);
+      int cmdOrCtrlKey = (java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() & META_DOWN_MASK) != 0 ? VK_META : VK_CONTROL;
+      robot.keyPress(cmdOrCtrlKey);
       robot.keyPress(VK_Z);
       robot.keyRelease(VK_Z);
-      robot.keyRelease(menuKey);
+      robot.keyRelease(cmdOrCtrlKey);
       await(() -> plate.getDocument().getActiveSecondaryLayer().getPosition().equals(new Point(6, 4)), "native undo restores layer position");
-      robot.keyPress(menuKey);
+      robot.keyPress(cmdOrCtrlKey);
       robot.keyPress(VK_Y);
       robot.keyRelease(VK_Y);
-      robot.keyRelease(menuKey);
+      robot.keyRelease(cmdOrCtrlKey);
       await(() -> plate.getDocument().getActiveSecondaryLayer().getPosition().equals(new Point(11, 7)), "native redo reapplies layer move");
       robot.keyPress(VK_DOWN);
       robot.keyRelease(VK_DOWN);

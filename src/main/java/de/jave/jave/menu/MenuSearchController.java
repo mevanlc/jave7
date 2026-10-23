@@ -366,8 +366,8 @@ public final class MenuSearchController implements AutoCloseable {
          focusField(true);
          return true;
       }
-      int primary = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
-      if ((event.getModifiersEx() & primary) != 0 && !event.isAltDown() && !event.isShiftDown()
+      int cmdOrCtrlMask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
+      if ((event.getModifiersEx() & cmdOrCtrlMask) != 0 && !event.isAltDown() && !event.isShiftDown()
          && (code == KeyEvent.VK_A || code == KeyEvent.VK_X || code == KeyEvent.VK_C || code == KeyEvent.VK_V)) {
          focusField(true);
          switch (code) {

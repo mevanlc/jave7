@@ -22,20 +22,20 @@ public class MessageDialogUtilitiesTest {
    }
 
    @Test
-   public void primaryBackspaceSelectsTheConfiguredDiscardAnswer() {
+   public void cmdOrCtrlBackspaceSelectsTheConfiguredDiscardAnswer() {
       assertDiscardShortcutSelects(YesNoCancel.NO, InputEvent.CTRL_DOWN_MASK);
       assertDiscardShortcutSelects(YesNoCancel.YES, InputEvent.CTRL_DOWN_MASK);
       assertDiscardShortcutSelects(YesNoCancel.NO, InputEvent.META_DOWN_MASK);
       assertDiscardShortcutSelects(YesNoCancel.YES, InputEvent.META_DOWN_MASK);
    }
 
-   private static void assertDiscardShortcutSelects(YesNoCancel discardAnswer, int shortcutMask) {
+   private static void assertDiscardShortcutSelects(YesNoCancel discardAnswer, int cmdOrCtrlMask) {
       JRootPane rootPane = new JRootPane();
       JOptionPane optionPane = new JOptionPane();
-      MessageDialogUtilities.installDiscardShortcut(rootPane, optionPane, discardAnswer, shortcutMask);
+      MessageDialogUtilities.installDiscardShortcut(rootPane, optionPane, discardAnswer, cmdOrCtrlMask);
 
       Object actionKey = rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-         .get(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, shortcutMask));
+         .get(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, cmdOrCtrlMask));
       Action action = rootPane.getActionMap().get(actionKey);
       action.actionPerformed(new ActionEvent(rootPane, ActionEvent.ACTION_PERFORMED, "discard"));
 
