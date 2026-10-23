@@ -1,6 +1,7 @@
 package de.jave.jave;
 
 import de.jave.jave.filter.Filter;
+import de.jave.jave.layers.LayeredDocument;
 import de.jave.jave.pixelplate.PixelPlate;
 import de.jave.jave.plate.IDocumentEditor;
 import de.jave.jave.plate.JaveMainPanel;
@@ -106,6 +107,14 @@ public abstract class Tool implements ItemListener, ActionListener {
    }
 
    public void prepareForSave() {
+   }
+
+   public void focusLost() {
+   }
+
+   /** Optional document preview, kept separate from editable content and undo snapshots. */
+   public LayeredDocument getDocumentPreview(PlateDocument document) {
+      return null;
    }
 
    public boolean isActiveTool() {

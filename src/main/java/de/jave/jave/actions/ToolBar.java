@@ -13,6 +13,7 @@ import de.jave.jave.FreehandToolGeneric;
 import de.jave.jave.JavEApplication;
 import de.jave.jave.JaveMessages;
 import de.jave.jave.LineToolGeneric;
+import de.jave.jave.MoveLayerTool;
 import de.jave.jave.PanTool;
 import de.jave.jave.RectangleToolGeneric;
 import de.jave.jave.SelectionClickSequence;
@@ -74,8 +75,9 @@ public class ToolBar {
    public static final int PAN_TOOL_INDEX = 18;
    public static final int WATERMARK_TOOL_INDEX = 19;
    public static final int AUXILIARY_LINES_TOOL_INDEX = 20;
+   public static final int MOVE_LAYER_TOOL_INDEX = 21;
    public static final int DEFAULT_TOOL_INDEX = FREEHAND_TOOL_INDEX;
-   public static final int TOOL_COUNT = 21;
+   public static final int TOOL_COUNT = 22;
    private final JavEApplication application;
    private final SmartButtonGroup buttonGroup = new SmartButtonGroup();
    private Tool[] tools;
@@ -129,7 +131,7 @@ public class ToolBar {
 
       // Selection + Brush + view-overlay groups.
       // row 1: text, figlet, sel, fh-sel, brush, eraser
-      // row 2: fill, clone, pan, auxlines, watermark
+      // row 2: fill, clone, move layer, pan, auxlines, watermark
       toolsPanel.add(this.btn(10));
       toolsPanel.add(this.btn(11));
       toolsPanel.add(this.btn(12));
@@ -138,10 +140,10 @@ public class ToolBar {
       toolsPanel.add(this.btn(15));
       toolsPanel.add(this.btn(16));
       toolsPanel.add(this.btn(17));
+      toolsPanel.add(this.btn(MOVE_LAYER_TOOL_INDEX));
       toolsPanel.add(this.btn(18));
       toolsPanel.add(this.btn(20));
       toolsPanel.add(this.btn(19));
-      toolsPanel.add(new Gap());
       toolsPanel.add(new Gap());
 
       toolsPanel.setMaximumSize(toolsPanel.getPreferredSize());
@@ -194,7 +196,7 @@ public class ToolBar {
 
    protected void createTools() {
       JaveMainPanel mainPanel = this.application.getMainPanel();
-      this.tools = new Tool[21];
+      this.tools = new Tool[TOOL_COUNT];
       SelectionClickSequence selectionClickSequence = new SelectionClickSequence();
       Filter filter = this.configurationList.getRequired(Filter.class);
       this.tools[0] = new FreehandToolGeneric(mainPanel, this.application, filter);
@@ -221,6 +223,7 @@ public class ToolBar {
       this.tools[18] = new PanTool(mainPanel, this.application, filter);
       this.tools[19] = new WatermarkTool(mainPanel, this.application, filter);
       this.tools[20] = new AuxiliaryLinesTool(mainPanel, this.application, filter);
+      this.tools[MOVE_LAYER_TOOL_INDEX] = new MoveLayerTool(mainPanel, this.application, filter);
       mainPanel.getToolManager().setTools(this.tools);
       mainPanel.setCurrentTool(this.tools[DEFAULT_TOOL_INDEX]);
 

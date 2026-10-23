@@ -115,3 +115,11 @@ Undo and redo preserve the complete layer stack, including secondary-layer edits
 layer creation, duplication, deletion, order, names, visibility, opacity, and
 flattening. Switching the active layer adds no undo step and preserves redo.
 Recovery logs retain layers as well as the composite frames used for animations.
+
+**Move Layer** (the four-arrow toolbar button, or **Layer > Move Layer Tool**)
+repositions the active secondary layer relative to the fixed document layer.
+Drag anywhere on the canvas for a live preview; releasing commits one undoable
+move. Arrow keys nudge by one character cell, or ten with Shift. Esc cancels a
+drag, as does changing tools, documents, or keyboard focus. Content moved beyond
+the canvas is retained so it can be moved back. Existing selections are dropped
+onto the active layer when entering the tool.

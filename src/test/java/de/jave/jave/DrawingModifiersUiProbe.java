@@ -33,6 +33,7 @@ import java.util.function.Supplier;
 import javax.imageio.ImageIO;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JToggleButton;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import net.dizzy.commons.swing.mousecursor.CursorId;
@@ -79,6 +80,7 @@ public final class DrawingModifiersUiProbe {
          edt(() -> { selectionCursorUndo(false); selectionCursorUndo(true); return null; });
          edt(() -> { routedEvents(); return null; });
          nativeInput();
+         nativeLayerMovement();
          System.out.println("ALL DRAWING MODIFIER PROBE CHECKS PASSED");
       } catch (Throwable error) {
          error.printStackTrace();
@@ -318,6 +320,117 @@ public final class DrawingModifiersUiProbe {
    }
 
    private static Tool current() { return app.getMainPanel().getCurrentTool(); }
+
+   private static void nativeLayerMovement() throws Exception {
+      edt(() -> {
+         app.doNew();
+         plate = app.getMainPanel().getPlate();
+         plate.setPlateSize(40, 16);
+         plate.setChar(6, 4, 'a');
+         plate.setChar(8, 4, 'b');
+         plate.saveCurrentState("layer move background");
+         app.addSecondaryLayerAndActivate();
+         plate.setChar(6, 4, 'X');
+         plate.setChar(8, 4, 'Y');
+         plate.saveCurrentState("layer move ink");
+         frame.setTitle("JavE move layer probe");
+         frame.validate();
+         return null;
+      });
+      robot.waitForIdle();
+      Point button = edt(() -> {
+         JToggleButton move = findMoveLayerButton(frame);
+         check(move != null, "move layer toolbar button exists");
+         Point location = move.getLocationOnScreen();
+         location.translate(move.getWidth() / 2, move.getHeight() / 2);
+         return location;
+      });
+      robot.mouseMove(button.x, button.y);
+      robot.mousePress(BUTTON1_DOWN_MASK);
+      robot.mouseRelease(BUTTON1_DOWN_MASK);
+      await(() -> current() instanceof MoveLayerTool && plate.isFocusOwner(), "native toolbar selects move tool and focuses canvas");
+      Point start = edt(() -> plate.getScreenPointFor(7.3, 5.2));
+      Point end = edt(() -> plate.getScreenPointFor(12.3, 8.2));
+      Point screen = edt(() -> plate.getLocationOnScreen());
+      robot.mouseMove(screen.x + start.x, screen.y + start.y);
+      robot.mousePress(BUTTON1_DOWN_MASK);
+      robot.mouseMove(screen.x + end.x, screen.y + end.y);
+      await(() -> current().getDocumentPreview(plate.getDocument()) != null
+         && current().getDocumentPreview(plate.getDocument()).getActiveSecondaryLayer().getPosition().equals(new Point(11, 7)),
+         "native drag previews layer offset");
+      check(edt(() -> plate.getDocument().getActiveSecondaryLayer().getPosition().equals(new Point(6, 4))),
+         "native preview leaves document untouched");
+      BufferedImage preview = edt(DrawingModifiersUiProbe::canvasImage);
+      ImageIO.write(robot.createScreenCapture(edt(() -> frame.getBounds())), "png", OUTPUT.resolve("layer-move-preview.png").toFile());
+      robot.mouseRelease(BUTTON1_DOWN_MASK);
+      await(() -> plate.getDocument().getActiveSecondaryLayer().getPosition().equals(new Point(11, 7)), "native release commits layer move");
+      BufferedImage committed = edt(DrawingModifiersUiProbe::canvasImage);
+      check(java.util.Arrays.equals(
+         preview.getRGB(0, 0, preview.getWidth(), preview.getHeight(), null, 0, preview.getWidth()),
+         committed.getRGB(0, 0, committed.getWidth(), committed.getHeight(), null, 0, committed.getWidth())),
+         "native preview and committed canvas match pixel for pixel");
+      check(edt(() -> plate.getDocument().getContent().glyphAt(6, 4) == 'a'
+         && plate.getDocument().getContent().glyphAt(8, 4) == 'b'), "native layer move preserves document layer");
+
+      int menuKey = (java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() & META_DOWN_MASK) != 0 ? VK_META : VK_CONTROL;
+      robot.keyPress(menuKey);
+      robot.keyPress(VK_Z);
+      robot.keyRelease(VK_Z);
+      robot.keyRelease(menuKey);
+      await(() -> plate.getDocument().getActiveSecondaryLayer().getPosition().equals(new Point(6, 4)), "native undo restores layer position");
+      robot.keyPress(menuKey);
+      robot.keyPress(VK_Y);
+      robot.keyRelease(VK_Y);
+      robot.keyRelease(menuKey);
+      await(() -> plate.getDocument().getActiveSecondaryLayer().getPosition().equals(new Point(11, 7)), "native redo reapplies layer move");
+      robot.keyPress(VK_DOWN);
+      robot.keyRelease(VK_DOWN);
+      await(() -> plate.getDocument().getActiveSecondaryLayer().getPosition().equals(new Point(11, 8)), "native arrow nudges one cell");
+      robot.keyPress(VK_SHIFT);
+      robot.keyPress(VK_LEFT);
+      robot.keyRelease(VK_LEFT);
+      robot.keyRelease(VK_SHIFT);
+      await(() -> plate.getDocument().getActiveSecondaryLayer().getPosition().equals(new Point(1, 8)), "native Shift-arrow nudges ten cells");
+
+      Object history = edt(() -> plate.getDocument().getUndoManager().getCurrentState());
+      robot.mouseMove(screen.x + start.x, screen.y + start.y);
+      robot.mousePress(BUTTON1_DOWN_MASK);
+      robot.mouseMove(screen.x + end.x, screen.y + end.y);
+      await(() -> current().getDocumentPreview(plate.getDocument()) != null, "native second move starts preview");
+      robot.keyPress(VK_ESCAPE);
+      robot.keyRelease(VK_ESCAPE);
+      robot.mouseRelease(BUTTON1_DOWN_MASK);
+      await(() -> current().getDocumentPreview(plate.getDocument()) == null, "native Escape cancels move preview");
+      check(edt(() -> plate.getDocument().getActiveSecondaryLayer().getPosition().equals(new Point(1, 8))
+         && plate.getDocument().getUndoManager().getCurrentState() == history), "native cancelled move preserves position and history");
+      ImageIO.write(robot.createScreenCapture(edt(() -> frame.getBounds())), "png", OUTPUT.resolve("layer-move-complete.png").toFile());
+   }
+
+   private static BufferedImage canvasImage() {
+      BufferedImage image = new BufferedImage(plate.getWidth(), plate.getHeight(), BufferedImage.TYPE_INT_RGB);
+      Graphics2D graphics = image.createGraphics();
+      try {
+         plate.paint(graphics);
+      } finally {
+         graphics.dispose();
+      }
+      return image;
+   }
+
+   private static JToggleButton findMoveLayerButton(Component component) {
+      if (component instanceof JToggleButton button && "Move Layer".equals(button.getToolTipText())) {
+         return button;
+      }
+      if (component instanceof Container container) {
+         for (Component child : container.getComponents()) {
+            JToggleButton button = findMoveLayerButton(child);
+            if (button != null) {
+               return button;
+            }
+         }
+      }
+      return null;
+   }
 
    private static void begin(Point start, Point end, int modifiers) {
       mouse(MOUSE_PRESSED, start, modifiers);

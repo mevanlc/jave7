@@ -341,6 +341,10 @@ public class JaveMenuBar extends HelpImplementedMenuBar {
       this.menuModify.addSeparator();
       this.menuModify.add(miCompress);
       this.menuLayer = this.hub.menu("layer", "Layer");
+      JMenuItem moveLayerTool = this.createMenuItem("layer.moveTool", "Move Layer Tool", parent -> application.setTool(ToolBar.MOVE_LAYER_TOOL_INDEX));
+      moveLayerTool.setIcon(JaveIcons.TOOL_MOVE_LAYER_ICON);
+      this.menuLayer.add(moveLayerTool);
+      this.menuLayer.addSeparator();
       this.menuLayer.add(this.hub.item("layer.newLayer", new NewLayerAction(application, mainPanel)));
       this.deleteLayerAction = new DeleteLayerAction(application, mainPanel);
       this.menuLayer.add(this.hub.item("layer.delete", this.deleteLayerAction));

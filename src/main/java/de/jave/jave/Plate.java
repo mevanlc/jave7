@@ -9,6 +9,7 @@ import de.jave.ascii.plate.ruler.VerticalRulerRenderingStrategy;
 import de.jave.gui.xor.IXorPainter;
 import de.jave.jave.plate.ToolManager;
 import de.jave.jave.layers.SecondaryLayer;
+import de.jave.jave.layers.LayeredDocument;
 import de.jave.jave.preferences.ColorScheme;
 import de.jave.jave.preferences.PlatePreferences;
 import de.jave.jave.rendering.ConnectedLinesViewRenderer;
@@ -141,6 +142,7 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
             Tool tool = Plate.this.getCurrentTool();
             if (tool != null) {
                tool.updateModifiers(0);
+               tool.focusLost();
             }
          }
       });
@@ -685,7 +687,13 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
    }
 
    private CharacterPlate getRenderedContent() {
-      return this.document.getCompositeContent();
+      return this.getRenderedDocument().getComposite(false);
+   }
+
+   private LayeredDocument getRenderedDocument() {
+      Tool tool = this.getCurrentTool();
+      LayeredDocument preview = tool == null ? null : tool.getDocumentPreview(this.document);
+      return preview == null ? this.document.getLayeredDocument() : preview;
    }
 
    public JaveSelection getContentOfInterest() {
@@ -880,7 +888,7 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
    }
 
    private void paintActiveSecondaryLayerBounds(Graphics g, Point plateOrigin, ColorScheme colorScheme) {
-      SecondaryLayer activeSecondaryLayer = this.document.getActiveSecondaryLayer();
+      SecondaryLayer activeSecondaryLayer = this.getRenderedDocument().getActiveSecondaryLayer();
       if (activeSecondaryLayer == null) {
          return;
       }
