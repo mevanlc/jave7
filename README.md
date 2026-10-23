@@ -110,3 +110,8 @@ always remain positive.
 **View > Reset Zoom** (Cmd+0 on macOS, Ctrl+0 on Windows/Linux) restores the
 configured display font size and turns Auto Zoom off. Ctrl+0 also works on the
 macOS canvas.
+
+Undo and redo preserve the complete layer stack, including secondary-layer edits,
+layer creation, duplication, deletion, order, names, visibility, opacity, and
+flattening. Switching the active layer adds no undo step and preserves redo.
+Recovery logs retain layers as well as the composite frames used for animations.

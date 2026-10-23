@@ -338,7 +338,6 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
    }
 
    public CompressedDocumentState getDocumentState(String actionName) {
-      int[][] cContent = this.document.getCompositeContent().glyphPlane();
       Point cLocation = this.getScrollPoint();
       int[][] cSelectionContent = null;
       Point cSelectionLocation = null;
@@ -356,7 +355,8 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
       }
 
       return new CompressedDocumentState(
-         cContent, cLocation, cSelectionContent, cSelectionLocation, cSelectionMask, cursorLocation, toolName, actionName, this.colorSchemeModel.getValue()
+         this.document.getLayeredDocument(), cLocation, cSelectionContent, cSelectionLocation, cSelectionMask,
+         cursorLocation, toolName, actionName, this.colorSchemeModel.getValue()
       );
    }
 

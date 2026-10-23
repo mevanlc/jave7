@@ -647,8 +647,7 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
          return;
       }
       document.addSecondaryLayerAboveActive();
-      document.setModified(true);
-      document.documentChanged();
+      this.mainPanel.saveCurrentState("new layer");
       this.status.showStatus("Added Layer " + document.getActiveLayerNumber());
       this.mainPanel.repaint();
       this.mainPanel.requestFocus();

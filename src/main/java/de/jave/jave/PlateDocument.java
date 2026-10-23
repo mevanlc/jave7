@@ -89,6 +89,7 @@ public class PlateDocument {
 
    public void activateLayerNumber(int layerNumber) {
       this.layeredDocument.activateLayerNumber(layerNumber);
+      this.rememberActiveLayerForUndo();
    }
 
    public void addSecondaryLayerAboveActive() {
@@ -164,6 +165,7 @@ public class PlateDocument {
 
    public void activateNextLayer() {
       this.layeredDocument.activateNextLayer();
+      this.rememberActiveLayerForUndo();
    }
 
    public SecondaryLayer getActiveSecondaryLayer() {
@@ -172,11 +174,19 @@ public class PlateDocument {
 
    public void activateDocumentLayer() {
       this.layeredDocument.activateDocumentLayer();
+      this.rememberActiveLayerForUndo();
    }
 
    public void activateFirstSecondaryLayerOrCreate() {
       SecondaryLayer layer = this.layeredDocument.activateFirstSecondaryLayerOrCreate();
       layer.setName("Layer 2");
+      this.rememberActiveLayerForUndo();
+   }
+
+   private void rememberActiveLayerForUndo() {
+      if (this.undoManager != null && this.undoManager.getCurrentState() instanceof CompressedDocumentState state) {
+         state.rememberActiveLayer(this.layeredDocument.getActiveLayerId());
+      }
    }
 
    public boolean isDocumentLayerActive() {
@@ -196,7 +206,9 @@ public class PlateDocument {
    }
 
    public synchronized void setDocumentState(CompressedDocumentState state) {
-      this.setContent(new CharacterPlate(state.getContent()));
+      this.layeredDocument = state.getLayeredDocument();
+      this.content = this.layeredDocument.getDocumentLayer().getContent();
+      this.activeLayerContent = new ActiveLayerCharacterPlate(this.layeredDocument);
       this.selection.set(state.getSelectionLocation(), state.getSelectionContent(), state.getSelectionMask());
       this.scrollOrigin = state.getScrollOrigin();
       this.colorScheme = state.getColorScheme();

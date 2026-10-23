@@ -1,7 +1,9 @@
 package de.jave.jave;
 
 import de.jave.jave.algorithm.compress.AsciiPacker;
+import de.jave.jave.layers.LayeredDocument;
 import de.jave.jave.preferences.ColorScheme;
+import de.jave.lib.CharacterPlate;
 import de.jave.lib.area.BooleanArea;
 import de.jave.undo.UndoState;
 import java.awt.Point;
@@ -11,6 +13,7 @@ public class CompressedDocumentState implements UndoState {
    private String selectionMask;
    private Point selectionLocation;
    private String content;
+   private LayeredDocument.Snapshot layers;
    private int scrollX;
    private int scrollY;
    private int cursorX;
@@ -21,6 +24,22 @@ public class CompressedDocumentState implements UndoState {
    private int duration;
 
    CompressedDocumentState() {
+   }
+
+   public CompressedDocumentState(
+      LayeredDocument document,
+      Point scrollOrigin,
+      int[][] selectionContent,
+      Point selectionLocation,
+      BooleanArea selectionMask,
+      Point cursorLocation,
+      String toolName,
+      String actionName,
+      ColorScheme colorScheme
+   ) {
+      this(document.getComposite(false).glyphPlane(), scrollOrigin, selectionContent, selectionLocation, selectionMask,
+         cursorLocation, toolName, actionName, colorScheme);
+      this.layers = document.snapshot();
    }
 
    public CompressedDocumentState(
@@ -77,6 +96,20 @@ public class CompressedDocumentState implements UndoState {
 
    public void setContent(String content) {
       this.content = content;
+   }
+
+   public LayeredDocument getLayeredDocument() {
+      return this.layers == null ? LayeredDocument.fromContent(new CharacterPlate(this.getContent())) : this.layers.restore();
+   }
+
+   public void rememberActiveLayer(String layerId) {
+      if (this.layers != null) {
+         this.layers.rememberActiveLayer(layerId);
+      }
+   }
+
+   public void setPackedLayers(String packed) {
+      this.layers = LayeredDocument.Snapshot.unpack(packed);
    }
 
    public void setSelectionContent(String selectionContent) {
@@ -159,7 +192,11 @@ public class CompressedDocumentState implements UndoState {
       }
 
       if (this.actionName != null) {
-         result += this.toolName.length();
+         result += this.actionName.length();
+      }
+
+      if (this.layers != null) {
+         result += this.layers.getEstimatedMemorySize();
       }
 
       return result + 50;
@@ -228,6 +265,11 @@ public class CompressedDocumentState implements UndoState {
       sb.append("J:");
       sb.append(this.content);
       sb.append('\n');
+      if (this.layers != null) {
+         sb.append("L:");
+         sb.append(this.layers.pack());
+         sb.append('\n');
+      }
       sb.append("^:");
       sb.append(this.scrollX);
       sb.append(' ');

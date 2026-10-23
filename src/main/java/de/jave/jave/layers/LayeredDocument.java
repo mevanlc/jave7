@@ -1,11 +1,14 @@
 package de.jave.jave.layers;
 
+import de.jave.jave.algorithm.compress.AsciiPacker;
 import de.jave.lib.CharacterPlate;
 import de.jave.lib.area.BooleanArea;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import net.dizzy.commons.core.util.Ensure;
@@ -25,6 +28,16 @@ public final class LayeredDocument {
    public static LayeredDocument fromContent(CharacterPlate content) {
       Ensure.ensureArgumentNotNull(content);
       return new LayeredDocument(new DocumentLayer("layer-1", "Layer 1", content));
+   }
+
+   public Snapshot snapshot() {
+      List<LayerSnapshot> layers = new ArrayList<>();
+      layers.add(new LayerSnapshot(this.documentLayer, 0, 0, true, true));
+      for (SecondaryLayer layer : this.secondaryLayers) {
+         Point position = layer.getPosition();
+         layers.add(new LayerSnapshot(layer, position.x, position.y, layer.isVisible(), layer.isOpaque()));
+      }
+      return new Snapshot(List.copyOf(layers), this.activeLayerId, this.nextLayerNumber);
    }
 
    public DocumentLayer getDocumentLayer() {
@@ -437,6 +450,102 @@ public final class LayeredDocument {
          }
       } catch (NumberFormatException exception) {
          // Non-standard ids are valid; they just do not affect generated ids.
+      }
+   }
+
+   /** Compressed, detached layer data; every restore creates independently editable layers. */
+   public static final class Snapshot {
+      private final List<LayerSnapshot> layers;
+      private String activeLayerId;
+      private final int nextLayerNumber;
+
+      private Snapshot(List<LayerSnapshot> layers, String activeLayerId, int nextLayerNumber) {
+         this.layers = layers;
+         this.activeLayerId = activeLayerId;
+         this.nextLayerNumber = nextLayerNumber;
+      }
+
+      public LayeredDocument restore() {
+         LayerSnapshot base = this.layers.get(0);
+         LayeredDocument document = new LayeredDocument(new DocumentLayer(base.id(), base.name(), base.restoreContent()));
+         for (int i = 1; i < this.layers.size(); i++) {
+            LayerSnapshot saved = this.layers.get(i);
+            SecondaryLayer layer = new SecondaryLayer(saved.id(), saved.name(), new Point(saved.x(), saved.y()), saved.restoreContent());
+            layer.setVisible(saved.visible());
+            layer.setOpaque(saved.opaque());
+            document.secondaryLayers.add(layer);
+         }
+         document.setActiveLayerId(this.activeLayerId);
+         document.nextLayerNumber = this.nextLayerNumber;
+         return document;
+      }
+
+      public void rememberActiveLayer(String layerId) {
+         for (LayerSnapshot layer : this.layers) {
+            if (layer.id().equals(layerId)) {
+               this.activeLayerId = layerId;
+               return;
+            }
+         }
+      }
+
+      public int getEstimatedMemorySize() {
+         int size = this.activeLayerId.length() * 2 + 32;
+         for (LayerSnapshot layer : this.layers) {
+            size += (layer.id().length() + layer.name().length() + layer.content().length()) * 2 + 64;
+         }
+         return size;
+      }
+
+      public String pack() {
+         List<String> fields = new ArrayList<>();
+         fields.add(Integer.toString(this.nextLayerNumber));
+         fields.add(encode(this.activeLayerId));
+         for (LayerSnapshot layer : this.layers) {
+            fields.add(encode(layer.id()));
+            fields.add(encode(layer.name()));
+            fields.add(Integer.toString(layer.x()));
+            fields.add(Integer.toString(layer.y()));
+            fields.add(Boolean.toString(layer.visible()));
+            fields.add(Boolean.toString(layer.opaque()));
+            fields.add(encode(layer.content()));
+         }
+         return String.join(":", fields);
+      }
+
+      public static Snapshot unpack(String packed) {
+         String[] fields = packed.split(":", -1);
+         if (fields.length < 9 || (fields.length - 2) % 7 != 0) {
+            throw new IllegalArgumentException("Invalid layer snapshot");
+         }
+         int nextLayerNumber = Integer.parseInt(fields[0]);
+         String activeLayerId = decode(fields[1]);
+         List<LayerSnapshot> layers = new ArrayList<>();
+         for (int i = 2; i < fields.length; i += 7) {
+            layers.add(new LayerSnapshot(
+               decode(fields[i]), decode(fields[i + 1]), Integer.parseInt(fields[i + 2]), Integer.parseInt(fields[i + 3]),
+               Boolean.parseBoolean(fields[i + 4]), Boolean.parseBoolean(fields[i + 5]), decode(fields[i + 6])
+            ));
+         }
+         return new Snapshot(List.copyOf(layers), activeLayerId, nextLayerNumber);
+      }
+
+      private static String encode(String value) {
+         return Base64.getEncoder().encodeToString(value.getBytes(StandardCharsets.UTF_8));
+      }
+
+      private static String decode(String value) {
+         return new String(Base64.getDecoder().decode(value), StandardCharsets.UTF_8);
+      }
+   }
+
+   private record LayerSnapshot(String id, String name, int x, int y, boolean visible, boolean opaque, String content) {
+      LayerSnapshot(Layer layer, int x, int y, boolean visible, boolean opaque) {
+         this(layer.getId(), layer.getName(), x, y, visible, opaque, AsciiPacker.encode(layer.getContent()));
+      }
+
+      CharacterPlate restoreContent() {
+         return new CharacterPlate(AsciiPacker.decode(this.content));
       }
    }
 }

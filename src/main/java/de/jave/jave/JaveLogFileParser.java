@@ -44,6 +44,12 @@ public class JaveLogFileParser {
                } catch (Exception var28) {
                   System.err.println("Warning: Error in format of JavE jmov-Logfile.");
                }
+            } else if (s.startsWith("L:")) {
+               try {
+                  currentFrame.setPackedLayers(s.substring(2));
+               } catch (IllegalArgumentException exception) {
+                  System.err.println("Warning: Error in layer data of JavE jmov-Logfile.");
+               }
             } else if (s.startsWith("S:")) {
                try {
                   int i1 = 2;
