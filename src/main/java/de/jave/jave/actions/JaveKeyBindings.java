@@ -53,6 +53,7 @@ public final class JaveKeyBindings {
    public static final KeyStroke SELECT_TOOL = KeyStroke.getKeyStroke(KeyEvent.VK_E, CTRL);
    public static final KeyStroke FREEHAND_SELECT_TOOL = KeyStroke.getKeyStroke(KeyEvent.VK_E, CTRL_SHIFT);
    public static final KeyStroke TEXT_TOOL = KeyStroke.getKeyStroke(KeyEvent.VK_T, CTRL);
+   public static final KeyStroke MOVE_LAYER_TOOL = MoveLayerKeyBinding.create(MacOsXInitializer.isMacOs());
 
    private JaveKeyBindings() {}
 }

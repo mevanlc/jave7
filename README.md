@@ -118,6 +118,9 @@ Recovery logs retain layers as well as the composite frames used for animations.
 
 **Move Layer** (the four-arrow toolbar button, or **Layer > Move Layer Tool**)
 repositions the active secondary layer relative to the fixed document layer.
+Its shortcut is **Ctrl+V on macOS** and **Ctrl+Alt+V on Windows/Linux**. Paste
+remains Cmd+V on macOS and Ctrl+V on Windows/Linux. View's menu mnemonic remains
+Ctrl+Option+V on macOS and Alt+V on Windows/Linux.
 Drag anywhere on the canvas for a live preview; releasing commits one undoable
 move. Arrow keys nudge by one character cell, or ten with Shift. Esc cancels a
 drag, as does changing tools, documents, or keyboard focus. Content moved beyond

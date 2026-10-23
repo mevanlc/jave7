@@ -40,6 +40,8 @@ import de.jave.jave.tool.text.TextTool;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -244,7 +246,12 @@ public class ToolBar {
                ToolBar.this.application.getMainPanel().requestFocus();
             }
          };
-         action.setToolTipText(this.tools[toolIdx].getName());
+         String tooltip = this.tools[toolIdx].getName();
+         if (toolIdx == MOVE_LAYER_TOOL_INDEX) {
+            tooltip += " (" + InputEvent.getModifiersExText(JaveKeyBindings.MOVE_LAYER_TOOL.getModifiers())
+               + "+" + KeyEvent.getKeyText(JaveKeyBindings.MOVE_LAYER_TOOL.getKeyCode()) + ")";
+         }
+         action.setToolTipText(tooltip);
          JToggleButton button = RolloverButtonFactory.createToggleButton(action);
          button.setSelected(toolIdx == this.application.getMainPanel().getToolManager().getCurrentToolIndex());
          this.buttonGroup.add(button);

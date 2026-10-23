@@ -6,6 +6,7 @@ import static java.awt.event.MouseEvent.*;
 import static de.jave.jave.actions.ToolBar.*;
 
 import de.jave.jave.application.startup.ConfigurationList;
+import de.jave.jave.actions.JaveKeyBindings;
 import de.jave.jave.filter.Filter;
 import de.jave.jave.filter.FilterMatrix;
 import de.jave.jave.figlet.FigletToolOptionsPanel;
@@ -33,6 +34,8 @@ import java.util.function.Supplier;
 import javax.imageio.ImageIO;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.MenuSelectionManager;
 import javax.swing.JToggleButton;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -265,7 +268,10 @@ public final class DrawingModifiersUiProbe {
    }
 
    private static void nativeInput() throws Exception {
+      robot.waitForIdle();
       edt(() -> {
+         frame.toFront();
+         Desktop.getDesktop().requestForeground(true);
          plate.scrollRectToVisible(new Rectangle(0, 0, 1, 1));
          plate.requestFocusInWindow();
          return null;
@@ -349,6 +355,7 @@ public final class DrawingModifiersUiProbe {
       robot.mousePress(BUTTON1_DOWN_MASK);
       robot.mouseRelease(BUTTON1_DOWN_MASK);
       await(() -> current() instanceof MoveLayerTool && plate.isFocusOwner(), "native toolbar selects move tool and focuses canvas");
+      nativeMoveShortcut();
       Point start = edt(() -> plate.getScreenPointFor(7.3, 5.2));
       Point end = edt(() -> plate.getScreenPointFor(12.3, 8.2));
       Point screen = edt(() -> plate.getLocationOnScreen());
@@ -417,8 +424,50 @@ public final class DrawingModifiersUiProbe {
       return image;
    }
 
+   private static void nativeMoveShortcut() throws Exception {
+      boolean macOs = System.getProperty("os.name").toLowerCase().contains("mac");
+      edt(() -> { app.switchToTextTool(); plate.requestFocusInWindow(); return null; });
+      await(() -> plate.isFocusOwner(), "canvas focused for Move shortcut");
+      robot.keyPress(VK_CONTROL);
+      if (!macOs) robot.keyPress(VK_ALT);
+      robot.keyPress(VK_V);
+      robot.keyRelease(VK_V);
+      if (!macOs) robot.keyRelease(VK_ALT);
+      robot.keyRelease(VK_CONTROL);
+      await(() -> current() instanceof MoveLayerTool, "native Move shortcut switches from Text tool");
+      check(!JaveKeyBindings.MOVE_LAYER_TOOL.equals(JaveKeyBindings.PASTE_AS_NEW_SELECTION), "Move and Paste use distinct shortcuts");
+
+      edt(() -> { app.switchToTextTool(); plate.requestFocusInWindow(); return null; });
+      await(() -> plate.isFocusOwner(), "canvas focused for View mnemonic");
+      if (macOs) robot.keyPress(VK_CONTROL);
+      robot.keyPress(VK_ALT);
+      robot.keyPress(VK_V);
+      robot.keyRelease(VK_V);
+      robot.keyRelease(VK_ALT);
+      if (macOs) robot.keyRelease(VK_CONTROL);
+      await(() -> {
+         for (var element : MenuSelectionManager.defaultManager().getSelectedPath()) {
+            if (element instanceof JMenu menu && "View".equals(menu.getText())) return true;
+         }
+         return false;
+      }, "native View mnemonic still opens View");
+      check(edt(() -> app.getMainPanel().getToolManager().getCurrentToolIndex() == TEXT_TOOL_INDEX), "View mnemonic preserves active tool");
+      robot.keyPress(VK_ESCAPE);
+      robot.keyRelease(VK_ESCAPE);
+      await(() -> MenuSelectionManager.defaultManager().getSelectedPath().length == 0, "Escape closes View menu");
+      edt(() -> { plate.requestFocusInWindow(); return null; });
+      await(() -> plate.isFocusOwner(), "canvas focused after View menu");
+      robot.keyPress(VK_CONTROL);
+      if (!macOs) robot.keyPress(VK_ALT);
+      robot.keyPress(VK_V);
+      robot.keyRelease(VK_V);
+      if (!macOs) robot.keyRelease(VK_ALT);
+      robot.keyRelease(VK_CONTROL);
+      await(() -> current() instanceof MoveLayerTool, "native Move shortcut works after View mnemonic");
+   }
+
    private static JToggleButton findMoveLayerButton(Component component) {
-      if (component instanceof JToggleButton button && "Move Layer".equals(button.getToolTipText())) {
+      if (component instanceof JToggleButton button && button.getToolTipText() != null && button.getToolTipText().startsWith("Move Layer (")) {
          return button;
       }
       if (component instanceof Container container) {

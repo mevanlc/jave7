@@ -11,6 +11,19 @@ import org.junit.Test;
 
 public class JaveKeyBindingsTest {
    @Test
+   public void moveLayerUsesCtrlVOnMacOs() {
+      assertEquals(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK), MoveLayerKeyBinding.create(true));
+   }
+
+   @Test
+   public void moveLayerUsesCtrlAltVOnOtherPlatforms() {
+      assertEquals(
+         KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK),
+         MoveLayerKeyBinding.create(false)
+      );
+   }
+
+   @Test
    public void replaceUsesCmdOptionFOnMacOs() {
       KeyStroke shortcut = ReplaceKeyBinding.create(true, InputEvent.META_DOWN_MASK);
 
