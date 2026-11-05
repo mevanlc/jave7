@@ -16,6 +16,7 @@ public class PlatePreferences extends SmartPreferences {
    private static final String KEY_MARK_ILLEGAL = "markIllegalCharacters";
    private static final String KEY_CONNECTED_LINES_VIEW = "pixelView";
    private static final String KEY_RULER = "ruler";
+   private static final String KEY_GLYPH_EMULATION = "glyphEmulation";
    private static final String KEY_CELL_SCALING_MODE = "cellScalingMode";
    private static final String KEY_CELL_SCALING_WIDTH = "cellScalingWidthScale";
    private static final String KEY_CELL_SCALING_HEIGHT = "cellScalingHeightScale";
@@ -70,6 +71,19 @@ public class PlatePreferences extends SmartPreferences {
       } catch (NumberFormatException e) {
          return defaultValue;
       }
+   }
+
+   public GlyphEmulation getGlyphEmulation() {
+      try {
+         return GlyphEmulation.valueOf(this.get(KEY_GLYPH_EMULATION, GlyphEmulation.JAVE.name()));
+      } catch (IllegalArgumentException e) {
+         return GlyphEmulation.JAVE;
+      }
+   }
+
+   public void setGlyphEmulation(GlyphEmulation glyphEmulation) {
+      Ensure.ensureArgumentNotNull(glyphEmulation);
+      this.put(KEY_GLYPH_EMULATION, glyphEmulation.name());
    }
 
    public ObjectModel<CellScalingMode> getCellScalingModeModel() {

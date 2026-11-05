@@ -1,6 +1,7 @@
 package de.jave.jave.actions.preferences;
 
 import de.jave.ascii.plate.CellScalingMode;
+import de.jave.jave.preferences.GlyphEmulation;
 import de.jave.jave.preferences.PlatePreferences;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -28,6 +29,7 @@ public class DisplayPreferencesPanel implements IJavePreferencesPanel {
 
    private final PlatePreferences platePreferences;
    private final JComponent content;
+   private final JComboBox<GlyphEmulation> glyphEmulationComboBox;
    private final JComboBox<CellScalingMode> cellScalingComboBox;
    private final JPanel scaleFieldsPanel;
    private final SpinnerNumberModel widthScaleModel;
@@ -46,6 +48,18 @@ public class DisplayPreferencesPanel implements IJavePreferencesPanel {
       this.originalHeightScale = platePreferences.getCellScalingHeight();
 
       JPanel panel = new JPanel(new GridDialogLayout(2, false));
+
+      this.glyphEmulationComboBox = new JComboBox<>(GlyphEmulation.values());
+      this.glyphEmulationComboBox.setSelectedItem(platePreferences.getGlyphEmulation());
+      this.glyphEmulationComboBox.setRenderer(new ObjectUiListCellRenderer(new AbstractObjectUi<GlyphEmulation>() {
+         public String getLabel(GlyphEmulation value) {
+            return value.getDisplayName();
+         }
+      }));
+      JLabel glyphEmulationLabel = new JLabel("Glyph emulation:");
+      glyphEmulationLabel.setLabelFor(this.glyphEmulationComboBox);
+      panel.add(glyphEmulationLabel, GridDialogLayoutData.RIGHT);
+      panel.add(this.glyphEmulationComboBox);
 
       this.cellScalingComboBox = new JComboBox<>(CellScalingMode.values());
       this.cellScalingComboBox.setSelectedItem(this.originalMode);
@@ -110,6 +124,10 @@ public class DisplayPreferencesPanel implements IJavePreferencesPanel {
 
    @Override
    public void savePreferences() {
+      GlyphEmulation glyphEmulation = (GlyphEmulation)this.glyphEmulationComboBox.getSelectedItem();
+      if (glyphEmulation != null) {
+         this.platePreferences.setGlyphEmulation(glyphEmulation);
+      }
       CellScalingMode mode = (CellScalingMode)this.cellScalingComboBox.getSelectedItem();
       if (mode != null) {
          this.platePreferences.setCellScalingMode(mode);
