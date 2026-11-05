@@ -1,6 +1,7 @@
 package de.jave.jave.rendering;
 
 import de.jave.ascii.plate.CharacterMetrics;
+import de.jave.jave.preferences.GlyphEmulation;
 import de.jave.jave.tool.text.RowRange;
 import de.jave.lib.CharacterPlate;
 import java.awt.Graphics;
@@ -12,6 +13,10 @@ public class ConnectedLinesViewRenderer {
    }
 
    public static final void paintConnectedLinesView(Graphics g, CharacterPlate content, RowRange rowRange, Point plateOrigin, CharacterMetrics metrics) {
+      paintConnectedLinesView(g, content, rowRange, plateOrigin, metrics, GlyphEmulation.JAVE);
+   }
+
+   public static void paintConnectedLinesView(Graphics g, CharacterPlate content, RowRange rowRange, Point plateOrigin, CharacterMetrics metrics, GlyphEmulation emulation) {
       int width = content.getWidth();
       int height = content.getHeight();
 
@@ -51,7 +56,7 @@ public class ConnectedLinesViewRenderer {
                   chE
                )
                && ch != ' ') {
-               GlyphRenderer.drawCell(g, ch, plateOrigin.x, j, plateOrigin.y + i * metrics.getHeight() + metrics.getAscent(), metrics.getWidth());
+               GlyphRenderer.drawCell(g, ch, plateOrigin.x, j, plateOrigin.y + i * metrics.getHeight() + metrics.getAscent(), metrics, emulation);
             }
          }
       }

@@ -355,3 +355,21 @@ tasks.register('autoZoomUiProbe', JavaExec) {
     workingDir = autoZoomProbeDir.get().asFile
     systemProperty 'jave.probeOutput', autoZoomProbeDir.get().dir('output').asFile.absolutePath
 }
+
+def glyphProbeDir = layout.buildDirectory.dir('glyph-emulation-probe')
+tasks.register('prepareGlyphEmulationUiProbe', Sync) {
+    into glyphProbeDir
+    appBundleResourceDirs.each { resourceDir ->
+        from(resourceDir) { into resourceDir }
+    }
+}
+
+tasks.register('glyphEmulationUiProbe', JavaExec) {
+    group = 'verification'
+    description = 'Checks glyph emulation in the native preferences dialog, canvas and selections.'
+    dependsOn tasks.named('testClasses'), tasks.named('prepareGlyphEmulationUiProbe')
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'de.jave.jave.rendering.GlyphEmulationUiProbe'
+    workingDir = glyphProbeDir.get().asFile
+    systemProperty 'jave.probeOutput', glyphProbeDir.get().dir('output').asFile.absolutePath
+}

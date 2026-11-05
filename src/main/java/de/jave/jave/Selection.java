@@ -5,7 +5,6 @@ import de.jave.awt.clipboard.JaveClipboardSelection;
 import de.jave.gfx.GfxTools;
 import de.jave.jave.algorithm.rectangle.RectangleStyle;
 import de.jave.jave.preferences.ColorScheme;
-import de.jave.jave.rendering.GlyphRenderer;
 import de.jave.lib.CharacterPlate;
 import de.jave.lib.area.BooleanArea;
 import java.awt.Color;
@@ -908,7 +907,7 @@ public class Selection {
                      if (ix < 0 || ix >= plateWidth || iy < 0 || iy >= plateHeight || this.plate.getChar(ix, iy) != ch) {
                         int xx = p0.x + x * charWidth;
                         int yy = p0.y + yx * charHeight;
-                        GlyphRenderer.drawCell(g, ch, xx, 0, yy + charAscent, charWidth);
+                        this.plate.drawGlyphCell(g, ch, xx, 0, yy + charAscent);
                      }
                   }
                }
@@ -970,7 +969,7 @@ public class Selection {
             }
 
             for (int yxxxx = 0; yxxxx < heightx; yxxxx++) {
-               GlyphRenderer.drawRow(g, this.content.glyphPlane()[yxxxx], p0.x, p0.y + yxxxx * charHeight + charAscent, charWidth);
+               this.plate.drawGlyphRow(g, this.content.glyphPlane()[yxxxx], p0.x, p0.y + yxxxx * charHeight + charAscent);
             }
          } else if (this.layer == 1) {
             int widthxx = this.content.getWidth();
@@ -1001,7 +1000,7 @@ public class Selection {
 
             if (this.mask == null) {
                for (int yxxxxx = 0; yxxxxx < heightxx; yxxxxx++) {
-                  GlyphRenderer.drawRow(g, this.content.glyphPlane()[yxxxxx], p0.x, p0.y + yxxxxx * charHeight + charAscent, charWidth);
+                  this.plate.drawGlyphRow(g, this.content.glyphPlane()[yxxxxx], p0.x, p0.y + yxxxxx * charHeight + charAscent);
                }
             } else {
                for (int yxxxxx = 0; yxxxxx < heightxx; yxxxxx++) {
@@ -1009,7 +1008,7 @@ public class Selection {
                      if (this.mask.isSet(x, yxxxxx)) {
                         int ch = this.content.glyphAt(x, yxxxxx);
                         if (ch != ' ') {
-                           GlyphRenderer.drawCell(g, ch, p0.x, x, p0.y + yxxxxx * charHeight + charAscent, charWidth);
+                           this.plate.drawGlyphCell(g, ch, p0.x, x, p0.y + yxxxxx * charHeight + charAscent);
                         }
                      }
                   }
@@ -1045,7 +1044,7 @@ public class Selection {
                            g.setColor(colorScheme.getColorText());
                         }
 
-                        GlyphRenderer.drawCell(g, this.content.glyphAt(x, yxxxxx), xxx, 0, yyx + charAscent, charWidth);
+                        this.plate.drawGlyphCell(g, this.content.glyphAt(x, yxxxxx), xxx, 0, yyx + charAscent);
                      }
                   }
                }

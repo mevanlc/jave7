@@ -33,7 +33,7 @@ public class PixelPlateRenderer {
                if (xx >= 0 && yy >= 0 && xx < plateWidth && yy < plateHeight) {
                   int ch = target.getChar(xx, yy);
                   if (ch != ' ') {
-                     GlyphRenderer.drawCell(g, ch, x1 + x * charWidth, 0, y1 + fontAscent + y * charHeight, charWidth);
+                     target.drawGlyphCell(g, ch, x1 + x * charWidth, 0, y1 + fontAscent + y * charHeight);
                   }
                }
             }

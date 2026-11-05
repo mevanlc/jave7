@@ -170,6 +170,7 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
       platePreferences.getGridVisibilityModel().addChangeListener(this.repaintChangeListener);
       platePreferences.getMarkIllegalModel().addChangeListener(this.repaintChangeListener);
       platePreferences.getConnectedLinesViewModel().addChangeListener(this.repaintChangeListener);
+      platePreferences.getGlyphEmulationModel().addChangeListener(this.repaintChangeListener);
       platePreferences.getCellScalingModeModel().addChangeListener(this.updateOnCellScalingChangedListener);
       platePreferences.getCellScalingWidthModel().addChangeListener(this.updateOnCellScalingChangedListener);
       platePreferences.getCellScalingHeightModel().addChangeListener(this.updateOnCellScalingChangedListener);
@@ -200,6 +201,7 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
       this.platePreferences.getGridVisibilityModel().removeChangeListener(this.repaintChangeListener);
       this.platePreferences.getMarkIllegalModel().removeChangeListener(this.repaintChangeListener);
       this.platePreferences.getConnectedLinesViewModel().removeChangeListener(this.repaintChangeListener);
+      this.platePreferences.getGlyphEmulationModel().removeChangeListener(this.repaintChangeListener);
       this.platePreferences.getCellScalingModeModel().removeChangeListener(this.updateOnCellScalingChangedListener);
       this.platePreferences.getCellScalingWidthModel().removeChangeListener(this.updateOnCellScalingChangedListener);
       this.platePreferences.getCellScalingHeightModel().removeChangeListener(this.updateOnCellScalingChangedListener);
@@ -910,17 +912,16 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
       RowRange rowRange = this.getVisibleRowRange();
       boolean connectedLinesView = this.platePreferences.getConnectedLinesViewModel().getValue();
       if (connectedLinesView) {
-         ConnectedLinesViewRenderer.paintConnectedLinesView(g, this.getRenderedContent(), rowRange, plateOrigin, this.characterSizeModel.getCharacterSize());
+         ConnectedLinesViewRenderer.paintConnectedLinesView(g, this.getRenderedContent(), rowRange, plateOrigin, this.characterSizeModel.getCharacterSize(), this.platePreferences.getGlyphEmulation());
       } else {
          CharacterPlate content = this.getRenderedContent();
 
          for (int y = rowRange.getRowStartIndex(); y <= rowRange.getRowEndIndex(); y++) {
-            GlyphRenderer.drawRow(
+            this.drawGlyphRow(
                g,
                content.glyphPlane()[y],
                plateOrigin.x,
-               plateOrigin.y + y * this.getCharHeight() + this.characterSizeModel.getCharacterSize().getAscent(),
-               this.getCharWidth()
+               plateOrigin.y + y * this.getCharHeight() + this.characterSizeModel.getCharacterSize().getAscent()
             );
          }
       }
@@ -1032,15 +1033,22 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
          }
 
          if (!empty) {
-            GlyphRenderer.drawRow(
+            this.drawGlyphRow(
                g,
                line,
                p0.x - x0 * this.getCharWidth(),
-               p0.y + (y - y0) * this.getCharHeight() + this.characterSizeModel.getCharacterSize().getAscent(),
-               this.getCharWidth()
+               p0.y + (y - y0) * this.getCharHeight() + this.characterSizeModel.getCharacterSize().getAscent()
             );
          }
       }
+   }
+
+   public void drawGlyphRow(Graphics graphics, int[] glyphs, int originX, int baselineY) {
+      GlyphRenderer.drawRow(graphics, glyphs, originX, baselineY, this.getCharacterMetrics(), this.platePreferences.getGlyphEmulation());
+   }
+
+   public void drawGlyphCell(Graphics graphics, int glyph, int originX, int column, int baselineY) {
+      GlyphRenderer.drawCell(graphics, glyph, originX, column, baselineY, this.getCharacterMetrics(), this.platePreferences.getGlyphEmulation());
    }
 
    public void showCoordinates(Point location) {

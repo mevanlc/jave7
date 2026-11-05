@@ -38,9 +38,17 @@ public class PlatePreferences extends SmartPreferences {
    private final ObjectModel<CellScalingMode> cellScalingModeModel;
    private final ObjectModel<Float> cellScalingWidthModel;
    private final ObjectModel<Float> cellScalingHeightModel;
+   private final ObjectModel<GlyphEmulation> glyphEmulationModel;
 
    public PlatePreferences(JavePreferences javePreferences) {
       super(javePreferences.getSubPreferences("plate"));
+      GlyphEmulation initialEmulation;
+      try {
+         initialEmulation = GlyphEmulation.valueOf(this.get(KEY_GLYPH_EMULATION, GlyphEmulation.JAVE.name()));
+      } catch (IllegalArgumentException e) {
+         initialEmulation = GlyphEmulation.JAVE;
+      }
+      this.glyphEmulationModel = new ObjectModel<>(initialEmulation);
       CellScalingMode initialMode = CellScalingMode.fromName(this.get(KEY_CELL_SCALING_MODE, DEFAULT_CELL_SCALING_MODE.name()), DEFAULT_CELL_SCALING_MODE);
       float initialWidth = this.getFloat(KEY_CELL_SCALING_WIDTH, DEFAULT_CELL_SCALING_FACTOR);
       float initialHeight = this.getFloat(KEY_CELL_SCALING_HEIGHT, DEFAULT_CELL_SCALING_FACTOR);
@@ -74,16 +82,17 @@ public class PlatePreferences extends SmartPreferences {
    }
 
    public GlyphEmulation getGlyphEmulation() {
-      try {
-         return GlyphEmulation.valueOf(this.get(KEY_GLYPH_EMULATION, GlyphEmulation.JAVE.name()));
-      } catch (IllegalArgumentException e) {
-         return GlyphEmulation.JAVE;
-      }
+      return this.glyphEmulationModel.getValue();
+   }
+
+   public ObjectModel<GlyphEmulation> getGlyphEmulationModel() {
+      return this.glyphEmulationModel;
    }
 
    public void setGlyphEmulation(GlyphEmulation glyphEmulation) {
       Ensure.ensureArgumentNotNull(glyphEmulation);
       this.put(KEY_GLYPH_EMULATION, glyphEmulation.name());
+      this.glyphEmulationModel.setValue(glyphEmulation);
    }
 
    public ObjectModel<CellScalingMode> getCellScalingModeModel() {

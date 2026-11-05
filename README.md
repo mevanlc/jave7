@@ -100,6 +100,21 @@ token is needed: only the publication job receives write access through
 
 ## Editor changes
 
+**Preferences > Display > Glyph emulation** defaults to **Jave**, preserving the
+existing rendering. **Kitty** draws the 1,098 built-in glyphs from the kitty 0.50.0
+inventory directly in character cells, bypassing the display font for box drawing,
+blocks, Braille, selected geometric shapes, Powerline, and legacy-computing symbols.
+Canvas text, selections, and tool previews use the same mode, which is remembered
+across restarts and takes effect when preferences are accepted. Other characters
+continue to use the display font. This approximates Kitty's default geometry;
+custom Kitty line thickness, cell spacing, and rasterization can still differ.
+
+Try [the Kitty showcase](examples/kitty/showcase.txt), an 80-column drawing with
+an octant landscape, Braille waveform, connected boxes, and glyph studies.
+Select **Kitty** and turn off **View > Mark illegal characters** for a clean
+preview. Paste the drawing into Kitty, or run `cat examples/kitty/showcase.txt`
+from the repository, to compare.
+
 **View > Auto Zoom** fits the whole canvas at the largest zoom step that fits the
 available space, adjusting as the window, panels, rulers, font, or canvas changes.
 It uses zoom offsets from −10 to +100 and remembers the checkbox across restarts.

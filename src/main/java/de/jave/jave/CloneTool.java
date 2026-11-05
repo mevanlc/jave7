@@ -5,7 +5,6 @@ import de.jave.jave.filter.Filter;
 import de.jave.jave.icon.JaveIcons;
 import de.jave.jave.plate.JaveMainPanel;
 import de.jave.jave.preferences.ColorScheme;
-import de.jave.jave.rendering.GlyphRenderer;
 import de.jave.jave.tool.dialog.IInlineToolOptions;
 import java.awt.Component;
 import java.awt.Graphics2D;
@@ -97,7 +96,7 @@ public class CloneTool extends EraserTool {
                   int xx = x0 - cx + x;
                   int yy = y0 - cy + y;
                   if (this.getPlate().isInside(xx, yy)) {
-                     GlyphRenderer.drawCell(g, this.getPlate().getChar(xx, yy), p0.x, x, p0.y + y * characterHeight + ascent, characterWidth);
+                     this.getPlate().drawGlyphCell(g, this.getPlate().getChar(xx, yy), p0.x, x, p0.y + y * characterHeight + ascent);
                   }
                }
             }
