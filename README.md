@@ -100,6 +100,11 @@ token is needed: only the publication job receives write access through
 
 ## Editor changes
 
+The status bar shows the selection's bounding width and height in character cells
+while a selection is active. Double-click a row in **Unicode Picker** to insert
+that character at the insertion point. The text caret remains visible while
+**Unicode Picker** or **Box Drawing Picker** has focus.
+
 **Preferences > Display > Glyph emulation** defaults to **Jave**, preserving the
 existing rendering. **Kitty** draws the 1,098 built-in glyphs from the kitty 0.50.0
 inventory directly in character cells, bypassing the display font for box drawing,

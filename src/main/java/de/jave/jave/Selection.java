@@ -13,8 +13,9 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
+import net.dizzy.commons.core.model.AbstractChangeableModel;
 
-public class Selection {
+public class Selection extends AbstractChangeableModel {
    private Rectangle region;
    private CharacterPlate content;
    private BooleanArea mask;
@@ -53,6 +54,7 @@ public class Selection {
    }
 
    private void repaintPlate() {
+      this.fireChangeEvent();
       if (this.plate != null) {
          this.plate.repaint();
       }
@@ -129,6 +131,7 @@ public class Selection {
       this.region = null;
       this.content = null;
       this.mask = null;
+      this.fireChangeEvent();
    }
 
    public CharacterPlate getContent() {
@@ -189,6 +192,7 @@ public class Selection {
       if (this.mask != null) {
          this.mask.addLinesTop(1, true);
       }
+      this.fireChangeEvent();
    }
 
    public void resizeByCursorS_DOWN() {
@@ -199,6 +203,7 @@ public class Selection {
       if (this.mask != null) {
          this.mask.addLinesBottom(1, true);
       }
+      this.fireChangeEvent();
    }
 
    public void resizeByCursorS_UP() {
@@ -214,6 +219,7 @@ public class Selection {
       if (this.mask != null) {
          this.mask.removeLinesBottom(1);
       }
+      this.fireChangeEvent();
    }
 
    public void resizeByCursorN_DOWN() {
@@ -230,6 +236,7 @@ public class Selection {
       if (this.mask != null) {
          this.mask.removeLinesTop(1);
       }
+      this.fireChangeEvent();
    }
 
    public void resizeByCursorW_LEFT() {
@@ -241,6 +248,7 @@ public class Selection {
       if (this.mask != null) {
          this.mask.addColumnsLeft(1, true);
       }
+      this.fireChangeEvent();
    }
 
    public void resizeByCursorE_RIGHT() {
@@ -251,6 +259,7 @@ public class Selection {
       if (this.mask != null) {
          this.mask.addColumnsRight(1, true);
       }
+      this.fireChangeEvent();
    }
 
    public void resizeByCursorE_LEFT() {
@@ -266,6 +275,7 @@ public class Selection {
       if (this.mask != null) {
          this.mask.removeColumnsRight(1);
       }
+      this.fireChangeEvent();
    }
 
    public void resizeByCursorW_RIGHT() {
@@ -282,6 +292,7 @@ public class Selection {
       if (this.mask != null) {
          this.mask.removeColumnsLeft(1);
       }
+      this.fireChangeEvent();
    }
 
    public void set(Rectangle region, CharacterPlate content) {
@@ -317,6 +328,7 @@ public class Selection {
       this.originalContentX = 0;
       this.originalContentY = 0;
       this.originalContent = content.getClone();
+      this.fireChangeEvent();
    }
 
    public void set(Point origin, int[][] content, BooleanArea mask) {
@@ -447,6 +459,7 @@ public class Selection {
             this.mask = null;
          }
 
+         this.fireChangeEvent();
          return success;
       }
    }
@@ -549,6 +562,7 @@ public class Selection {
             }
          }
       }
+      this.fireChangeEvent();
    }
 
    public void paste() {

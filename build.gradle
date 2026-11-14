@@ -373,3 +373,21 @@ tasks.register('glyphEmulationUiProbe', JavaExec) {
     workingDir = glyphProbeDir.get().asFile
     systemProperty 'jave.probeOutput', glyphProbeDir.get().dir('output').asFile.absolutePath
 }
+
+def pickerProbeDir = layout.buildDirectory.dir('selection-picker-probe')
+tasks.register('prepareSelectionAndPickerUiProbe', Sync) {
+    into pickerProbeDir
+    appBundleResourceDirs.each { resourceDir ->
+        from(resourceDir) { into resourceDir }
+    }
+}
+
+tasks.register('selectionAndPickerUiProbe', JavaExec) {
+    group = 'verification'
+    description = 'Checks selection dimensions, native picker double clicks and canvas caret focus.'
+    dependsOn tasks.named('testClasses'), tasks.named('prepareSelectionAndPickerUiProbe')
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'de.jave.jave.SelectionAndPickerUiProbe'
+    workingDir = pickerProbeDir.get().asFile
+    systemProperty 'jave.probeOutput', pickerProbeDir.get().dir('output').asFile.absolutePath
+}

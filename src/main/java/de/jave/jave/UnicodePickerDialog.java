@@ -15,6 +15,8 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedInputStream;
@@ -45,6 +47,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
@@ -79,6 +82,7 @@ public class UnicodePickerDialog {
       this.listFontSize = Math.max(FONT_SIZE_MIN, Math.min(FONT_SIZE_MAX, saved));
       this.mainPanel = mainPanel;
       this.dialog = JDialogFactory.createJDialog(parent, "Unicode Picker", false);
+      CharacterPickerFocus.register(this.dialog, mainPanel);
       this.dialog.addWindowListener(new WindowAdapter() {
          @Override
          public void windowClosing(WindowEvent e) {
@@ -263,6 +267,18 @@ public class UnicodePickerDialog {
 
       this.entryList.addListSelectionListener(e -> {
          if (!e.getValueIsAdjusting()) updatePreview();
+      });
+      this.entryList.addMouseListener(new MouseAdapter() {
+         @Override
+         public void mouseClicked(MouseEvent event) {
+            if (SwingUtilities.isLeftMouseButton(event) && event.getClickCount() == 2) {
+               int index = entryList.locationToIndex(event.getPoint());
+               if (index >= 0 && entryList.getCellBounds(index, index).contains(event.getPoint())) {
+                  entryList.setSelectedIndex(index);
+                  insertSelected();
+               }
+            }
+         }
       });
    }
 

@@ -1,10 +1,12 @@
 package de.jave.jave.tool.text;
 
+import de.jave.jave.CharacterPickerFocus;
 import de.jave.jave.JaveGlobalRessources;
 import de.jave.jave.Plate;
 import de.jave.jave.plate.ActiveEditorModel;
 import de.jave.jave.plate.IDocumentEditor;
 import de.jave.jave.preferences.BooleanPreferenceModel;
+import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,7 +40,7 @@ public class CursorBlinker implements FocusListener {
             public void actionPerformed(ActionEvent e) {
                if (CursorBlinker.this.currentPlate != null
                   && CursorBlinker.this.active
-                  && CursorBlinker.this.currentPlate.isFocusOwner()
+                  && CursorBlinker.this.hasCursorFocus()
                   && !CursorBlinker.this.hasSelection) {
                   if (CursorBlinker.this.cursorShowing) {
                      if (JaveGlobalRessources.cursorBlink) {
@@ -52,6 +54,7 @@ public class CursorBlinker implements FocusListener {
          }
       );
       this.timer.start();
+      KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("focusedWindow", event -> this.updateCursor());
       activePlateModel.addChangeListener(new IChangeListener() {
          @Override
          public void stateChanged() {
@@ -71,6 +74,7 @@ public class CursorBlinker implements FocusListener {
                } else {
                   CursorBlinker.this.currentPlate = null;
                }
+               CursorBlinker.this.updateCursor();
             }
          }
       });
@@ -83,7 +87,7 @@ public class CursorBlinker implements FocusListener {
 
    @Override
    public void focusLost(FocusEvent evt) {
-      this.removeCursor();
+      this.updateCursor();
    }
 
    public synchronized void setActive(boolean active) {
@@ -137,7 +141,7 @@ public class CursorBlinker implements FocusListener {
    }
 
    private void updateCursorOnEventDispatchThread() {
-      if (this.currentPlate != null && this.active && this.currentPlate.isFocusOwner() && !this.hasSelection) {
+      if (this.currentPlate != null && this.active && this.hasCursorFocus() && !this.hasSelection) {
          // Replace the old cursor in the same EDT turn, without a queued hidden phase.
          this.putCursor();
          // Keep the cursor visible for a full blink interval after the latest movement.
@@ -145,6 +149,10 @@ public class CursorBlinker implements FocusListener {
       } else {
          this.removeCursor();
       }
+   }
+
+   private boolean hasCursorFocus() {
+      return this.currentPlate.isFocusOwner() || CharacterPickerFocus.isFocusedFor(this.currentPlate);
    }
 
    private static void runOnEventDispatchThread(Runnable action) {

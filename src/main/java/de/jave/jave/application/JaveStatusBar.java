@@ -5,6 +5,7 @@ import de.jave.gui.IMouseClickHandler;
 import de.jave.gui.StatusBar;
 import de.jave.jave.JavEApplication;
 import de.jave.jave.JaveMessages;
+import de.jave.jave.Selection;
 import de.jave.jave.ZoomableFontModel;
 import de.jave.jave.actions.ResizeDocumentAction;
 import de.jave.jave.plate.ActiveEditorModel;
@@ -21,6 +22,9 @@ import net.dizzy.commons.swing.fontchooser.model.FontModel;
 
 public class JaveStatusBar {
    private final GStatusLabel sizeLabel;
+   private final GStatusLabel selectionSizeLabel;
+   private Selection currentSelection;
+   private final IChangeListener selectionChangeListener = this::updateSelectionSizeLabel;
    private final GStatusLabel lInsert;
    private final JPanel content;
    private final ActiveEditorModel activeEditorModel;
@@ -46,13 +50,17 @@ public class JaveStatusBar {
          }
       });
       this.sizeLabel.setToolTipText(JaveMessages.Control_SizeLabel_Tooltip);
+      this.selectionSizeLabel = new GStatusLabel("", null);
+      this.selectionSizeLabel.setToolTipText("Selection bounding width and height in character cells");
       activeEditorModel.addChangeListener(new IChangeListener() {
          @Override
          public void stateChanged() {
             JaveStatusBar.this.updateSizeLabelToDocumentSize();
+            JaveStatusBar.this.updateSelectionModel();
          }
       });
       this.updateSizeLabelToDocumentSize();
+      this.updateSelectionModel();
       this.lInsert = new GStatusLabel(JaveMessages.Control_InsertOverwriteLabel_OverwriteAbbreviation, new IMouseClickHandler() {
          @Override
          public void handleMouseClicked() {
@@ -76,6 +84,7 @@ public class JaveStatusBar {
       JPanel detailsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
       detailsPanel.add(new FontLabel(fontModel).getContent());
       detailsPanel.add(new ZoomLabel(zoomableFontModelModel).getContent());
+      detailsPanel.add(this.selectionSizeLabel);
       detailsPanel.add(this.sizeLabel);
       detailsPanel.add(this.lInsert);
       panel.add(statusBar, BorderLayout.CENTER);
@@ -91,6 +100,26 @@ public class JaveStatusBar {
          ZoomableFontModel model = editor.getPlate().getZoomableFontModel();
          zoomableFontModelModel.setValue(model);
       }
+   }
+
+   private void updateSelectionModel() {
+      if (this.currentSelection != null) {
+         this.currentSelection.removeChangeListener(this.selectionChangeListener);
+      }
+      IDocumentEditor editor = this.activeEditorModel.getActiveEditor();
+      this.currentSelection = editor == null ? null : editor.getPlate().getSelection();
+      if (this.currentSelection != null) {
+         this.currentSelection.addChangeListener(this.selectionChangeListener);
+      }
+      this.updateSelectionSizeLabel();
+   }
+
+   private void updateSelectionSizeLabel() {
+      boolean hasSelection = this.currentSelection != null && this.currentSelection.hasSelection();
+      this.selectionSizeLabel.setText(hasSelection
+         ? "Selection: " + this.currentSelection.getWidth() + " x " + this.currentSelection.getHeight()
+         : "");
+      this.selectionSizeLabel.setVisible(hasSelection);
    }
 
    public JComponent getContent() {

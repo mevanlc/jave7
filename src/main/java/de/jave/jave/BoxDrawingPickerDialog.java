@@ -85,6 +85,7 @@ public class BoxDrawingPickerDialog {
       int saved = preferences().getInt(PREF_KEY_FONT_SIZE, FONT_SIZE_DEFAULT);
       this.diagramFontSize = Math.max(FONT_SIZE_MIN, Math.min(FONT_SIZE_MAX, saved));
       this.dialog = JDialogFactory.createJDialog(parent, "Box Drawing Picker", false);
+      CharacterPickerFocus.register(this.dialog, mainPanel);
       this.dialog.addWindowListener(new WindowAdapter() {
          @Override
          public void windowClosing(WindowEvent event) {
