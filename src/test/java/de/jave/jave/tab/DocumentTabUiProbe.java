@@ -1,6 +1,6 @@
 package de.jave.jave.tab;
 
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.application.startup.ConfigurationList;
 import de.jave.jave.menu.ProbePreferencesFactory;
 import de.jave.jave.plate.JaveMainPanel;
@@ -27,7 +27,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 public final class DocumentTabUiProbe {
-   private static JavEApplication app;
+   private static JaveApplication app;
    private static JFrame frame;
    private static Robot robot;
    private static final Path OUTPUT = Path.of(System.getProperty("jave.probeOutput", "build/tab-ui-probe/output"));
@@ -51,7 +51,7 @@ public final class DocumentTabUiProbe {
             JPopupMenu.setDefaultLightWeightPopupEnabled(false);
             var init = Class.forName("de.jave.jave.application.startup.JaveStartup").getDeclaredMethod("initConfigFiles");
             init.setAccessible(true);
-            app = new JavEApplication((ConfigurationList)init.invoke(null));
+            app = new JaveApplication((ConfigurationList)init.invoke(null));
             app.startupMenuBar();
             app.doNew(); // Doc 1
             app.doNew(); // Doc 2

@@ -7,7 +7,7 @@ public class JaveSwingMessages extends NLS {
    public static String FileFormat_ImageFiles;
    public static String FileFormat_HtmlFile;
    public static String FileFormat_ActionscriptFile;
-   public static String FileFormat_JavEAnimationFile;
+   public static String FileFormat_JaveAnimationFile;
    public static String FileFormat_TextFile;
    public static String FileFormat_VTAnimationFile;
    public static String FileFormat_GifImageFile;

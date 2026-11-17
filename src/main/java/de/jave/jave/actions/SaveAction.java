@@ -1,6 +1,6 @@
 package de.jave.jave.actions;
 
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.actions.enablestrategy.AnyEditorEnabledStrategy;
 import de.jave.jave.actions.enablestrategy.IJaveDocumentEditorActionEnabledStrategy;
 import de.jave.jave.actions.performers.SavePerformer;
@@ -10,9 +10,9 @@ import de.jave.jave.plate.JaveMainPanel;
 import java.awt.Component;
 
 public class SaveAction extends AbstractJaveAction {
-   private final JavEApplication jave;
+   private final JaveApplication jave;
 
-   public SaveAction(JavEApplication jave, JaveMainPanel mainPanel) {
+   public SaveAction(JaveApplication jave, JaveMainPanel mainPanel) {
       super(mainPanel, "Save", JaveIcons.SAVE_EDIT_ICON);
       this.jave = jave;
       this.setToolTipText("Save File");

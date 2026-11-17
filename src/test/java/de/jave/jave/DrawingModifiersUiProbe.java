@@ -44,7 +44,7 @@ import net.dizzy.commons.swing.mousecursor.CursorProvider;
 
 /** Run explicitly with drawingModifiersUiProbe; uses isolated preferences and documents. */
 public final class DrawingModifiersUiProbe {
-   private static JavEApplication app;
+   private static JaveApplication app;
    private static Plate plate;
    private static JFrame frame;
    private static Robot robot;
@@ -59,12 +59,12 @@ public final class DrawingModifiersUiProbe {
                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                var init = Class.forName("de.jave.jave.application.startup.JaveStartup").getDeclaredMethod("initConfigFiles");
                init.setAccessible(true);
-               app = new JavEApplication((ConfigurationList)init.invoke(null));
+               app = new JaveApplication((ConfigurationList)init.invoke(null));
                app.startupMenuBar();
                app.doNew();
                plate = app.getMainPanel().getPlate();
                frame = app.getFrame();
-               frame.setTitle("JavE drawing modifier probe");
+               frame.setTitle("Jave drawing modifier probe");
                frame.setBounds(120, 100, 1100, 740);
                frame.setAlwaysOnTop(true);
                frame.setVisible(true);
@@ -339,7 +339,7 @@ public final class DrawingModifiersUiProbe {
          plate.setChar(6, 4, 'X');
          plate.setChar(8, 4, 'Y');
          plate.saveCurrentState("layer move ink");
-         frame.setTitle("JavE move layer probe");
+         frame.setTitle("Jave move layer probe");
          frame.validate();
          return null;
       });

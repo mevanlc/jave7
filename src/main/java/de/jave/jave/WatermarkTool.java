@@ -77,7 +77,7 @@ public class WatermarkTool extends Tool implements IWatermarkPainter {
    private final JaveApplicationPreferences applicationPreferences;
    private Point point1;
 
-   public WatermarkTool(JaveMainPanel mainPanel, JavEApplication application, Filter filter) {
+   public WatermarkTool(JaveMainPanel mainPanel, JaveApplication application, Filter filter) {
       super(mainPanel, application, filter);
       this.applicationPreferences = application.getApplicationPreferences();
       mainPanel.addWatermarkPainter(this);
@@ -316,19 +316,19 @@ public class WatermarkTool extends Tool implements IWatermarkPainter {
       try {
          loadedImage = ImageIO.read(file);
       } catch (IOException var5) {
-         MessageDialogFactory.showMessageDialog(parentComponent, new Message(JaveMessages.JavE, "Error loading image.", var5));
+         MessageDialogFactory.showMessageDialog(parentComponent, new Message(JaveMessages.Jave, "Error loading image.", var5));
          return false;
       }
 
       if (loadedImage == null) {
          MessageDialogFactory.showMessageDialog(
-            parentComponent, new Message(JaveMessages.JavE, "Error loading image. The file format is not supported.", MessageType.ERROR)
+            parentComponent, new Message(JaveMessages.Jave, "Error loading image. The file format is not supported.", MessageType.ERROR)
          );
          return false;
       } else if (!this.setImage(new WatermarkImageFile(loadedImage, file))) {
          MessageDialogFactory.showMessageDialog(
             parentComponent,
-            new Message(JaveMessages.JavE, "Error loading image: Wrong file format?\nSupported formats: GIF, JPG, BMP (experimental).", MessageType.ERROR)
+            new Message(JaveMessages.Jave, "Error loading image: Wrong file format?\nSupported formats: GIF, JPG, BMP (experimental).", MessageType.ERROR)
          );
          return false;
       } else {

@@ -16,7 +16,7 @@ public class JavePreferences extends SmartPreferences {
    public static final int DEFAULT_ICON_SIZE = 16;
    public static final boolean DEFAULT_SHOW_LAYERS_PANEL_BY_DEFAULT = false;
    public static final int[] SUPPORTED_ICON_SIZES = {16, 24, 32};
-   private static final String PREFERENCES_NODE = "JavE";
+   private static final String PREFERENCES_NODE = "Jave";
    private static final int DEFAULT_FONT_SIZE = IAsciiGuiConstants.DEFAULT_ASCII_FONT.getSize();
    private static final int DEFAULT_FONT_STYLE = IAsciiGuiConstants.DEFAULT_ASCII_FONT.getStyle();
    private static final String DEFAULT_FONT_FAMILY_NAME = IAsciiGuiConstants.DEFAULT_ASCII_FONT.getFamily();

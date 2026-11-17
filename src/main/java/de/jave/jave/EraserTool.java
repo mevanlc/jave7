@@ -124,7 +124,7 @@ public class EraserTool extends AbstractPencilTool {
    private SpinnerNumberModel sizeModel;
    private IInlineToolOptions inlineOptions;
 
-   public EraserTool(JaveMainPanel plate, JavEApplication application, Filter filter) {
+   public EraserTool(JaveMainPanel plate, JaveApplication application, Filter filter) {
       super(plate, application, filter);
    }
 

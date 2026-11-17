@@ -3,12 +3,12 @@
 > **Status:** planning doc only. Class/interface names below are conceptual
 > placeholders until implementation starts. The plan is grounded in the current
 > text-document stack (`PlateDocument`, `Plate`, `TextDocumentEditor`,
-> `SavePerformer`, `JavEApplication.open`) but does not require a specific
+> `SavePerformer`, `JaveApplication.open`) but does not require a specific
 > final package layout.
 
 ## Summary
 
-MVP1 introduces layers for JavE text documents. A layered document is still
+MVP1 introduces layers for Jave text documents. A layered document is still
 edited through the existing `Plate` interaction model, but the document owns a
 stack of layer contents instead of exactly one `CharacterPlate`.
 
@@ -50,12 +50,12 @@ User-visible result:
 - The layer stack UI shows topmost layers at the top of the list, with the
   document layer fixed at the bottom.
 - Layer stack ordering and selection behavior should follow Photoshop-style UX
-  unless this plan calls out a JavE-specific exception.
+  unless this plan calls out a Jave-specific exception.
 - The Layers panel visibility is a user preference. Default: hidden.
 - `Flatten` and `Flatten Visible` are explicit layer operations, not side effects
   of hiding the panel. `Flatten` treats hidden layers as visible before
   flattening; `Flatten Visible` ignores hidden layers.
-- Normal `Save` preserves classic JavE behavior for one-layer documents: one text
+- Normal `Save` preserves classic Jave behavior for one-layer documents: one text
   document remains one solo `.txt` file unless the user explicitly saves in a
   layered format.
 - When a document has more than one layer, normal `Save` refuses to silently
@@ -108,7 +108,7 @@ Current text documents are represented by `PlateDocument`
 - one `UndoManager`
 - one optional `File`
 
-MVP1 should extend or wrap this shape rather than bypassing it. Most of JavE
+MVP1 should extend or wrap this shape rather than bypassing it. Most of Jave
 already reaches document content through `Plate`, so the cleanest implementation
 path is to preserve the common `PlateDocument` entry points while teaching the
 document about layer state.
@@ -136,7 +136,7 @@ Current text save/open is centered in:
 - `PlateDocument.load(File, ColorScheme)`
 - `PlateDocument.save(...)`
 - `SavePerformer.performSaveDocument*`
-- `JavEApplication.open(Component, File)`
+- `JaveApplication.open(Component, File)`
 - `JaveFileType.guessType(File)`
 
 Layer-preserving save/load should integrate through those paths so recent files,
@@ -267,7 +267,7 @@ Recommended mapping:
 - Vanilla copy should follow Photoshop's lead: copy from the active layer.
 - Add or expose a separate copy-visible/copy-flattened command for the visible
   composite.
-- Selection behavior should follow Photoshop's lead. Where JavE has no obvious
+- Selection behavior should follow Photoshop's lead. Where Jave has no obvious
   equivalent, prefer active-layer semantics for editing and visible-composite
   semantics for preview/export.
 - Eraser-like clearing can continue writing spaces in MVP1. On a non-Opaque
@@ -452,7 +452,7 @@ Implementation notes:
 
 Recommended command behavior:
 
-- `Save` on a one-layer `.txt` document writes `.txt` exactly like classic JavE.
+- `Save` on a one-layer `.txt` document writes `.txt` exactly like classic Jave.
 - `Save` on a `.javedoc` document preserves layers.
 - `Save` on an unsaved or `.txt`-backed multi-layer document shows a dialog:
 
@@ -630,7 +630,7 @@ single layer.
 - Add user-facing strings to `messages.properties` and relevant localized files
   where the repo expects them.
 - Check keyboard traversal and focus behavior in the panel.
-- Verify icons or fallback button labels are consistent with existing JavE UI.
+- Verify icons or fallback button labels are consistent with existing Jave UI.
 - Run build/test checks.
 - Manually exercise core drawing tools against multiple layers.
 

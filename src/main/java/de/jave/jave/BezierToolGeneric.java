@@ -21,7 +21,7 @@ public class BezierToolGeneric extends GenericTool {
    private Point point3;
    private Point movingPoint;
 
-   public BezierToolGeneric(JaveMainPanel plate, JavEApplication application, Filter filter) {
+   public BezierToolGeneric(JaveMainPanel plate, JaveApplication application, Filter filter) {
       super(plate, application, filter);
    }
 

@@ -18,7 +18,7 @@ public class LineToolGeneric extends GenericTool {
    private Point clickPoint;
    private Point dragPoint;
 
-   public LineToolGeneric(JaveMainPanel mainPanel, JavEApplication application, Filter filter) {
+   public LineToolGeneric(JaveMainPanel mainPanel, JaveApplication application, Filter filter) {
       super(mainPanel, application, filter);
    }
 

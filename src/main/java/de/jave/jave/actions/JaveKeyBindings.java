@@ -7,7 +7,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.KeyStroke;
 
 /**
- * Central registry for JavE keyboard shortcuts.
+ * Central registry for Jave keyboard shortcuts.
  *
  * CMD_OR_CTRL selects Command on macOS and Control on Windows/Linux for
  * command shortcuts. Swing menu mnemonics use their own platform-specific

@@ -25,7 +25,7 @@ public class CloneTool extends EraserTool {
    private boolean positionLocked = false;
    private IInlineToolOptions cloneInlineOptions;
 
-   public CloneTool(JaveMainPanel plate, JavEApplication application, Filter filter) {
+   public CloneTool(JaveMainPanel plate, JaveApplication application, Filter filter) {
       super(plate, application, filter);
    }
 
@@ -159,7 +159,7 @@ public class CloneTool extends EraserTool {
       MessageDialogFactory.showMessageDialog(
          parent,
          new Message(
-            "JavE - Clone Tool",
+            "Jave - Clone Tool",
             "You must specify a clone source by right-clicking\nor clicking on the image with the shift key down\nbefore you can use the clone brush.",
             MessageType.INFORMATION
          )

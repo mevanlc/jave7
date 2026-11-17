@@ -115,7 +115,7 @@ public final class CamelizerSessionManager {
          MessageDialogFactory.showMessageDialog(
             parentComponent,
             new Message(
-               JaveMessages.JavE,
+               JaveMessages.Jave,
                "The current document does not contain enough text.\nThe Camelizer can not be applied.",
                MessageType.INFORMATION
             )

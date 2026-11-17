@@ -2,7 +2,7 @@
 # ! DEPRECATED !
 # This configuration file is deprected. It has been replaced by
 # categoriestree.txt This file only exists for compatibility
-# with JavE 5.0
+# with Jave 5.0
 #################################################################
 # FIGlet font categorization file
 #

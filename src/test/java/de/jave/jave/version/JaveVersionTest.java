@@ -12,7 +12,7 @@ public class JaveVersionTest {
    public void generatedPropertiesMatchBuildInputs() {
       Assert.assertEquals(System.getProperty("jave.expectedVersion"), JaveVersion.getFullVersionNumber());
       Assert.assertEquals(System.getProperty("jave.expectedBuildDate"), JaveVersion.getBuildDate());
-      Assert.assertEquals("JavE " + JaveVersion.getFullVersionNumber(), JaveTitleProvider.JAVE);
+      Assert.assertEquals("Jave " + JaveVersion.getFullVersionNumber(), JaveTitleProvider.JAVE);
    }
 
    @Test

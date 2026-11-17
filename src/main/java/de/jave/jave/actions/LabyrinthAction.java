@@ -1,14 +1,14 @@
 package de.jave.jave.actions;
 
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.Labyrinth;
 import java.awt.Component;
 import net.dizzy.commons.swing.action.SmartAction;
 
 public class LabyrinthAction extends SmartAction {
-   private final JavEApplication jave;
+   private final JaveApplication jave;
 
-   public LabyrinthAction(JavEApplication jave) {
+   public LabyrinthAction(JaveApplication jave) {
       super("Labyrinth");
       this.jave = jave;
    }

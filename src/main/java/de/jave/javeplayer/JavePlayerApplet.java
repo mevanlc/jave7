@@ -31,7 +31,7 @@ public class JavePlayerApplet extends JApplet {
    @Override
    public String[][] getParameterInfo() {
       return new String[][]{
-         {"FILE", "String", "Name of the JavE animation file to be loaded"},
+         {"FILE", "String", "Name of the Jave animation file to be loaded"},
          {"AUTOSTART", "int", "Player will immediately start playing the animation if value is 1"},
          {"LOOP", "int", "Player will loop infinite times if value is 1"},
          {"CONTROLS", "int", "0: No controls 1: Just buttons (default) 2: All controls visible"},

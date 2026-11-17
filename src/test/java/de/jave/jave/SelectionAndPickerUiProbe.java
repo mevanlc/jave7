@@ -25,7 +25,7 @@ import javax.swing.UIManager;
 
 /** Native picker focus and input checks with isolated preferences and documents. */
 public final class SelectionAndPickerUiProbe {
-   private static JavEApplication app;
+   private static JaveApplication app;
    private static Plate plate;
    private static Robot robot;
    private static GStatusLabel selectionLabel;
@@ -41,7 +41,7 @@ public final class SelectionAndPickerUiProbe {
                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                var init = Class.forName("de.jave.jave.application.startup.JaveStartup").getDeclaredMethod("initConfigFiles");
                init.setAccessible(true);
-               app = new JavEApplication((ConfigurationList)init.invoke(null));
+               app = new JaveApplication((ConfigurationList)init.invoke(null));
                app.startupMenuBar();
                app.doNew();
                plate = app.getMainPanel().getPlate();

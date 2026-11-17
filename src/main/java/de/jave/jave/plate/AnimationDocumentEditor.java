@@ -4,7 +4,7 @@ import de.jave.asciimation.editor.AnimationEditorModel;
 import de.jave.asciimation.editor.AnimationEditorPanel;
 import de.jave.jave.CharacterSets;
 import de.jave.jave.DocumentListener;
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.Plate;
 import de.jave.jave.PlateDocument;
 import de.jave.jave.browser.JaveDocumentType;
@@ -32,7 +32,7 @@ public class AnimationDocumentEditor extends AbstractDocumentEditor {
    public AnimationDocumentEditor(
       String stopGapName,
       JaveAnimationFile animationFile,
-      JavEApplication jave,
+      JaveApplication jave,
       final PlateDocument document,
       PlatePreferences platePreferences,
       JaveApplicationPreferences preferences,

@@ -69,7 +69,7 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
    private IStatusDisplay status;
    private List<IWatermarkPainter> watermarkPainters;
    private Selection selection;
-   private final JavEApplication jave;
+   private final JaveApplication jave;
    private final PlateDocument document;
    private boolean keyMark1 = false;
    private boolean keyMark2 = false;
@@ -103,7 +103,7 @@ public class Plate extends JComponent implements MouseListener, MouseMotionListe
 
    public Plate(
       PlateDocument document,
-      JavEApplication parent,
+      JaveApplication parent,
       PlatePreferences platePreferences,
       ToolManager toolManager,
       FontModel displayFontModel,

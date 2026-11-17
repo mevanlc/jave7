@@ -3,7 +3,7 @@ package de.jave.jave.actions;
 import de.jave.figlet.engine.IFigDriver;
 import de.jave.figlet.swing.preferences.JFigletPreferences;
 import de.jave.figlet.swing.ui.FigletIcons;
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.actions.enablestrategy.IJaveDocumentEditorActionEnabledStrategy;
 import de.jave.jave.actions.enablestrategy.TextAndAnimationEditorEnabledStrategy;
 import de.jave.jave.figlet.FigletEditorDialog;
@@ -16,12 +16,12 @@ import java.awt.Component;
 import net.dizzy.commons.core.util.Ensure;
 
 public class ShowFigletEditorAction extends AbstractJaveAction {
-   private final JavEApplication jave;
+   private final JaveApplication jave;
    private final JavePreferences javePreferences;
    private FigletEditorDialog figletDialog;
    private final IFigDriver figDriver;
 
-   public ShowFigletEditorAction(IFigDriver figDriver, JavEApplication jave, JaveMainPanel mainPanel, JavePreferences javePreferences) {
+   public ShowFigletEditorAction(IFigDriver figDriver, JaveApplication jave, JaveMainPanel mainPanel, JavePreferences javePreferences) {
       super(mainPanel, "FIGlet Editor", FigletIcons.FIGLET_ICON);
       Ensure.ensureArgumentNotNull(figDriver);
       Ensure.ensureArgumentNotNull(javePreferences);

@@ -7,7 +7,7 @@ import de.jave.image2ascii.AsciiGreyscaleTable;
 import de.jave.image2ascii.AsciiGreyscaleTableConfiguration;
 import de.jave.image2ascii.Image2AsciiIcons;
 import de.jave.image2ascii.SharedImage2AsciiOptions;
-import de.jave.image2ascii.algorithm.dialog.Image2AsciiAlgorithmJavEOptionsPanel;
+import de.jave.image2ascii.algorithm.dialog.Image2AsciiAlgorithmJaveOptionsPanel;
 import de.jave.lib.CharacterPlate;
 import java.awt.Dimension;
 import javax.swing.Icon;
@@ -19,16 +19,16 @@ import net.dizzy.commons.core.progress.ProgressUtilities;
 import net.dizzy.commons.core.util.Ensure;
 import net.dizzy.commons.swing.component.IDisposableComponentContainer;
 
-public class Image2AsciiAlgorithmJavE extends AbstractImage2AsciiAlgorithm {
-   public static final String NAME = "JavE Algorithm (4/1)";
+public class Image2AsciiAlgorithmJave extends AbstractImage2AsciiAlgorithm {
+   public static final String NAME = "Jave Algorithm (4/1)";
    private final AsciiGreyscaleTableConfiguration greyscaleTableConfiguration;
-   private final AlgorithmJavEOptionsModel optionsModel;
+   private final AlgorithmJaveOptionsModel optionsModel;
 
-   public Image2AsciiAlgorithmJavE(SharedImage2AsciiOptions sharedOptions, AsciiGreyscaleTableConfiguration greyscaleTableConfiguration) {
+   public Image2AsciiAlgorithmJave(SharedImage2AsciiOptions sharedOptions, AsciiGreyscaleTableConfiguration greyscaleTableConfiguration) {
       Ensure.ensureArgumentNotNull(sharedOptions);
       Ensure.ensureArgumentNotNull(greyscaleTableConfiguration);
       this.greyscaleTableConfiguration = greyscaleTableConfiguration;
-      this.optionsModel = new AlgorithmJavEOptionsModel(sharedOptions);
+      this.optionsModel = new AlgorithmJaveOptionsModel(sharedOptions);
    }
 
    @Override
@@ -38,12 +38,12 @@ public class Image2AsciiAlgorithmJavE extends AbstractImage2AsciiAlgorithm {
 
    @Override
    public IDisposableComponentContainer createAdjustmentComponent() {
-      return new Image2AsciiAlgorithmJavEOptionsPanel(this.optionsModel, this.greyscaleTableConfiguration);
+      return new Image2AsciiAlgorithmJaveOptionsPanel(this.optionsModel, this.greyscaleTableConfiguration);
    }
 
    @Override
    public String getName() {
-      return "JavE Algorithm (4/1)";
+      return "Jave Algorithm (4/1)";
    }
 
    @Override

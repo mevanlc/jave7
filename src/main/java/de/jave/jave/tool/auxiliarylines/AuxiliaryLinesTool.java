@@ -1,6 +1,6 @@
 package de.jave.jave.tool.auxiliarylines;
 
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.Point2d;
 import de.jave.jave.Tool;
 import de.jave.jave.filter.Filter;
@@ -34,7 +34,7 @@ public class AuxiliaryLinesTool extends Tool implements IWatermarkPainter {
    private boolean enabled = false;
    private IInlineToolOptions inlineOptions;
 
-   public AuxiliaryLinesTool(JaveMainPanel mainPanel, JavEApplication application, Filter filter) {
+   public AuxiliaryLinesTool(JaveMainPanel mainPanel, JaveApplication application, Filter filter) {
       super(mainPanel, application, filter);
       mainPanel.addWatermarkPainter(this);
       this.model.addChangeListener(new IChangeListener() {

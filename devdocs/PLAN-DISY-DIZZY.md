@@ -1,6 +1,6 @@
 # PLAN — Replacing `net.disy` with `net.dizzy`
 
-Survey + reimplementation plan for the open-sourcing of JavE as JavE7.
+Survey + reimplementation plan for the open-sourcing of Jave as Jave7.
 
 ## Status — 2026-06-02
 
@@ -19,7 +19,7 @@ Verification completed:
 
 ## 0. Context & method
 
-JavE depends pervasively on a third-party house library, `net.disy.commons.*`
+Jave depends pervasively on a third-party house library, `net.disy.commons.*`
 ("Disy commons"), whose author/rights-holder we cannot reach for permission.
 The library has been removed from the build (commit `3f49bf9 "remove disy"`,
 888 `.java` files). The project **does not compile** — confirmed:
@@ -30,9 +30,9 @@ We are reimplementing a minimal replacement under **`net.dizzy.commons.*`**.
 
 **Cleanroom discipline (semi-cleanroom).** We do **not** read Disy's original
 source (it survives in git history but is off-limits). The specification is
-**the union of API members JavE actually references** — every constructor,
+**the union of API members Jave actually references** — every constructor,
 method, constant, and generic signature exercised by a call site, and nothing
-more. We work *forward from JavE's usage*, not backward from Disy's design.
+more. We work *forward from Jave's usage*, not backward from Disy's design.
 Disy is likely abandonware, so this is risk-reduction, not paranoia: don't
 copy code, do infer intent from how results are used.
 
@@ -89,7 +89,7 @@ package (reference counts):
 | `core.string`, `animatedinterpolation` | 2 | reimplement (trivial) |
 | `swing.filechooser` | 2 | **drop** → JFileChooser |
 
-**Overall: reimplement nearly everything.** The surface JavE actually
+**Overall: reimplement nearly everything.** The surface Jave actually
 exercises is narrow and shallow even where reference counts are high (`Ensure`
 = 8 static guards; `IChangeListener` = 1 method). Two areas carry real design
 weight: the **dialog framework** (§4) and the **layout migration** (§5). Two
@@ -153,7 +153,7 @@ Effort scale: trivial (<30 min) · small (≈1–2 h) · medium (½–1 day) · 
 - **`ArrayUtilities.toPrimitive(Character[]) : char[]`** — only this overload used.
 
 ### 3.2 `core.model` — reimplement · medium · **load-bearing observer framework**
-The keystone of the app. ~42 JavE classes `extends AbstractChangeableModel`.
+The keystone of the app. ~42 Jave classes `extends AbstractChangeableModel`.
 
 Inheritance graph to provide:
 ```
@@ -169,7 +169,7 @@ class FixedOptionsObjectSelectionModel<T> extends AbstractChangeableModel {
   / `PropertyChangeListener` — the no-arg signature is load-bearing.
 - **`fireChangeEvent()`** (protected, no-arg) — 115 subclass call sites.
 - **`ListenerList<T>`** (in `model.listener`) — generic listener list used for
-  JavE's *own* listener types: `ListenerList()`, `add(T)`, `remove(T)`,
+  Jave's *own* listener types: `ListenerList()`, `add(T)`, `remove(T)`,
   `forAllDo(IClosure<T>)` (snapshot-safe iteration).
 - **Ambiguity:** `BooleanModel()` default — must be **`false`**, not `null`
   (several no-arg constructions feed straight into `if (model.getValue())`).
@@ -220,14 +220,14 @@ class Message implements IMessage { /* 5 ctors below */ }
   — append integer suffix until non-existent (dedup scheme is the only
   uncertainty; cosmetic).
 - `FileDisplayNameUtilities.createShortenedFileName(String path, int maxLen) : String`
-  — middle-elide, keep filename tail (cosmetic; JavE has an equivalent in
+  — middle-elide, keep filename tail (cosmetic; Jave has an equivalent in
   `de.jave.lib.io.IoUtilities.getDisplayFilename` to mirror).
 
 ### 3.7 `core.progress` — reimplement · small (interfaces) · **JFace-style**
 - **`IProgressMonitor`**: `beginTask(String,int)` (`-1` = indeterminate),
   `worked(int)`, `subTask(String)`, `done()`, `isCanceled()`,
   `setCanceled(boolean)`, `beginTaskWithUnknownTotalWork(String)`.
-  Do **not** map to `javax.swing.ProgressMonitor` (different protocol; JavE
+  Do **not** map to `javax.swing.ProgressMonitor` (different protocol; Jave
   classes implement this interface).
 - `ICancelable` — `boolean isCanceled()` (inferred name, mirrors monitor).
 - `ProgressUtilities.checkInterrupted(ICancelable) throws InterruptedException`
@@ -310,7 +310,7 @@ class Message implements IMessage { /* 5 ctors below */ }
 - `icon.util.IconUtilities.createBufferedImage(Icon) : BufferedImage`;
   `icon.IBaseIconProvider { Icon getBaseIcon(); }`;
   `icon.BaseIconImageIcon(URL, ImageIcon) extends ImageIcon implements IBaseIconProvider`.
-  → **Action:** source replacement gifs (JavE already ships folder/edit icons
+  → **Action:** source replacement gifs (Jave already ships folder/edit icons
   under `icons/`/`ext/`; reuse rather than redraw).
 
 **Cursor-art-dependent:**
@@ -421,7 +421,7 @@ A thin `Message`→JOptionPane shim. Highest single win.
 ### Tier 2 — `UserDialog` page framework → **REIMPLEMENT on `JDialog`** · medium–large (bulk of effort)
 No stdlib equivalent: JOptionPane cannot host the **live-validation /
 disable-OK loop** driven by `createCurrentMessage()` returning an ERROR
-message. JavE subclasses `AbstractDialogPage` ~21× and overrides config hooks
+message. Jave subclasses `AbstractDialogPage` ~21× and overrides config hooks
 via anonymous subclasses, so this is real API surface.
 
 The pattern (trace it once, then replicate):
@@ -521,7 +521,7 @@ panels onto raw GBC), we keep `GridDialogLayout`/`GridDialogLayoutData` as thin
 `net.dizzy` **adapters that delegate to MigLayout** (`net.miginfocom`,
 BSD-licensed). MigLayout natively does count-based wrap + the full per-cell
 constraint vocabulary, so a mature library owns the hard sizing math and the
-~231 call sites (incl. 161 bare-constant `add`s) compile **untouched**. JavE
+~231 call sites (incl. 161 bare-constant `add`s) compile **untouched**. Jave
 already adopts MigLayout for new development, so this is a dependency we want
 regardless — and a maintained BSD lib is a strictly better dependency than the
 abandonware it replaces.
@@ -532,7 +532,7 @@ abandonware it replaces.
 > surface — only the engine swaps. Documented here so the choice stays
 > reversible; not the plan of record.
 
-The idiom JavE uses:
+The idiom Jave uses:
 ```
 JPanel p = new JPanel(new GridDialogLayout(N, equalColumns));   // N columns, wrap every N adds
 p.add(label, GridDialogLayoutData.RIGHT);                       // 83×: align right
@@ -636,7 +636,7 @@ below). Per-cell `GridDialogLayoutData` / the bare-int constants:
 - `AbstractChangeableModel.fireChangeEvent()` — protected, no-arg (115 sites).
 - `SmartAction.execute(Component)` — protected abstract template (37 sites).
 - `MessageType` = exactly `{ERROR, INFORMATION, WARNING, QUESTION, NORMAL}`.
-- `IDialogResult.isCanceled()` is the *only* result method JavE calls.
+- `IDialogResult.isCanceled()` is the *only* result method Jave calls.
 - `GridDialogLayoutData` constants + auto-wrapping + bare-int `add` overload.
 - `IClosure.execute(T) throws RuntimeException`; `ITransformer<S,T>` order.
 - `CursorId` = exactly the 4 listed; `GridAlignment` = `{BEGINNING, FILL, END}`.
@@ -659,7 +659,7 @@ below). Per-cell `GridDialogLayoutData` / the bare-int constants:
 - Folder icons: `FOLDER/FOLDER_NEW` (`CommonIcons`).
 - Message icons: small `infoIcon` + large per-type icons (`MessageTypeUi`/`LargeIconMessageTypeUi`).
 - Font icon: `FONT_ICON` (any non-null).
-- → Prefer reusing JavE's existing assets under `icons/`, `ext/`, and the
+- → Prefer reusing Jave's existing assets under `icons/`, `ext/`, and the
   migrated `ext/net/dizzy/.../resources` bundles over redrawing.
 
 ---

@@ -40,7 +40,7 @@ public class FunctionPlotTool extends AbstractDialogTool implements ItemListener
    private JTextField dfAxisX;
    private JTextField dfAxisY;
 
-   public FunctionPlotTool(JavEApplication asciiPainter, JaveApplicationPreferences preferences, Filter filter) {
+   public FunctionPlotTool(JaveApplication asciiPainter, JaveApplicationPreferences preferences, Filter filter) {
       super(asciiPainter, preferences);
       Ensure.ensureArgumentNotNull(filter);
       this.filter = filter;

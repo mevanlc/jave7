@@ -1,6 +1,6 @@
 package de.jave.jave.tool.text;
 
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.JaveMessages;
 import de.jave.jave.MergeCharactersPanel;
 import de.jave.jave.SelectionClickSequence;
@@ -47,13 +47,13 @@ public class TextTool extends Tool {
    private Direction lastDirection = Direction.RIGHT;
    private IInlineToolOptions inlineOptions;
 
-   public TextTool(JaveMainPanel mainPanel, JavEApplication application, BooleanPreferenceModel cursorBlockStyle, Filter filter) {
+   public TextTool(JaveMainPanel mainPanel, JaveApplication application, BooleanPreferenceModel cursorBlockStyle, Filter filter) {
       this(mainPanel, application, cursorBlockStyle, new SelectionClickSequence(), filter);
    }
 
    public TextTool(
       JaveMainPanel mainPanel,
-      JavEApplication application,
+      JaveApplication application,
       BooleanPreferenceModel cursorBlockStyle,
       SelectionClickSequence selectionClickSequence,
       Filter filter

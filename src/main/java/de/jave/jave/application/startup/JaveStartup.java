@@ -2,7 +2,7 @@ package de.jave.jave.application.startup;
 
 import de.jave.image2ascii.AsciiGreyscaleTableConfigurationInitializable;
 import de.jave.jave.CharSetsConfigurationInitializable;
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.JaveConfigurationFileLoader;
 import de.jave.jave.JaveMessages;
 import de.jave.jave.actions.quickstart.QuickStartAction;
@@ -25,12 +25,12 @@ import net.dizzy.commons.swing.dialog.core.DialogDefaults;
 
 final class JaveStartup {
    public void start() throws JaveStartupException {
-      JavEApplication jave = null;
+      JaveApplication jave = null;
 
       try {
          DialogDefaults.getInstance().setFrameIconImages(JaveIcons.JAVE_ICON_IMAGES);
          ConfigurationList configurationList = initConfigFiles();
-         jave = new JavEApplication(configurationList);
+         jave = new JaveApplication(configurationList);
          jave.setTool(jave.getApplicationPreferences().getStartupToolIndex());
          boolean recovered = jave.startupRecovery();
          jave.startupMenuBar();
@@ -42,7 +42,7 @@ final class JaveStartup {
          if (!recovered) {
             JaveApplicationPreferences applicationPreferences = jave.getApplicationPreferences();
             boolean showQuickStartOnStartup = applicationPreferences.isShowQuickStartOnStartup();
-            if (showQuickStartOnStartup && !JavEApplication.isDumpModeActive()) {
+            if (showQuickStartOnStartup && !JaveApplication.isDumpModeActive()) {
                QuickStartAction quickStartAction = new QuickStartAction(jave);
                quickStartAction.performQuickStart(jave.getFrame());
             }

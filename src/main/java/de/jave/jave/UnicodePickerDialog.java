@@ -78,7 +78,7 @@ public class UnicodePickerDialog {
    private int listFontSize;
 
    public UnicodePickerDialog(Component parent, JaveMainPanel mainPanel) {
-      int saved = Preferences.userRoot().node("JavE").getInt(PREF_KEY_LIST_FONT_SIZE, FONT_SIZE_DEFAULT);
+      int saved = Preferences.userRoot().node("Jave").getInt(PREF_KEY_LIST_FONT_SIZE, FONT_SIZE_DEFAULT);
       this.listFontSize = Math.max(FONT_SIZE_MIN, Math.min(FONT_SIZE_MAX, saved));
       this.mainPanel = mainPanel;
       this.dialog = JDialogFactory.createJDialog(parent, "Unicode Picker", false);
@@ -299,7 +299,7 @@ public class UnicodePickerDialog {
    }
 
    private void saveZoomPreference() {
-      Preferences prefs = Preferences.userRoot().node("JavE");
+      Preferences prefs = Preferences.userRoot().node("Jave");
       prefs.putInt(PREF_KEY_LIST_FONT_SIZE, this.listFontSize);
       try {
          prefs.flush();
@@ -309,7 +309,7 @@ public class UnicodePickerDialog {
    }
 
    private Dimension readSavedWindowSize() {
-      Preferences prefs = Preferences.userRoot().node("JavE");
+      Preferences prefs = Preferences.userRoot().node("Jave");
       int w = prefs.getInt(PREF_KEY_WINDOW_WIDTH, -1);
       int h = prefs.getInt(PREF_KEY_WINDOW_HEIGHT, -1);
       if (w < WINDOW_MIN_WIDTH || h < WINDOW_MIN_HEIGHT) return null;
@@ -318,7 +318,7 @@ public class UnicodePickerDialog {
 
    private void saveWindowSize() {
       Dimension size = this.dialog.getSize();
-      Preferences prefs = Preferences.userRoot().node("JavE");
+      Preferences prefs = Preferences.userRoot().node("Jave");
       prefs.putInt(PREF_KEY_WINDOW_WIDTH, size.width);
       prefs.putInt(PREF_KEY_WINDOW_HEIGHT, size.height);
       try {

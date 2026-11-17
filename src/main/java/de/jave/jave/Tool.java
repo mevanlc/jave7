@@ -30,7 +30,7 @@ import net.dizzy.commons.swing.mousecursor.CursorProvider;
 
 public abstract class Tool implements ItemListener, ActionListener {
    protected JaveMainPanel mainPanel;
-   protected JavEApplication application;
+   protected JaveApplication application;
    protected static boolean altDown = false;
    protected static boolean shiftDown = false;
    protected static boolean controlDown = false;
@@ -89,7 +89,7 @@ public abstract class Tool implements ItemListener, ActionListener {
       return false;
    }
 
-   public Tool(JaveMainPanel mainPanel, JavEApplication application, Filter filter) {
+   public Tool(JaveMainPanel mainPanel, JaveApplication application, Filter filter) {
       Ensure.ensureArgumentNotNull(filter);
       this.mainPanel = mainPanel;
       this.application = application;

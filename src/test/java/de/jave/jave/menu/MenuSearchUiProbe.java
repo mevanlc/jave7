@@ -1,6 +1,6 @@
 package de.jave.jave.menu;
 
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.actions.ClipboardOverride;
 import de.jave.jave.application.startup.ConfigurationList;
 import java.awt.Component;
@@ -32,7 +32,7 @@ import javax.swing.UIManager;
 
 /** Run explicitly, outside the unit suite: it opens only its own app instance and uses isolated preferences. */
 public final class MenuSearchUiProbe {
-   private static JavEApplication app;
+   private static JaveApplication app;
    private static JFrame frame;
    private static JTextField field;
    private static Robot robot;
@@ -57,7 +57,7 @@ public final class MenuSearchUiProbe {
                JPopupMenu.setDefaultLightWeightPopupEnabled(false);
                var init = Class.forName("de.jave.jave.application.startup.JaveStartup").getDeclaredMethod("initConfigFiles");
                init.setAccessible(true);
-               app = new JavEApplication((ConfigurationList)init.invoke(null));
+               app = new JaveApplication((ConfigurationList)init.invoke(null));
                app.startupMenuBar();
                app.doNew();
                frame = app.getFrame();
@@ -291,7 +291,7 @@ public final class MenuSearchUiProbe {
          await(() -> list().isFocusOwner(), "New result focused");
          key(KeyEvent.VK_ENTER);
          await(() -> app.getMainPanel().getEditorCount() == 1 && app.getMainPanel().getPlate().isFocusOwner(), "search executes with no previous document focus");
-         System.out.println("PASS: actual JavE menu search keyboard, mouse, previews, dispatch, history, dynamic labels, clipboard focus, and narrow layout");
+         System.out.println("PASS: actual Jave menu search keyboard, mouse, previews, dispatch, history, dynamic labels, clipboard focus, and narrow layout");
       } finally {
          edt(() -> {
             for (Window window : Window.getWindows()) {

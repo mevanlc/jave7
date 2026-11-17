@@ -3,7 +3,7 @@ package de.jave.jave.application;
 import de.jave.gui.GStatusLabel;
 import de.jave.gui.IMouseClickHandler;
 import de.jave.gui.StatusBar;
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.JaveMessages;
 import de.jave.jave.Selection;
 import de.jave.jave.ZoomableFontModel;
@@ -30,7 +30,7 @@ public class JaveStatusBar {
    private final ActiveEditorModel activeEditorModel;
 
    public JaveStatusBar(
-      final JavEApplication jave,
+      final JaveApplication jave,
       FontModel fontModel,
       final ActiveEditorModel activeEditorModel,
       StatusBar statusBar,

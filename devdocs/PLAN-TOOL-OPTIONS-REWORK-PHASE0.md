@@ -69,9 +69,9 @@ ordering."
 
 ### Unit A — Persist legacy dialog visibility, default off
 
-**Why.** Today `JavEApplication.java:121-122` defaults
+**Why.** Today `JaveApplication.java:121-122` defaults
 `toolOptionsDialogVisibilityModel` to `true`, and `startupOptionsDialog()`
-(`JavEApplication.java:302-310`) unconditionally calls `.show()` and
+(`JaveApplication.java:302-310`) unconditionally calls `.show()` and
 `.toFront()`. Every launch surfaces the focus-steal-prone floating dialog.
 This must change before PHASE1 — PHASE1's value depends on the user not
 being assaulted by the legacy dialog at startup.
@@ -103,7 +103,7 @@ iterates tool indices 0..20 and uses `buttonGroup.getSelectedIndex()`
 (`ToolBar.java:184`) treats its argument as a tool index passed straight
 to `buttonGroup.setSelectedIndex`. Several call sites pass raw tool
 indices: `setTool(10)`, `setTool(12)`, `setTool(14)`, `setTool(19)`
-(`JavEApplication.java:375, 537, 545, 770, 776, 781, 789`). Removing
+(`JaveApplication.java:375, 537, 545, 770, 776, 781, 789`). Removing
 button #19 without a mapping layer would shift AuxLines from index 20 to
 button position 19 and silently break those callers.
 
@@ -130,7 +130,7 @@ button position 19 and silently break those callers.
   // tools without a button (Watermark post-PHASE0) silently no-op
   // for the button side; the rest of setTool() still wires the active tool.
   ```
-- `JavEApplication.setTool(int)` (`JavEApplication.java:796-807`) is
+- `JaveApplication.setTool(int)` (`JaveApplication.java:796-807`) is
   unchanged — still takes tool indices; `selectToolButton` translates
   internally.
 - The public constants `BRUSH_TOOL_INDEX = 14`, `SELECTION_TOOL_INDEX =
@@ -162,7 +162,7 @@ and must propagate to all observers, not just the painter.
 
 **Change.**
 
-- Two new `BooleanModel`s, owned by `JavEApplication` (transient — match
+- Two new `BooleanModel`s, owned by `JaveApplication` (transient — match
   how `toolOptionsDialogVisibilityModel` is owned; persistence is not a
   PHASE0 requirement for these):
   - `watermarkVisibilityModel`
@@ -180,7 +180,7 @@ and must propagate to all observers, not just the painter.
   `ToolBar.setAuxiliaryLinesVisible(boolean)` (`ToolBar.java:174-182`)
   retain their public API but become thin shims that call
   `model.setValue(...)`. Existing callers
-  (`JavEApplication.java:541, 546`) need no changes.
+  (`JaveApplication.java:541, 546`) need no changes.
 - `AuxiliaryLinesTool.takeToHand()` (`AuxiliaryLinesTool.java:586`):
   change the line that auto-enables visibility to call
   `auxLinesVisibilityModel.setValue(true)` instead of touching the
@@ -267,8 +267,8 @@ Watermark button visible. AuxLines tool button is present and selectable.
 ### Unit G — Watermark to View menu
 
 **Why.** Master plan, Watermark section. The reviewer's note: Watermark
-is **not** purely set-and-forget — `JavEApplication.setWatermarkImage`
-and `doLoadWatermark` (`JavEApplication.java:536-549`) explicitly call
+is **not** purely set-and-forget — `JaveApplication.setWatermarkImage`
+and `doLoadWatermark` (`JaveApplication.java:536-549`) explicitly call
 `setTool(19)` so the user can move/resize the watermark via
 `WatermarkTool`'s mouse handlers (`WatermarkTool.java:337`). The View
 menu item must replicate this affordance.
@@ -385,8 +385,8 @@ needs a defined behavior for unmigrated tools (most tools, in PHASE0).
     (placeholder name) — a `JPanel` with a single short label, e.g.
     `"No inline options for this tool — use Tool Options Dialog (⌘T)."`
     The fallback is constructed once and reused.
-- Hookup point: extend `JavEApplication.setTool(int)`
-  (`JavEApplication.java:796-807`) to also call
+- Hookup point: extend `JaveApplication.setTool(int)`
+  (`JaveApplication.java:796-807`) to also call
   `toolSelectorBarOptionsHost.setTool(newTool)`, mirroring the existing
   `optionsDialog.setTool(newTool)` call at line 800.
 - **Contract note** (document in interface Javadoc): a single
@@ -425,8 +425,8 @@ Re-selecting the same tool is a no-op (no re-add, no flicker).
   }
   ```
   with a small constant `PADDING_PX` (e.g. 8).
-- Call this from `JavEApplication.startup` after the toolbar is
-  constructed (`JavEApplication.java:170`) but before the content-pane
+- Call this from `JaveApplication.startup` after the toolbar is
+  constructed (`JaveApplication.java:170`) but before the content-pane
   add at line 175. Pass it the fallback panel plus all
   `IInlineToolOptions` panels registered by overriding tools (in PHASE0,
   only the fallback). Set the result as the preferred width on
@@ -533,7 +533,7 @@ visible UI rearrangement last):
 - App launches without the floating dialog appearing (fresh install).
 - `Cmd+T` toggles the dialog. Toggled state persists across launches.
 - All `setTool(int)` call sites
-  (`JavEApplication.java:375, 537, 545, 770, 776, 781, 789`) work as today.
+  (`JaveApplication.java:375, 537, 545, 770, 776, 781, 789`) work as today.
 - Top toolbar shows five new toggle buttons after the zoom group, in
   order: Grid, Mark Illegal, Connected Lines, Watermark Visibility,
   AuxLines Visibility. Each toggles its respective overlay.
@@ -553,7 +553,7 @@ visible UI rearrangement last):
 - Bar width is constant across tool changes (no jumping); width is
   determined by the fallback panel's measured size + padding.
 - Loading a watermark via existing flows
-  (`JavEApplication.setWatermarkImage`, `doLoadWatermark`) still works:
+  (`JaveApplication.setWatermarkImage`, `doLoadWatermark`) still works:
   tool 19 active for canvas mouse interaction, visibility on, painter
   draws.
 
@@ -568,7 +568,7 @@ visible UI rearrangement last):
 
 **Modified:**
 
-- `JavEApplication.java` — startup default visibility (A), visibility
+- `JaveApplication.java` — startup default visibility (A), visibility
   models + listeners (C), measurement-pass call + host width application
   (K), `Edit Watermark…` action wiring (G), `setTool(int)` calls
   `host.setTool(newTool)` (J).

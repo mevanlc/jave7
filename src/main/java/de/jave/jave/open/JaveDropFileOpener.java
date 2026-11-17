@@ -1,6 +1,6 @@
 package de.jave.jave.open;
 
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.browser.JaveFileType;
 import java.awt.Component;
 import java.awt.datatransfer.DataFlavor;
@@ -20,9 +20,9 @@ import net.dizzy.commons.core.exception.UnreachableCodeReachedException;
 import net.dizzy.commons.core.util.Ensure;
 
 public class JaveDropFileOpener implements DropTargetListener {
-   private final JavEApplication application;
+   private final JaveApplication application;
 
-   private JaveDropFileOpener(JavEApplication application) {
+   private JaveDropFileOpener(JaveApplication application) {
       Ensure.ensureArgumentNotNull(application);
       this.application = application;
    }
@@ -94,7 +94,7 @@ public class JaveDropFileOpener implements DropTargetListener {
       }
    }
 
-   public static void attachTo(JavEApplication application, JComponent component) {
+   public static void attachTo(JaveApplication application, JComponent component) {
       new DropTarget(component, new JaveDropFileOpener(application));
    }
 }

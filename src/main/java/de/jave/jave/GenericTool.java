@@ -12,7 +12,7 @@ public abstract class GenericTool extends Tool {
    protected final PixelPlateModel pixelPlateModel;
    private IInlineToolOptions inlineOptions;
 
-   public GenericTool(JaveMainPanel mainPanel, JavEApplication application, Filter filter) {
+   public GenericTool(JaveMainPanel mainPanel, JaveApplication application, Filter filter) {
       super(mainPanel, application, filter);
       this.pixelPlateModel = application.getPixelPlateModel();
       this.getMixCharactersModel().addChangeListener(new IChangeListener() {

@@ -21,12 +21,12 @@ public class Jave {
       if (!isJre16OrGreater()) {
          printAndShowJdkOutdatedError();
       } else {
-         launchJavE(args);
+         launchJave(args);
       }
    }
 
-   private static void launchJavE(String[] args) {
-      JavELauncher.launchJavE(args);
+   private static void launchJave(String[] args) {
+      JaveLauncher.launchJave(args);
    }
 
    private static void printAndShowJdkOutdatedError() {

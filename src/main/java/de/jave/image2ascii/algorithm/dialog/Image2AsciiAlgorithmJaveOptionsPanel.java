@@ -1,7 +1,7 @@
 package de.jave.image2ascii.algorithm.dialog;
 
 import de.jave.image2ascii.AsciiGreyscaleTableConfiguration;
-import de.jave.image2ascii.algorithm.AlgorithmJavEOptionsModel;
+import de.jave.image2ascii.algorithm.AlgorithmJaveOptionsModel;
 import de.jave.image2ascii.algorithm.dialog.banned.BannedCharactersPanel;
 import de.jave.image2ascii.algorithm.dialog.greyscaletable.GreyScaleTablePanel;
 import javax.swing.JComponent;
@@ -9,12 +9,12 @@ import net.dizzy.commons.core.util.Ensure;
 import net.dizzy.commons.swing.component.IDisposableComponentContainer;
 import net.dizzy.commons.swing.layout.grid.GridDialogPanelBuilder;
 
-public class Image2AsciiAlgorithmJavEOptionsPanel implements IDisposableComponentContainer {
+public class Image2AsciiAlgorithmJaveOptionsPanel implements IDisposableComponentContainer {
    private final BannedCharactersPanel bannedCharactersPanel;
    private final GreyScaleTablePanel greyScaleTablePanel;
    private final JComponent content;
 
-   public Image2AsciiAlgorithmJavEOptionsPanel(AlgorithmJavEOptionsModel optionsModel, AsciiGreyscaleTableConfiguration greyscaleTableConfiguration) {
+   public Image2AsciiAlgorithmJaveOptionsPanel(AlgorithmJaveOptionsModel optionsModel, AsciiGreyscaleTableConfiguration greyscaleTableConfiguration) {
       Ensure.ensureArgumentNotNull(optionsModel);
       Ensure.ensureArgumentNotNull(greyscaleTableConfiguration);
       GridDialogPanelBuilder gridPanel = new GridDialogPanelBuilder();

@@ -8,13 +8,13 @@ import java.awt.event.KeyListener;
 import javax.swing.SwingUtilities;
 
 public abstract class JaveGame implements KeyListener, DocumentListener {
-   protected JavEApplication jave;
+   protected JaveApplication jave;
    protected CharacterPlate plate;
    protected PlateDocument document;
    protected boolean enabled;
    private final Plate javePlate;
 
-   public JaveGame(JavEApplication jave) {
+   public JaveGame(JaveApplication jave) {
       this.jave = jave;
       this.enabled = true;
       this.plate = new CharacterPlate(this.getPreferredSize());

@@ -8,7 +8,7 @@ import de.jave.image2ascii.algorithm.Image2AsciiAlgorithmEdgeDetect;
 import de.jave.image2ascii.algorithm.Image2AsciiAlgorithmEdgeTracing;
 import de.jave.image2ascii.algorithm.Image2AsciiAlgorithmFeltpen;
 import de.jave.image2ascii.algorithm.Image2AsciiAlgorithmGradient;
-import de.jave.image2ascii.algorithm.Image2AsciiAlgorithmJavE;
+import de.jave.image2ascii.algorithm.Image2AsciiAlgorithmJave;
 import de.jave.image2ascii.algorithm.Image2AsciiAlgorithmPixelPlate;
 import de.jave.image2ascii.algorithm.kicad.Image2AsciiAlgorithmKicad;
 import de.jave.jave.algorithm.gradient.AsciiGradientConfiguration;
@@ -27,7 +27,7 @@ public class Image2AsciiAlgorithmFactory {
    ) {
       SharedImage2AsciiOptions sharedOptions = new SharedImage2AsciiOptions(displayFontModel, greyscaleTableConfiguration);
       List<AbstractImage2AsciiAlgorithm> algorithmList = new ArrayList<>();
-      algorithmList.add(new Image2AsciiAlgorithmJavE(sharedOptions, greyscaleTableConfiguration));
+      algorithmList.add(new Image2AsciiAlgorithmJave(sharedOptions, greyscaleTableConfiguration));
       algorithmList.add(new Image2AsciiAlgorithm4(sharedOptions, greyscaleTableConfiguration));
       algorithmList.add(new Image2AsciiAlgorithm1(sharedOptions, greyscaleTableConfiguration));
       algorithmList.add(new Image2AsciiAlgorithmGradient(gradientConfiguration));

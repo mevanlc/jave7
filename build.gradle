@@ -40,7 +40,7 @@ base {
     archivesName = 'jave7'
 }
 
-def appName = 'JavE'
+def appName = 'Jave'
 def appBundleResourceDirs = ['clipart', 'config', 'examples', 'ext', 'fonts']
 def appJarFileName = "jave7-${releaseVersion}-app.jar".toString()
 def appVendor = project.group.toString()
@@ -214,7 +214,7 @@ tasks.register('nativeAppImage', Exec) {
         // Retain java so the packaged runtime and CLI can be checked without a system JDK.
         '--jlink-options', '--strip-debug --no-man-pages --no-header-files'
     if (nativePlatform == 'macos') {
-        args '--mac-package-identifier', 'de.jave.JavE'
+        args '--mac-package-identifier', 'de.jave.Jave'
     } else {
         args '--icon', file(nativePlatform == 'windows' ? 'icons/javeicon.ico' : 'icons/javeicon.png').absolutePath
     }
@@ -226,7 +226,7 @@ if (nativePlatform == 'windows') {
         group = 'distribution'
         description = 'Archives the native app image as a portable release bundle.'
         dependsOn tasks.named('nativeAppImage')
-        from(layout.buildDirectory.dir('jpackage/JavE')) { into appName }
+        from(layout.buildDirectory.dir('jpackage/Jave')) { into appName }
         destinationDirectory = layout.buildDirectory.dir('distributions')
         archiveFileName = "${releaseArchiveName}.zip"
         preserveFileTimestamps = false

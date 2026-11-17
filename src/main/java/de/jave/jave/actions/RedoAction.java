@@ -1,6 +1,6 @@
 package de.jave.jave.actions;
 
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import java.awt.Component;
 import net.dizzy.commons.core.model.listener.IChangeListener;
 import net.dizzy.commons.core.util.Ensure;
@@ -8,11 +8,11 @@ import net.dizzy.commons.swing.action.SmartAction;
 import net.dizzy.commons.swing.resources.DizzyCommonsSwingIconResources;
 
 public class RedoAction extends SmartAction {
-   private final JavEApplication application;
+   private final JaveApplication application;
    private final UndoRedoModel model;
    private final boolean nameIsToolTip;
 
-   public RedoAction(JavEApplication application, UndoRedoModel model, boolean nameIsToolTip) {
+   public RedoAction(JaveApplication application, UndoRedoModel model, boolean nameIsToolTip) {
       super(DizzyCommonsSwingIconResources.REDO_MODERN);
       Ensure.ensureArgumentNotNull(application);
       Ensure.ensureArgumentNotNull(model);

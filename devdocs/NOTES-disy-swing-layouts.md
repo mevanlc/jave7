@@ -1,7 +1,7 @@
 # Disy Swing Layouts — Notes & Gotchas
 
 Notes captured while space-optimizing the ToolSelectorBar (PHASE1 of
-the tool options rework). Most of JavE uses Disy's house layout
+the tool options rework). Most of Jave uses Disy's house layout
 library (`net.disy.commons.swing.layout.grid.*`) instead of stdlib
 `GridBagLayout`. The library is generally pleasant — closer to SWT's
 GridLayout than to AWT — but has a few sharp edges worth knowing.

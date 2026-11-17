@@ -2,7 +2,7 @@
 
 ## Context
 
-JavE's existing `Paste mode:` dropdown (Selection tool options; values defined
+Jave's existing `Paste mode:` dropdown (Selection tool options; values defined
 in `de.jave.jave.Selection.STR_LAYER`) offers four variants — but all of them
 are **overwrite-style**: pasted content lands on top of the canvas and the
 question is only how the source pixels combine with the destination.
@@ -251,7 +251,7 @@ it touches all four canvas edges.
 
 ## Out of scope for this idea
 
-* Vector / reflow-aware behavior (e.g. respecting word boundaries) — JavE
+* Vector / reflow-aware behavior (e.g. respecting word boundaries) — Jave
   treats cells atomically, no semantic reflow.
 * Diff-aware insert (only insert cells that would actually clobber) — adds
   complexity for marginal benefit.

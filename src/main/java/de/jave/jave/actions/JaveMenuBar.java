@@ -13,7 +13,7 @@ import de.jave.figlet.engine.IFigDriver;
 import de.jave.image2ascii.AsciiGreyscaleTableConfiguration;
 import de.jave.jave.CharSetsConfiguration;
 import de.jave.jave.CharacterSets;
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.JaveGlobalRessources;
 import de.jave.jave.JaveMessages;
 import de.jave.jave.PlateDocument;
@@ -114,7 +114,7 @@ import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
 import net.dizzy.commons.swing.menu.HelpImplementedMenuBar;
 
 public class JaveMenuBar extends HelpImplementedMenuBar {
-   private final JavEApplication application;
+   private final JaveApplication application;
    private final MenuHub hub = new MenuHub(this);
    private final RecentFileList recentFileList;
    private final JMenu menuRecent;
@@ -157,7 +157,7 @@ public class JaveMenuBar extends HelpImplementedMenuBar {
    private static final int[] windowShortcuts = new int[]{49, 50, 51, 52, 53, 54, 55, 56, 57, 48};
 
    public JaveMenuBar(
-      final JavEApplication application,
+      final JaveApplication application,
       ConfigurationList configurationList,
       JavePreferences javePreferences,
       final JaveMainPanel mainPanel,
@@ -740,7 +740,7 @@ public class JaveMenuBar extends HelpImplementedMenuBar {
       return icon instanceof IBaseIconProvider ? ((IBaseIconProvider)icon).getBaseIcon() : icon;
    }
 
-   private void setCurrentCharsetIndex(int index, CharSetsConfiguration charSetsConfiguration, JavEApplication jave) {
+   private void setCurrentCharsetIndex(int index, CharSetsConfiguration charSetsConfiguration, JaveApplication jave) {
       if (index == charSetsConfiguration.getUserDefinedIndex()) {
          FontModel fontModel = new FontModel(JaveGlobalRessources.FONT_SMALL_FIXEDWIDTH);
          AsciiTextAreaProperties textAreaProperties = new AsciiTextAreaProperties(fontModel);

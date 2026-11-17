@@ -22,7 +22,7 @@ public class FigletExportModel extends AbstractChangeableModel {
    private String characterArrangement = CharacterArrangement.ALL[0].getField();
    private int fullLayout;
    private int oldLayout;
-   private static final String COMMENT_PATTERN = "Author : {0}\nDate   : {1}\nVersion: 1.0\n-------------------------------------------------\n\n-------------------------------------------------\nThis font has been created using JavE's FIGlet font export assistant.\nHave a look at: http://www.jave.de\n\nPermission is hereby given to modify this font, as long as the\nmodifier's name is placed on a comment line.";
+   private static final String COMMENT_PATTERN = "Author : {0}\nDate   : {1}\nVersion: 1.0\n-------------------------------------------------\n\n-------------------------------------------------\nThis font has been created using Jave's FIGlet font export assistant.\nHave a look at: http://www.jave.de\n\nPermission is hereby given to modify this font, as long as the\nmodifier's name is placed on a comment line.";
    private String name = "";
    private String comment;
 
@@ -32,7 +32,7 @@ public class FigletExportModel extends AbstractChangeableModel {
       String authorText = this.getAuthorText(preferences);
       String dateText = Toolbox.getDateString();
       this.comment = MessageFormat.format(
-         "Author : {0}\nDate   : {1}\nVersion: 1.0\n-------------------------------------------------\n\n-------------------------------------------------\nThis font has been created using JavE's FIGlet font export assistant.\nHave a look at: http://www.jave.de\n\nPermission is hereby given to modify this font, as long as the\nmodifier's name is placed on a comment line.",
+         "Author : {0}\nDate   : {1}\nVersion: 1.0\n-------------------------------------------------\n\n-------------------------------------------------\nThis font has been created using Jave's FIGlet font export assistant.\nHave a look at: http://www.jave.de\n\nPermission is hereby given to modify this font, as long as the\nmodifier's name is placed on a comment line.",
          authorText,
          dateText
       );

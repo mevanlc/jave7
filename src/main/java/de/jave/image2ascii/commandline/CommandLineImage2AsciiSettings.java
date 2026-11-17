@@ -6,7 +6,7 @@ import de.jave.image2ascii.AsciiGreyscaleTable;
 import de.jave.image2ascii.AsciiGreyscaleTableConfiguration;
 
 public class CommandLineImage2AsciiSettings {
-   private String algorithmName = "JavE Algorithm (4/1)";
+   private String algorithmName = "Jave Algorithm (4/1)";
    private int resultWidth = 72;
    private final Rotation rotate = Rotation.NONE;
    private double shapeFactor = 1.0;

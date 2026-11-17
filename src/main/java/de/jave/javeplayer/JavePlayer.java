@@ -37,7 +37,7 @@ public class JavePlayer extends JPanel implements Runnable {
    private AudioClip audioClip;
    private int audioStart;
    private int currentFrameIndex = -1;
-   public static final String TITLE = "JavE Asciimation Player " + JaveVersion.getFullVersionNumber();
+   public static final String TITLE = "Jave Asciimation Player " + JaveVersion.getFullVersionNumber();
    public static final int SOUND_ONCE = 0;
    public static final int SOUND_LOOP = 1;
    public static final int SOUND_EVENT = 2;
@@ -94,7 +94,7 @@ public class JavePlayer extends JPanel implements Runnable {
                   if (e.isMetaDown()) {
                      JPopupMenu menu = new JPopupMenu();
                      menu.add(
-                        new SmartAction("About JavE Asciimation Player") {
+                        new SmartAction("About Jave Asciimation Player") {
                            @Override
                            protected void execute(Component parentComponent) {
                               MessageDialogFactory.showMessageDialog(

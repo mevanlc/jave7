@@ -1,7 +1,7 @@
 package de.jave.jave.actions;
 
 import de.jave.jave.DocumentSizeLimits;
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.icon.JaveIcons;
 import de.jave.jave.preferences.JaveApplicationPreferences;
 import java.awt.Component;
@@ -29,10 +29,10 @@ import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
 import net.dizzy.commons.swing.layout.grid.GridDialogLayoutDataFactory;
 
 public class NewDocumentDialogAction extends SmartAction {
-   private final JavEApplication application;
+   private final JaveApplication application;
    private final JaveApplicationPreferences preferences;
 
-   public NewDocumentDialogAction(JavEApplication application, JaveApplicationPreferences preferences) {
+   public NewDocumentDialogAction(JaveApplication application, JaveApplicationPreferences preferences) {
       super("New...", JaveIcons.NEW_DOCUMENT_ICON);
       this.application = application;
       this.preferences = preferences;

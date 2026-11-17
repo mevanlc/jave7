@@ -1,7 +1,7 @@
 package de.jave.jave.actions;
 
 import de.jave.jave.CompressedDocumentState;
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.JaveLogFileParser;
 import de.jave.jave.JaveMessages;
 import de.jave.jave.PlateDocument;
@@ -31,10 +31,10 @@ import net.dizzy.commons.core.message.MessageType;
 import net.dizzy.commons.swing.dialog.message.MessageDialogFactory;
 
 public class ConvertMakingOfToAnimationAction extends AbstractJaveAction {
-   private final JavEApplication jave;
+   private final JaveApplication jave;
    private final JaveApplicationPreferences preferences;
 
-   public ConvertMakingOfToAnimationAction(JaveApplicationPreferences preferences, JavEApplication jave, JaveMainPanel mainPanel) {
+   public ConvertMakingOfToAnimationAction(JaveApplicationPreferences preferences, JaveApplication jave, JaveMainPanel mainPanel) {
       super(mainPanel, "Convert 'Making Of' to Animation", JaveIcons.ANIMATION_MAKING_OF_ICON);
       this.preferences = preferences;
       this.jave = jave;
@@ -58,7 +58,7 @@ public class ConvertMakingOfToAnimationAction extends AbstractJaveAction {
             CompressedDocumentState[] frames = JaveLogFileParser.load(logFile);
             if (frames == null) {
                MessageDialogFactory.showMessageDialog(
-                  parentComponent, new Message(JaveMessages.JavE, "Error while exporting to 'Making Of': Unable to load logfile.", MessageType.ERROR)
+                  parentComponent, new Message(JaveMessages.Jave, "Error while exporting to 'Making Of': Unable to load logfile.", MessageType.ERROR)
                );
             } else if (frames.length == 0) {
                this.showMakingOfEmptyMessage(parentComponent);
@@ -73,7 +73,7 @@ public class ConvertMakingOfToAnimationAction extends AbstractJaveAction {
    private void showMakingOfEmptyMessage(Component parentComponent) {
       MessageDialogFactory.showMessageDialog(
          parentComponent,
-         new Message("JavE - Export 'Making Of'", "The current document has not been edited.\nNo 'Making Of' can be exported.", MessageType.INFORMATION)
+         new Message("Jave - Export 'Making Of'", "The current document has not been edited.\nNo 'Making Of' can be exported.", MessageType.INFORMATION)
       );
    }
 

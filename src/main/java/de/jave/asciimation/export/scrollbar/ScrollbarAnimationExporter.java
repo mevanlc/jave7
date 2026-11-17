@@ -98,7 +98,7 @@ public class ScrollbarAnimationExporter extends AbstractAnimationExporter {
             bw.newLine();
          }
 
-         bw.write("    |            (created using JavE " + JaveTitleProvider.JAVE_VERSION + " - http://www.jave.de)");
+         bw.write("    |            (created using Jave " + JaveTitleProvider.JAVE_VERSION + " - http://www.jave.de)");
          bw.newLine();
 
          for (int j = 0; j < fuellzeilen3; j++) {

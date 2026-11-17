@@ -1,7 +1,7 @@
 #############################################################################  
 # charsets.txt
 #
-# this file contains all character sets one can choose in JavE
+# this file contains all character sets one can choose in Jave
 # Menu View->Mark Illegal Characters
 #
 # File format:  

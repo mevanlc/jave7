@@ -21,12 +21,12 @@ public class JmovFileChooserConfiguration implements IFileChooserConfiguration {
 
    @Override
    public String getOpenDialogTitle() {
-      return "Open JavE Animation";
+      return "Open Jave Animation";
    }
 
    @Override
    public String getSaveDialogTitle() {
-      return "Save JavE Animation";
+      return "Save Jave Animation";
    }
 
    @Override

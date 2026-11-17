@@ -19,12 +19,12 @@ public class JmovAnimationExportFormat implements IAnimationExportFormat {
 
    @Override
    public String getName() {
-      return "JMOV JavE Animation File";
+      return "JMOV Jave Animation File";
    }
 
    @Override
    public String getDescription() {
-      return "Generates a compact file in JavE's animation format.";
+      return "Generates a compact file in Jave's animation format.";
    }
 
    @Override

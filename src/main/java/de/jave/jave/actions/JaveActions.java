@@ -3,7 +3,7 @@ package de.jave.jave.actions;
 import de.jave.figlet.engine.IFigDriver;
 import de.jave.image2ascii.AsciiGreyscaleTableConfiguration;
 import de.jave.image2ascii.IImage2AsciiResultTaker;
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.algorithm.camel.CamelizerSessionManager;
 import de.jave.jave.actions.export.ExportTextAction;
 import de.jave.jave.actions.export.TextExportPreferences;
@@ -65,7 +65,7 @@ public class JaveActions {
    private final CamelizerSessionManager camelizerSessionManager;
 
    public JaveActions(
-      @Deprecated final JavEApplication jave,
+      @Deprecated final JaveApplication jave,
       ConfigurationList configurationList,
       JavePreferences preferences,
       PlatePreferences plateViewOptions,
@@ -138,13 +138,13 @@ public class JaveActions {
       };
       this.openAction.setToolTipText("Open an ASCII File");
       this.openAction.setAcceleratorKey(JaveKeyBindings.OPEN);
-      this.aboutAction = new SmartAction("About JavE", JaveIcons.JAVE_ICON) {
+      this.aboutAction = new SmartAction("About Jave", JaveIcons.JAVE_ICON) {
          @Override
          protected void execute(Component parentComponent) {
             jave.showAboutDialog();
          }
       };
-      this.aboutAction.setToolTipText("About JavE");
+      this.aboutAction.setToolTipText("About Jave");
       this.camelizerSessionManager = new CamelizerSessionManager(mainPanel, currentDirectoryModel);
       this.camelizerAction = new CamelizerAction(mainPanel, this.camelizerSessionManager);
       this.fractalAction = new SmartAction("Fractals", JaveIcons.FRACTAL_ICON) {

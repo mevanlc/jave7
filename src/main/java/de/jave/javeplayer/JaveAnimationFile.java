@@ -111,7 +111,7 @@ public class JaveAnimationFile {
                         currentFrame.setCursorX(cursorX);
                         currentFrame.setCursorY(cursorY);
                      } catch (Exception var41) {
-                        System.err.println("Warning: Error in format of JavE Animation." + var41);
+                        System.err.println("Warning: Error in format of Jave Animation." + var41);
                      }
                   } else {
                      String content = s.substring(2);
@@ -134,7 +134,7 @@ public class JaveAnimationFile {
                      currentFrame.setSelectionX(selectionX);
                      currentFrame.setSelectionY(selectionY);
                   } catch (Exception var40) {
-                     System.err.println("Warning: Error in format of JavE Animation.");
+                     System.err.println("Warning: Error in format of Jave Animation.");
                   }
                }
             } else if (s.startsWith("T:")) {
@@ -152,7 +152,7 @@ public class JaveAnimationFile {
                   int duration = Integer.parseInt(s.substring(2));
                   this.properties.setFrameDuration(duration);
                } catch (NumberFormatException var39) {
-                  System.err.println("Warning: Error in format of JavE Animation:  " + s);
+                  System.err.println("Warning: Error in format of Jave Animation:  " + s);
                }
             } else if (s.startsWith("|:")) {
                if (currentFrame != null) {
@@ -164,7 +164,7 @@ public class JaveAnimationFile {
                      currentFrame.setCursorX(cursorX);
                      currentFrame.setCursorY(cursorY);
                   } catch (Exception var38) {
-                     System.err.println("Warning: Error in format of JavE Animation: " + s);
+                     System.err.println("Warning: Error in format of Jave Animation: " + s);
                   }
                }
             } else if (s.startsWith("^:")) {
@@ -177,7 +177,7 @@ public class JaveAnimationFile {
                      currentFrame.setScrollX(scrollX);
                      currentFrame.setScrollY(scrollY);
                   } catch (Exception var37) {
-                     System.err.println("Warning: Error in format of JavE Animation: " + s);
+                     System.err.println("Warning: Error in format of Jave Animation: " + s);
                   }
                }
             } else if (s.startsWith("@:")) {
@@ -202,7 +202,7 @@ public class JaveAnimationFile {
                   this.properties.setBackgroundColor(JavePlayerUtilities.hexToColor(s.substring(2, i1x)));
                   this.properties.setForegroundColor(JavePlayerUtilities.hexToColor(s.substring(i1x + 1)));
                } catch (Exception var36) {
-                  System.err.println("Warning: Error in format of JavE Animation: " + s);
+                  System.err.println("Warning: Error in format of Jave Animation: " + s);
                }
             } else if (s.startsWith("*:")) {
                if (this.metaData.getSoftware() == null && s.length() > 2) {
@@ -217,9 +217,9 @@ public class JaveAnimationFile {
             this.frames.add(currentFrame);
          }
       } catch (FileNotFoundException var42) {
-         throw new Exception("Error loading JavE Animation: File not found: '" + url + "'", var42);
+         throw new Exception("Error loading Jave Animation: File not found: '" + url + "'", var42);
       } catch (IOException var43) {
-         throw new Exception("Error loading JavE Animation: Wrong file format.", var43);
+         throw new Exception("Error loading Jave Animation: Wrong file format.", var43);
       } finally {
          if (reader != null) {
             try {

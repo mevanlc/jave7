@@ -1,6 +1,6 @@
 package de.jave.jave.tool.linealgorithmic;
 
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.LineAlgorithm;
 import de.jave.jave.Point2d;
 import de.jave.jave.Tool;
@@ -32,7 +32,7 @@ public class LineAlgorithmicTool extends Tool {
    private final LineAlgorithmicOptions options = new LineAlgorithmicOptions();
    private IInlineToolOptions inlineOptions;
 
-   public LineAlgorithmicTool(JaveMainPanel plate, JavEApplication application, Filter filter) {
+   public LineAlgorithmicTool(JaveMainPanel plate, JaveApplication application, Filter filter) {
       super(plate, application, filter);
       final SmartPreferences preferences = new SmartPreferences(application.getApplicationPreferences().getSubPreferences(PREFERENCES_PATH));
       this.options.loadFrom(preferences);

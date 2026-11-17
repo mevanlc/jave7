@@ -71,7 +71,7 @@ public class JaveClipboardSelection implements Transferable {
    }
 
    static {
-      flavors[0] = new DataFlavor(JaveSelection.class, "JavE Selection");
+      flavors[0] = new DataFlavor(JaveSelection.class, "Jave Selection");
       flavors[1] = DataFlavor.stringFlavor;
       flavors[2] = DataFlavor.plainTextFlavor;
    }

@@ -1,6 +1,6 @@
 package de.jave.jave.layers.ui;
 
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.PlateDocument;
 import de.jave.jave.layers.DocumentLayer;
 import de.jave.jave.layers.Layer;
@@ -38,7 +38,7 @@ public final class LayerCard extends JPanel {
    private static final int LAYER_CARD_WIDTH = 220;
    private static final int PREVIEW_COLUMNS = 18;
    private static final int PREVIEW_ROWS = 6;
-   private final JavEApplication application;
+   private final JaveApplication application;
    private final PlateDocument document;
    private final Layer layer;
    private final int layerNumber;
@@ -46,7 +46,7 @@ public final class LayerCard extends JPanel {
    private final JLabel nameLabel;
    private JTextField renameEditor;
 
-   public LayerCard(JavEApplication application, PlateDocument document, Layer layer, int layerNumber, boolean active) {
+   public LayerCard(JaveApplication application, PlateDocument document, Layer layer, int layerNumber, boolean active) {
       super(new BorderLayout(8, 0));
       this.application = application;
       this.document = document;

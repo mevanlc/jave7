@@ -13,7 +13,7 @@ public class PanTool extends Tool {
    private int panDY = 0;
    private Point location1;
 
-   public PanTool(JaveMainPanel plate, JavEApplication application, Filter filter) {
+   public PanTool(JaveMainPanel plate, JaveApplication application, Filter filter) {
       super(plate, application, filter);
    }
 

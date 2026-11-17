@@ -18,7 +18,7 @@ public class FreehandToolGeneric extends GenericTool {
    private Point point1;
    private Point cursorPosition;
 
-   public FreehandToolGeneric(JaveMainPanel mainPanel, JavEApplication application, Filter filter) {
+   public FreehandToolGeneric(JaveMainPanel mainPanel, JaveApplication application, Filter filter) {
       super(mainPanel, application, filter);
    }
 

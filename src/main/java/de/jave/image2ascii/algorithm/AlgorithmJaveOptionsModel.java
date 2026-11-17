@@ -8,10 +8,10 @@ import net.dizzy.commons.core.model.listener.IChangeListener;
 import net.dizzy.commons.core.util.Ensure;
 import net.dizzy.commons.swing.fontchooser.model.FontModel;
 
-public class AlgorithmJavEOptionsModel extends AbstractChangeableModel {
+public class AlgorithmJaveOptionsModel extends AbstractChangeableModel {
    private final SharedImage2AsciiOptions sharedOptions;
 
-   public AlgorithmJavEOptionsModel(SharedImage2AsciiOptions sharedOptions) {
+   public AlgorithmJaveOptionsModel(SharedImage2AsciiOptions sharedOptions) {
       Ensure.ensureArgumentNotNull(sharedOptions);
       this.sharedOptions = sharedOptions;
    }

@@ -2,7 +2,7 @@ package de.jave.jave.actions;
 
 import de.jave.awt.clipboard.ClipboardTransferer;
 import de.jave.awt.clipboard.JaveClipboardSelection;
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.actions.enablestrategy.IJaveDocumentEditorActionEnabledStrategy;
 import de.jave.jave.actions.enablestrategy.TextAndAnimationEditorEnabledStrategy;
 import de.jave.jave.plate.IDocumentEditor;
@@ -16,10 +16,10 @@ import net.dizzy.commons.core.util.Ensure;
 import net.dizzy.commons.swing.resources.DizzyCommonsSwingIconResources;
 
 public class PasteAsNewSelectionAction extends AbstractJaveAction {
-   private final JavEApplication jave;
+   private final JaveApplication jave;
    private final BooleanPreferenceModel pasteVFillsSelectionModel;
 
-   public PasteAsNewSelectionAction(JaveMainPanel mainPanel, JavEApplication jave, BooleanPreferenceModel pasteVFillsSelectionModel) {
+   public PasteAsNewSelectionAction(JaveMainPanel mainPanel, JaveApplication jave, BooleanPreferenceModel pasteVFillsSelectionModel) {
       super(mainPanel, "Paste As New Selection", DizzyCommonsSwingIconResources.PASTE);
       this.setAcceleratorKey(JaveKeyBindings.PASTE_AS_NEW_SELECTION);
       this.setToolTipText("Paste As New Selection");

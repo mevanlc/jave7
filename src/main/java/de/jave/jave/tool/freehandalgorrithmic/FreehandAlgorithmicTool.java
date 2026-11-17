@@ -1,6 +1,6 @@
 package de.jave.jave.tool.freehandalgorrithmic;
 
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.LineAlgorithm;
 import de.jave.jave.Tool;
 import de.jave.jave.algorithm.freehandalgorithmic.FreehandAlgorithm;
@@ -27,7 +27,7 @@ public class FreehandAlgorithmicTool extends Tool {
    private final Filter filter;
    private IInlineToolOptions inlineOptions;
 
-   public FreehandAlgorithmicTool(JaveMainPanel plate, JavEApplication application, Filter filter) {
+   public FreehandAlgorithmicTool(JaveMainPanel plate, JaveApplication application, Filter filter) {
       super(plate, application, filter);
       this.filter = filter;
    }

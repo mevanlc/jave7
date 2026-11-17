@@ -1,7 +1,7 @@
 package de.jave.jave.actions;
 
 import de.jave.asciimation.export.FileTypeIcons;
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.preferences.ColorScheme;
 import de.jave.javeplayer.JaveAnimationFile;
 import de.jave.javeplayer.JaveAnimationFrame;
@@ -12,9 +12,9 @@ import net.dizzy.commons.core.util.Ensure;
 import net.dizzy.commons.swing.action.SmartAction;
 
 public final class NewAnimationAction extends SmartAction {
-   private final JavEApplication jave;
+   private final JaveApplication jave;
 
-   public NewAnimationAction(JavEApplication jave) {
+   public NewAnimationAction(JaveApplication jave) {
       super("New Animation", FileTypeIcons.ANIMATION_ICON);
       Ensure.ensureArgumentNotNull(jave);
       this.jave = jave;

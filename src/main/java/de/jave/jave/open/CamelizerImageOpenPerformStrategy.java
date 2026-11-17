@@ -43,7 +43,7 @@ public class CamelizerImageOpenPerformStrategy implements IImageOpenPerformStrat
       IDocumentEditor activeEditor = this.mainPanel.getActiveEditorModel().getActiveEditor();
       if (activeEditor == null) {
          MessageDialogFactory.showMessageDialog(
-            parentComponent, new Message(JaveMessages.JavE, "There is no text document open.\nThe Camelizer can not be applied.", MessageType.INFORMATION)
+            parentComponent, new Message(JaveMessages.Jave, "There is no text document open.\nThe Camelizer can not be applied.", MessageType.INFORMATION)
          );
       } else {
          this.action.perform(parentComponent, activeEditor, file);

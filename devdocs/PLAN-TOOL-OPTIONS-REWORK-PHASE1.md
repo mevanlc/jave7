@@ -120,8 +120,8 @@ Why option (a) over (b) re-parenting:
 
 ### D2 — Measurement integration: explicit panel registry
 
-`JavEApplication` currently measures only the fallback
-(`JavEApplication.java:187`). Extend the measurement step to pass all
+`JaveApplication` currently measures only the fallback
+(`JaveApplication.java:187`). Extend the measurement step to pass all
 inline panels' contents:
 
 1. Construct each migrated tool's inline panel content eagerly
@@ -187,7 +187,7 @@ today reads from the static `PixelPlateOptionsPanel`. After D1 it must
 read from the model.
 
 **Change.**
-- `JavEApplication` (or a small dedicated holder it owns) constructs
+- `JaveApplication` (or a small dedicated holder it owns) constructs
   one `PixelPlateModel` instance.
 - `GenericTool.pixelPlateOptionsPanel` static is removed.
   `GenericTool` exposes the model (constructor-injected from the
@@ -281,8 +281,8 @@ before. Drawing produces same characters as the legacy panel did.
 **Why.** D2 — the bar must be sized to the widest of all migrated
 panels, not just the fallback.
 
-**Change.** In `JavEApplication.startup()` (the block at
-`JavEApplication.java:186-191`), after `createTools` has run, gather
+**Change.** In `JaveApplication.startup()` (the block at
+`JaveApplication.java:186-191`), after `createTools` has run, gather
 all tools' inline panel contents (skip nulls), prepend the fallback
 content, pass the full list to
 `InlineOptionsWidthMeasurer.measureMaxWidth`. Use the result for
@@ -355,7 +355,7 @@ So a sensible order is: α, β, γ, ζ, δ, ε×4, η.
   + ε will tell.
 - Whether to introduce a base class for the four algorithmic inline
   panels. Defer past Unit ε; revisit once PHASE2 has more participants.
-- Where the `PixelPlateModel` instance lives (held by `JavEApplication`
+- Where the `PixelPlateModel` instance lives (held by `JaveApplication`
   vs. a small `GenericToolGroup` holder). Decide during Unit α; either
   is fine — pick the smaller change.
 

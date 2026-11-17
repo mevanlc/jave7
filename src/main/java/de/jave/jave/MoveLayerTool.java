@@ -27,7 +27,7 @@ public final class MoveLayerTool extends Tool {
    private LayeredDocument preview;
    private IInlineToolOptions inlineOptions;
 
-   public MoveLayerTool(JaveMainPanel mainPanel, JavEApplication application, Filter filter) {
+   public MoveLayerTool(JaveMainPanel mainPanel, JaveApplication application, Filter filter) {
       super(mainPanel, application, filter);
       mainPanel.getActiveEditorModel().addChangeListener(this::cancelDrag);
    }

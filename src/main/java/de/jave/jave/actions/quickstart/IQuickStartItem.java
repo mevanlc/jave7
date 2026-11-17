@@ -1,6 +1,6 @@
 package de.jave.jave.actions.quickstart;
 
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import javax.swing.Icon;
 
 public interface IQuickStartItem {
@@ -10,5 +10,5 @@ public interface IQuickStartItem {
 
    String getDescription();
 
-   void perform(JavEApplication var1);
+   void perform(JaveApplication var1);
 }

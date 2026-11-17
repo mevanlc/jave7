@@ -1,6 +1,6 @@
 package de.jave.jave.open;
 
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.WatermarkTool;
 import de.jave.jave.actions.ToolBar;
 import java.awt.Component;
@@ -10,9 +10,9 @@ import net.dizzy.commons.core.util.Ensure;
 
 public class WatermarkImageOpenPerformStrategy implements IImageOpenPerformStrategy {
    private final WatermarkTool tool;
-   private final JavEApplication application;
+   private final JaveApplication application;
 
-   public WatermarkImageOpenPerformStrategy(WatermarkTool tool, JavEApplication application) {
+   public WatermarkImageOpenPerformStrategy(WatermarkTool tool, JaveApplication application) {
       Ensure.ensureArgumentNotNull(tool);
       Ensure.ensureArgumentNotNull(application);
       this.tool = tool;

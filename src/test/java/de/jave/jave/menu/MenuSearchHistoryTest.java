@@ -11,7 +11,7 @@ import org.junit.Test;
 public class MenuSearchHistoryTest {
    @Test
    public void persistsUniqueRecentSearchCommandsButNotOrdinaryInvocationsOrTransientWindows() throws Exception {
-      Preferences node = Preferences.userRoot().node("JavE-menu-search-test-" + UUID.randomUUID());
+      Preferences node = Preferences.userRoot().node("Jave-menu-search-test-" + UUID.randomUUID());
       try {
          MenuSearchHistory history = new MenuSearchHistory(new SmartPreferences(node));
          MenuHub hub = new MenuHub(new JMenuBar());

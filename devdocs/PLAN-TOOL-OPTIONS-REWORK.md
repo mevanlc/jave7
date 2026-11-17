@@ -154,12 +154,12 @@ region) swaps `getContent()` into its center as the active tool changes.
 
 ### Width measurement (runtime, no hardcoded pixels)
 
-JavE already uses `LayoutUtilities.getDpiAdjusted` and supports DPI
+Jave already uses `LayoutUtilities.getDpiAdjusted` and supports DPI
 switches; hardcoded pixel widths would silently undermine that. So:
 
 - Run a measurement pass **after L&F install, before `frame.pack()`**
   (between `JaveTopToolbar`/`ToolBar` construction at
-  `JavEApplication.java:169-170` and the content-pane add at line 178).
+  `JaveApplication.java:169-170` and the content-pane add at line 178).
 - For each registered `IInlineToolOptions`:
   1. Build a hidden, undecorated `JFrame`.
   2. `add(panel)`, then `pack()`. `pack()` triggers `addNotify()` and
@@ -336,5 +336,5 @@ Separate phase docs deferred until needed. Likely groupings:
 - Top toolbar: `src/main/java/de/jave/jave/actions/JaveTopToolbar.java`
 - Toolbar builder (already accepts new toggles): `src/main/java/de/jave/jave/actions/ButtonToolbarBuilder.java`
 - Key bindings registry: `src/main/java/de/jave/jave/actions/JaveKeyBindings.java`
-- App wiring (where bar/topbar/main-panel get docked): `src/main/java/de/jave/jave/JavEApplication.java:169-178`
+- App wiring (where bar/topbar/main-panel get docked): `src/main/java/de/jave/jave/JaveApplication.java:169-178`
 - One-off NSPanel-backing probe: `/tmp/jdialog-nspanel-probe/Probe.java`

@@ -29,7 +29,7 @@ public class JaveAboutDialog {
       AbstractDialogPage dialogPage = new AbstractDialogPage("") {
          @Override
          public String getTitle() {
-            return "JavE " + JaveVersion.getFullVersionNumber();
+            return "Jave " + JaveVersion.getFullVersionNumber();
          }
 
          @Override
@@ -65,7 +65,7 @@ public class JaveAboutDialog {
 
    private static JComponent createDetailsPanel() {
       JPanel panel = new JPanel(new GridDialogLayout(2, false));
-      panel.add(new JLabel("JavE Homepage:"), GridDialogLayoutData.RIGHT);
+      panel.add(new JLabel("Jave Homepage:"), GridDialogLayoutData.RIGHT);
       panel.add(new GHyperlink("http://www.jave.de", 0));
       panel.add(new JLabel("Version:"), GridDialogLayoutData.RIGHT);
       panel.add(createSelectableLabel(JaveVersion.getFullVersionNumber() + " " + JaveVersion.getBuildDate()));

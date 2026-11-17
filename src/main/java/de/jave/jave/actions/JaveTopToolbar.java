@@ -1,6 +1,6 @@
 package de.jave.jave.actions;
 
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.JaveMessages;
 import javax.swing.JComponent;
 import javax.swing.JToggleButton;
@@ -10,7 +10,7 @@ import net.dizzy.commons.swing.action.ActionWidgetFactory;
 public class JaveTopToolbar {
    private final JComponent content;
 
-   public JaveTopToolbar(JavEApplication application, JaveActions actions, UndoRedoModel undeRedoModel) {
+   public JaveTopToolbar(JaveApplication application, JaveActions actions, UndoRedoModel undeRedoModel) {
       Ensure.ensureArgumentNotNull(application);
       ButtonToolbarBuilder builder = new ButtonToolbarBuilder();
       builder.add(actions.getQuickStartAction());

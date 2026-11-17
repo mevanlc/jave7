@@ -2,7 +2,7 @@ package de.jave.jave.actions;
 
 import de.jave.awt.clipboard.ClipboardTransferer;
 import de.jave.awt.clipboard.JaveClipboardSelection;
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.actions.enablestrategy.AlwaysEnabledStrategy;
 import de.jave.jave.actions.enablestrategy.IJaveDocumentEditorActionEnabledStrategy;
 import de.jave.jave.plate.IDocumentEditor;
@@ -12,9 +12,9 @@ import net.dizzy.commons.core.util.Ensure;
 import net.dizzy.commons.swing.resources.DizzyCommonsSwingIconResources;
 
 public class PasteAsNewDocumentAction extends AbstractJaveAction {
-   private final JavEApplication jave;
+   private final JaveApplication jave;
 
-   public PasteAsNewDocumentAction(JaveMainPanel mainPanel, JavEApplication jave) {
+   public PasteAsNewDocumentAction(JaveMainPanel mainPanel, JaveApplication jave) {
       super(mainPanel, "Paste As New Document", DizzyCommonsSwingIconResources.PASTE);
       Ensure.ensureArgumentNotNull(jave);
       this.jave = jave;

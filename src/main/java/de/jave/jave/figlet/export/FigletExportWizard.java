@@ -28,7 +28,7 @@ import net.dizzy.commons.swing.dialog.wizard.AbstractWizardConfiguration;
 import net.dizzy.commons.swing.dialog.wizard.IWizardPage;
 
 public class FigletExportWizard extends AbstractWizardConfiguration {
-   private static final String SUCCEED_MESSAGE = "Your new FIGlet font has been saved into JavE''s font folder as:\n      {0}\nThe font is now available in the category 'New Fonts'.\n\nPlease consider making your font public by informing the\npeople on the newsgroup alt.ascii-art or JavE's program author\n     markus@jave.de.\n\nDon't forget to backup a copy of this font so you will not\naccidently lose it!";
+   private static final String SUCCEED_MESSAGE = "Your new FIGlet font has been saved into Jave''s font folder as:\n      {0}\nThe font is now available in the category 'New Fonts'.\n\nPlease consider making your font public by informing the\npeople on the newsgroup alt.ascii-art or Jave's program author\n     markus@jave.de.\n\nDon't forget to backup a copy of this font so you will not\naccidently lose it!";
    private FigletExportWizardPageManager pageManager;
    private final FigletExportModel model;
    private final BooleanModel gridVisibilityModel;
@@ -102,7 +102,7 @@ public class FigletExportWizard extends AbstractWizardConfiguration {
                   YesNoCancel answer = MessageDialogUtilities.showYesNoCancelDialog(
                      parentComponent,
                      new Message(
-                        JaveMessages.JavE,
+                        JaveMessages.Jave,
                         "The font '" + FigletExportWizard.this.model.getName() + "' already exists.\nDo you want to replace the existing file?",
                         MessageType.WARNING
                      )
@@ -122,10 +122,10 @@ public class FigletExportWizard extends AbstractWizardConfiguration {
 
                String filePath = file.getAbsoluteFile().getAbsolutePath();
                String message = MessageFormat.format(
-                  "Your new FIGlet font has been saved into JavE''s font folder as:\n      {0}\nThe font is now available in the category 'New Fonts'.\n\nPlease consider making your font public by informing the\npeople on the newsgroup alt.ascii-art or JavE's program author\n     markus@jave.de.\n\nDon't forget to backup a copy of this font so you will not\naccidently lose it!",
+                  "Your new FIGlet font has been saved into Jave''s font folder as:\n      {0}\nThe font is now available in the category 'New Fonts'.\n\nPlease consider making your font public by informing the\npeople on the newsgroup alt.ascii-art or Jave's program author\n     markus@jave.de.\n\nDon't forget to backup a copy of this font so you will not\naccidently lose it!",
                   filePath
                );
-               MessageDialogFactory.showMessageDialog(parentComponent, new Message("JavE FIGlet font export assistant", message, MessageType.INFORMATION));
+               MessageDialogFactory.showMessageDialog(parentComponent, new Message("Jave FIGlet font export assistant", message, MessageType.INFORMATION));
                return true;
             }
          }

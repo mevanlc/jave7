@@ -3,7 +3,7 @@ package de.jave.jave;
 import de.jave.core.NLS;
 
 public class JaveMessages extends NLS {
-   public static String JavE;
+   public static String Jave;
    public static String DefaultExceptionHandler_Title;
    public static String DefaultExceptionHandler_Text;
    public static String StartUp_ErrorMessage_ProbablyConfigFoldersMissing;

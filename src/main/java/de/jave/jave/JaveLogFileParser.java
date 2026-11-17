@@ -42,13 +42,13 @@ public class JaveLogFileParser {
                   String content = s.substring(2);
                   currentFrame.setContent(content);
                } catch (Exception var28) {
-                  System.err.println("Warning: Error in format of JavE jmov-Logfile.");
+                  System.err.println("Warning: Error in format of Jave jmov-Logfile.");
                }
             } else if (s.startsWith("L:")) {
                try {
                   currentFrame.setPackedLayers(s.substring(2));
                } catch (IllegalArgumentException exception) {
-                  System.err.println("Warning: Error in layer data of JavE jmov-Logfile.");
+                  System.err.println("Warning: Error in layer data of Jave jmov-Logfile.");
                }
             } else if (s.startsWith("S:")) {
                try {
@@ -63,7 +63,7 @@ public class JaveLogFileParser {
                   currentFrame.setSelectionContent(content);
                   currentFrame.setSelectionLocation(selectionX, selectionY);
                } catch (Exception var27) {
-                  System.err.println("Warning: Error in format of JavE jmov-Logfile.");
+                  System.err.println("Warning: Error in format of Jave jmov-Logfile.");
                }
             } else if (s.startsWith("M:")) {
                currentFrame.setSelectionMask(s.substring(2));
@@ -82,7 +82,7 @@ public class JaveLogFileParser {
                   currentFrame.setCursorX(cursorX);
                   currentFrame.setCursorY(cursorY);
                } catch (Exception var26) {
-                  System.err.println("Warning: Error in format of JavE animation: " + s);
+                  System.err.println("Warning: Error in format of Jave animation: " + s);
                }
             } else if (s.startsWith("^:")) {
                int i1 = s.indexOf(32, 2);
@@ -93,14 +93,14 @@ public class JaveLogFileParser {
                   currentFrame.setScrollX(scrollX);
                   currentFrame.setScrollY(scrollY);
                } catch (Exception var25) {
-                  System.err.println("Warning: Error in format of JavE animation: " + s);
+                  System.err.println("Warning: Error in format of Jave animation: " + s);
                }
             } else if (s.startsWith("+:")) {
                try {
                   int duration = Integer.parseInt(s.substring(2));
                   currentFrame.setDuration(duration);
                } catch (Exception var24) {
-                  System.err.println("Warning: Error in format of JavE animation: " + s);
+                  System.err.println("Warning: Error in format of Jave animation: " + s);
                }
             } else if (s.startsWith("C:")) {
                s = s.substring(2);

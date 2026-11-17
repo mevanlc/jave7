@@ -204,13 +204,13 @@ public class LayerUndoIntegrationTest {
       });
    }
 
-   private static void withApplication(Consumer<JavEApplication> test) throws Exception {
+   private static void withApplication(Consumer<JaveApplication> test) throws Exception {
       SwingUtilities.invokeAndWait(() -> {
-         JavEApplication app = null;
+         JaveApplication app = null;
          try {
             var init = Class.forName("de.jave.jave.application.startup.JaveStartup").getDeclaredMethod("initConfigFiles");
             init.setAccessible(true);
-            app = new JavEApplication((ConfigurationList)init.invoke(null));
+            app = new JaveApplication((ConfigurationList)init.invoke(null));
             app.startupMenuBar();
             app.doNew();
             Plate plate = app.getMainPanel().getPlate();

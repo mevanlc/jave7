@@ -46,7 +46,7 @@ public class CommandLineJave {
 
          return false;
       } else {
-         System.err.println("Unknown options for JavE commadline interface.");
+         System.err.println("Unknown options for Jave commadline interface.");
          System.err.println("Supported syntax: ");
          System.err.println("  jave (image2ascii|i2a) INPUTFILE [width=WW] [algorithm=AA]");
          System.err.println("    INPUTFILE is the name (and path) to the image file)");

@@ -18,7 +18,7 @@
 
 ## Summary
 
-PHASE1 converts JavE's canvas storage from `char[][]` to an `int[][]` glyph
+PHASE1 converts Jave's canvas storage from `char[][]` to an `int[][]` glyph
 plane, introduces a `Cell` API so callers stop touching raw arrays, and uses
 that headroom to store a grapheme cluster — a glyph plus its Preceding-Glyph
 Assimilators — as one inseparable cell.
@@ -105,7 +105,7 @@ clusters and no non-BMP code points is still encoded with the existing `A`/`B`
 algorithms, byte-identically. Existing art therefore produces unchanged output,
 which matters because `CompressedJavaScriptAnimationExporter` and
 `ActionScriptAnimationExporter` emit packed strings into generated players
-consumed outside JavE.
+consumed outside Jave.
 
 ## Work units
 
@@ -269,7 +269,7 @@ Implementation verification completed on 2026-08-08:
   conjoining jamo, supplementary code points, clipboard, undo state, `.jmov`,
   and algorithm-C exporter output.
 - `./gradlew macDeployToApplications --no-configuration-cache` produced and
-  installed `/Applications/JavE.app` (`de.jave.JavE`, version 7.0.0).
+  installed `/Applications/Jave.app` (`de.jave.Jave`, version 7.0.0).
 - In that packaged app, pasting the Group A corpus showed each cluster occupying
   one cell; the trailing sentinel rendered in the same column for the `Mn`,
   `Me`, and stacked-mark rows.

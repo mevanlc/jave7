@@ -483,7 +483,7 @@ public class BoxDrawingPickerDialog {
    }
 
    private static Preferences preferences() {
-      return Preferences.userRoot().node("JavE");
+      return Preferences.userRoot().node("Jave");
    }
 
    private Point readSavedWindowLocation() {

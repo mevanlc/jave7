@@ -1,7 +1,7 @@
 package de.jave.jave.plate;
 
 import de.jave.jave.CharacterSets;
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.Plate;
 import de.jave.jave.PlateDocument;
 import de.jave.jave.browser.JaveDocumentType;
@@ -20,7 +20,7 @@ public class GameDocumentEditor extends AbstractDocumentEditor {
    public GameDocumentEditor(
       String stopGapName,
       PlateDocument doc,
-      JavEApplication jave,
+      JaveApplication jave,
       PlatePreferences platePreferences,
       ToolManager toolManager,
       FontModel displayFontModel,

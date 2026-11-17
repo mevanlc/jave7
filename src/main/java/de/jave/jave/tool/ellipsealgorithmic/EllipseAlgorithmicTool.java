@@ -3,7 +3,7 @@ package de.jave.jave.tool.ellipsealgorithmic;
 import de.jave.ascii.plate.CharacterMetrics;
 import de.jave.gfx.GfxTools;
 import de.jave.jave.EllipseAlgorithm;
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.JaveGlobalRessources;
 import de.jave.jave.JaveMessages;
 import de.jave.jave.Tool;
@@ -34,7 +34,7 @@ public class EllipseAlgorithmicTool extends Tool {
    private Point dragLocation;
    private IInlineToolOptions inlineOptions;
 
-   public EllipseAlgorithmicTool(JaveMainPanel plate, JavEApplication application, Filter filter) {
+   public EllipseAlgorithmicTool(JaveMainPanel plate, JaveApplication application, Filter filter) {
       super(plate, application, filter);
       Ensure.ensureArgumentNotNull(filter);
       this.filter = filter;

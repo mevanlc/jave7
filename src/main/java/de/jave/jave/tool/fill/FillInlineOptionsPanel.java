@@ -303,7 +303,7 @@ public class FillInlineOptionsPanel implements IInlineToolOptions {
          String author = tfAuthor.getText();
          if (name.trim().length() == 0) {
             MessageDialogFactory.showMessageDialog(
-               parentComponent, new Message(JaveMessages.JavE, "The specified name is not a correct name for a pattern.", MessageType.ERROR)
+               parentComponent, new Message(JaveMessages.Jave, "The specified name is not a correct name for a pattern.", MessageType.ERROR)
             );
          } else {
             Pattern newPattern = new Pattern(name, this.options.getPattern().getCode(), author);

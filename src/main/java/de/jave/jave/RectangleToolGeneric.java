@@ -27,7 +27,7 @@ public class RectangleToolGeneric extends GenericTool {
    private Point dragPoint;
    private JCheckBox cbFill;
 
-   public RectangleToolGeneric(JaveMainPanel mainPanel, JavEApplication application, Filter filter) {
+   public RectangleToolGeneric(JaveMainPanel mainPanel, JaveApplication application, Filter filter) {
       super(mainPanel, application, filter);
    }
 

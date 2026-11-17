@@ -1,6 +1,6 @@
 package de.jave.jave.actions;
 
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.DocumentSizeLimits;
 import de.jave.jave.actions.enablestrategy.IJaveDocumentEditorActionEnabledStrategy;
 import de.jave.jave.actions.enablestrategy.TextAndAnimationEditorEnabledStrategy;
@@ -27,7 +27,7 @@ import net.dizzy.commons.swing.layout.grid.GridDialogLayout;
 import net.dizzy.commons.swing.layout.grid.GridDialogLayoutDataFactory;
 
 public class ResizeDocumentAction extends AbstractJaveAction {
-   public ResizeDocumentAction(JavEApplication jave) {
+   public ResizeDocumentAction(JaveApplication jave) {
       super(jave.getMainPanel(), "Resize Document", JaveIcons.RESIZE_ICON);
       this.setToolTipText("Resize Document");
    }

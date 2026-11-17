@@ -3,7 +3,7 @@ package de.jave.asciimation.action;
 import de.jave.asciimation.JmovFileChooserConfiguration;
 import de.jave.gui.io.FileChooserUtilities;
 import de.jave.gui.io.FileSelection;
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.actions.AbstractJaveAction;
 import de.jave.jave.actions.enablestrategy.AlwaysEnabledStrategy;
 import de.jave.jave.actions.enablestrategy.IJaveDocumentEditorActionEnabledStrategy;
@@ -20,9 +20,9 @@ import net.dizzy.commons.swing.dialog.message.MessageDialogFactory;
 
 public class OpenAnimationAction extends AbstractJaveAction {
    private final FileModel currentDirectoryModel;
-   private final JavEApplication jave;
+   private final JaveApplication jave;
 
-   public OpenAnimationAction(JaveMainPanel mainPanel, JavEApplication jave, FileModel currentDirectoryModel) {
+   public OpenAnimationAction(JaveMainPanel mainPanel, JaveApplication jave, FileModel currentDirectoryModel) {
       super(mainPanel, "Open...", JaveIcons.OPEN_ICON);
       Ensure.ensureArgumentNotNull(currentDirectoryModel);
       Ensure.ensureArgumentNotNull(jave);
@@ -50,7 +50,7 @@ public class OpenAnimationAction extends AbstractJaveAction {
          newFile.load(file.toURL());
          return newFile;
       } catch (Exception var4) {
-         MessageDialogFactory.showMessageDialog(parentComponent, new Message("JavE Animation Editor", "Error loading file", var4));
+         MessageDialogFactory.showMessageDialog(parentComponent, new Message("Jave Animation Editor", "Error loading file", var4));
          return null;
       }
    }

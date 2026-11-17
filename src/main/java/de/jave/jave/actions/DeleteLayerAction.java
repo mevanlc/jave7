@@ -1,6 +1,6 @@
 package de.jave.jave.actions;
 
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.PlateDocument;
 import de.jave.jave.actions.enablestrategy.IJaveDocumentEditorActionEnabledStrategy;
 import de.jave.jave.browser.JaveDocumentType;
@@ -9,9 +9,9 @@ import de.jave.jave.plate.JaveMainPanel;
 import java.awt.Component;
 
 public class DeleteLayerAction extends AbstractJaveAction {
-   private final JavEApplication application;
+   private final JaveApplication application;
 
-   public DeleteLayerAction(JavEApplication application, JaveMainPanel mainPanel) {
+   public DeleteLayerAction(JaveApplication application, JaveMainPanel mainPanel) {
       super(mainPanel, "Delete Layer", null);
       this.application = application;
    }

@@ -1,6 +1,6 @@
 package de.jave.jave.actions;
 
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.actions.enablestrategy.AnyEditorEnabledStrategy;
 import de.jave.jave.actions.enablestrategy.IJaveDocumentEditorActionEnabledStrategy;
 import de.jave.jave.actions.performers.SavePerformer;
@@ -10,9 +10,9 @@ import de.jave.jave.plate.JaveMainPanel;
 import java.awt.Component;
 
 public class SaveAllAction extends AbstractJaveAction {
-   private final JavEApplication jave;
+   private final JaveApplication jave;
 
-   public SaveAllAction(JavEApplication jave, JaveMainPanel mainPanel) {
+   public SaveAllAction(JaveApplication jave, JaveMainPanel mainPanel) {
       super(mainPanel, "Save All", JaveIcons.SAVE_ALL_EDIT_ICON);
       this.jave = jave;
       this.setToolTipText("Save all Files");

@@ -21,7 +21,7 @@ import net.dizzy.commons.swing.dialog.userdialog.page.IDialogPage;
 import net.dizzy.commons.swing.util.RelativePosition;
 
 public abstract class AbstractDialogTool {
-   private final JavEApplication jave;
+   private final JaveApplication jave;
    private final Plate plate;
    protected final CharacterPlate characterPlate;
    protected final int plateWidth;
@@ -31,7 +31,7 @@ public abstract class AbstractDialogTool {
    private final JaveApplicationPreferences preferences;
    private UserDialog dialog;
 
-   public AbstractDialogTool(JavEApplication asciiPainter, JaveApplicationPreferences preferences) {
+   public AbstractDialogTool(JaveApplication asciiPainter, JaveApplicationPreferences preferences) {
       Ensure.ensureArgumentNotNull(preferences);
       this.preferences = preferences;
       this.jave = asciiPainter;

@@ -2,7 +2,7 @@ package de.jave.jave.plate;
 
 import de.jave.awt.clipboard.JaveClipboardSelection;
 import de.jave.jave.CompressedDocumentState;
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.JaveSelection;
 import de.jave.jave.Plate;
 import de.jave.jave.PlateDocument;
@@ -37,7 +37,7 @@ public class JaveMainPanel {
    private final ActiveEditorModel activeEditorModel = new ActiveEditorModel();
    private final BooleanModel mixCharactersModel = new BooleanModel(true);
 
-   public JaveMainPanel(final JavEApplication jave, IStatusDisplay status, MouseCharacterModel mouseCharacterModel) {
+   public JaveMainPanel(final JaveApplication jave, IStatusDisplay status, MouseCharacterModel mouseCharacterModel) {
       Ensure.ensureArgumentNotNull(mouseCharacterModel);
       this.status = status;
       this.mouseCharacterModel = mouseCharacterModel;

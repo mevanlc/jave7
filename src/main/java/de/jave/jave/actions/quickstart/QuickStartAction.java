@@ -2,7 +2,7 @@ package de.jave.jave.actions.quickstart;
 
 import de.jave.gui.listpanel.IClickHandler;
 import de.jave.gui.listpanel.MouseActiveListPanelBuilder;
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.JaveMessages;
 import de.jave.jave.preferences.JaveApplicationPreferences;
 import java.awt.Component;
@@ -29,9 +29,9 @@ import net.dizzy.commons.swing.layout.grid.GridDialogLayoutData;
 import net.dizzy.commons.swing.widgets.AutoWrappingLabel;
 
 public final class QuickStartAction extends SmartAction {
-   private final JavEApplication application;
+   private final JaveApplication application;
 
-   public QuickStartAction(JavEApplication application) {
+   public QuickStartAction(JaveApplication application) {
       super(JaveMessages.QuickStart_ActionName, QuickStartIcons.ACTION_ICON);
       this.setToolTipText(JaveMessages.QuickStart_ActionToolTip);
       Ensure.ensureArgumentNotNull(application);

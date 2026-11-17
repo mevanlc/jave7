@@ -61,11 +61,11 @@ def verify_bundle(archive, metadata, target):
             with zipfile.ZipFile(archive) as bundle:
                 bundle.extractall(extracted)
 
-        image = extracted / ("JavE.app" if platform == "macos" else "JavE")
+        image = extracted / ("Jave.app" if platform == "macos" else "Jave")
         if platform == "macos":
             app = image / "Contents/app"
             runtime = image / "Contents/runtime/Contents/Home"
-            launcher = image / "Contents/MacOS/JavE"
+            launcher = image / "Contents/MacOS/Jave"
             with (image / "Contents/Info.plist").open("rb") as stream:
                 info = plistlib.load(stream)
             require(info["CFBundleShortVersionString"] == metadata["nativeVersion"], "Incorrect macOS version")
@@ -73,11 +73,11 @@ def verify_bundle(archive, metadata, target):
         elif platform == "linux":
             app = image / "lib/app"
             runtime = image / "lib/runtime"
-            launcher = image / "bin/JavE"
+            launcher = image / "bin/Jave"
         else:
             app = image / "app"
             runtime = image / "runtime"
-            launcher = image / "JavE.exe"
+            launcher = image / "Jave.exe"
 
         for name in ["clipart", "config", "examples", "ext", "fonts"]:
             folder = app / name
@@ -87,7 +87,7 @@ def verify_bundle(archive, metadata, target):
         require((runtime / "legal/java.base/LICENSE").is_file(), "Missing bundled runtime license")
         require(launcher.is_file(), "Missing native launcher")
         require(os.access(launcher, os.X_OK), "Native launcher lost executable permissions")
-        cfg = (app / "JavE.cfg").read_text(encoding="utf-8")
+        cfg = (app / "Jave.cfg").read_text(encoding="utf-8")
         require(f"-Djpackage.app-version={metadata['nativeVersion']}" in cfg, "Incorrect native launcher version")
 
         jar = app / f"jave7-{version}-app.jar"
@@ -108,7 +108,7 @@ def verify_bundle(archive, metadata, target):
             environment.pop(key, None)
         environment["PATH"] = str(empty)
         java = runtime / ("bin/java.exe" if platform == "windows" else "bin/java")
-        expected = f"JavE {version}"
+        expected = f"Jave {version}"
         java_result = run([str(java), "-XshowSettings:properties", "-Djava.awt.headless=true", "-cp", str(jar),
                            "de.jave.jave.Jave", "--version"], cwd=empty, env=environment, timeout=60)
         require(java_result.stdout.strip() == expected, "Packaged runtime reports incorrect version")
@@ -164,7 +164,7 @@ def publish(directory, metadata, tag, repository):
     require(release is None or release["draft"], "This release is already published; it will not be modified")
     if release is None:
         arguments = ["release", "create", tag, "--repo", repository, "--verify-tag", "--draft",
-                     "--title", f"JavE {metadata['version']}", "--generate-notes"]
+                     "--title", f"Jave {metadata['version']}", "--generate-notes"]
         if metadata["prerelease"]:
             arguments.extend(["--prerelease", "--latest=false"])
         gh(*arguments)

@@ -10,12 +10,12 @@ installation is required.
 
 | Platform | Bundle | Launch after extracting |
 | --- | --- | --- |
-| Windows x64 | `jave7-<version>-windows-x64.zip` | `JavE/JavE.exe` |
-| Linux x64 | `jave7-<version>-linux-x64.tar.gz` | `JavE/bin/JavE` |
-| macOS Apple Silicon | `jave7-<version>-macos-arm64.zip` | `JavE.app` |
-| macOS Intel | `jave7-<version>-macos-x64.zip` | `JavE.app` |
+| Windows x64 | `jave7-<version>-windows-x64.zip` | `Jave/Jave.exe` |
+| Linux x64 | `jave7-<version>-linux-x64.tar.gz` | `Jave/bin/Jave` |
+| macOS Apple Silicon | `jave7-<version>-macos-arm64.zip` | `Jave.app` |
+| macOS Intel | `jave7-<version>-macos-x64.zip` | `Jave.app` |
 
-Keep the extracted bundle together. On macOS, you can move `JavE.app` to
+Keep the extracted bundle together. On macOS, you can move `Jave.app` to
 `/Applications`. Linux requires a desktop session and the usual system libraries
 for Java's AWT/Swing; the bundle targets glibc-based distributions, not Alpine.
 The initial bundles are unsigned and macOS bundles are not notarized, so the OS
@@ -63,7 +63,7 @@ Use your host's target and archive name in the verification command. It extracts
 to a path containing spaces and checks the native launcher, bundled Java,
 version metadata, and application data from an unrelated working directory.
 `--version` prints the full application version without starting the GUI; for
-example, `JavE.app/Contents/MacOS/JavE --version`.
+example, `Jave.app/Contents/MacOS/Jave --version`.
 
 The version template in `src/main/java/de/jave/jave/version/` contains explicit
 `@JAVE_VERSION@` and `@JAVE_BUILD_DATE@` tokens. Gradle fills them in generated
@@ -80,7 +80,7 @@ To publish, merge or push the intended release to `main`, then create and push
 a tag on that commit:
 
 ```sh
-git tag -a v7.0.0 -m "JavE 7.0.0"
+git tag -a v7.0.0 -m "Jave 7.0.0"
 git push origin v7.0.0
 ```
 
@@ -99,6 +99,9 @@ token is needed: only the publication job receives write access through
 `GITHUB_TOKEN`.
 
 ## Editor changes
+
+Images and logo drawings awaiting manual review are listed in the
+[branding artwork inventory](docs/branding-artwork-inventory.md).
 
 The status bar shows the selection's bounding width and height in character cells
 while a selection is active. Double-click a row in **Unicode Picker** to insert

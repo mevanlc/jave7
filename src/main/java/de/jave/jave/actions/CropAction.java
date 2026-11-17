@@ -77,7 +77,7 @@ public class CropAction extends AbstractJaveAction {
          Insets insets = builder.getInsets();
          if (insets == null) {
             MessageDialogFactory.showMessageDialog(
-               parentComponent, new Message(JaveMessages.JavE, "The animation is empty.\nCropping can not be applied.", MessageType.INFORMATION)
+               parentComponent, new Message(JaveMessages.Jave, "The animation is empty.\nCropping can not be applied.", MessageType.INFORMATION)
             );
             return;
          }
@@ -99,7 +99,7 @@ public class CropAction extends AbstractJaveAction {
       } else {
          if (editor.getPlate().isEmpty()) {
             MessageDialogFactory.showMessageDialog(
-               parentComponent, new Message(JaveMessages.JavE, "The current document is empty.\nCropping can not be applied.", MessageType.INFORMATION)
+               parentComponent, new Message(JaveMessages.Jave, "The current document is empty.\nCropping can not be applied.", MessageType.INFORMATION)
             );
             return;
          }

@@ -1,5 +1,5 @@
 This folder contains the configuration files for the internal filter algorithm. The algorithm
-is being used by many tools in JavE, e.g. the generic line tool.
+is being used by many tools in Jave, e.g. the generic line tool.
 
 The most important configuration file is lineartcleaner.filter, since it contains filter
 rules for cleaning up line art images. It could be extended to create even better results.

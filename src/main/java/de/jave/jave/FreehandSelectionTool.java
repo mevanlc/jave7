@@ -16,7 +16,7 @@ import javax.swing.Icon;
 public class FreehandSelectionTool extends SelectionTool {
    private Polygon polygon;
 
-   public FreehandSelectionTool(JaveMainPanel plate, JavEApplication application, Filter filter) {
+   public FreehandSelectionTool(JaveMainPanel plate, JaveApplication application, Filter filter) {
       super(plate, application, filter);
    }
 

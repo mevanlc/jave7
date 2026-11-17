@@ -1,7 +1,7 @@
 package de.jave.jave.actions;
 
 import de.jave.jave.FormulaEditorDialogPage;
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.actions.enablestrategy.IJaveDocumentEditorActionEnabledStrategy;
 import de.jave.jave.actions.enablestrategy.TextAndAnimationEditorEnabledStrategy;
 import de.jave.jave.icon.JaveIcons;
@@ -16,9 +16,9 @@ import net.dizzy.commons.swing.dialog.userdialog.UserDialog;
 import net.dizzy.commons.swing.fontchooser.model.FontModel;
 
 public class MathematicalExpressionsAction extends AbstractJaveAction {
-   private final JavEApplication jave;
+   private final JaveApplication jave;
 
-   public MathematicalExpressionsAction(JavEApplication jave, JaveMainPanel mainPanel) {
+   public MathematicalExpressionsAction(JaveApplication jave, JaveMainPanel mainPanel) {
       super(mainPanel, "Mathematical Expressions", JaveIcons.FORMULA_ICON);
       this.jave = jave;
       this.setToolTipText("Show Mathematical Expressions Editor");

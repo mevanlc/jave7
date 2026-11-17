@@ -23,7 +23,7 @@ public class BrushTool extends AbstractPencilTool {
    private IInlineToolOptions inlineOptions;
    private static final int[][] DEFAULT_BRUSH = new int[][]{{' ', '_', '_', ' '}, {'d', '8', '8', 'b'}, {'Y', '8', '8', 'P'}, {' ', ' ', ' ', ' '}};
 
-   public BrushTool(JaveMainPanel plate, JavEApplication application, Filter filter) {
+   public BrushTool(JaveMainPanel plate, JaveApplication application, Filter filter) {
       super(plate, application, filter);
    }
 

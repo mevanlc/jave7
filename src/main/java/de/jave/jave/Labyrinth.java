@@ -37,7 +37,7 @@ public class Labyrinth extends JaveGame {
    protected static final String EXIT_3 = "============\n.exit..exit.\n....\\-/.....\n...J|a|VE...\n... /-\\.....\n============";
    protected static final String EXIT_4 = "========\n.e....e.\n...]a[..\n========";
 
-   public Labyrinth(JavEApplication jave) {
+   public Labyrinth(JaveApplication jave) {
       super(jave);
    }
 

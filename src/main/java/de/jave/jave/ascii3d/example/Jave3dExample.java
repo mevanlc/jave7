@@ -5,7 +5,7 @@ public class Jave3dExample implements I3dExample {
 
    @Override
    public String getTitle() {
-      return "JavE Logo";
+      return "Jave Logo";
    }
 
    @Override

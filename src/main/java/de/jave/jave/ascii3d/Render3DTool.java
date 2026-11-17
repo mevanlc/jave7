@@ -2,7 +2,7 @@ package de.jave.jave.ascii3d;
 
 import de.jave.jave.AbstractDialogTool;
 import de.jave.jave.AsciiGradientComboBoxFactory;
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.JaveGlobalRessources;
 import de.jave.jave.algorithm.gradient.AsciiGradientConfiguration;
 import de.jave.jave.ascii3d.example.Cube3dExample;
@@ -62,12 +62,12 @@ public class Render3DTool extends AbstractDialogTool implements ItemListener, Ke
    private static final int SOLID_DEPTH = 5;
    JTextArea taScript;
    private final Navigate3dModel model = new Navigate3dModel();
-   private final JavEApplication application;
+   private final JaveApplication application;
    private JLabel gradientLabel;
    private final AsciiGradientConfiguration gradientConfiguration;
    private final Filter filter;
 
-   public Render3DTool(JavEApplication application, JaveApplicationPreferences preferences, AsciiGradientConfiguration gradientConfiguration, Filter filter) {
+   public Render3DTool(JaveApplication application, JaveApplicationPreferences preferences, AsciiGradientConfiguration gradientConfiguration, Filter filter) {
       super(application, preferences);
       Ensure.ensureArgumentNotNull(application);
       Ensure.ensureArgumentNotNull(gradientConfiguration);

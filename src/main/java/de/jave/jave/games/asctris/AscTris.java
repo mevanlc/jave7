@@ -1,6 +1,6 @@
 package de.jave.jave.games.asctris;
 
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.JaveGame;
 import de.jave.jave.LineAlgorithm;
 import de.jave.jave.RectangleAlgorithm;
@@ -49,7 +49,7 @@ public class AscTris extends JaveGame implements Runnable {
    private final Filter filter;
    private CharacterPlate tmpBuffer;
 
-   public AscTris(JavEApplication application, Filter filter) {
+   public AscTris(JaveApplication application, Filter filter) {
       super(application);
       Ensure.ensureArgumentNotNull(filter);
       this.filter = filter;

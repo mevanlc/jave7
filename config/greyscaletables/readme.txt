@@ -1,2 +1,2 @@
-Configuration files for JavE greyscale tables
+Configuration files for Jave greyscale tables
 Do not modify or delete those files!

@@ -1,6 +1,6 @@
 package de.jave.jave.actions.quickstart;
 
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.JaveMessages;
 import javax.swing.Icon;
 
@@ -21,7 +21,7 @@ public final class TextEditorQuickStartItem implements IQuickStartItem {
    }
 
    @Override
-   public void perform(JavEApplication application) {
+   public void perform(JaveApplication application) {
       application.doNew();
    }
 }

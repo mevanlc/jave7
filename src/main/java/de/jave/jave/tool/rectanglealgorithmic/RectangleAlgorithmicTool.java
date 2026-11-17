@@ -1,7 +1,7 @@
 package de.jave.jave.tool.rectanglealgorithmic;
 
 import de.jave.gfx.GfxTools;
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.JaveGlobalRessources;
 import de.jave.jave.MergeCharactersPanel;
 import de.jave.jave.RectangleAlgorithm;
@@ -34,7 +34,7 @@ public class RectangleAlgorithmicTool extends Tool {
    private RectangleStylePanel rectangleStylePanel;
    private IInlineToolOptions inlineOptions;
 
-   public RectangleAlgorithmicTool(JaveMainPanel plate, JavEApplication application, Filter filter) {
+   public RectangleAlgorithmicTool(JaveMainPanel plate, JaveApplication application, Filter filter) {
       super(plate, application, filter);
    }
 

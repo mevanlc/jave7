@@ -5,7 +5,7 @@ No code written yet.
 **Implementation plan:** `devdocs/PLAN-CELL-MODEL-PHASE1.md`. Colour/styling and
 wide-glyph handling become `PLAN-CELL-MODEL-PHASE2.md` and `-PHASE3.md`
 (not yet written).
-**Question:** JavE's canvas cell is a Java `char`. To hold a glyph plus its
+**Question:** Jave's canvas cell is a Java `char`. To hold a glyph plus its
 Preceding-Glyph Assimilators (PGAs) as one inseparable editing unit, the cell
 type has to change. To what?
 
@@ -93,7 +93,7 @@ Unicode category. Measured across three real monospace fonts:
 **Consequence for scope.** Packing solves Group A completely. It solves Group B's
 *editing* problem (they stop being splittable) but not their *rendering* problem.
 Honest multi-column cells are a separate, larger feature — a grid where one cell
-can claim N columns — and are explicitly **out of scope** here. Note that JavE
+can claim N columns — and are explicitly **out of scope** here. Note that Jave
 already has this bug independent of PGAs: a bare CJK `中` measures 1.75 today.
 
 ---
@@ -132,7 +132,7 @@ of that same cramped space:
 |---|---:|---|
 | Lone surrogates `D800–DFFF` | 2,048 | Yes — never legal standalone content |
 | BMP noncharacters `FDD0–FDEF`, `FFFE/FFFF` | 34 | Yes |
-| PUA `E000–F8FF` | 6,400 | **No** — Nerd Font / Powerline glyphs live here and JavE users paste them |
+| PUA `E000–F8FF` | 6,400 | **No** — Nerd Font / Powerline glyphs live here and Jave users paste them |
 
 That is ~2,082 usable handles against an **unbounded** set of possible clusters
 (zalgo stacks arbitrarily deep). The RGI emoji set alone runs to several

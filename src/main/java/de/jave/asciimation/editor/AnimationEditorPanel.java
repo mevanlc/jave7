@@ -26,8 +26,8 @@ import net.dizzy.commons.swing.dialog.message.MessageDialogFactory;
 import net.dizzy.commons.swing.showhide.ShowHideContentPanel;
 
 public class AnimationEditorPanel {
-   public static final String JAVE_ANIMATION_EDITOR_TITLE = "JavE Animation Editor";
-   public static final String TITLE = "JavE Animation Editor";
+   public static final String JAVE_ANIMATION_EDITOR_TITLE = "Jave Animation Editor";
+   public static final String TITLE = "Jave Animation Editor";
    private final FileModel currentDirectoryModel;
    private final Plate plate;
    private PlateDocument document;

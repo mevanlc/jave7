@@ -1,6 +1,6 @@
 package de.jave.jave.actions.fileimport;
 
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.icon.JaveIcons;
 import de.jave.javeplayer.JaveAnimationFile;
 import java.awt.Component;
@@ -13,9 +13,9 @@ import net.dizzy.commons.swing.dialog.wizard.WizardDialog;
 
 public class JaveImportAction extends SmartAction {
    private final FileModel currentDirectoryModel;
-   private final JavEApplication jave;
+   private final JaveApplication jave;
 
-   public JaveImportAction(JavEApplication jave, FileModel currentDirectoryModel) {
+   public JaveImportAction(JaveApplication jave, FileModel currentDirectoryModel) {
       super("Import...", JaveIcons.IMPORT_ICON);
       Ensure.ensureArgumentNotNull(jave);
       this.jave = jave;

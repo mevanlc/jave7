@@ -20,7 +20,7 @@ import net.dizzy.commons.swing.dialog.progress.ProgressMonitorDialog;
 public class AnimationFileExporter {
    public static void performExport(Component parentComponent, final JaveAnimationFile animationFile, AnimationExportOptions options) {
       final IAnimationExporter exporter = options.getFormat().createExporter(options);
-      ProgressMonitorDialog dialog = new ProgressMonitorDialog(parentComponent, "JavE Animation Editor");
+      ProgressMonitorDialog dialog = new ProgressMonitorDialog(parentComponent, "Jave Animation Editor");
 
       try {
          dialog.run(new IInterruptableRunnableWithProgress() {
@@ -70,20 +70,20 @@ public class AnimationFileExporter {
             }
          });
          String message = "Export finished successfully.";
-         MessageDialogFactory.showMessageDialog(parentComponent, new Message("JavE Animation Editor", "Export finished successfully.", MessageType.INFORMATION));
+         MessageDialogFactory.showMessageDialog(parentComponent, new Message("Jave Animation Editor", "Export finished successfully.", MessageType.INFORMATION));
       } catch (InterruptedException var6) {
          exporter.rollBack();
-         MessageDialogFactory.showMessageDialog(parentComponent, new Message("JavE Animation Editor", "Export aborted.", MessageType.WARNING));
+         MessageDialogFactory.showMessageDialog(parentComponent, new Message("Jave Animation Editor", "Export aborted.", MessageType.WARNING));
       } catch (InvocationTargetException var7) {
          exporter.rollBack();
          if (var7.getCause() instanceof OutOfMemoryError) {
             MessageDialogFactory.showMessageDialog(
-               parentComponent, new Message("JavE Animation Editor", "Error exporting file: The result file is to big.", var7.getCause())
+               parentComponent, new Message("Jave Animation Editor", "Error exporting file: The result file is to big.", var7.getCause())
             );
          } else if (var7.getCause() instanceof MessageException) {
             MessageDialogFactory.showMessageDialog(parentComponent, ((MessageException)var7.getCause()).getMessageObject());
          } else {
-            MessageDialogFactory.showMessageDialog(parentComponent, new Message("JavE Animation Editor", "Error exporting file.", var7.getCause()));
+            MessageDialogFactory.showMessageDialog(parentComponent, new Message("Jave Animation Editor", "Error exporting file.", var7.getCause()));
          }
       }
    }

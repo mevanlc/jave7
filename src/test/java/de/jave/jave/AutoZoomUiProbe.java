@@ -32,7 +32,7 @@ import javax.swing.UIManager;
 
 /** Explicit GUI check; all preferences, documents and recovery files are isolated. */
 public final class AutoZoomUiProbe {
-   private static JavEApplication app;
+   private static JaveApplication app;
    private static Plate plate;
    private static JFrame frame;
    private static Robot robot;
@@ -47,7 +47,7 @@ public final class AutoZoomUiProbe {
                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                var init = Class.forName("de.jave.jave.application.startup.JaveStartup").getDeclaredMethod("initConfigFiles");
                init.setAccessible(true);
-               app = new JavEApplication((ConfigurationList)init.invoke(null));
+               app = new JaveApplication((ConfigurationList)init.invoke(null));
                app.startupMenuBar();
                app.doNew();
                plate = app.getMainPanel().getPlate();

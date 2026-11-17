@@ -10,7 +10,7 @@ import de.jave.jave.EllipseToolGeneric;
 import de.jave.jave.EraserTool;
 import de.jave.jave.FreehandSelectionTool;
 import de.jave.jave.FreehandToolGeneric;
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.JaveMessages;
 import de.jave.jave.LineToolGeneric;
 import de.jave.jave.MoveLayerTool;
@@ -80,7 +80,7 @@ public class ToolBar {
    public static final int MOVE_LAYER_TOOL_INDEX = 21;
    public static final int DEFAULT_TOOL_INDEX = FREEHAND_TOOL_INDEX;
    public static final int TOOL_COUNT = 22;
-   private final JavEApplication application;
+   private final JaveApplication application;
    private final SmartButtonGroup buttonGroup = new SmartButtonGroup();
    private Tool[] tools;
    private int[] buttonIndexToToolIndex;
@@ -90,7 +90,7 @@ public class ToolBar {
    private final ConfigurationList configurationList;
 
    public ToolBar(
-      final JavEApplication application,
+      final JaveApplication application,
       JaveApplicationPreferences preferences,
       ConfigurationList configurationList,
       PlatePreferences plateViewOptions,

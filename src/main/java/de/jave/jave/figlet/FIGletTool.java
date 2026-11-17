@@ -6,7 +6,7 @@ import de.jave.figlet.engine.primitives.FigFont;
 import de.jave.figlet.engine.processing.FigletJobFactory;
 import de.jave.figlet.engine.processing.IFigletJob;
 import de.jave.gfx.GfxTools;
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.JaveGlobalRessources;
 import de.jave.jave.Tool;
 import de.jave.jave.filter.Filter;
@@ -42,7 +42,7 @@ public class FIGletTool extends Tool implements IResultConsumer {
    private FigFontModel fontModel;
    private FigletToolOptionsPanel panel;
 
-   public FIGletTool(JaveMainPanel plate, JavEApplication application, IFigDriver figDriver, Filter filter) {
+   public FIGletTool(JaveMainPanel plate, JaveApplication application, IFigDriver figDriver, Filter filter) {
       super(plate, application, filter);
       Ensure.ensureArgumentNotNull(figDriver);
       this.figDriver = figDriver;

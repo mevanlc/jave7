@@ -2,7 +2,7 @@ package de.jave.jave.tool.fill;
 
 import de.jave.ascii.plate.CharacterMetrics;
 import de.jave.gfx.GfxTools;
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.JaveMessages;
 import de.jave.jave.Tool;
 import de.jave.jave.algorithm.fill.FillAlgorithm;
@@ -38,7 +38,7 @@ public class FillTool extends Tool {
    private final AsciiGradientConfiguration gradientConfiguration;
    private IInlineToolOptions inlineOptions;
 
-   public FillTool(JaveMainPanel plate, JavEApplication application, PatternList patternList, AsciiGradientConfiguration gradientConfiguration, Filter filter) {
+   public FillTool(JaveMainPanel plate, JaveApplication application, PatternList patternList, AsciiGradientConfiguration gradientConfiguration, Filter filter) {
       super(plate, application, filter);
       Ensure.ensureArgumentNotNull(application);
       Ensure.ensureArgumentNotNull(patternList);

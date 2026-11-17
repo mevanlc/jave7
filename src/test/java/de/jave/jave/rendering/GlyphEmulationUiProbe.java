@@ -1,6 +1,6 @@
 package de.jave.jave.rendering;
 
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.Plate;
 import de.jave.jave.actions.preferences.IJavePreferencesPanel;
 import de.jave.jave.application.startup.ConfigurationList;
@@ -36,7 +36,7 @@ import javax.swing.UIManager;
 /** Explicit native GUI check, using isolated preferences, documents and recovery files. */
 public final class GlyphEmulationUiProbe {
    private static final Path OUTPUT = Path.of(System.getProperty("jave.probeOutput"));
-   private static JavEApplication app;
+   private static JaveApplication app;
    private static Plate plate;
    private static Robot robot;
 
@@ -50,7 +50,7 @@ public final class GlyphEmulationUiProbe {
                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                var init = Class.forName("de.jave.jave.application.startup.JaveStartup").getDeclaredMethod("initConfigFiles");
                init.setAccessible(true);
-               app = new JavEApplication((ConfigurationList)init.invoke(null));
+               app = new JaveApplication((ConfigurationList)init.invoke(null));
                app.startupMenuBar();
                app.getApplicationPreferences().getDisplayFontModel().setFont(new Font(Font.MONOSPACED, Font.PLAIN, 24));
                app.doNew();

@@ -27,7 +27,7 @@ public class EllipseToolGeneric extends GenericTool {
    private Point point2;
    private JCheckBox cbFill;
 
-   public EllipseToolGeneric(JaveMainPanel mainPanel, JavEApplication application, Filter filter) {
+   public EllipseToolGeneric(JaveMainPanel mainPanel, JaveApplication application, Filter filter) {
       super(mainPanel, application, filter);
    }
 

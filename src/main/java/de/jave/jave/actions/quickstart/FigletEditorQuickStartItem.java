@@ -1,6 +1,6 @@
 package de.jave.jave.actions.quickstart;
 
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.JaveMessages;
 import de.jave.jave.actions.ShowFigletEditorAction;
 import javax.swing.Icon;
@@ -22,7 +22,7 @@ public final class FigletEditorQuickStartItem implements IQuickStartItem {
    }
 
    @Override
-   public void perform(JavEApplication application) {
+   public void perform(JaveApplication application) {
       application.doNew();
       ShowFigletEditorAction figletAction = application.getActions().getFigletAction();
       figletAction.showFigletEditor(application.getFrame());

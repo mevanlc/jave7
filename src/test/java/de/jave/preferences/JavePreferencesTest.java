@@ -16,7 +16,7 @@ public class JavePreferencesTest {
    @Test
    public void glyphEmulationDefaultsToJaveAndSavesOnlyWhenDisplayPreferencesAreAccepted() throws Exception {
       Preferences preferencesRoot = Preferences.userRoot();
-      Preferences node = preferencesRoot.node("JavE-test-" + UUID.randomUUID());
+      Preferences node = preferencesRoot.node("Jave-test-" + UUID.randomUUID());
       try {
          SwingUtilities.invokeAndWait(() -> {
             PlatePreferences preferences = new PlatePreferences(new JavePreferences(node));
@@ -57,7 +57,7 @@ public class JavePreferencesTest {
    @Test
    public void layersPanelVisibilityIsRestoredByANewPreferencesInstance() throws Exception {
       Preferences preferencesRoot = Preferences.userRoot();
-      Preferences preferencesNode = preferencesRoot.node("JavE-test-" + UUID.randomUUID());
+      Preferences preferencesNode = preferencesRoot.node("Jave-test-" + UUID.randomUUID());
 
       try {
          JavePreferences preferences = new JavePreferences(preferencesNode);

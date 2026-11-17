@@ -152,7 +152,7 @@ public class SavePerformer {
 
          @Override
          public String getSaveDialogTitle() {
-            return "Save JavE Layered Document";
+            return "Save Jave Layered Document";
          }
 
          @Override
@@ -215,7 +215,7 @@ public class SavePerformer {
             listener.savePerformed();
             return true;
          } catch (IOException var8) {
-            MessageDialogFactory.showMessageDialog(parentComponent, new Message(JaveMessages.JavE, "Error saving file.", MessageType.ERROR, var8));
+            MessageDialogFactory.showMessageDialog(parentComponent, new Message(JaveMessages.Jave, "Error saving file.", MessageType.ERROR, var8));
             return false;
          }
       }
@@ -234,7 +234,7 @@ public class SavePerformer {
 
    private static boolean showLayeredSaveReminder(Component parentComponent) {
       return MessageDialogUtilities.showOkCancelDialog(
-         parentComponent, new Message("JavE Layered Document", LAYERED_SAVE_REMINDER, MessageType.WARNING)
+         parentComponent, new Message("Jave Layered Document", LAYERED_SAVE_REMINDER, MessageType.WARNING)
       );
    }
 
@@ -282,7 +282,7 @@ public class SavePerformer {
             listener.savePerformed();
             return true;
          } catch (Exception var8) {
-            MessageDialogFactory.showMessageDialog(parentComponent, new Message("JavE Animation Editor", "Error saving file", var8));
+            MessageDialogFactory.showMessageDialog(parentComponent, new Message("Jave Animation Editor", "Error saving file", var8));
             return false;
          }
       }
@@ -471,7 +471,7 @@ public class SavePerformer {
             + " has been modified.\n"
             + "Do you want to save changes?";
          YesNoCancel answer = MessageDialogUtilities.showSaveDiscardCancelDialog(
-            parentComponent, new Message("JavE Animation Editor", question, MessageType.WARNING)
+            parentComponent, new Message("Jave Animation Editor", question, MessageType.WARNING)
          );
          if (answer == YesNoCancel.NO) {
             editor.getModel().setModified(false);
@@ -498,7 +498,7 @@ public class SavePerformer {
       PlateDocument doc = editor.getPlate().getDocument();
       String question = "Document " + DocumentEditorTitleFactory.createShortEditorTitle(editor) + " has been modified.\n" + "Do you want to save changes?";
       YesNoCancel result = MessageDialogUtilities.showSaveDiscardCancelDialog(
-         parentComponent, new Message(JaveMessages.JavE, question, MessageType.WARNING)
+         parentComponent, new Message(JaveMessages.Jave, question, MessageType.WARNING)
       );
       if (result == YesNoCancel.CANCEL) {
          return false;

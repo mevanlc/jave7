@@ -1,7 +1,7 @@
 package de.jave.jave.ascii3d;
 
 import de.jave.asciimation.export.FileTypeIcons;
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.filter.Filter;
 import de.jave.jave.pixelplate.PixelPlate;
 import de.jave.jave.pixelplate.PixelPlateMode;
@@ -24,11 +24,11 @@ import net.dizzy.commons.swing.dialog.progress.ProgressMonitorDialog;
 
 final class Animate3dAction extends SmartAction {
    private final Render3DTool render3DTool;
-   private final JavEApplication application;
+   private final JaveApplication application;
    private final Navigate3dModel model;
    private final Filter filter;
 
-   public Animate3dAction(Render3DTool render3DTool, JavEApplication application, Navigate3dModel model, Filter filter) {
+   public Animate3dAction(Render3DTool render3DTool, JaveApplication application, Navigate3dModel model, Filter filter) {
       super("Convert to Animation", FileTypeIcons.ANIMATION_ICON);
       Ensure.ensureArgumentNotNull(model);
       Ensure.ensureArgumentNotNull(render3DTool);

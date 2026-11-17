@@ -34,7 +34,7 @@ public class ViViewerApplication {
       IDialogPage page = new AbstractDialogPage("Experimental VT animation player") {
          @Override
          public String getTitle() {
-            return "JavE VT Player";
+            return "Jave VT Player";
          }
 
          @Override

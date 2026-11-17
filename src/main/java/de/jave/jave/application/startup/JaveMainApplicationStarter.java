@@ -18,7 +18,7 @@ import net.dizzy.commons.swing.dialog.userdialog.UserDialog;
 
 public class JaveMainApplicationStarter {
    public static void startJaveApplication(final String[] arguments) {
-      String applicationName = MessageFormat.format("JavE {0}", JaveVersion.getFullVersionNumber());
+      String applicationName = MessageFormat.format("Jave {0}", JaveVersion.getFullVersionNumber());
       MacOsXInitializer.setApplicationNameProperty(applicationName);
       CentralExceptionHandling.setHandler(new DefaultExceptionHandler());
       SwingUtilities.invokeLater(new Runnable() {

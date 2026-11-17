@@ -4,7 +4,7 @@ import de.jave.core.io.FileSelectionModel;
 import de.jave.gui.dialog.JDialogFactory;
 import de.jave.gui.io.FileListPanel;
 import de.jave.jave.AsciiToThumbnailConverter;
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.JaveMessages;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -35,10 +35,10 @@ import net.dizzy.commons.swing.filechooser.view.FolderSelectionPanel;
 import net.dizzy.commons.swing.layout.util.ButtonPanelBuilder;
 
 public class AsciiThumbnailBrowser {
-   private static final String TITLE = "JavE Thumbnail Browser";
+   private static final String TITLE = "Jave Thumbnail Browser";
    private static final int DEFAULT_WIDTH = 600;
    private static final int DEFAULT_HEIGHT = 400;
-   private final JavEApplication jave;
+   private final JaveApplication jave;
    private final JDialog dialog;
    private final FileModel folderModel;
    private final FileListPanel fileListPanel;
@@ -47,8 +47,8 @@ public class AsciiThumbnailBrowser {
    private final FileSystemView fileSystemView;
    private final FileSelectionModel selectionModel = new FileSelectionModel();
 
-   public AsciiThumbnailBrowser(Component parent, final JavEApplication jave, FileModel currentFolderModel) {
-      this.dialog = JDialogFactory.createJDialog(parent, "JavE Thumbnail Browser", false);
+   public AsciiThumbnailBrowser(Component parent, final JaveApplication jave, FileModel currentFolderModel) {
+      this.dialog = JDialogFactory.createJDialog(parent, "Jave Thumbnail Browser", false);
       this.fileSystemView = FileSystemView.getFileSystemView();
       this.statusTextField = new JTextField();
       this.statusTextField.setEditable(false);
@@ -140,7 +140,7 @@ public class AsciiThumbnailBrowser {
 
    private void setDirectory(File dir) {
       if (dir != null) {
-         this.dialog.setTitle("JavE Thumbnail Browser - " + dir.getAbsolutePath());
+         this.dialog.setTitle("Jave Thumbnail Browser - " + dir.getAbsolutePath());
          final File[] files = dir.listFiles(new FileFilter() {
             @Override
             public boolean accept(File file) {
@@ -148,7 +148,7 @@ public class AsciiThumbnailBrowser {
             }
          });
          if (files != null) {
-            ProgressMonitorDialog progressMonitorDialog = new ProgressMonitorDialog(this.dialog, JaveMessages.JavE);
+            ProgressMonitorDialog progressMonitorDialog = new ProgressMonitorDialog(this.dialog, JaveMessages.Jave);
 
             try {
                progressMonitorDialog.run(

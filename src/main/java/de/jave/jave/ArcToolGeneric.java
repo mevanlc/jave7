@@ -22,7 +22,7 @@ public class ArcToolGeneric extends GenericTool {
    private Point point2;
    private Point point3;
 
-   public ArcToolGeneric(JaveMainPanel plate, JavEApplication application, Filter filter) {
+   public ArcToolGeneric(JaveMainPanel plate, JaveApplication application, Filter filter) {
       super(plate, application, filter);
    }
 

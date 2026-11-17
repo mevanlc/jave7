@@ -41,7 +41,7 @@ public class FractalTool extends AbstractDialogTool implements ItemListener {
    private SpinnerNumberModel depthModel;
    private final Filter filter;
 
-   public FractalTool(JavEApplication asciiPainter, JaveApplicationPreferences preferences, Filter filter) {
+   public FractalTool(JaveApplication asciiPainter, JaveApplicationPreferences preferences, Filter filter) {
       super(asciiPainter, preferences);
       Ensure.ensureArgumentNotNull(filter);
       this.filter = filter;

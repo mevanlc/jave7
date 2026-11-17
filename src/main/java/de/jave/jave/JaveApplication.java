@@ -85,7 +85,7 @@ import net.dizzy.commons.swing.dialog.message.YesNoCancel;
 import net.dizzy.commons.swing.mousecursor.CursorId;
 import net.dizzy.commons.swing.mousecursor.CursorProvider;
 
-public class JavEApplication implements RecentFileOpenListener, IToolManager {
+public class JaveApplication implements RecentFileOpenListener, IToolManager {
    private final JaveMainPanel mainPanel;
    private final DocumentManager documentManager;
    private final ToolBar toolBar;
@@ -109,7 +109,7 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
    private final JaveStatusBar statusBar;
    private final PixelPlateModel pixelPlateModel = new PixelPlateModel();
 
-   public JavEApplication(ConfigurationList configurationList) {
+   public JaveApplication(ConfigurationList configurationList) {
       Ensure.ensureArgumentNotNull(configurationList);
       this.configurationList = configurationList;
       CharSetsConfiguration charSetsConfiguration = configurationList.getRequired(CharSetsConfiguration.class);
@@ -131,7 +131,7 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
       this.mainPanel.getActiveEditorModel().addChangeListener(new IChangeListener() {
          @Override
          public void stateChanged() {
-            JavEApplication.this.updateFrameTitle();
+            JaveApplication.this.updateFrameTitle();
          }
       });
       this.actions = new JaveActions(
@@ -172,23 +172,23 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
       this.watermarkVisibilityModel.addChangeListener(new IChangeListener() {
          @Override
          public void stateChanged() {
-            boolean v = JavEApplication.this.watermarkVisibilityModel.getValue();
-            ((IWatermarkPainter) JavEApplication.this.mainPanel.getToolManager().getTool(ToolBar.WATERMARK_TOOL_INDEX)).setEnabled(v);
-            JavEApplication.this.mainPanel.repaint();
+            boolean v = JaveApplication.this.watermarkVisibilityModel.getValue();
+            ((IWatermarkPainter) JaveApplication.this.mainPanel.getToolManager().getTool(ToolBar.WATERMARK_TOOL_INDEX)).setEnabled(v);
+            JaveApplication.this.mainPanel.repaint();
          }
       });
       this.auxLinesVisibilityModel.addChangeListener(new IChangeListener() {
          @Override
          public void stateChanged() {
-            boolean v = JavEApplication.this.auxLinesVisibilityModel.getValue();
-            ((IWatermarkPainter) JavEApplication.this.mainPanel.getToolManager().getTool(ToolBar.AUXILIARY_LINES_TOOL_INDEX)).setEnabled(v);
-            JavEApplication.this.mainPanel.repaint();
+            boolean v = JaveApplication.this.auxLinesVisibilityModel.getValue();
+            ((IWatermarkPainter) JaveApplication.this.mainPanel.getToolManager().getTool(ToolBar.AUXILIARY_LINES_TOOL_INDEX)).setEnabled(v);
+            JaveApplication.this.mainPanel.repaint();
          }
       });
       this.applicationPreferences.getToolsPaletteVisibleModel().addChangeListener(new IChangeListener() {
          @Override
          public void stateChanged() {
-            JavEApplication.this.updateToolsPaletteVisibility();
+            JaveApplication.this.updateToolsPaletteVisibility();
          }
       });
       this.toolSelectorBarOptionsHost.setTool(this.mainPanel.getCurrentTool());
@@ -225,19 +225,19 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
       am.put("jave.tool.selection", new javax.swing.AbstractAction() {
          @Override
          public void actionPerformed(java.awt.event.ActionEvent e) {
-            JavEApplication.this.setTool(ToolBar.SELECTION_TOOL_INDEX);
+            JaveApplication.this.setTool(ToolBar.SELECTION_TOOL_INDEX);
          }
       });
       am.put("jave.tool.freehandSelection", new javax.swing.AbstractAction() {
          @Override
          public void actionPerformed(java.awt.event.ActionEvent e) {
-            JavEApplication.this.setTool(ToolBar.FREEHAND_SELECTION_TOOL_INDEX);
+            JaveApplication.this.setTool(ToolBar.FREEHAND_SELECTION_TOOL_INDEX);
          }
       });
       am.put("jave.tool.text", new javax.swing.AbstractAction() {
          @Override
          public void actionPerformed(java.awt.event.ActionEvent e) {
-            JavEApplication.this.setTool(ToolBar.TEXT_TOOL_INDEX);
+            JaveApplication.this.setTool(ToolBar.TEXT_TOOL_INDEX);
          }
       });
    }
@@ -353,7 +353,7 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
       this.frame.addWindowListener(new WindowAdapter() {
          @Override
          public void windowClosing(WindowEvent e) {
-            JavEApplication.this.performExit(JavEApplication.this.frame);
+            JaveApplication.this.performExit(JaveApplication.this.frame);
          }
       });
       this.installSystemQuitHandler();
@@ -379,7 +379,7 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
          return;
       }
       desktop.setQuitHandler((event, response) -> {
-         boolean exited = JavEApplication.this.performExit(JavEApplication.this.frame);
+         boolean exited = JaveApplication.this.performExit(JaveApplication.this.frame);
          if (!exited) {
             response.cancelQuit();
          }
@@ -396,10 +396,10 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
    private void installPreferencesShutdownHook() {
       Runtime.getRuntime().addShutdownHook(new Thread(() -> {
          try {
-            JavEApplication.this.javePreferences.flush();
-            JavEApplication.this.applicationPreferences.flush();
-            JavEApplication.this.platePreferences.flush();
-            JavEApplication.this.applicationPreferences.getRecentFileList().flush();
+            JaveApplication.this.javePreferences.flush();
+            JaveApplication.this.applicationPreferences.flush();
+            JaveApplication.this.platePreferences.flush();
+            JaveApplication.this.applicationPreferences.getRecentFileList().flush();
          } catch (Throwable ignored) {
          }
       }, "jave-prefs-flush"));
@@ -467,7 +467,7 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
             ((BrushTool)this.mainPanel.getCurrentTool()).setBrush(cp);
          } else {
             MessageDialogFactory.showMessageDialog(
-               this.frame, new Message(JaveMessages.JavE, JaveMessages.Tool_Brush_SelectionTooBigText, MessageType.INFORMATION)
+               this.frame, new Message(JaveMessages.Jave, JaveMessages.Tool_Brush_SelectionTooBigText, MessageType.INFORMATION)
             );
          }
       }
@@ -830,8 +830,8 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
       return new IDocumentSaveListener() {
          @Override
          public void savePerformed() {
-            JavEApplication.this.menuBar.setRevertEnabled(JavEApplication.this.mainPanel.getDocument().hasFile());
-            JavEApplication.this.updateFrameTitle();
+            JaveApplication.this.menuBar.setRevertEnabled(JaveApplication.this.mainPanel.getDocument().hasFile());
+            JaveApplication.this.updateFrameTitle();
          }
       };
    }
@@ -848,7 +848,7 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
    public void doRevert(Component parentComponent) {
       PlateDocument doc = this.documentManager.getCurrentDocument();
       boolean ok = MessageDialogUtilities.showOkCancelDialog(
-         parentComponent, new Message(JaveMessages.JavE, JaveMessages.Action_Revert_LoseAllChanges_QuestionText, MessageType.QUESTION)
+         parentComponent, new Message(JaveMessages.Jave, JaveMessages.Action_Revert_LoseAllChanges_QuestionText, MessageType.QUESTION)
       );
       if (ok) {
          doc.setModified(false);
@@ -864,7 +864,7 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
          new IFileChooserConfiguration() {
             @Override
             public FileModel getCurrentDirectoryModel() {
-               return JavEApplication.this.documentManager.getCurrentDirectoryModel();
+               return JaveApplication.this.documentManager.getCurrentDirectoryModel();
             }
 
             @Override
@@ -928,7 +928,7 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
          OpenImageFilePerformer.performOpenImageFile(parentComponent, file, this, this.actions, this.mainPanel.getToolManager());
       } else if (this.documentManager.isAlreadyOpen(file)) {
          MessageDialogFactory.showMessageDialog(
-            parentComponent, new Message(JaveMessages.JavE, JaveMessages.Action_Open_SelectedFileAlreadyOpen_MessageText, MessageType.INFORMATION)
+            parentComponent, new Message(JaveMessages.Jave, JaveMessages.Action_Open_SelectedFileAlreadyOpen_MessageText, MessageType.INFORMATION)
          );
       } else {
          try {
@@ -951,11 +951,11 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
          } catch (IOException var6) {
             MessageDialogFactory.showMessageDialog(
                parentComponent,
-               new Message(JaveMessages.JavE, NLS.bind(JaveMessages.Action_Open_ErrorLoadingFile_MessageText, var6.toString()), MessageType.ERROR, var6)
+               new Message(JaveMessages.Jave, NLS.bind(JaveMessages.Action_Open_ErrorLoadingFile_MessageText, var6.toString()), MessageType.ERROR, var6)
             );
          } catch (OutOfMemoryError var7) {
             MessageDialogFactory.showMessageDialog(
-               parentComponent, new Message(JaveMessages.JavE, JaveMessages.Action_Open_ErrorLoadingFile_TooBig_MessageText, MessageType.ERROR)
+               parentComponent, new Message(JaveMessages.Jave, JaveMessages.Action_Open_ErrorLoadingFile_TooBig_MessageText, MessageType.ERROR)
             );
          }
       }
@@ -1235,22 +1235,22 @@ public class JavEApplication implements RecentFileOpenListener, IToolManager {
          @Override
          public void performShowPreferencesDialog() {
             JavePreferencesAction.performShowPreferencesDialog(
-               JavEApplication.this.frame,
-               JavEApplication.this.javePreferences,
-               JavEApplication.this.applicationPreferences,
-               JavEApplication.this.platePreferences,
-               JavEApplication.this.mainPanel.getToolManager()
+               JaveApplication.this.frame,
+               JaveApplication.this.javePreferences,
+               JaveApplication.this.applicationPreferences,
+               JaveApplication.this.platePreferences,
+               JaveApplication.this.mainPanel.getToolManager()
             );
          }
 
          @Override
          public boolean performShowExitDialog() {
-            return JavEApplication.this.performExit(JavEApplication.this.frame);
+            return JaveApplication.this.performExit(JaveApplication.this.frame);
          }
 
          @Override
          public void performShowAboutDialog() {
-            JaveAboutDialog.showAboutDialog(JavEApplication.this.frame);
+            JaveAboutDialog.showAboutDialog(JaveApplication.this.frame);
          }
       };
    }

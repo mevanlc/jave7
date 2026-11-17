@@ -18,7 +18,7 @@ public class CrashNowAction extends SmartAction {
    @Override
    protected void execute(Component parentComponent) {
       MessageUserDialogConfiguration configuration = new MessageUserDialogConfiguration(
-         new Message(JaveMessages.JavE, "Crashing is not fun!!\n\nDo you really want the program to crash now?", MessageType.WARNING),
+         new Message(JaveMessages.Jave, "Crashing is not fun!!\n\nDo you really want the program to crash now?", MessageType.WARNING),
          DialogButtonConfigurationFactory.createYesCancel()
       );
       UserDialog userDialog = new UserDialog(parentComponent, configuration);
@@ -26,7 +26,7 @@ public class CrashNowAction extends SmartAction {
       if (!result.isCanceled()) {
          System.err.println("===============================================");
          System.err.println("By your personal demand:");
-         System.err.println("JavE is now crashing w/o doing all the cleanup!");
+         System.err.println("Jave is now crashing w/o doing all the cleanup!");
          System.err.println(" - Good bye.");
          System.err.println("===============================================");
          System.exit(1);

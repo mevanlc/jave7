@@ -260,7 +260,7 @@ public class MoveLayerToolTest {
       });
    }
 
-   private static MoveLayerTool current(JavEApplication app) {
+   private static MoveLayerTool current(JaveApplication app) {
       return (MoveLayerTool)app.getMainPanel().getToolManager().getTool(ToolBar.MOVE_LAYER_TOOL_INDEX);
    }
 
@@ -286,13 +286,13 @@ public class MoveLayerToolTest {
       plate.keyPressed(new KeyEvent(plate, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), modifiers, code, KeyEvent.CHAR_UNDEFINED));
    }
 
-   private static void withApplication(Consumer<JavEApplication> test) throws Exception {
+   private static void withApplication(Consumer<JaveApplication> test) throws Exception {
       SwingUtilities.invokeAndWait(() -> {
-         JavEApplication app = null;
+         JaveApplication app = null;
          try {
             var init = Class.forName("de.jave.jave.application.startup.JaveStartup").getDeclaredMethod("initConfigFiles");
             init.setAccessible(true);
-            app = new JavEApplication((ConfigurationList)init.invoke(null));
+            app = new JaveApplication((ConfigurationList)init.invoke(null));
             app.startupMenuBar();
             app.doNew();
             Plate plate = app.getMainPanel().getPlate();

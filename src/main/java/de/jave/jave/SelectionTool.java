@@ -77,19 +77,19 @@ public class SelectionTool extends Tool {
    private final SelectionClickSequence selectionClickSequence;
    private final boolean selectionClickSequenceEnabled;
 
-   public SelectionTool(JaveMainPanel mainPanel, JavEApplication application, Filter filter) {
+   public SelectionTool(JaveMainPanel mainPanel, JaveApplication application, Filter filter) {
       this(mainPanel, application, new SelectionClickSequence(), filter, false);
    }
 
    public SelectionTool(
-      JaveMainPanel mainPanel, JavEApplication application, SelectionClickSequence selectionClickSequence, Filter filter
+      JaveMainPanel mainPanel, JaveApplication application, SelectionClickSequence selectionClickSequence, Filter filter
    ) {
       this(mainPanel, application, selectionClickSequence, filter, true);
    }
 
    private SelectionTool(
       JaveMainPanel mainPanel,
-      JavEApplication application,
+      JaveApplication application,
       SelectionClickSequence selectionClickSequence,
       Filter filter,
       boolean selectionClickSequenceEnabled

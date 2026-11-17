@@ -42,11 +42,11 @@ public class TextboxDialog {
    private Point location;
    private final HorizontalAlignmentPanel horizontalAlignmentPanel;
 
-   public TextboxDialog(JavEApplication parent) {
+   public TextboxDialog(JaveApplication parent) {
       this(parent, "Your text here", new Point(0, 0));
    }
 
-   public TextboxDialog(final JavEApplication parent, String content, Point location) {
+   public TextboxDialog(final JaveApplication parent, String content, Point location) {
       this.location = location;
       this.dialog = JDialogFactory.createJDialog(parent.getFrame(), "Textbox Editor", true);
       this.dialog.addWindowListener(new WindowAdapter() {
@@ -187,7 +187,7 @@ public class TextboxDialog {
       return this.dialog;
    }
 
-   private void performOk(JavEApplication parent) {
+   private void performOk(JaveApplication parent) {
       parent.pasteAsNewSelection(this.getResult(), this.location);
       this.setVisible(false);
    }

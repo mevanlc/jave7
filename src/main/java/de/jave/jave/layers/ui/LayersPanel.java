@@ -1,7 +1,7 @@
 package de.jave.jave.layers.ui;
 
 import de.jave.jave.DocumentListener;
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.PlateDocument;
 import de.jave.jave.layers.Layer;
 import java.awt.BorderLayout;
@@ -30,7 +30,7 @@ public final class LayersPanel {
    private static final String LAYER_HIDDEN_GLYPH = "○";
    private static final String LAYER_OPAQUE_GLYPH = "■";
    private static final String LAYER_TRANSPARENT_GLYPH = "□";
-   private final JavEApplication application;
+   private final JaveApplication application;
    private final PlateDocument document;
    private final JPanel content;
    private final JPanel stackPanel;
@@ -62,7 +62,7 @@ public final class LayersPanel {
       }
    };
 
-   public LayersPanel(JavEApplication application, PlateDocument document) {
+   public LayersPanel(JaveApplication application, PlateDocument document) {
       this.application = application;
       this.document = document;
       this.content = new JPanel(new BorderLayout());

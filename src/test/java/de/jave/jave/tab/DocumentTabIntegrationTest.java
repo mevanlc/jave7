@@ -5,7 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.PlateDocument;
 import de.jave.jave.application.startup.ConfigurationList;
 import de.jave.jave.menu.ProbePreferencesFactory;
@@ -35,13 +35,13 @@ public class DocumentTabIntegrationTest {
       } catch (Exception ignored) {}
    }
 
-   private static JavEApplication createApplication() throws Exception {
-      AtomicReference<JavEApplication> ref = new AtomicReference<>();
+   private static JaveApplication createApplication() throws Exception {
+      AtomicReference<JaveApplication> ref = new AtomicReference<>();
       SwingUtilities.invokeAndWait(() -> {
          try {
             var init = Class.forName("de.jave.jave.application.startup.JaveStartup").getDeclaredMethod("initConfigFiles");
             init.setAccessible(true);
-            JavEApplication app = new JavEApplication((ConfigurationList) init.invoke(null));
+            JaveApplication app = new JaveApplication((ConfigurationList) init.invoke(null));
             app.startupMenuBar();
             ref.set(app);
          } catch (Exception e) {
@@ -70,7 +70,7 @@ public class DocumentTabIntegrationTest {
 
    @Test
    public void clickingTabSyncsDocumentManagerAndMainPanel() throws Exception {
-      JavEApplication app = createApplication();
+      JaveApplication app = createApplication();
       SwingUtilities.invokeAndWait(() -> {
          try {
             app.doNew(); // Doc 1 (index 0)
@@ -122,7 +122,7 @@ public class DocumentTabIntegrationTest {
 
    @Test
    public void closingTabsMaintainsSyncAndCorrectSelection() throws Exception {
-      JavEApplication app = createApplication();
+      JaveApplication app = createApplication();
       SwingUtilities.invokeAndWait(() -> {
          try {
             app.doNew(); // Doc 1 (index 0)

@@ -1,7 +1,7 @@
 package de.jave.jave.actions;
 
 import de.jave.ascii.plate.textareabased.AsciiTextAreaProperties;
-import de.jave.jave.JavEApplication;
+import de.jave.jave.JaveApplication;
 import de.jave.jave.PlateDocument;
 import de.jave.jave.actions.enablestrategy.IJaveDocumentEditorActionEnabledStrategy;
 import de.jave.jave.actions.enablestrategy.TextAndAnimationEditorEnabledStrategy;
@@ -23,9 +23,9 @@ import net.dizzy.commons.swing.dialog.userdialog.buttons.DialogButtonConfigurati
 import net.dizzy.commons.swing.fontchooser.model.FontModel;
 
 public class ClipartLibraryAction extends AbstractJaveAction {
-   private final JavEApplication jave;
+   private final JaveApplication jave;
 
-   public ClipartLibraryAction(JavEApplication jave, JaveMainPanel mainPanel) {
+   public ClipartLibraryAction(JaveApplication jave, JaveMainPanel mainPanel) {
       super(mainPanel, "Clipart Library", JaveIcons.CLIPART_ICON);
       this.jave = jave;
       this.setToolTipText("Show Clipart Library Dialog");

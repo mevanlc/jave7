@@ -13,7 +13,7 @@ import net.dizzy.commons.swing.mousecursor.CursorProvider;
 public abstract class AbstractPencilTool extends Tool {
    protected Point cursorLocation;
 
-   public AbstractPencilTool(JaveMainPanel mainPanel, JavEApplication application, Filter filter) {
+   public AbstractPencilTool(JaveMainPanel mainPanel, JaveApplication application, Filter filter) {
       super(mainPanel, application, filter);
    }
 

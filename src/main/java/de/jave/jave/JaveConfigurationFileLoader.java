@@ -35,7 +35,7 @@ public class JaveConfigurationFileLoader {
                return file;
             } else {
                Message message = new Message(
-                  JaveMessages.JavE,
+                  JaveMessages.Jave,
                   "Error loading configuration from file:\n\t'" + file.getAbsolutePath() + "'\n" + "The file does not exist.",
                   MessageType.ERROR
                );
@@ -48,7 +48,7 @@ public class JaveConfigurationFileLoader {
       try {
          return confy.initialize(context);
       } catch (Exception var5) {
-         Message message = new Message(JaveMessages.JavE, "Error loading configuration.\n" + var5.getMessage(), var5);
+         Message message = new Message(JaveMessages.Jave, "Error loading configuration.\n" + var5.getMessage(), var5);
          this.errorHandler.handleError(message);
          return null;
       }
