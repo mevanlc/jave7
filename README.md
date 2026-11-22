@@ -117,6 +117,10 @@ across restarts and takes effect when preferences are accepted. Other characters
 continue to use the display font. This approximates Kitty's default geometry;
 custom Kitty line thickness, cell spacing, and rasterization can still differ.
 
+Kitty's box-drawing borders use crisp, unblended pixels, including rounded corners
+and diagonals. Rounded corners align with the adjacent straight strokes across
+zoom levels and display scales. Ordinary text keeps its font smoothing.
+
 Try [the Kitty showcase](examples/kitty/showcase.txt), an 80-column drawing with
 an octant landscape, Braille waveform, connected boxes, and glyph studies.
 Select **Kitty** and turn off **View > Mark illegal characters** for a clean

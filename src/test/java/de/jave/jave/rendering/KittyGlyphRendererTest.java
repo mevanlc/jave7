@@ -142,6 +142,84 @@ public class KittyGlyphRendererTest {
    }
 
    @Test
+   public void boxDrawingPixelsAreUnblendedAtDifferentDisplayScales() {
+      for (double scale : new double[]{1, 1.25, 2}) {
+         for (int cp = 0x2500; cp <= 0x257F; cp++) {
+            BufferedImage image = new BufferedImage(60, 80, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D graphics = image.createGraphics();
+            try {
+               graphics.setColor(Color.BLACK);
+               graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+               graphics.scale(scale, scale);
+               assertTrue(KittyGlyphRenderer.draw(graphics, cp, 3, 4, 15, 32));
+            } finally {
+               graphics.dispose();
+            }
+            boolean painted = false;
+            for (int pixel : pixels(image)) {
+               int alpha = pixel >>> 24;
+               assertTrue(Integer.toHexString(cp) + " at " + scale + ": partial coverage " + alpha, alpha == 0 || alpha == 255);
+               painted |= alpha == 255;
+            }
+            assertTrue(Integer.toHexString(cp) + ": empty drawing", painted);
+         }
+      }
+   }
+
+   @Test
+   public void roundedCornersAlignWithStraightStrokesAtTheirCellEdges() {
+      int[] corners = {0x256D, 0x256E, 0x2570, 0x256F};
+      for (int[] size : new int[][]{{8, 17}, {9, 18}, {14, 29}, {15, 32}, {24, 49}, {32, 64}}) {
+         int width = size[0];
+         int height = size[1];
+         for (double scale : new double[]{1, 1.25, 1.5, 2}) {
+            for (int corner = 0; corner < corners.length; corner++) {
+               BufferedImage actual = scaledCell(corners[corner], width, height, scale);
+               BufferedImage vertical = scaledCell(0x2502, width, height, scale);
+               BufferedImage horizontal = scaledCell(0x2500, width, height, scale);
+               int x0 = (int)Math.ceil(5 * scale);
+               int y0 = (int)Math.ceil(7 * scale);
+               int x1 = (int)Math.floor((5 + width) * scale) - 1;
+               int y1 = (int)Math.floor((7 + height) * scale) - 1;
+               int verticalEdge = corner < 2 ? y1 : y0;
+               int horizontalEdge = corner % 2 == 0 ? x1 : x0;
+               String message = Integer.toHexString(corners[corner]) + " " + width + "x" + height + " at " + scale;
+               for (int x = x0; x <= x1; x++) {
+                  assertEquals(message + " vertical join at " + x, vertical.getRGB(x, verticalEdge), actual.getRGB(x, verticalEdge));
+               }
+               for (int y = y0; y <= y1; y++) {
+                  assertEquals(message + " horizontal join at " + y, horizontal.getRGB(horizontalEdge, y), actual.getRGB(horizontalEdge, y));
+               }
+            }
+         }
+      }
+   }
+
+   private static BufferedImage scaledCell(int codePoint, int width, int height, double scale) {
+      BufferedImage image = new BufferedImage((int)Math.ceil((width + 10) * scale), (int)Math.ceil((height + 14) * scale), BufferedImage.TYPE_INT_ARGB);
+      Graphics2D graphics = image.createGraphics();
+      try {
+         graphics.scale(scale, scale);
+         graphics.setColor(Color.BLACK);
+         assertTrue(KittyGlyphRenderer.draw(graphics, codePoint, 5, 7, width, height));
+      } finally {
+         graphics.dispose();
+      }
+      return image;
+   }
+
+   @Test
+   public void curvedNonBorderSymbolsKeepTheirSmoothing() {
+      BufferedImage image = render(0x25CB, MONO, 32, 64);
+      boolean partialCoverage = false;
+      for (int pixel : pixels(image)) {
+         int alpha = pixel >>> 24;
+         partialCoverage |= alpha > 0 && alpha < 211;
+      }
+      assertTrue("circle should still have antialiased edges", partialCoverage);
+   }
+
+   @Test
    public void smallZoomSizesAndExistingGraphicsStateArePreserved() {
       BufferedImage image = new BufferedImage(60, 80, BufferedImage.TYPE_INT_ARGB);
       Graphics2D graphics = image.createGraphics();

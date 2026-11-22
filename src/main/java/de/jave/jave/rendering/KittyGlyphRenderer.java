@@ -47,7 +47,7 @@ public final class KittyGlyphRenderer {
          try {
             copy.translate(x, y);
             copy.clipRect(0, 0, width, height);
-            Canvas canvas = new Canvas(copy, width, height);
+            Canvas canvas = new Canvas(copy, width, height, codePoint < 0x2500 || codePoint > 0x257F);
             for (Operation operation : drawing) {
                canvas.draw(operation);
             }
@@ -98,12 +98,14 @@ public final class KittyGlyphRenderer {
       private final int width;
       private final int height;
       private final int light;
+      private final boolean smooth;
 
-      Canvas(Graphics2D graphics, int width, int height) {
+      Canvas(Graphics2D graphics, int width, int height, boolean smooth) {
          this.graphics = graphics;
          this.width = width;
          this.height = height;
          this.light = Math.max(1, (int)Math.round(Math.min(width / 6.0, height / 12.0)));
+         this.smooth = smooth;
       }
 
       void draw(Operation operation) {
@@ -136,7 +138,7 @@ public final class KittyGlyphRenderer {
 
       private void antialias(boolean enabled) {
          graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-            enabled ? RenderingHints.VALUE_ANTIALIAS_ON : RenderingHints.VALUE_ANTIALIAS_OFF);
+            enabled && smooth ? RenderingHints.VALUE_ANTIALIAS_ON : RenderingHints.VALUE_ANTIALIAS_OFF);
       }
 
       private int pixel(double fraction, int size) {
@@ -245,15 +247,18 @@ public final class KittyGlyphRenderer {
       private void roundedCorner(int corner) {
          double cx = width / 2 + light % 2 * .5;
          double cy = height / 2 + light % 2 * .5;
-         double r = Math.min(width / 2.0, height / 2.0);
          int sx = corner % 2 == 0 ? 1 : -1;
          int sy = corner < 2 ? 1 : -1;
+         // Leave a straight end at every cell boundary, including odd cell sizes.
+         double r = Math.max(0, Math.min(Math.min(cx, width - cx), Math.min(cy, height - cy)) - 1);
          Path2D path = new Path2D.Double();
          path.moveTo(cx, sy > 0 ? height : 0);
          path.lineTo(cx, cy + sy * r);
          path.quadTo(cx, cy, cx + sx * r, cy);
          path.lineTo(sx > 0 ? width : 0, cy);
-         stroke(path, light);
+         antialias(false);
+         // Use the same fill rasterization as box()'s straight rectangles.
+         graphics.fill(new BasicStroke(light, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND).createStrokedShape(path));
       }
 
       private void dashedLine(boolean vertical, int count, int weight) {

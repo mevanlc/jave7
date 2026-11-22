@@ -56,6 +56,7 @@ public final class GlyphEmulationUiProbe {
                app.doNew();
                plate = app.getMainPanel().getPlate();
                plate.getPlatePreferences().getGridVisibilityModel().setValue(false);
+               plate.getPlatePreferences().getMarkIllegalModel().setValue(false);
                plate.setContent(new CharacterPlate(new String[]{
                   "Jave / Kitty built-in glyph comparison",
                   "┌─────────┬─────────┐ ╔═══════════╗",
@@ -94,6 +95,17 @@ public final class GlyphEmulationUiProbe {
          capture("kitty-selection.png");
          preferences(GlyphEmulation.JAVE, "Cancel", false);
          check(edt(() -> plate.getPlatePreferences().getGlyphEmulation()) == GlyphEmulation.KITTY, "Cancel preserves Kitty");
+         edt(() -> {
+            app.getApplicationPreferences().getDisplayFontModel().setFont(new Font(Font.MONOSPACED, Font.PLAIN, 13));
+            app.doNew();
+            plate = app.getMainPanel().getPlate();
+            plate.getPlatePreferences().getMarkIllegalModel().setValue(false);
+            plate.getPlatePreferences().getGridVisibilityModel().setValue(true);
+            plate.setContent(new CharacterPlate(new String[]{"╭──────╮", "│      │", "│      │", "╰──────╯"}));
+            System.out.println("Rounded corner cells: " + plate.getCharWidth() + "x" + plate.getCharHeight());
+            return null;
+         });
+         capture("kitty-rounded-corners-small.png");
          atlas();
          System.out.println("ALL GLYPH EMULATION UI PROBE CHECKS PASSED");
       } catch (Throwable error) {
@@ -163,7 +175,11 @@ public final class GlyphEmulationUiProbe {
    private static void capture(String name) throws Exception {
       robot.waitForIdle();
       robot.delay(200);
-      ImageIO.write(robot.createScreenCapture(edt(() -> app.getFrame().getBounds())), "png", OUTPUT.resolve(name).toFile());
+      Rectangle bounds = edt(() -> app.getFrame().getBounds());
+      ImageIO.write(robot.createScreenCapture(bounds), "png", OUTPUT.resolve(name).toFile());
+      var variants = robot.createMultiResolutionScreenCapture(bounds).getResolutionVariants();
+      BufferedImage nativeImage = (BufferedImage)variants.get(variants.size() - 1);
+      ImageIO.write(nativeImage, "png", OUTPUT.resolve(name.replace(".png", "-native.png")).toFile());
    }
 
    private static void atlas() throws Exception {
